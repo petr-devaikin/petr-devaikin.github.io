@@ -51,7 +51,7 @@ function drawVerticalAxis(age) {
             .attr('x1', x)
             .attr('y1', 0)
             .attr('x2', x)
-            .attr('y2', 6);
+            .attr('y2', 5);
         horizontalAxises.append('text')
             .attr('x', x)
             .attr('y', 12)
