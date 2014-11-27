@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="js/d3.min.js"></script>
+        <script src="data/date-sum-bd-gender-result.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <div id="svgContainer">
+            <svg id="graph">
+                <defs>
+                    <linearGradient id="backgroundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#eee;stop-opacity:0.2" />
+                        <stop offset="50%" style="stop-color:#eee;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#eee;stop-opacity:0.2" />
+                    </linearGradient>
+                </defs>
+                <g id="container">
+                    <g id="data"></g>
+                    <g id="axises">
+                        <g id="horizontalAxises"></g>
+                        <g id="level"></g>
+                        <g id="agePointer"></g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </body>
+</html>

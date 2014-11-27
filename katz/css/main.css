@@ -1,0 +1,71 @@
+@font-face {
+    font-family: "Arial Ruble";
+    src: url(rouble.ttf);
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+#svgContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+svg .axis {
+    stroke: #000;
+    stroke-width: 0.1px;
+}
+
+svg .level {
+    stroke: #000;
+    opacity: 0.7;
+    stroke-width: 0.1px;
+}
+
+svg .column .background {
+    fill: white;
+}
+
+svg .column .number {
+    stroke: white;
+    stroke-width: 0.5;
+}
+
+svg .column .allNumber {
+    fill: #6EDE64;
+}
+
+svg .column:hover .number {
+    fill: #96F48D;
+}
+
+svg .column:hover .background {
+    fill: url(#backgroundGrad);
+}
+
+svg #axises text {
+    fill: #ccc;
+    font-size: 10px;
+}
+
+svg #level text {
+    font-family: Arial Ruble;
+    font-size: 10px;
+    fill: #175A11;
+    text-anchor: end;
+}
+
+svg #agePointer text {
+    fill: #175A11;
+}
