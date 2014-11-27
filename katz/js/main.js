@@ -15,7 +15,10 @@ var columnWidth = 10,
     maxAge,
     maxMoney;
 
-window.onload = function() {
+window.onload = draw;
+window.onresize = draw
+
+function draw() {
     container = d3.select('#graph #container');
     dataContainer = container.select('#data');
     axisesContainer = container.select('#axises');
