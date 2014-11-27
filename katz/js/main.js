@@ -26,6 +26,8 @@ function draw() {
     levelContainer = axisesContainer.select('#level');
     ageContainer = axisesContainer.select('#agePointer');
 
+    dataContainer.text('');
+
     var svg = document.getElementById('graph')
     width = svg.offsetWidth;
     height = svg.offsetHeight;
