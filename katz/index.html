@@ -1,13 +1,15 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Max Katz Crowdfunding</title>
+        <title>Статистика по сбору денег на избирательную кампанию Максима Каца 2014</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <script src="js/d3.min.js"></script>
         <script src="data/date-sum-bd-gender-result.js"></script>
         <script src="js/main.js"></script>
     </head>
     <body>
+        <h1>Краудфандинг Максима Каца 2014</h1>
         <div id="svgContainer">
             <svg id="graph">
                 <defs>
@@ -22,10 +24,15 @@
                     <g id="axises">
                         <g id="horizontalAxises"></g>
                         <g id="level"></g>
+                        <g id="level2"></g>
                         <g id="agePointer"></g>
                     </g>
                 </g>
             </svg>
+        </div>
+        <div id="buttons">
+            <div id="allButton" class="active">Все</div>
+            <div id="genderButton">М/Ж</div>
         </div>
     </body>
 </html>

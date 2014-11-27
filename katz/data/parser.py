@@ -23,14 +23,13 @@ for line in f:
                 'female': 0
             }
         ages[age]['all'] += money
-        if data[3] == 'мужской':
+        if int(data[3]) == 1:
             ages[age]['male'] += money
         else:
             ages[age]['female'] += money
 
 for k in range(min(ages.keys()), max(ages.keys())):
     if not k in ages:
-        print k
         ages[k] = {
             'age': k,
             'all': 0,
