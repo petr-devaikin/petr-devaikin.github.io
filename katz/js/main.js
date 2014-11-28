@@ -8,6 +8,10 @@ var container,
     levelText2,
     levelAdditionalText,
     levelAdditionalText2,
+    levelTextR,
+    levelTextR2,
+    levelAdditionalTextR,
+    levelAdditionalTextR2,
     ageContainer,
     agePointer,
     horizontalAxises,
@@ -50,10 +54,14 @@ function onResize() {
         .attr('y', -height/2)
         .attr('height', height);
 
-    levelText.attr('x', dX - 2 * columnWidth);
-    levelText2.attr('x', dX - 2 * columnWidth);
-    levelAdditionalText.attr('x', dX - 2 * columnWidth);
-    levelAdditionalText2.attr('x', dX - 2 * columnWidth);
+    levelText.attr('x', dX - 2 * columnWidth - 9);
+    levelText2.attr('x', dX - 2 * columnWidth - 9);
+    levelAdditionalText.attr('x', dX - 2 * columnWidth - 9);
+    levelAdditionalText2.attr('x', dX - 2 * columnWidth - 9);
+    levelTextR.attr('x', dX - 2 * columnWidth);
+    levelTextR2.attr('x', dX - 2 * columnWidth);
+    levelAdditionalTextR.attr('x', dX - 2 * columnWidth);
+    levelAdditionalTextR2.attr('x', dX - 2 * columnWidth);
 }
 
 function draw() {
@@ -105,10 +113,18 @@ function drawLevel(dX) {
 
     levelText = levelContainer.append('text')
         .attr('y', -6);
+    levelTextR = levelContainer.append('text')
+        .classed({ rouble: true })
+        .attr('y', -6)
+        .text('a');
 
     levelAdditionalText = levelContainer.append('text')
         .classed('additional', true)
         .attr('y', -21);
+    levelAdditionalTextR = levelContainer.append('text')
+        .classed({ rouble: true, additional: true })
+        .attr('y', -21)
+        .text('a');
 
 
     levelContainer2.append('line')
@@ -120,10 +136,18 @@ function drawLevel(dX) {
 
     levelText2 = levelContainer2.append('text')
         .attr('y', 14);
+    levelTextR2 = levelContainer2.append('text')
+        .classed({ rouble: true })
+        .attr('y', 14)
+        .text('a');
 
     levelAdditionalText2 = levelContainer2.append('text')
         .classed('additional', true)
         .attr('y', 28);
+    levelAdditionalTextR2 = levelContainer2.append('text')
+        .classed({ rouble: true, additional: true })
+        .attr('y', 28)
+        .text('a');
 }
 
 function drawAgePointer() {
@@ -187,9 +211,9 @@ function setLevel(d) {
         levelContainer2
             .attr('opacity', 1)
             .attr('transform', 'translate(0,' + y2 + ')');
-        levelText2.text('Всего: ' + value2.formatMoney(0, ',', ' ') + 'a');
+        levelText2.text('Всего: ' + value2.formatMoney(0, ',', ' '));
         levelAdditionalText2.text('Платежей: ' + count2 + ', средний: ' +
-            averageValue2.formatMoney(0, ',', ' ') + 'a');
+            averageValue2.formatMoney(0, ',', ' '));
     }
     else
         levelContainer2
@@ -198,9 +222,9 @@ function setLevel(d) {
     levelContainer
         .attr('opacity', 1)
         .attr('transform', 'translate(0,' + y + ')');
-    levelText.text('Всего: ' + value.formatMoney(0, ',', ' ') + 'a');
+    levelText.text('Всего: ' + value.formatMoney(0, ',', ' '));
     levelAdditionalText.text('Платежей: ' + count + ', средний: ' +
-        averageValue.formatMoney(0, ',', ' ') + 'a');
+        averageValue.formatMoney(0, ',', ' '));
 
     agePointer
         .attr('opacity', 1)

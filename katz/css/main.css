@@ -127,10 +127,14 @@ svg #axises text {
 }
 
 svg #level text, svg #level2 text {
-    font-family: "Arial_Ruble";
+    font-family: Arial;
     font-size: 10px;
     fill: #175A11;
     text-anchor: end;
+}
+
+svg #level text.rouble, svg #level2 text.rouble {
+    font-family: "Arial_Ruble", Arial;
 }
 
 svg #level text.additional, svg #level2 text.additional {
