@@ -69,8 +69,8 @@ function draw() {
     dataContainer = container.select('#data');
     axisesContainer = container.select('#axises');
     horizontalAxises = axisesContainer.select('#horizontalAxises');
-    levelContainer = axisesContainer.select('#level');
-    levelContainer2 = axisesContainer.select('#level2');
+    levelContainer = axisesContainer.select('#level').attr('opacity', 0);
+    levelContainer2 = axisesContainer.select('#level2').attr('opacity', 0);
     ageContainer = axisesContainer.select('#agePointer');
 
     maxMoney = Math.max.apply(null, genderData.map(function(d) { return d.sum }));
