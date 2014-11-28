@@ -72,10 +72,18 @@ svg .column .background {
     fill: white;
 }
 
+svg .column .numberContainer {
+    transition: opacity 0.3s ease-out 0;
+}
+
 svg .column .number {
     stroke: white;
     stroke-width: 0.5;
-    transition: opacity 0.3s ease-out 0;
+}
+
+svg .column .averageNumber {
+    opacity: 0.1;
+    stroke: none;
 }
 
 svg .column .allNumber {
@@ -116,6 +124,10 @@ svg #level text, svg #level2 text {
     font-size: 10px;
     fill: #175A11;
     text-anchor: end;
+}
+
+svg .additional {
+    opacity: 0.4;
 }
 
 svg #agePointer text {

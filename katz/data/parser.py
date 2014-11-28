@@ -18,23 +18,40 @@ for line in f:
         if not age in ages:
             ages[age] = {
                 'age': age,
-                'all': 0,
-                'male': 0,
-                'female': 0
+                'sum': 0,
+                'count': 0,
+                'male': {
+                    'sum': 0,
+                    'count': 0,
+                },
+                'female':  {
+                    'sum': 0,
+                    'count': 0,
+                },
             }
-        ages[age]['all'] += money
+        ages[age]['sum'] += money
+        ages[age]['count'] += 1
         if int(data[3]) == 1:
-            ages[age]['male'] += money
+            ages[age]['male']['sum'] += money
+            ages[age]['male']['count'] += 1
         else:
-            ages[age]['female'] += money
+            ages[age]['female']['sum'] += money
+            ages[age]['female']['count'] += 1
 
 for k in range(min(ages.keys()), max(ages.keys())):
     if not k in ages:
         ages[k] = {
             'age': k,
-            'all': 0,
-            'male': 0,
-            'female': 0
+            'sum': 0,
+            'male': {
+                'sum': 0,
+                'count': 0,
+            },
+            'female':  {
+                'sum': 0,
+                'count': 0,
+            },
+            'count': 0,
         }
 
 result = [ages[age] for age in ages]
