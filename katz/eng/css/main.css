@@ -1,0 +1,146 @@
+@font-face {
+    font-family: "Arial_Ruble";
+    src: url('rouble-webfont.eot');
+    src: url('rouble-webfont.eot?#iefix') format('embedded-opentype'),
+         url('rouble-webfont.woff2') format('woff2'),
+         url('rouble-webfont.woff') format('woff'),
+         url('rouble-webfont.ttf') format('truetype'),
+         url('rouble-webfont.svg#Arial_Ruble') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Open Sans";
+    margin: 15px 0 0;
+    font-weight: normal;
+    font-size: 20px;
+    color: #444;
+}
+
+#buttons {
+    position: relative;
+    width: 150px;
+    left: 50%;
+    margin-left: -31px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+#buttons div {
+    position: relative;
+    float: left;
+    margin-right: 10px;
+}
+
+#buttons div:not(.active) {
+    border-bottom: 1px dashed rgb(44, 108, 181);
+    color: rgb(44, 108, 181);
+    cursor: pointer;
+}
+
+#buttons div.active {
+    color: #7B837B;
+}
+
+#svgContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 65px;
+    bottom: 0;
+    overflow: hidden;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+svg .axis {
+    stroke: #eee;
+    stroke-width: 1px;
+    fill: #eee;
+}
+
+svg .level {
+    stroke: #999;
+    opacity: 0.7;
+    stroke-width: 1px;
+}
+
+svg .column .background {
+    fill: white;
+}
+
+svg .column .numberContainer {
+    transition: opacity 0.3s ease-out 0;
+}
+
+svg .column .number {
+    stroke: white;
+    stroke-width: 0.5;
+}
+
+svg .column .averageNumber {
+    opacity: 0.1;
+    stroke: none;
+}
+
+svg .column .allNumber {
+    fill: #6EDE64;
+}
+
+svg .column .maleNumber {
+    fill: rgb(135, 188, 232);
+}
+
+svg .column .femaleNumber {
+    fill: rgb(247, 167, 200);
+}
+
+svg .column:hover .allNumber {
+    fill: #96F48D;
+}
+
+svg .column:hover .maleNumber {
+    fill: rgb(179, 212, 239);
+}
+
+svg .column:hover .femaleNumber {
+    fill: rgb(249, 196, 218);
+}
+
+svg .column:hover .background {
+    fill: url(#backgroundGrad);
+}
+
+svg #axises text {
+    fill: #bbb;
+    font-size: 10px;
+}
+
+svg #level text, svg #level2 text {
+    font-family: Arial;
+    font-size: 10px;
+    fill: #175A11;
+    text-anchor: end;
+}
+
+svg #level text.rouble, svg #level2 text.rouble {
+    font-family: "Arial_Ruble", Arial;
+}
+
+svg #level text.additional, svg #level2 text.additional {
+    fill: #bbb;
+}
+
+svg #agePointer text {
+    fill: #175A11;
+}
