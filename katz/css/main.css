@@ -1,6 +1,13 @@
 @font-face {
-    font-family: "Arial Ruble";
-    src: url(rouble.ttf);
+    font-family: "Arial_Ruble";
+    src: url('rouble-webfont.eot');
+    src: url('rouble-webfont.eot?#iefix') format('embedded-opentype'),
+         url('rouble-webfont.woff2') format('woff2'),
+         url('rouble-webfont.woff') format('woff'),
+         url('rouble-webfont.ttf') format('truetype'),
+         url('rouble-webfont.svg#Arial_Ruble') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
@@ -120,14 +127,14 @@ svg #axises text {
 }
 
 svg #level text, svg #level2 text {
-    font-family: Arial Ruble;
+    font-family: "Arial_Ruble";
     font-size: 10px;
     fill: #175A11;
     text-anchor: end;
 }
 
-svg .additional {
-    opacity: 0.4;
+svg #level text.additional, svg #level2 text.additional {
+    fill: #bbb;
 }
 
 svg #agePointer text {
