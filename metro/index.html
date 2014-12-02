@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Moscow Metro Pedestrian Access 1935 &mdash; 2014</title>
+        <meta charset="UTF-8">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="js/d3.min.js"></script>
+        <script src="data/mkad.js"></script>
+        <script src="data/coords.js"></script>
+        <script src="data/lines.js"></script>
+        <script src="js/tokm.js"></script>
+        <script src="js/colours.js"></script>
+        <script src="js/process.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <div id="mapContainer">
+            <svg>
+                <g id="everything">
+                    <image id="moscow" width="1052" height="1488" x="-540" y="-760" xlink:href="data/moscow.svg" />
+                    <g id="metro">
+                        <g id="roads">
+                            <g id="mkad"></g>
+                        </g>
+                        <g id="connectionsContainer"></g>
+                        <g id="walkability">
+                            <g id="walk20min"></g>
+                            <g id="walk15min"></g>
+                            <g id="walk10min"></g>
+                            <g id="walk5min"></g>
+                        </g>
+                        <g id="stationsContainer"></g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div id="timelineContainer">
+            <svg>
+            </svg>
+        </div>
+        <div id="legend">
+            <svg height="72">
+                <circle fill="hsl(0,100%,50%)" r="28" cx="28" cy="44" opacity="0.1"></circle>
+                <circle fill="hsl(0,100%,50%)" r="21" cx="28" cy="44" opacity="0.1"></circle>
+                <circle fill="hsl(0,100%,50%)" r="14" cx="28" cy="44" opacity="0.1"></circle>
+                <circle fill="hsl(0,100%,50%)" r="7" cx="28" cy="44"></circle>
+
+                <line x1="28" y1="44" x2="204" y2="44" stroke="red" opacity="0.2" ></line>
+                <line x1="28" y1="37" x2="113" y2="37" stroke="red" opacity="0.2" ></line>
+                <line x1="28" y1="30" x2="93" y2="30" stroke="red" opacity="0.2" ></line>
+                <line x1="28" y1="23" x2="73" y2="23" stroke="red" opacity="0.2" ></line>
+                <line x1="28" y1="16" x2="50" y2="16" stroke="red" opacity="0.2" ></line>
+
+                <text x="55" y="17" opacity="0.3">20</text>
+                <text x="75" y="24" opacity="0.3">15</text>
+                <text x="95" y="31" opacity="0.3">10</text>
+                <text x="115" y="38" opacity="0.3">5 min by walking</text>
+            </dvg>
+        </div>
+    </body>
+</html>
