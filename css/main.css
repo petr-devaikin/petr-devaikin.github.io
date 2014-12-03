@@ -1,16 +1,16 @@
 body {
-    margin: 20px 20% 20px 10%;
+    margin: 20px 15% 100px 10%;
     font-family: 'Roboto Slab', serif;
     font-size: 14px;
     background: #F0EFED;
     color: #2E353D;
+    min-width: 700px
 }
 
 h1 {
     font-size: 16px;
     font-weight: normal;
-    height: 100px;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
     color: #1D2733;
     margin-left: 0px;
 }
@@ -30,7 +30,6 @@ a:hover {
     position: relative;
     height: 100px;
     margin-bottom: 25px;
-    overflow: hidden;
 }
 
 .project div {
@@ -55,20 +54,28 @@ a:hover {
     left: 390px;
     right: 0px;
     height: 100%;
+    padding-right: 25px;
 }
 
 .technologies {
     display: none;
 }
 
+#contacts {
+    position: relative;
+    height: 175px;
+    margin-bottom: 25px;
+    margin-left: 120px;
+}
+
 ul {
-    margin: 125px 0px 25px;
-    padding: 0 0 25px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 li {
-    position: relative;
-    float: left;
     list-style-type: none;
+    margin-bottom: 0.1em;
     margin-right: 30px;
 }
