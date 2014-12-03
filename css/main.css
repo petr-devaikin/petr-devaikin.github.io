@@ -1,0 +1,74 @@
+body {
+    margin: 20px 20% 20px 10%;
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+    background: #F0EFED;
+    color: #2E353D;
+}
+
+h1 {
+    font-size: 16px;
+    font-weight: normal;
+    height: 100px;
+    margin-bottom: 25px;
+    color: #1D2733;
+    margin-left: 0px;
+}
+
+a {
+    color: #172F8F;
+    padding: 0 2px;
+}
+
+a:hover {
+    color: #F0EFED;
+    background: #1D2733;
+    text-decoration: none;
+}
+
+.project {
+    position: relative;
+    height: 100px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.project div {
+    position: absolute;
+}
+
+
+.screenshot {
+    width: 100px;
+    left: 0px;
+    height: 100%;
+    background: silver;
+}
+
+.title {
+    width: 250px;
+    left: 120px;
+    height: 100%;
+}
+
+.description {
+    left: 390px;
+    right: 0px;
+    height: 100%;
+}
+
+.technologies {
+    display: none;
+}
+
+ul {
+    margin: 125px 0px 25px;
+    padding: 0 0 25px;
+}
+
+li {
+    position: relative;
+    float: left;
+    list-style-type: none;
+    margin-right: 30px;
+}
