@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from dateutil import relativedelta as rdelta
 import json
 import random
@@ -9,6 +9,16 @@ import random
 ages = {}
 
 timeline = {}
+
+d = date(2014, 7, 22)
+while d < date(2014, 9, 9):
+    timeline[d] = {
+        'day': d.day,
+        'month': d.month,
+        'sum': 0,
+        'donates': []
+    }
+    d += timedelta(days=1)
 
 f = open('date-sum-bd-gender.csv')
 for line in f:
@@ -41,15 +51,8 @@ for line in f:
             ages[age]['female']['sum'] += money
             ages[age]['female']['count'] += 1
 
-        if not data[0] in timeline:
-            timeline[data[0]] = {
-                'day': oper.day,
-                'month': oper.month,
-                'sum': 0,
-                'donates': []
-            }
-        timeline[data[0]]['sum'] += money
-        timeline[data[0]]['donates'].append({
+        timeline[oper.date()]['sum'] += money
+        timeline[oper.date()]['donates'].append({
                 'sum': money,
                 'male': int(data[3]) == 1
             })

@@ -14,11 +14,24 @@
         <h1>Краудфандинг Максима Каца 2014</h1>
         <div id="svgContainer">
             <svg id="graph">
+                <defs>
+                    <linearGradient id="backgroundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D5EFF7;stop-opacity:0" />
+                        <stop offset="100%" style="stop-color:#D5EFF7;stop-opacity:0.6" />
+                    </linearGradient>
+                    <linearGradient id="ground" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#E3F7DF;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#E3F7DF;stop-opacity:0" />
+                    </linearGradient>
+                </defs>
                 <g id="container">
-                    <g id="data">
+                    <g id="backs">
                     </g>
                     <g id="axises">
                         <g id="timeAxis"></g>
+                        <g id="days"></g>
+                    </g>
+                    <g id="data">
                     </g>
                 </g>
             </svg>
