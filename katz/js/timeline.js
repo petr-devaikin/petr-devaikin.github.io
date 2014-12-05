@@ -20,6 +20,7 @@ function initDom() {
     dom.dataContainer = d3.select('#data');
     dom.days = d3.select('#days');
     dom.backs = d3.select('#backs');
+    dom.foregs = d3.select('#foregs');
 }
 
 function calcConstants() {
@@ -140,9 +141,7 @@ function drawDays() {
             .classed('dayColumn', true)
             .attr('transform', function(d, i) {
                 return 'translate(' + i * dayWidth + ',0)';
-            })
-            .on('mouseover', selectDay)
-            .on('click', selectDay);
+            });
 
     dom.backgrounds = dom.backs.selectAll('.background')
             .data(timelineData)
@@ -194,9 +193,11 @@ function drawDays() {
             return 'translate(' + 0.5 * dayWidth + ',-' + getHeight(d) + ')';
         }));
 
-    dom.foregrounds = dom.dayColumns.append('rect')
+    dom.foregrounds = dom.foregs.selectAll('.foreground')
+            .data(timelineData)
+        .enter().append('rect')
         .classed('foreground', true)
-        .attr('x', 0)
+        .attr('x', function(d, i) { return i * dayWidth; })
         .attr('width', dayWidth)
         .on('mouseover', selectDay)
         .on('mouseout', deselectDay)
