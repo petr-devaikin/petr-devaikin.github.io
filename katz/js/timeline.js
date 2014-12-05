@@ -4,12 +4,18 @@ var maxDonateLength = 50;
 var maxSumValue = 0;
 var maxDonate = 0;
 var donateStartAngle = 15;
+var margin = 50;
+var zoom;
+
+var width,
+    dX;
 
 window.onresize = fit;
 
 var dom = {}
 
 function initDom() {
+    dom.svg = d3.select('#graph');
     dom.container = d3.select('#container');
     dom.dataContainer = d3.select('#data');
     dom.days = d3.select('#days');
@@ -30,20 +36,35 @@ function draw() {
     drawAxis();
     drawDays();
 
+    zoom = d3.behavior.zoom()
+        .on("zoom", zoomHandler);
+
     fit();
+
+    zoom
+        .scale(1)
+        .translate([dX, 0]);
+
+    dom.svg
+        .call(zoom) // delete this line to disable free zooming
+        .call(zoom.event);
 }
 
 function fit() {
-    var width = timelineData.length * dayWidth;
+    width = timelineData.length * dayWidth;
     var allWidth = document.getElementById('graph').offsetWidth;
     var allHeight = document.getElementById('graph').offsetHeight;
-    var dX = (allWidth - width) / 2;
+    dX = (allWidth - width) / 2;
     var dY = allHeight - (allHeight - maxColumnHeight - maxDonateLength) / 2;
-    dom.container.attr('transform', 'translate(' + dX + ', ' + dY + ')');
+
+    if (dX < margin)
+        dX = margin;
+
+    dom.container.attr('transform', 'translate(0, ' + dY + ')');
 
     dom.leftAxis.attr('x2', -dX);
     dom.rightAxis.attr('x1', width);
-    dom.rightAxis.attr('x2', allWidth - dX);
+    dom.rightAxis.attr('x2', width + dX);
 
     d3.selectAll('.topBackground')
         .attr('y', -dY)
@@ -106,7 +127,7 @@ function drawAxis() {
         .attr('x', function(d, i) {
             return timelineData.indexOf(d) * dayWidth + (i ? 10 : 7);
         })
-        .attr('y', 30)
+        .attr('y', 35)
         .text(function(d) {
             return ['июль', 'август', 'сентябрь'][d.month - 7];
         });
@@ -225,4 +246,24 @@ function deselectDay(dToSelect) {
         .classed('selected', false);
     dom.days.filter(function(d) { return d == dToSelect; })
         .classed('selected', false);
+}
+
+
+var oldX = 0;
+function zoomHandler() {
+    var newX = d3.event.translate[0];
+    console.log(newX);
+    if (oldX == newX)
+        return;
+
+    if (newX > dX || width + 2 * dX < document.getElementById('graph').offsetWidth) {
+        newX = dX;
+    }
+    else if (document.getElementById('graph').offsetWidth - width - dX - newX > 0) {
+        newX = document.getElementById('graph').offsetWidth - width - dX;
+    }
+    oldX = newX;
+
+    dom.svg.select("#everything").attr("transform", "translate(" + newX + ",0)");
+    zoom.translate([oldX, 0]);
 }
