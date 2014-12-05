@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Open Sans";
+    margin: 15px 0 0;
+    font-weight: normal;
+    font-size: 20px;
+    color: #444;
+}
+
+#svgContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 65px;
+    bottom: 0;
+    overflow: hidden;
+}
+
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+svg .dayColumn path {
+    stroke: #39A10A;
+    stroke-width: 0.5;
+    fill: none;
+}
+
+svg .donate {
+    stroke-width: 0.5;
+}
+
+
+svg #timeAxis line {
+    stroke: #39A10A;
+    stroke-width: 0.5;
+}
