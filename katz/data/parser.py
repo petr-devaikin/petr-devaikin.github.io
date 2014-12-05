@@ -1,11 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from dateutil import relativedelta as rdelta
 import json
+import random
 
 ages = {}
+
+timeline = {}
+
+d = date(2014, 7, 22)
+while d < date(2014, 9, 9):
+    timeline[d] = {
+        'day': d.day,
+        'month': d.month,
+        'sum': 0,
+        'donates': []
+    }
+    d += timedelta(days=1)
 
 f = open('date-sum-bd-gender.csv')
 for line in f:
@@ -38,6 +51,13 @@ for line in f:
             ages[age]['female']['sum'] += money
             ages[age]['female']['count'] += 1
 
+        timeline[oper.date()]['sum'] += money
+        timeline[oper.date()]['donates'].append({
+                'sum': money,
+                'male': int(data[3]) == 1
+            })
+
+
 for k in range(min(ages.keys()), max(ages.keys())):
     if not k in ages:
         ages[k] = {
@@ -55,6 +75,13 @@ for k in range(min(ages.keys()), max(ages.keys())):
         }
 
 result = [ages[age] for age in ages]
+result_tl = [timeline[t] for t in timeline]
+result_tl = sorted(result_tl, key=lambda d: d['month'] * 100 + d['day'])
+for r in result_tl:
+    random.shuffle(r['donates'])
 
 nf = open('date-sum-bd-gender-result.js', 'w')
 nf.write('var genderData = ' + json.dumps(result) + ';')
+
+nf = open('tl-data.js', 'w')
+nf.write('var timelineData = ' + json.dumps(result_tl) + ';')
