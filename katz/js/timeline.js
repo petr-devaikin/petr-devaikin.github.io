@@ -1,10 +1,11 @@
 var dayWidth = 25;
+var stemWidth = 2;
 var maxColumnHeight = 250;
 var maxDonateLength = 50;
 var maxSumValue = 0;
 var maxDonate = 0;
 var donateStartAngle = 15;
-var margin = 50;
+var margin = 60;
 var zoom;
 
 var width,
@@ -58,8 +59,12 @@ function fit() {
     dX = (allWidth - width) / 2;
     var dY = allHeight - (allHeight - maxColumnHeight - maxDonateLength) / 2;
 
-    if (dX < margin)
+    if (dX < margin) {
         dX = margin;
+        dom.svg.classed('move', true);
+    }
+    else
+        dom.svg.classed('move', false);
 
     dom.container.attr('transform', 'translate(0, ' + dY + ')');
 
@@ -67,12 +72,14 @@ function fit() {
     dom.rightAxis.attr('x1', width);
     dom.rightAxis.attr('x2', width + dX);
 
+    var topBgHeight = dY > 400 ? 400 : dY;
+    var bottomBgHeight = allHeight - dY > 100 ? 100 : allHeight - dY;
     d3.selectAll('.topBackground')
-        .attr('y', -dY)
-        .attr('height', dY);
+        .attr('y', -topBgHeight)
+        .attr('height', topBgHeight);
 
     d3.selectAll('.bottomBackground')
-        .attr('height', allHeight - dY);
+        .attr('height', bottomBgHeight);
 
     d3.selectAll('.leftBackground')
         .attr('x', -dX)
@@ -179,18 +186,31 @@ function drawDays() {
 
     dom.dayColumns.append('path')
         .attr('d', function(d, i) {
-            var res = 'M0,0 ';
-            res += 'Q' + 0.5 * dayWidth + ',0 ';
-            res += 0.5 * dayWidth + ',-' + getHeight(d) + ' ';
-            res += 'Q' + 0.5 * dayWidth + ',0 ';
-            res += dayWidth + ',0';
-            return res;
+            if (d.sum > 0) {
+                var res = 'M0,0 ';
+                res += 'Q' + 0.5 * (dayWidth - stemWidth) + ',0 ';
+                res += 0.5 * (dayWidth - stemWidth) + ',-10 ';
+                res += 'L' + 0.5 * (dayWidth - stemWidth) + ',-' + getHeight(d) + ' ';
+                res += 'L' + 0.5 * (dayWidth + stemWidth) + ',-' + getHeight(d) + ' ';
+                res += 'L' + 0.5 * (dayWidth + stemWidth) + ',-10 ';
+                res += 'Q' + 0.5 * (dayWidth + stemWidth) + ',0 ';
+                res += dayWidth + ',0';
+                return res;
+            }
+            else
+                return 'M0,0 L' + dayWidth + ',0';
         });
 
     drawDonates(dom.dayColumns.append('g')
         .classed('flower', true)
-        .attr('transform', function(d, i) {
+        .attr('transform', function(d, i) {0
             return 'translate(' + 0.5 * dayWidth + ',-' + getHeight(d) + ')';
+        }));
+
+    drawInfo(dom.dayColumns.filter(function(g) { return g.sum > 0; }).append('g')
+        .classed('info', true)
+        .attr('transform', function(d, i) {0
+            return 'translate(' + 0.5 * dayWidth + ',-' + (getHeight(d) + 90) + ')';
         }));
 
     dom.foregrounds = dom.foregs.selectAll('.foreground')
@@ -202,6 +222,43 @@ function drawDays() {
         .on('mouseover', selectDay)
         .on('mouseout', deselectDay)
         .on('click', selectDay);
+}
+
+function drawInfo(p) {
+    p.append('text')
+        .classed('label sum', true)
+        .text('Сумма:');
+    p.append('text')
+        .classed('sum', true)
+        .attr('x', 5)
+        .text(function(d) { return d.sum.formatMoney() + ' р'; });
+
+    p.append('text')
+        .classed('label', true)
+        .text('Переводов:')
+        .attr('y', 16);
+    p.append('text')
+        .attr('x', 5)
+        .text(function(d) { return d.donates.length; })
+        .attr('y', 16);
+
+    p.append('text')
+        .classed('label', true)
+        .text('Min:')
+        .attr('y', 28);
+    p.append('text')
+        .attr('x', 5)
+        .text(function(d) { return d3.min(d.donates, function(d) { return d.sum; }).formatMoney() + ' р'; })
+        .attr('y', 28);
+
+    p.append('text')
+        .classed('label', true)
+        .text('Max:')
+        .attr('y', 40);
+    p.append('text')
+        .attr('x', 5)
+        .text(function(d) { return d3.max(d.donates, function(d) { return d.sum; }).formatMoney() + ' р'; })
+        .attr('y', 40);
 }
 
 function drawDonates(p) {
@@ -219,7 +276,7 @@ function drawDonates(p) {
                 return Math.pow(d.sum / maxDonate, 1 / 6) * maxDonateLength;
             })
             .attr('opacity', function(d) {
-                return Math.pow(d.sum / maxDonate, 1 / 2) * 0.3 + 0.7;
+                return Math.pow(d.sum / maxDonate, 1 / 2) * 0.5 + 0.5;
             })
             .attr('transform', function(d, i) {
                 var count = d3.select(this.parentNode).datum().donates.length;
@@ -253,7 +310,6 @@ function deselectDay(dToSelect) {
 var oldX = 0;
 function zoomHandler() {
     var newX = d3.event.translate[0];
-    console.log(newX);
     if (oldX == newX)
         return;
 
@@ -268,3 +324,16 @@ function zoomHandler() {
     dom.svg.select("#everything").attr("transform", "translate(" + newX + ",0)");
     zoom.translate([oldX, 0]);
 }
+
+
+
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this, 
+    c = isNaN(c = Math.abs(c)) ? 0 : c, 
+    d = d == undefined ? "," : d, 
+    t = t == undefined ? " " : t, 
+    s = n < 0 ? "-" : "", 
+    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
