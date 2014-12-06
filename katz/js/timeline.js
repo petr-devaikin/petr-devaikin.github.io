@@ -38,18 +38,18 @@ function draw() {
     drawAxis();
     drawDays();
 
-    //zoom = d3.behavior.zoom()
-    //    .on("zoom", zoomHandler);
+    zoom = d3.behavior.zoom()
+        .on("zoom", zoomHandler);
 
     fit();
 
-    //zoom
-    //    .scale(1)
-    //    .translate([dX, 0]);
+    zoom
+        .scale(1)
+        .translate([dX, 0]);
 
-    //dom.svg
-    //    .call(zoom) // delete this line to disable free zooming
-    //    .call(zoom.event);
+    dom.svg
+        .call(zoom) // delete this line to disable free zooming
+        .call(zoom.event);
 }
 
 function fit() {
