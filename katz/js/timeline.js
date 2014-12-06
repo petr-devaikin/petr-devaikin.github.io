@@ -8,9 +8,6 @@ var donateStartAngle = 15;
 var margin = 60;
 var zoom;
 
-var width,
-    dX;
-
 window.onresize = fit;
 
 var dom = {}
@@ -45,7 +42,7 @@ function draw() {
 
     zoom
         .scale(1)
-        .translate([dX, 0]);
+        .translate([dom.dX, 0]);
 
     dom.svg
         .call(zoom) // delete this line to disable free zooming
@@ -53,27 +50,27 @@ function draw() {
 }
 
 function fit() {
-    width = timelineData.length * dayWidth;
-    var allWidth = document.getElementById('graph').offsetWidth;
-    var allHeight = document.getElementById('graph').offsetHeight;
-    dX = (allWidth - width) / 2;
-    var dY = allHeight - (allHeight - maxColumnHeight - maxDonateLength) / 2;
+    dom.width = timelineData.length * dayWidth;
+    dom.allWidth = document.getElementById('svgContainer').offsetWidth;
+    dom.allHeight = document.getElementById('svgContainer').offsetHeight;
+    dom.dX = (dom.allWidth - dom.width) / 2;
+    dom.dY = dom.allHeight - (dom.allHeight - maxColumnHeight - maxDonateLength) / 2;
 
-    if (dX < margin) {
-        dX = margin;
+    if (dom.dX < margin) {
+        dom.dX = margin;
         dom.svg.classed('move', true);
     }
     else
         dom.svg.classed('move', false);
 
-    dom.container.attr('transform', 'translate(0, ' + dY + ')');
+    dom.container.attr('transform', 'translate(0, ' + dom.dY + ')');
 
-    dom.leftAxis.attr('x2', -dX);
-    dom.rightAxis.attr('x1', width);
-    dom.rightAxis.attr('x2', width + dX);
+    dom.leftAxis.attr('x2', -dom.dX);
+    dom.rightAxis.attr('x1', dom.width);
+    dom.rightAxis.attr('x2', dom.width + dom.dX);
 
-    var topBgHeight = dY > 400 ? 400 : dY;
-    var bottomBgHeight = allHeight - dY > 100 ? 100 : allHeight - dY;
+    var topBgHeight = dom.dY > 400 ? 400 : dom.dY;
+    var bottomBgHeight = dom.allHeight - dom.dY > 100 ? 100 : dom.allHeight - dom.dY;
     d3.selectAll('.topBackground')
         .attr('y', -topBgHeight)
         .attr('height', topBgHeight);
@@ -82,16 +79,16 @@ function fit() {
         .attr('height', bottomBgHeight);
 
     d3.selectAll('.leftBackground')
-        .attr('x', -dX)
-        .attr('width', dX);
+        .attr('x', -dom.dX)
+        .attr('width', dom.dX);
 
     d3.selectAll('.rightBackground')
-        .attr('x', width)
-        .attr('width', dX);
+        .attr('x', dom.width)
+        .attr('width', dom.dX);
 
     dom.foregrounds
-        .attr('y', -dY)
-        .attr('height', allHeight);
+        .attr('y', -dom.dY)
+        .attr('height', dom.allHeight);
 }
 
 function getHeight(d) {
@@ -313,11 +310,11 @@ function zoomHandler() {
     if (oldX == newX)
         return;
 
-    if (newX > dX || width + 2 * dX < document.getElementById('graph').offsetWidth) {
-        newX = dX;
+    if (newX > dom.dX || dom.width + 2 * dom.dX < dom.allWidth) {
+        newX = dom.dX;
     }
-    else if (document.getElementById('graph').offsetWidth - width - dX - newX > 0) {
-        newX = document.getElementById('graph').offsetWidth - width - dX;
+    else if (dom.allWidth - dom.width - dom.dX - newX > 0) {
+        newX = dom.allWidth - dom.width - dom.dX;
     }
     oldX = newX;
 
