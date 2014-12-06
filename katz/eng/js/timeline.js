@@ -134,7 +134,7 @@ function drawAxis() {
         })
         .attr('y', 35)
         .text(function(d) {
-            return ['июль', 'август', 'сентябрь'][d.month - 7];
+            return ['July', 'August', 'September'][d.month - 7];
         });
 }
 
