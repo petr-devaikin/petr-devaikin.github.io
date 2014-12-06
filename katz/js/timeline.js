@@ -38,18 +38,18 @@ function draw() {
     drawAxis();
     drawDays();
 
-    zoom = d3.behavior.zoom()
-        .on("zoom", zoomHandler);
+    //zoom = d3.behavior.zoom()
+    //    .on("zoom", zoomHandler);
 
     fit();
 
-    zoom
-        .scale(1)
-        .translate([dX, 0]);
+    //zoom
+    //    .scale(1)
+    //    .translate([dX, 0]);
 
-    dom.svg
-        .call(zoom) // delete this line to disable free zooming
-        .call(zoom.event);
+    //dom.svg
+    //    .call(zoom) // delete this line to disable free zooming
+    //    .call(zoom.event);
 }
 
 function fit() {
@@ -276,7 +276,7 @@ function drawDonates(p) {
                 return Math.pow(d.sum / maxDonate, 1 / 6) * maxDonateLength;
             })
             .attr('opacity', function(d) {
-                return Math.pow(d.sum / maxDonate, 1 / 2) * 0.5 + 0.5;
+                return Math.sqrt(d.sum / maxDonate) * 0.5 + 0.5;
             })
             .attr('transform', function(d, i) {
                 var count = d3.select(this.parentNode).datum().donates.length;
