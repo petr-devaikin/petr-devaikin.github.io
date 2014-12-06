@@ -25,7 +25,10 @@ h1 {
 svg {
     width: 100%;
     height: 100%;
-    cursor: pointer;
+}
+
+svg.move {
+    cursor: move;
 }
 
 svg .dayColumn {
@@ -38,7 +41,7 @@ svg .dayColumn.selected {
 
 svg .dayColumn path {
     stroke: #39A10A;
-    stroke-width: 0.5;
+    stroke-width: 1;
     fill: #EBFAE8;
 }
 
@@ -71,13 +74,13 @@ svg .bottomBackground {
 }
 
 svg .donate {
-    stroke-width: 0.5;
+    stroke-width: 1;
 }
 
 
 svg #timeAxis line {
     stroke: #39A10A;
-    stroke-width: 0.5;
+    stroke-width: 1;
     opacity: 0.6;
 }
 
@@ -96,4 +99,21 @@ svg .selected .day {
 svg .month {
     fill: #c5c5c5;
     font-size: 10px;
+}
+
+
+svg .dayColumn:not(.selected) .info {
+    display: none;
+}
+
+svg .info text {
+    font-size: 10px;
+    fill: #678568;
+}
+svg .info text.sum {
+    font-weight: bolder;
+}
+
+svg .info .label {
+    text-anchor: end;
 }
