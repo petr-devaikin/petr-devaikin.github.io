@@ -26,10 +26,18 @@ a:hover {
     text-decoration: none;
 }
 
+.screenshot a {
+    padding: 0;
+}
+
+.screenshot a:hover {
+    background: none;
+}
+
 .project {
     position: relative;
     height: 100px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .project div {
@@ -42,6 +50,12 @@ a:hover {
     left: 0px;
     height: 100%;
     background: silver;
+}
+
+.screenshot img {
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 10px rgba(220,220,220,0.1);
 }
 
 .title {
@@ -64,7 +78,6 @@ a:hover {
 #contacts {
     position: relative;
     height: 175px;
-    margin-bottom: 25px;
     margin-left: 120px;
 }
 
