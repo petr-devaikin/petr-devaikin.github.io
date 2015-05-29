@@ -1,0 +1,19 @@
+body {
+    font-size: 14px;
+    font-family: Arial;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+label span {
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+}
+
+button {
+    margin: 0 0 10px 205px;
+}
