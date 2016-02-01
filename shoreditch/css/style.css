@@ -1,0 +1,369 @@
+@font-face {
+  font-family: urban;
+  src: url(Urban.ttf); }
+
+body, html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: Arial; }
+
+h1 {
+  font-family: urban, Arial;
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 42px;
+  margin: 22px 20px 0;
+  color: #222; }
+
+body {
+  font-family: Arial; }
+
+* {
+  box-sizing: border-box; }
+
+
+.m-map {
+  position: relative;
+  width: 621px;
+  height: 621px;
+  background: #000;
+  overflow: hidden;
+  margin: 20px 20px 0;
+  border: 1px solid #eee; }
+
+.m-map__photo-selector {
+  position: absolute;
+  display: none;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  border: 2px solid #9D0B5D; }
+
+.m-map__photo-selector__top {
+  position: absolute;
+  height: 800px;
+  width: 2px;
+  background: #9D0B5D;
+  left: 50%;
+  margin-left: -1px;
+  margin-bottom: 2px;
+  bottom: 100%; }
+
+.m-map__photo-selector__bottom {
+  position: absolute;
+  height: 800px;
+  width: 2px;
+  background: #9D0B5D;
+  left: 50%;
+  margin-left: -1px;
+  top: 100%;
+  margin-top: 2px; }
+
+.m-map__photo-selector__left {
+  position: absolute;
+  width: 800px;
+  height: 2px;
+  background: #9D0B5D;
+  top: 50%;
+  margin-top: -1px;
+  right: 100%;
+  margin-right: 2px; }
+
+.m-map__photo-selector__right {
+  position: absolute;
+  width: 800px;
+  height: 2px;
+  background: #9D0B5D;
+  top: 50%;
+  margin-top: -1px;
+  left: 100%;
+  margin-left: 2px; }
+
+.m-map__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; }
+
+.m-map__photos {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: all; }
+
+.m-map__photos__location {
+  position: absolute; }
+
+.m-map__photos__location--minified {
+  -webkit-transition: width .2s, height .2s;
+  transition: width .2s, height .2s; }
+  .m-map__photos__location--minified:not(:hover) {
+    width: 30px !important;
+    height: 30px !important; }
+  .m-map__photos__location--minified:after {
+    content: attr(data-count);
+    position: absolute;
+    bottom: -15px;
+    left: 0px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    padding: 1 1px;
+    background: rgba(235, 235, 235, 0.5); }
+
+.m-map__photos__location__inner {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0; }
+
+.m-map__photos__location__inner__photo {
+  position: relative;
+  float: left; }
+
+.m-map__selection {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #777;
+  z-index: 2; }
+
+.m-map__selection__left {
+  position: absolute;
+  right: 100%;
+  top: -621px;
+  height: 1242px;
+  width: 621px;
+  background: rgba(250, 250, 250, 0.6); }
+
+.m-map__selection__right {
+  position: absolute;
+  left: 100%;
+  top: -621px;
+  height: 1242px;
+  width: 621px;
+  background: rgba(250, 250, 250, 0.6); }
+
+.m-map__selection__top {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  height: 621px;
+  width: 100%;
+  background: rgba(250, 250, 250, 0.6); }
+
+.m-map__selection__bottom {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  height: 621px;
+  width: 100%;
+  background: rgba(250, 250, 250, 0.6); }
+
+.m-palette {
+  display: none;
+  position: relative;
+  width: 500px;
+  height: 500px; }
+  .m-palette:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #000; }
+
+.m-palette__photo {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  z-index: 2; }
+
+.m-photos {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  right: 0;
+  left: 661px;
+  background-color: #333333; }
+
+.m-filter {
+  width: 100%;
+  height: 60px;
+  background-color: #1A1A1A; }
+  .m-filter .counter {
+    position: absolute;
+    left: 20px;
+    top: 23px;
+    font-size: 14px;
+    color: #ccc;
+    text-transform: uppercase; }
+    .m-filter .counter:after {
+      content: ' photos'; }
+
+.searchField {
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  width: 200px;
+  padding: 5px 7px;
+  background-color: #ECF0F1;
+  float: right;
+  border: none;
+  text-transform: uppercase;
+  font-size: 14px; }
+
+.m-photos__set {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  overflow: auto; }
+
+.m-photos__set__inner {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 20px;
+  text-align: center; }
+
+.m-photos__set__inner__photo {
+  margin: 2px 2px 0 3px;
+  display: inline-block;
+  position: relative;
+  height: 150px;
+  width: 150px; }
+  .m-photos__set__inner__photo.selected {
+    border: 10px solid white; }
+
+.m-photos__big {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  z-index: 100;
+  overflow: auto;
+  padding: 20px;
+  color: #999;
+  font-size: 14px; }
+
+.m-photos__big__photo {
+  position: relative;
+  max-width: 640px;
+  padding-top: 100%;
+  box-sizing: initial;
+  margin-top: 40px;
+  margin-bottom: 20px; }
+
+.m-photos__big__meta {
+  position: relative;
+  overflow: hidden; }
+
+.m-photos__big__user {
+  position: relative;
+  float: left; }
+  .m-photos__big__user:before {
+    content: '@'; }
+
+.m-photos__big__likes {
+  position: relative;
+  float: right; }
+  .m-photos__big__likes:before {
+    content: 'Likes: '; }
+
+.m-photos__big__desc {
+  margin-top: 12px; }
+
+.m-photos__big__close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: #fff;
+  text-decoration: none; }
+
+.m-timeline-b {
+  position: relative;
+  width: 650px;
+  height: 260px;
+  overflow: hidden;
+  margin-top: 10px;
+  text-anchor: middle;
+  font-size: 14px; }
+  .m-timeline-b .tick {
+    z-index: 100; }
+    .m-timeline-b .tick text {
+      text-anchor: start !important;
+      text-transform: uppercase;
+      fill: #333;
+      font-size: 12px;
+      alignment-baseline: middle; }
+    .m-timeline-b .tick line {
+      stroke: #ccc;
+      stroke-width: 3; }
+    .m-timeline-b .tick:nth-child(13) {
+      display: none; }
+  .m-timeline-b .domain {
+    stroke: #ccc;
+    stroke-width: 4;
+    z-index: 99; }
+
+.m-timeline-b__photos {
+  pointer-events: all; }
+
+.m-timeline-b__selection {
+  height: 100%;
+  display: none; }
+  .m-timeline-b__selection rect {
+    fill: #fafafa;
+    opacity: 0.6; }
+  .m-timeline-b__selection line {
+    stroke: #777;
+    stroke-width: 1; }
+
+.m-timeline-b__photos__bg {
+  stroke: none;
+  fill: #fff;
+  opacity: 0; }
+
+.m-timeline-b__photos__days__day {
+  pointer-events: all; }
+
+.m-timeline-b__photos__days {
+  pointer-events: all; }
+
+.m-timeline-b__photos__highlighter {
+  opacity: 0; }
+  .m-timeline-b__photos__highlighter rect {
+    opacity: 0.15;
+    fill: #000; }
+  .m-timeline-b__photos__highlighter text {
+    fill: #999; }
+
+.m-timeline-b__photos__photo-selector {
+  opacity: 0;
+  z-index: 90; }
+  .m-timeline-b__photos__photo-selector line {
+    stroke: #9D0B5D;
+    stroke-width: 1.7; }
+  .m-timeline-b__photos__photo-selector rect {
+    stroke: #9D0B5D;
+    stroke-width: 1;
+    fill: none; }
+  .m-timeline-b__photos__photo-selector text {
+    fill: #CC3679; }
