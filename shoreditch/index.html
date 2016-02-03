@@ -7,6 +7,7 @@
 
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3QFfD12e_p1RcVvUODt_05_SOc_YFWB0&libraries=visualization">
         </script>
+        <link href="icon/favicon.ico" rel="icon" type="image/x-icon" />
         <script src="js/lib/require.js"></script>
         <script>
             var version = (new Date()).getTime();
@@ -26,7 +27,7 @@
         </script>
     </head>
     <body>
-        <h1>Shoreditch Streetart</h1>
+        <h1>Shoreditch StreetArt</h1>
 
 
 
@@ -64,13 +65,13 @@
                             <line x1="0" x2="0" y1="20" y2="195"></line>
                             <line x1="0" x2="-10" y1="20" y2="20"></line>
                             <rect x1="0" y1="20" width="0" height="199"></rect>
-                            <text class="m-timeline-b__selection__text-left" x="0" y="10"></text>
+                            <text class="m-timeline-b__selection__text-left" text-anchor="end" x="0" y="10"></text>
                         </g>
                         <g width="100%" height="100%" class="m-timeline-b__selection__right">
                             <line x1="0" x2="0" y1="20" y2="195"></line>
                             <line x1="0" x2="10" y1="20" y2="20"></line>
                             <rect x1="0" y1="20" width="100%" height="199"></rect>
-                            <text class="m-timeline-b__selection__text-right" x="0" y="10"></text>
+                            <text class="m-timeline-b__selection__text-right" text-anchor="start" x="0" y="10"></text>
                         </g>
                     </g>
                     <g class="m-timeline-b__photos__photo-selector">
@@ -86,27 +87,29 @@
             <div class="m-filter">
                 <span class="counter"></span>
                 <form>
-                    <input type="search" class="searchField" placeholder="#SEARCH">
+                    <input type="search" class="searchField" placeholder="#search">
                 </form>
             </div>
             <div class="m-photos__set">
                 <div class="m-photos__set__inner"></div>
             </div>
             <div class="m-photos__big">
-                <div class="m-photos__big__photo">
-                </div>
-                <div class="m-photos__big__meta">
-                    <div class="m-photos__big__user">
+                <div class="m-photos__big__inner">
+                    <div class="m-photos__big__photo">
                     </div>
-                    <div class="m-photos__big__likes">
+                    <div class="m-photos__big__meta">
+                        <div class="m-photos__big__user">
+                        </div>
+                        <div class="m-photos__big__likes">
+                        </div>
                     </div>
-                </div>
-                <div class="m-photos__big__desc">
-                </div>
+                    <div class="m-photos__big__desc">
+                    </div>
 
-                <a href="#" class="m-photos__big__close">
-                    X
-                </a>
+                    <a href="#" class="m-photos__big__close">
+                        X
+                    </a>
+                </div>
             </div>
         </div>
 

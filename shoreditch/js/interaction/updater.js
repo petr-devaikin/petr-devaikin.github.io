@@ -8,6 +8,7 @@ define(['lib/d3', 'drawing/timelineb', 'drawing/map', 'drawing/preview'], functi
     d3.select('.searchField').on('keyup', function() {
         tagFilter = d3.select('.searchField').node().value.toUpperCase();
         update();
+        console.log('changed');
     });
 
     function mapFilterFunc(d) {

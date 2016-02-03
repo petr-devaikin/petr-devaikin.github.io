@@ -5,7 +5,9 @@ define(['lib/d3', 'constants', 'interaction/events'], function(d3, constants, ev
     var limit = 0;
     var step = 100;
 
+
     var photoSize = 170;
+
 
     container.on('scroll', function() {
         var scrollPosition = container.node().scrollTop;

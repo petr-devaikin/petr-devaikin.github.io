@@ -55,15 +55,17 @@ define(['lib/d3', 'interaction/updater', 'drawing/timelineb', 'constants', 'inte
         timelineSelectionLeft.select('rect')
             .attr('width', x1);
 
+        var format = d3.time.format("%d %B %Y");
+
         textLeft
-            .html(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/2015');
+            .html(format(startDate));
 
         timelineSelectionRight
             .attr('transform', 'translate(' + x2 + ',0)')
             .attr('width', constants.timeline.width);
 
         textRight
-            .html(endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/2015');
+            .html(format(endDate));
 
         if (saveFilter !== undefined)
             updater.updateTimelineFilter(startDate, endDate);

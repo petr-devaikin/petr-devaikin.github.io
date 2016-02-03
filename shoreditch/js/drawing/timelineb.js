@@ -3,7 +3,8 @@ define(['lib/d3', 'constants', 'interaction/events', 'constants'], function(d3, 
     var highlighter = d3.select('.m-timeline-b__photos__highlighter');
 
     var zero = new Date(2015, 0, 1, 0, 0, 0, 0);
-
+    var format = d3.time.format("%d %B %Y");
+    
     var margin = constants.timeline.margin,
         width = constants.timeline.width,
         height = constants.timeline.height,
@@ -99,8 +100,8 @@ define(['lib/d3', 'constants', 'interaction/events', 'constants'], function(d3, 
             .style('opacity', 1)
             .attr('transform', 'translate(' + xScale(date) + ',0)');
 
-        highlighter.select('text')
-            .html(date.getDate() + '/' + (date.getMonth() + 1) + '/2015');
+       highlighter.select('text')
+                  .html(format(date));
     }
 
     function hideHighlighter() {
