@@ -6,57 +6,76 @@
         <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
         <link href='http://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="main.css">
+
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="main.js"></script>
     </head>
     <body>
-        <div class="page" id="page_1">
-            <h2>Æ–movement</h2>
-            <ul>
-                <li>Petr Devaikin</li>
-                <li>Iva Karabatić</li>
-                <li>Kevin Perez</li>
-            </ul>
+        <div class="page" id="page_1" bg="img/p4.png">
+            <div class="page__inner">
+                <h1>A–movement</h1>
+                <ul>
+                    <li>Petr Devaikin</li>
+                    <li>Iva Karabatić</li>
+                    <li>Kevin Perez</li>
+                </ul>
+            </div>
         </div>
-        <div class="page" id="page_2">
-            <p>
-                Pythagoras made influential contributions to philosophy and religion in the late 6th century BC. He is often revered as a great mathematician and scientist and is best known for the Pythagorean theorem which bears his name.
-            </p>
+        <div class="page" id="page_2" bg="img/p1.png">
+            <div class="page__inner">
+                <p>
+                    Our idea was to design an interactive system which emphasizes uniqueness and temporality of the body movement.
+                </p>
+            </div>
         </div>
 
-        <div class="page" id="page_3">
-            <h2>Working principle</h2>
-            <ul>
-                <li>
-                    Change radius
-                </li>
-                <li>
-                    Rotate
-                </li>
-                <li>
-                    Switch color
-                </li>
-            </ul>
+        <div class="page" id="page_3" bg="img/p2.png">
+            <div class="page__inner">
+                <h2>Working Principle</h2>
+                <ul>
+                    <li>
+                        <h3>Capture the Movement</h3>
+                        <p>We attached a mobile phone to a participant's ankle or wrist and get the accelerometer and gyroscope data</p>
+                    </li>
+                    <li>
+                        <h3>Analyse the Data</h3>
+                        <p>Data was transfered to a computer and filtered in real-time</p>
+                    </li>
+                    <li>
+                        <h3>Visualize</h3>
+                        <p>Data is mapped to visual representation</p>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="page" id="page_4">
-            <h2>Capoeira Art</h2>
-            <iframe src="https://player.vimeo.com/video/154781896?title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            <div class="page__inner">
+                <iframe id="video" src="https://player.vimeo.com/video/154781896?title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
         </div>
 
         <div class="page" id="page_5">
-            <h1>Paris-Sud University Exhebition, 2 February 2016</h1>
-            <div>image</div>
+            <div class="page__inner">
+                <h2>Paris-Sud University Exhebition</h2>
+                <h3>2 February 2016</h3>
+                <div>image</div>
+            </div>
         </div>
 
-        <div class="page" id="page_6">
-            <h2>Thanks for help</h2>
-            <ul>
-                <li><a href="http://saralaoui.com/">Sarah Fdili Alaoui</a></li>
-                <li><a href="http://saralaoui.com/">CAPOEIRA SCHOOL:</a></li>
-                <li>Thierry Catelan – <i>Faca Deseig</i></li>
-                <li>Steve Romain – <i>Formado Dadao</i></li>
-                <li>Sébastien Gelu – <i>Faca Depota</i></li>
-            </ul>
-            &copy; 2016
+        <div class="page" id="page_6" bg="img/p3.png">
+            <div class="page__inner">
+                <h2>Thanks for Help</h2>
+                <ul>
+                    <li><a href="http://saralaoui.com/">Sarah Fdili Alaoui</a></li>
+                    <li>Thierry Catelan – <i>Faca Deseig</i></li>
+                    <li>Steve Romain – <i>Formado Dadao</i></li>
+                    <li>Sébastien Gelu – <i>Faca Depota</i></li>
+                </ul>
+                &copy; 2016
+            </div>
         </div>
+
+        <div id="background"></div>
     </body>
 </html>

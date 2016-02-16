@@ -1,0 +1,164 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    background-color: #000;
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+h1, h2, h3, h4 {
+    margin: 0 0 1em;
+    font-weight: 300;
+}
+
+h1 {
+    font-size: 52px
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+a, a:visited, a:focus {
+    color: #658DB1;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#background {
+    position: fixed;
+    z-index: 0;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    left: 0;
+    width: 100%;
+    top: 10px;
+    bottom: 10px;
+}
+
+.page {
+    position: relative;
+    z-index: 1;
+}
+
+.page__inner {
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+ul {
+    position: relative;
+    padding: 0;
+    margin: 0 0 1em;
+}
+
+li {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 1.5em;
+}
+
+#page_1 .page__inner {
+    transform: translate(0, -100%);
+    margin-left: 50%;
+}
+
+#page_1 h1 {
+    margin-bottom: 0;
+}
+
+#page_1 ul {
+    opacity: .7;
+    font-size: 14px;
+}
+
+#page_1 li {
+    display: inline;
+}
+
+#page_1 li:after {
+    content: ', ';
+}
+
+#page_1 li:last-child:after {
+    content: '';
+}
+
+#page_3 .page__inner {
+    max-width: 700px;
+}
+
+#page_3 li {
+    float: left;
+    width: 33%;
+    padding: 0 5px;
+}
+
+#page_3 li h3 {
+    color: #FF76A0;
+}
+
+#page_3 li p {
+    opacity: .85;
+}
+
+#page_3 li:first-child {
+    padding: 0 10px 0 0;
+}
+
+#page_3 li:first-child h3 {
+    color: #95C9CC;
+}
+
+#page_3 li:last-child {
+    padding: 0 0 0 10px;
+}
+
+#page_3 li:last-child h3 {
+    color: #FBC789;
+}
+
+#page_4 {
+    background: rgba(20, 20, 20, .7);
+}
+
+
+#page_4 .page__inner {
+    margin: 100px 0 0;
+    max-width: none;
+    text-align: center;
+}
+
+#page_5 h2 {
+    margin-bottom: 0;
+}
+
+#page_5 h3 {
+    opacity: .7;
+}
+
+#page_6 .page__inner {
+    max-width: 250px;
+    padding-bottom: 35px;
+}
