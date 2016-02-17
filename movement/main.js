@@ -12,6 +12,15 @@ $(function() {
     setPageSize();
     setBgSize();
     detectBackground();
+
+    var img1 = new Image();
+    var img2 = new Image();
+    var img3 = new Image();
+    var img4 = new Image();
+    img1.src = 'img/p1.png';
+    img2.src = 'img/p2.png';
+    img3.src = 'img/p3.png';
+    img4.src = 'img/p4.png';
 });
 
 function setPageSize() {
