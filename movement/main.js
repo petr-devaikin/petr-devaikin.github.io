@@ -16,9 +16,9 @@ $(function() {
 
 function setPageSize() {
     $('.page').css('height', $(window).height());
-    var videoHeight = $(window).height() - 200;
-    $('#video').attr('height', videoHeight);
-    $('#video').attr('width', videoHeight / 281 * 500);
+    var videoHeight = $(window).height() - 100;
+    $('#video').css('height', videoHeight);
+    $('#video').css('width', videoHeight / 281 * 500);
 }
 
 function setBgSize() {
@@ -35,18 +35,23 @@ function detectBackground() {
     var page = undefined;
 
     $('.page').each(function() {
-        if ($(this).offset().top - $(window).height() / 2 <= $(window).scrollTop())
+        if ($(this).offset().top - $(window).height() / 4 <= $(window).scrollTop())
             page = $(this);
     });
 
     if (currentPage === undefined || currentPage.attr('id') != page.attr('id')) {
         setCurrentPage(page);
     }
+
+    var p5_top = $('#page_5').offset().top;
+    if ($(window).scrollTop() + $(window).height() > p5_top) {
+        var bg_top = 0 + 50 * ($(window).scrollTop() + $(window).height() - p5_top) / 2 / $(window).height();
+        $('#page_5').css('background-position', 'center ' + bg_top + '%');
+    }
 }
 
 function setCurrentPage(newPage) {
     currentPage = newPage;
-    $('#background').stop();
     $('#background').animate({
             opacity: 0
         }, 500, function() {

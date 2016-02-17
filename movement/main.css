@@ -39,6 +39,10 @@ a:hover {
     box-sizing: border-box;
 }
 
+p {
+    margin: 0 0 10px 0;
+}
+
 #background {
     position: fixed;
     z-index: 0;
@@ -140,25 +144,71 @@ li {
 }
 
 #page_4 {
-    background: rgba(20, 20, 20, .7);
+    background: rgba(15, 15, 15, .7);
+}
+
+#page_4 #video {
+    background: #000;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
 #page_4 .page__inner {
-    margin: 100px 0 0;
+    margin: 50px 0 0;
     max-width: none;
     text-align: center;
 }
 
+#page_5 {
+    background-size: cover;
+    background-image: url('img/ex1.jpg');
+    background-position: center 0;
+}
+
+#page_5 .page__inner {
+    height: 100%;
+    max-width: 450px;
+}
+
 #page_5 h2 {
+    position: absolute;
+    bottom: 45px;
     margin-bottom: 0;
+    padding-top: 20px;
 }
 
 #page_5 h3 {
+    position: absolute;
+    bottom: 0px;
     opacity: .7;
 }
 
+#page_5 .images img {
+    width: 100%;
+}
+
 #page_6 .page__inner {
-    max-width: 250px;
-    padding-bottom: 35px;
+    max-width: 435px;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+#page_6 .page__inner div {
+    position: relative;
+    width: 150px;
+    float: left;
+}
+
+#page_6 .page__inner div:first-child {
+    width: 285px;
+    padding-left: 35px;
+}
+
+#page_6 .page__inner span {
+    display: block;
+    clear: both;
+    padding-top: 20px;
+    text-align: center;
+    opacity: .5;
 }
