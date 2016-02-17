@@ -19,6 +19,12 @@ h1 {
     font-size: 52px
 }
 
+@media only screen and (max-device-width: 450px) {
+    h1 {
+        font-size: 42px
+    }
+}
+
 h2 {
     font-size: 28px;
 }
@@ -78,6 +84,7 @@ ul {
     position: relative;
     padding: 0;
     margin: 0 0 1em;
+    overflow: hidden;
 }
 
 li {
@@ -93,7 +100,7 @@ li {
     margin-left: 50%;
 }
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 450px) {
     #page_1 .page__inner {
         transform: translate(-50%, -50%);
         left: 50%;
@@ -131,6 +138,19 @@ li {
     float: left;
     width: 33%;
     padding: 0 5px;
+}
+
+@media only screen and (max-device-width: 450px) {
+    #page_3 li {
+        float: none;
+        width: 100%;
+        margin-top: 30px;
+        padding: 0 !important;
+    }
+
+    #page_3 li:first-child {
+        margin-top: 10px;
+    }
 }
 
 #page_3 li h3 {
@@ -229,7 +249,7 @@ li {
 }
 
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 450px) {
     #page_6 .page__inner {
         max-width: none;
         width: 220px;
@@ -245,6 +265,7 @@ li {
         float: none;
         width: auto;
         padding-left: 0;
+        margin-bottom: 30px;
     }
 
     #page_6 .page__inner span {
