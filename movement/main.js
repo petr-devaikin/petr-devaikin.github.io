@@ -44,9 +44,17 @@ function detectBackground() {
     var page = undefined;
 
     $('.page').each(function() {
-        if ($(this).offset().top - $(window).height() / 4 <= $(window).scrollTop())
+        if ($(this).offset().top <= $(window).scrollTop() + $(window).height() / 2)
             page = $(this);
     });
+
+    var pageTop = $(window).scrollTop() - page.offset().top + $(window).height() / 2;
+
+    var opacity = Math.min(pageTop, $(window).height() - pageTop);
+    if (opacity > $(window).height() / 3)
+        opacity = $(window).height() / 3;
+    opacity /= $(window).height() / 3;
+    $('#background').css('opacity', opacity);
 
     if (currentPage === undefined || currentPage.attr('id') != page.attr('id')) {
         setCurrentPage(page);
@@ -61,14 +69,5 @@ function detectBackground() {
 
 function setCurrentPage(newPage) {
     currentPage = newPage;
-    $('#background').animate({
-            opacity: 0
-        }, 500, function() {
-            if (currentPage.attr('bg') !== undefined) {
-                $('#background').css('background-image', 'url(' + currentPage.attr('bg') + ')');
-                $('#background').animate({
-                        opacity: 0.7
-                    }, 500);
-            }
-        });
+    $('#background').css('background-image', 'url(' + currentPage.attr('bg') + ')');
 }
