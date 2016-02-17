@@ -4,6 +4,7 @@
         <title>Æ-movement</title>
         <meta charset="UTF-8">
         <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+        <meta name="viewport" content="width=device-width" />
         <link href='http://fonts.googleapis.com/css?family=Roboto+Slab&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="main.css">
 
@@ -11,7 +12,7 @@
         <script src="main.js"></script>
     </head>
     <body>
-        <div class="page" id="page_1" bg="img/p4.png">
+        <div class="page" id="page_1" bg="bg1">
             <div class="page__inner">
                 <h1>Æ–movement</h1>
                 <ul>
@@ -21,7 +22,7 @@
                 </ul>
             </div>
         </div>
-        <div class="page" id="page_2" bg="img/p2.png">
+        <div class="page" id="page_2" bg="bg2">
             <div class="page__inner">
                 <p>
                     Æ–movement is an interactive system for real-time visualization of body performance.
@@ -32,7 +33,7 @@
             </div>
         </div>
 
-        <div class="page" id="page_3" bg="img/p1.png">
+        <div class="page" id="page_3" bg="bg3">
             <div class="page__inner">
                 <h2>Working Principle</h2>
                 <ul>
@@ -52,7 +53,7 @@
             </div>
         </div>
 
-        <div class="page" id="page_4">
+        <div class="page" id="page_4" bg="bg4">
             <div class="page__inner">
                 <div id="video">
                     <iframe src="https://player.vimeo.com/video/154781896?title=0&byline=0&portrait=0" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -60,14 +61,14 @@
             </div>
         </div>
 
-        <div class="page" id="page_5">
+        <div class="page" id="page_5" bg="bg5">
             <div class="page__inner">
                 <h2>Paris-Saclay University Exhebition</h2>
                 <h3>2 February 2016</h3>
             </div>
         </div>
 
-        <div class="page" id="page_6" bg="img/p3.png">
+        <div class="page" id="page_6" bg="bg6">
             <div class="page__inner">
                 <div>
                     <h2>Thanks for Help</h2>
@@ -90,7 +91,12 @@
             </div>
         </div>
 
-        <div id="background"></div>
+        <div class="background" id="bg1" style="background-image: url('img/p4.png')"></div>
+        <div class="background" id="bg2" style="background-image: url('img/p2.png')"></div>
+        <div class="background" id="bg3" style="background-image: url('img/p1.png')"></div>
+        <div class="background" id="bg4" style=""></div>
+        <div class="background" id="bg5" style=""></div>
+        <div class="background" id="bg6" style="background-image: url('img/p3.png')"></div>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -43,16 +43,20 @@ p {
     margin: 0 0 10px 0;
 }
 
-#background {
+.background {
     position: fixed;
     z-index: 0;
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
     left: 0;
-    width: 100%;
+    right: 0;
     top: 10px;
     bottom: 10px;
+    opacity: 0;
+
+    -webkit-transition: opacity 1s;
+    transition: opacity 1s;
 }
 
 .page {
@@ -67,6 +71,7 @@ p {
     margin-right: auto;
     top: 50%;
     transform: translate(0, -50%);
+    padding: 0 10px;
 }
 
 ul {
@@ -86,6 +91,15 @@ li {
 #page_1 .page__inner {
     transform: translate(0, -100%);
     margin-left: 50%;
+}
+
+@media only screen and (max-device-width: 600px) {
+    #page_1 .page__inner {
+        transform: translate(-50%, -50%);
+        left: 50%;
+        margin-left: 0;
+        display: inline-block;
+    }
 }
 
 #page_1 h1 {
@@ -158,6 +172,7 @@ li {
     margin: 50px 0 0;
     max-width: none;
     text-align: center;
+    padding: 0;
 }
 
 #page_5 {
@@ -189,7 +204,7 @@ li {
 }
 
 #page_6 .page__inner {
-    max-width: 435px;
+    max-width: 455px;
     padding-bottom: 10px;
     overflow: hidden;
 }
@@ -211,4 +226,32 @@ li {
     padding-top: 20px;
     text-align: center;
     opacity: .5;
+}
+
+
+@media only screen and (max-device-width: 600px) {
+    #page_6 .page__inner {
+        max-width: none;
+        width: 220px;
+    }
+
+    #page_6 .page__inner div {
+        position: relative;
+        float: none;
+        width: auto;
+    }
+
+    #page_6 .page__inner div:first-child {
+        float: none;
+        width: auto;
+        padding-left: 0;
+    }
+
+    #page_6 .page__inner span {
+        display: block;
+        clear: both;
+        padding-top: 20px;
+        text-align: center;
+        opacity: .5;
+    }
 }

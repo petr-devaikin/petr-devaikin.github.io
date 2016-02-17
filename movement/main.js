@@ -26,8 +26,16 @@ $(function() {
 function setPageSize() {
     $('.page').css('height', $(window).height());
     var videoHeight = $(window).height() - 100;
+    var videoWidth = videoHeight / 281 * 500;
+    if (videoWidth > $(window).width()) {
+        videoWidth = $(window).width();
+        videoHeight = videoWidth / 500 * 281;
+    }
     $('#video').css('height', videoHeight);
     $('#video').css('width', videoHeight / 281 * 500);
+    $('#video').css('margin-top', ($(window).height() - videoHeight) / 2);
+
+    console.log($(window).height());
 }
 
 function setBgSize() {
@@ -48,14 +56,6 @@ function detectBackground() {
             page = $(this);
     });
 
-    var pageTop = $(window).scrollTop() - page.offset().top + $(window).height() / 2;
-
-    var opacity = Math.min(pageTop, $(window).height() - pageTop);
-    if (opacity > $(window).height() / 3)
-        opacity = $(window).height() / 3;
-    opacity /= $(window).height() / 3;
-    $('#background').css('opacity', opacity);
-
     if (currentPage === undefined || currentPage.attr('id') != page.attr('id')) {
         setCurrentPage(page);
     }
@@ -68,6 +68,8 @@ function detectBackground() {
 }
 
 function setCurrentPage(newPage) {
+    if (currentPage !== undefined)
+        $('#' + currentPage.attr('bg')).css('opacity', 0);
     currentPage = newPage;
-    $('#background').css('background-image', 'url(' + currentPage.attr('bg') + ')');
+    $('#' + currentPage.attr('bg')).css('opacity', 1);
 }
