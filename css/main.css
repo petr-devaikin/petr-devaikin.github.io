@@ -1,10 +1,11 @@
 body {
-    margin: 25px 15% 25px 10%;
+    margin: 25px 0;
     font-family: 'Roboto Slab', serif;
     font-size: 14px;
-    background: #F0EFED;
+    background: #EFEBE5;
     color: #2E353D;
-    min-width: 700px
+    line-height: 1.5;
+    padding: 0 25px;
 }
 
 h1 {
@@ -16,18 +17,26 @@ h1 {
 }
 
 a {
-    color: #172F8F;
-    padding: 0 2px;
+    color: #284A82;
 }
 
 a:hover {
-    color: #F0EFED;
-    background: #1D2733;
+    color: #9C2D73;
     text-decoration: none;
+}
+
+#content {
+    position: relative;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .screenshot a {
     padding: 0;
+    display: block;
+    width: 100px;
+    margin: 0;
 }
 
 .screenshot a:hover {
@@ -36,39 +45,69 @@ a:hover {
 
 .project {
     position: relative;
-    height: 100px;
-    margin-bottom: 30px;
+    margin-bottom: 75px;
+    overflow: hidden;
 }
 
 .project div {
-    position: absolute;
+    position: relative;
 }
 
 
 .screenshot {
+    float: left;
     width: 100px;
     left: 0px;
-    height: 100%;
+    height: 100px;
+    margin-top: 6px;
     background: silver;
 }
 
 .screenshot img {
+    display: block;
     width: 100px;
     height: 100px;
     box-shadow: 0 0 10px rgba(220,220,220,0.1);
 }
 
 .title {
-    width: 250px;
-    left: 120px;
-    height: 100%;
+    float: left;
+    width: 180px;
+    margin-left: 25px;
+}
+
+.title a {
+    padding: 0 2px;
+    margin-left: -2px;
 }
 
 .description {
-    left: 390px;
-    right: 0px;
-    height: 100%;
-    padding-right: 25px;
+    margin-left: 322px;
+    color: #2E353D;
+}
+
+#copy {
+    margin-left: 322px;
+}
+
+@media only screen
+  and (max-device-width: 600px) {
+
+
+  .title {
+    width: auto;
+    float: none;
+    margin-left: 125px;
+  }
+
+  .description {
+    margin-left: 125px;
+    margin-top: 6px;
+  }
+
+  #copy {
+    margin-left: 125px;
+  }
 }
 
 .technologies {
@@ -77,13 +116,8 @@ a:hover {
 
 #contacts {
     position: relative;
-    height: 175px;
-    margin-left: 120px;
-}
-
-#copy {
-    margin-left: 0px;
-    margin-top: 75px;
+    margin-bottom: 75px;
+    margin-left: 125px;
 }
 
 ul {
