@@ -1,28 +1,35 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
 body {
     margin: 25px 0;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    background: #EFEBE5;
-    color: #2E353D;
+    background: #fefefe;
+    color: #111111;
     line-height: 1.5;
-    padding: 0 25px;
+    padding: 0 15px;
 }
 
 h1 {
-    font-size: 16px;
+    font-size: 16.5px;
     font-weight: normal;
     margin-bottom: 0px;
-    color: #1D2733;
+    margin-top: 50px;
+    color: #111111;
     margin-left: 0px;
 }
 
 a {
-    color: #284A82;
+    color: #2B7F94;
+    text-decoration: none;
+    border-bottom: 1px solid #fefefe;
+    -webkit-transition: border .2s;
+    transition: border .2s;
 }
 
 a:hover {
-    color: #9C2D73;
-    text-decoration: none;
+    color: #2B7F94;
+    border-bottom: 1px solid rgba(43, 127, 148, 0.3);
 }
 
 #content {
@@ -45,7 +52,7 @@ a:hover {
 
 .project {
     position: relative;
-    margin-bottom: 75px;
+    margin-bottom: 50px;
     overflow: hidden;
 }
 
@@ -72,22 +79,27 @@ a:hover {
 
 .title {
     float: left;
-    width: 180px;
+    width: 165px;
     margin-left: 25px;
 }
 
 .title a {
-    padding: 0 2px;
     margin-left: -2px;
 }
 
 .description {
-    margin-left: 322px;
+    margin-left: 307px;
     color: #2E353D;
 }
 
 #copy {
-    margin-left: 322px;
+    margin-left: 307px;
+}
+
+#contacts {
+    position: relative;
+    margin-bottom: 75px;
+    margin-left: 125px;
 }
 
 @media only screen
@@ -108,16 +120,18 @@ a:hover {
   #copy {
     margin-left: 125px;
   }
+
+  #contacts {
+    margin-bottom: 50px;
+  }
+
+  .project {
+    margin-bottom: 50px;
+  }
 }
 
 .technologies {
     display: none;
-}
-
-#contacts {
-    position: relative;
-    margin-bottom: 75px;
-    margin-left: 125px;
 }
 
 ul {
