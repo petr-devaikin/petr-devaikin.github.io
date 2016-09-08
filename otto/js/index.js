@@ -26,10 +26,10 @@ function testAPI() {
     FB.api('/me/friends?fields=name,picture', function(response) {
         var html = "";
         for (var i in response.data) {
-            html += '<span class="person">' +
+            html += '<a href="#" onclick="share(\'' + response.data[i].id + '\')" class="person">' +
                 response.data[i].name.split(' ')[0] +
                 '<img src="' + response.data[i].picture.data.url + '" /> ' +
-                '</span>';
+                '</a>';
         }
         document.getElementById('friends').innerHTML = html;
     });
@@ -76,9 +76,16 @@ function invite(friend_name, friend_id) {
     });
 }
 
-function share() {
-    FB.ui({
-        method: 'send',
-        link: 'http://petr-devaikin.github.io/otto/',
-    });
+function share(id) {
+    if (id === undefined)
+        FB.ui({
+            method: 'send',
+            link: 'http://petr-devaikin.github.io/otto/',
+        });
+    else
+        FB.ui({
+            method: 'send',
+            link: 'http://petr-devaikin.github.io/otto/',
+            to: id
+        });
 }
