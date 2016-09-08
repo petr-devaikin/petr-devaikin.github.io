@@ -79,6 +79,6 @@ function invite(friend_name, friend_id) {
 function share() {
     FB.ui({
         method: 'send',
-        link: 'http://petr-devaikin.github.io/otto/img/b.jpg',
+        link: 'http://petr-devaikin.github.io/otto/',
     });
 }
