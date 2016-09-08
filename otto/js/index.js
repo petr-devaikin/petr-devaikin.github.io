@@ -23,10 +23,14 @@ function testAPI() {
             console.log(response.data[i].name);
     });
 */
-    FB.api('/me/friends', function(response) {
+    FB.api('/me/friends?fields=name,picture', function(response) {
         var html = "";
-        for (var i in response.data)
-            html += response.data[i].name + '<br/>';
+        for (var i in response.data) {
+            html += '<span class="person">' +
+                response.data[i].name.split(' ')[0] +
+                '<img src="' + response.data[i].picture.data.url + '" /> ' +
+                '</span>';
+        }
         document.getElementById('friends').innerHTML = html;
     });
 
@@ -53,10 +57,10 @@ function showFriends() {
     var html = "";
     console.log(friendsToInvite.length);
     for (var i in friendsToInvite) {
-        html += '<a href="#" onclick=\'invite("' + friendsToInvite[i].name + '", "' + friendsToInvite[i].id + '")\'>' +
-            '<img src="' + friendsToInvite[i].picture.data.url + '" width="20" /> ' +
-            friendsToInvite[i].name + '</a>' +
-            '<br/>';
+        html += '<a href="#" onclick=\'invite("' + friendsToInvite[i].name + '", "' + friendsToInvite[i].id + '")\' class="person">' +
+            friendsToInvite[i].name.split(' ')[0] +
+            '<img src="' + friendsToInvite[i].picture.data.url + '" /> ' +
+            '</a>';
     }
     document.getElementById('friendsToInvite').innerHTML = html;
 }
@@ -68,6 +72,13 @@ function invite(friend_name, friend_id) {
         to: friend_id
     },
     function(){
-        document.getElementById('inviteMsg').innerHTML = friend_name + ' invited';
+        //document.getElementById('inviteMsg').innerHTML = friend_name + ' invited';
+    });
+}
+
+function share() {
+    FB.ui({
+        method: 'send',
+        link: 'http://petr-devaikin.github.io/otto/img/b.jpg',
     });
 }

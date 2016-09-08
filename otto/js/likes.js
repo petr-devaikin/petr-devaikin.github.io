@@ -21,7 +21,10 @@ function testAPI() {
     FB.api('/me/likes?limit=50&fields=category,name', function(response) {
         var html = "";
         for (var i in response.data)
-            html += response.data[i].name + ' – ' + response.data[i].category + '<br/>';
+            html += '<div class="event">' +
+                response.data[i].name +
+                '<div class="eventDate">' + response.data[i].category + '</div>' +
+                '</div>';
         document.getElementById('likes').innerHTML = html;
     });
 }

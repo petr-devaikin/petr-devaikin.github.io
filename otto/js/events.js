@@ -18,10 +18,15 @@ function testAPI() {
             'Hi ' + response.name + '!';
     });
 
-    FB.api('/me/events?limit=50', function(response) {
+    FB.api('/me/events?limit=50&fields=name,start_time,category,place', function(response) {
         var html = "";
         for (var i in response.data)
-            html += response.data[i].start_time.substr(0, 10) + ' – ' + response.data[i].name + '<br/>';
+            if (new Date(response.data[i].start_time) > new Date())
+                html += '<div class="event">' +
+                    response.data[i].name +
+                    '<div class="eventDate">' + response.data[i].start_time.substr(0, 10) + '</div>' +
+                    '<div class="eventPlace">At ' + response.data[i].place.name + '</div>' +
+                    '</div>';
         document.getElementById('events').innerHTML = html;
     });
 }
