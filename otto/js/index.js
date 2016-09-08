@@ -68,7 +68,7 @@ function showFriends() {
 function invite(friend_name, friend_id) {
     FB.ui({
         method: 'apprequests',
-        message: 'Hey! Want to meet up today?',
+        message: 'Der Kaffee schmeckt am besten, wenn Du ihn mit einem guten Freund trinkst.',
         to: friend_id
     },
     function(){
