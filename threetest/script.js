@@ -9,9 +9,9 @@ var DIRECTIONS = {
     right: 3
 }
 
-var DIST_K = 1.7;
-var SCALE_K = .7;
-var CUBE_SIZE = 7;
+var DIST_K = 1;
+var SCALE_K = .5;
+var CUBE_SIZE = 20;
 var X_COUNT = Math.ceil(WIDTH / CUBE_SIZE / DIST_K);
 var Y_COUNT = Math.ceil(HEIGHT / CUBE_SIZE / DIST_K);
 
