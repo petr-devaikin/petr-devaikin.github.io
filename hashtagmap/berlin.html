@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <title>Hashtag Map</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    <body>
+        <!--div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script-->
+
+        <div id="main_container">
+            <div id="map_container"></div>
+            <canvas id="test_canvas" width="100%"></canvas>
+            <canvas id="tags_canvas"></canvas>
+        </div>
+        <div id="header">
+            <div id="site_name">
+                <h1><a href="index.html">Hashtag Map</a></h1>
+            </div>
+
+            <div id="cities">
+                <div class="city">
+                    <a href="index.html">London</a>
+                </div>
+                <div class="city">
+                    <a href="moscow.html">Moscow</a>
+                </div>
+                <div class="city active">
+                    <a href="berlin.html">Berlin</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="legend">
+        </div>
+
+        <div id="copy">
+            &copy; 2014 <a href="http://petr-devaikin.github.io">Petr Devaikin<a/>
+        </div>
+
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA643Zu98kCiNjm3a7NcE0bt3qmL6fHv2c&sensor=false"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+
+        <script src="js/data/berlin.js"></script>
+
+        <script src="js/canvas_helpers.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/hashtag_group.js"></script>
+        <script src="js/tags.js"></script>
+        <script src="js/legend.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-54989348-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>
