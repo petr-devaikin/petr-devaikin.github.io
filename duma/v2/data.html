@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <script src="data/data.js"></script>
+    </head>
+    <body>
+        <div id="div1"></div>
+        <div id="div2"></div>
+
+
+        <script>
+            var convocations2 = {};
+            var fractions = {};
+            var parties = {};
+            var deputies = {};
+
+            for (var i = 0; i < convocations.length; i++) {
+                var c = convocations[i];
+                var new_c = {
+                    id: c.Id,
+                    number: c.Id,
+                    years: c.Name
+                }
+                convocations2[c.Id] = new_c;
+
+                for (var j = 0; j < c.Fractions.length; j++) {
+                    var f = c.Fractions[j];
+                    var new_f = {
+                        id: f.Id,
+                        order: f.Order,
+                        partyId: f.Party.Id,
+                        size: f.DeputatsCount,
+                        convocationId: new_c.id
+                    }
+                    fractions[f.Id] = new_f;
+
+                    if (parties[f.Party.Id] === undefined)
+                        parties[f.Party.Id] = {
+                            id: f.Party.Id,
+                            name: f.Party.Name
+                        }
+
+                    for (var k in f.Deputats) {
+                        var deputat = f.Deputats[k];
+                        if (deputies[deputat.Id] === undefined)
+                            deputies[deputat.Id] = {
+                                id: deputat.Id,
+                                name: deputat.Name
+                            }
+                    }
+                }
+            }
+
+            console.log(JSON.stringify(convocations2));
+            console.log(JSON.stringify(parties));
+
+            document.getElementById("div1").innerText = JSON.stringify(deputies);
+        </script>
+    </body>
+</html>
+
