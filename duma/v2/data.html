@@ -4,6 +4,7 @@
     </head>
     <body>
         <div id="div1"></div>
+        <br/>
         <div id="div2"></div>
 
 
@@ -12,6 +13,7 @@
             var fractions = {};
             var parties = {};
             var deputies = {};
+            var transitions = {};
 
             for (var i = 0; i < convocations.length; i++) {
                 var c = convocations[i];
@@ -44,16 +46,27 @@
                         if (deputies[deputat.Id] === undefined)
                             deputies[deputat.Id] = {
                                 id: deputat.Id,
-                                name: deputat.Name
+                                name: deputat.Name,
+                                fractionIds: [f.Id]
                             }
+                        else {
+                            var prevFractionId = deputies[deputat.Id].fractionIds[deputies[deputat.Id].fractionIds.length - 1];
+                            deputies[deputat.Id].fractionIds.push(f.Id);
+                            if (transitions[prevFractionId] === undefined)
+                                transitions[prevFractionId] = {
+                                    from: prevFractionId,
+                                    to: f.Id,
+                                    number: 1
+                                }
+                            else
+                                transitions[prevFractionId].number++;
+                        }
                     }
                 }
             }
 
-            console.log(JSON.stringify(convocations2));
-            console.log(JSON.stringify(parties));
-
             document.getElementById("div1").innerText = JSON.stringify(deputies);
+            document.getElementById("div2").innerText = JSON.stringify(transitions);
         </script>
     </body>
 </html>
