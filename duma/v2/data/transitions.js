@@ -1,4 +1,4 @@
-var transitions = {
+var d_transitions = {
     "5707": {
         "from": 5707,
         "to": 5725,

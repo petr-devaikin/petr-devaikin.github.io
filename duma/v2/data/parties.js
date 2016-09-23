@@ -1,4 +1,4 @@
-var parties = {
+var d_parties = {
     "1": { "id": 1, "name": "Аграрная партия России", color: "" },
     "2": { "id": 2, "name": "ЛДПР", color: "" },
     "3": { "id": 3, "name": "Яблоко", color: "" },

@@ -14,6 +14,7 @@
             var parties = {};
             var deputies = {};
             var transitions = {};
+            var fr_arr = [];
 
             for (var i = 0; i < convocations.length; i++) {
                 var c = convocations[i];
@@ -34,6 +35,7 @@
                         convocationId: new_c.id
                     }
                     fractions[f.Id] = new_f;
+                    fr_arr.push(new_f);
 
                     if (parties[f.Party.Id] === undefined)
                         parties[f.Party.Id] = {
@@ -65,8 +67,12 @@
                 }
             }
 
-            document.getElementById("div1").innerText = JSON.stringify(deputies);
-            document.getElementById("div2").innerText = JSON.stringify(transitions);
+            for (var i in fractions) {
+                var f = fractions[i];
+                fractions[i].offset = fr_arr.filter(a => a.convocationId == f.convocationId && a.order < f.order).reduce((a,b) => a + b.size, 0);
+            }
+
+            document.getElementById("div1").innerText = JSON.stringify(fractions);
         </script>
     </body>
 </html>
