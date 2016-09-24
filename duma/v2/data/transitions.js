@@ -43,3 +43,7 @@ var d_transitions = {
     "5745": { "from": 5745, "to": 5748, "number": 31 },
     "5746": { "from": 5746, "to": 5747, "number": 46 }
 }
+
+
+
+var a_transitions = Object.keys(d_transitions).map(a => d_transitions[a]);
