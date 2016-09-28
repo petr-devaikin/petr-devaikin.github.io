@@ -19,3 +19,11 @@ svg .fraction rect {
 svg .fraction path {
     stroke: none;
 }
+
+svg .transition {
+    stroke: none;
+}
+
+svg .transitions .jump .transition {
+    opacity: .2;
+}
