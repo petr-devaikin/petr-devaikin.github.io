@@ -9,6 +9,7 @@ body {
     position: relative;
     width: 100%;
     max-width: 1300px;
+    min-height: 800px;
     margin-left: auto;
     margin-right: auto;
     height: 50px;
@@ -122,8 +123,16 @@ h2 {
 }
 
 h2.scroll {
-    border-bottom: 1px solid #2e2e2e;
+    border-bottom: 1px solid #666;
     box-shadow: 0 0 50px #171717;
+}
+
+#clear {
+    cursor: pointer;
+}
+
+#clear.hidden {
+    display: none;
 }
 
 .deputies {
