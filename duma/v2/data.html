@@ -1,86 +1,84 @@
 <html>
     <head>
-        <script src="data/data.js"></script>
     </head>
     <body>
         <div id="div1"></div>
         <br/>
         <div id="div2"></div>
 
+        <script src="data/convocations.js"></script>
+        <script src="data/deputies.js"></script>
+        <script src="data/parties.js"></script>
+        <script src="data/fractions.js"></script>
+        <script src="data/transitions.js"></script>
+
+        <script src="data/er.js"></script>
+        <script src="data/kprf.js"></script>
+        <script src="data/sr.js"></script>
+        <script src="data/ldpr.js"></script>
 
         <script>
-            var convocations2 = {};
-            var fractions = {};
-            var parties = {};
-            var deputies = {};
-            var transitions = {};
-            var fr_arr = [];
-
-            for (var i = 0; i < convocations.length; i++) {
-                var c = convocations[i];
-                var new_c = {
-                    id: c.Id,
-                    number: c.Id,
-                    years: c.Name
-                }
-                convocations2[c.Id] = new_c;
-
-                for (var j = 0; j < c.Fractions.length; j++) {
-                    var f = c.Fractions[j];
-                    var new_f = {
-                        id: f.Id,
-                        order: f.Order,
-                        partyId: f.Party.Id,
-                        size: f.DeputatsCount,
-                        convocationId: new_c.id
-                    }
-                    fractions[f.Id] = new_f;
-                    fr_arr.push(new_f);
-
-                    if (parties[f.Party.Id] === undefined)
-                        parties[f.Party.Id] = {
-                            id: f.Party.Id,
-                            name: f.Party.Name
-                        }
-
-                    for (var k in f.Deputats) {
-                        var deputat = f.Deputats[k];
-                        if (deputies[deputat.Id] === undefined)
-                            deputies[deputat.Id] = {
-                                id: deputat.Id,
-                                name: deputat.Name,
-                                fractionIds: [f.Id]
-                            }
-                        else {
-                            var prevFractionId = deputies[deputat.Id].fractionIds[deputies[deputat.Id].fractionIds.length - 1];
-                            deputies[deputat.Id].fractionIds.push(f.Id);
-                            if (transitions[prevFractionId] === undefined) {
-                                transitions[prevFractionId] = {}
-                                transitions[prevFractionId][f.Id] = {
-                                    from: prevFractionId,
-                                    to: f.Id,
-                                    number: 1
-                                }
-                            }
-                            else if (transitions[prevFractionId][f.Id] === undefined)
-                                transitions[prevFractionId][f.Id] = {
-                                    from: prevFractionId,
-                                    to: f.Id,
-                                    number: 1
-                                }
-                            else
-                                transitions[prevFractionId][f.Id].number++;
-                        }
-                    }
-                }
+            function convertName(name) {
+                var i = name.indexOf(', ');
+                return name.substring(0, i) + name.substring(i + 1);
             }
 
-            for (var i in fractions) {
-                var f = fractions[i];
-                fractions[i].offset = fr_arr.filter(a => a.convocationId == f.convocationId && a.order < f.order).reduce((a,b) => a + b.size, 0);
+            var new_deputies = [
+                { name: "Алексей Александрович Журавлёв", fractionId: 7004 },
+                { name: "Рифат Габдулхакович Шайхутдинов", fractionId: 7005 }
+            ]
+
+            for (var i in er)
+                new_deputies.push({
+                    name: convertName(er[i]),
+                    fractionId: 7000
+                })
+
+            for (var i in ldpr)
+                new_deputies.push({
+                    name: convertName(ldpr[i]),
+                    fractionId: 7001
+                })
+
+            for (var i in sr)
+                new_deputies.push({
+                    name: convertName(sr[i]),
+                    fractionId: 7002
+                })
+
+            for (var i in kprf)
+                new_deputies.push({
+                    name: convertName(kprf[i]),
+                    fractionId: 7003
+                })
+
+            for (var i in new_deputies) {
+                for (var j in d_deputies)
+                    if (d_deputies[j].name == new_deputies[i].name) {
+                        index = j;
+                        break;
+                    }
+
+                if (d_deputies[index].fractionIds.length == 1)
+                    continue;
+
+                var lastfr = d_deputies[index].fractionIds[d_deputies[index].fractionIds.length - 2],
+                    nextfr = d_deputies[index].fractionIds[d_deputies[index].fractionIds.length - 1];
+
+                if (d_transitions[lastfr] === undefined)
+                    d_transitions[lastfr] = {}
+
+                if (d_transitions[lastfr][nextfr] === undefined)
+                    d_transitions[lastfr][nextfr] = {
+                        from: lastfr,
+                        to: nextfr,
+                        number: 0
+                    }
+                d_transitions[lastfr][nextfr].number++;
+
             }
 
-            document.getElementById("div1").innerText = JSON.stringify(transitions);
+            document.getElementById("div1").innerText = JSON.stringify(d_transitions);
         </script>
     </body>
 </html>

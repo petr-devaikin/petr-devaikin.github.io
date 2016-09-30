@@ -13,11 +13,9 @@ if (!String.prototype.format) {
 //=====================
 
 
-var CONVO_MARGIN = 100,
+var LEFT_MARGIN = 50,
+    TOP_MARGIN = 50,
     CONVO_OFFSET = 150,
-
-    WIDTH = 1000,
-    HEIGHT = 200,
 
     FRACTION_WIDTH = 10,
 
@@ -30,6 +28,7 @@ var dom = {
     fractions: undefined,
     transitions: undefined,
     defs: undefined,
+    deputies: undefined,
 }
 
 //=====================
@@ -37,8 +36,8 @@ var dom = {
 
 function fractionPosition(fraction) {
     return [
-        (CONVO_MARGIN + (d_convocations[fraction.convocationId].number - 1) * CONVO_OFFSET),
-        fraction.offset + fraction.order * 3
+        (LEFT_MARGIN + (d_convocations[fraction.convocationId].id - 1) * CONVO_OFFSET),
+        fraction.offset + fraction.order * 3 + TOP_MARGIN
     ]
 }
 
@@ -48,12 +47,20 @@ function drawConvocations() {
 
     var groups = convocations.append('g')
         .classed('convocation', true)
-        .attr('transform', function(d) { return 'translate({0},0)'.format(CONVO_MARGIN + (d.number - 1) * CONVO_OFFSET); });
-    groups.append('line')
-        .attr('x1', 0)
-        .attr('x2', 0)
-        .attr('y1', 0)
-        .attr('y2', HEIGHT);
+        .attr('transform', function(d) { return 'translate({0},{1})'.format(LEFT_MARGIN + (d.id - 1) * CONVO_OFFSET, TOP_MARGIN); });
+
+    var labels = groups.append('g')
+        .classed('convocationLabel', true)
+        .attr('transform', 'translate(0,-20)');
+
+    labels.append('text')
+        .classed('convocationYears', true)
+        .text(function(d) { return d.years; });
+
+    labels.append('text')
+        .classed('convocationNumber', true)
+        .attr('y', -15)
+        .text(function(d) { return d.number; });
 }
 
 function drawTransitions() {
@@ -139,6 +146,42 @@ function drawFractions() {
         .attr('fill', function(d) { return d._color; });
 }
 
+function addDeputies() {
+    var deputies = dom.deputies.selectAll('.deputat').data(a_deputies).enter().append('div');
+
+    deputies
+        .classed('deputat', true)
+        .append('div')
+            .classed('deputatName', true)
+            .text(function(d) {
+                var fio = d.name.split(' ');
+                return '{0} {1}.{2}.'.format(fio[0], fio[1][0], fio[2][0]);
+            });
+
+    var convos = deputies
+        .append('div')
+        .classed('depConvos', true)
+        .selectAll('depConvo').data(function(d) { return d.convocations; }).enter();
+
+    convos.append('div')
+        .classed('depConvo', true)
+        .classed('empty', function(d) { return d.partyId === undefined; })
+        .style('background-color', function(d) {
+            if (d.partyId !== undefined)
+                return d_parties[d.partyId].color;
+            else
+                return 'none';
+        })
+}
+
+function scrollEvents() {
+    var h2 = d3.select('h2');
+
+    d3.select(document).on('scroll', function() {
+        h2.classed('scroll', document.body.scrollTop > 0);
+    });
+}
+
 
 function draw() {
     dom.svg = d3.select('svg');
@@ -147,8 +190,12 @@ function draw() {
     dom.transitionsDirect = dom.svg.select('.transitions .direct');
     dom.transitionsJump = dom.svg.select('.transitions .jump');
     dom.defs = dom.svg.select('defs');
+    dom.deputies = d3.select('.deputies');
 
     drawConvocations();
     drawFractions();
     drawTransitions();
+    addDeputies();
+
+    scrollEvents();
 }

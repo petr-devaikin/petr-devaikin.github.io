@@ -48,7 +48,14 @@ var d_fractions = {
     "5747": { "id": 5747, "order": 3, "partyId": 8, "size": 92, "convocationId": 6, "offset": 358 },
     "5748": { "id": 5748, "order": 0, "partyId": 23, "size": 238, "convocationId": 6, "offset": 0 },
     "5749": { "id": 5749, "order": 1, "partyId": 2, "size": 56, "convocationId": 6, "offset": 238 },
-    "5750": { "id": 5750, "order": 2, "partyId": 25, "size": 64, "convocationId": 6, "offset": 294 }
+    "5750": { "id": 5750, "order": 2, "partyId": 25, "size": 64, "convocationId": 6, "offset": 294 },
+
+    "7000": { "id": 7000, "order": 0, "partyId": 23, "size": 345, "convocationId": 7, "offset": 0 },
+    "7001": { "id": 7001, "order": 1, "partyId": 2, "size": 39, "convocationId": 7, "offset": 345 },
+    "7002": { "id": 7002, "order": 2, "partyId": 25, "size": 24, "convocationId": 7, "offset": 384 },
+    "7003": { "id": 7003, "order": 3, "partyId": 8, "size": 42, "convocationId": 7, "offset": 408 },
+    "7004": { "id": 7004, "order": 4, "partyId": 24, "size": 1, "convocationId": 7, "offset": 450 },
+    "7005": { "id": 7005, "order": 5, "partyId": 26, "size": 1, "convocationId": 7, "offset": 451 },
 }
 
 
