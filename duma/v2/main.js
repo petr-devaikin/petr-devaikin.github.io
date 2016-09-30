@@ -33,6 +33,17 @@ var dom = {
 
 //=====================
 
+function selectConvocation(convocationId) {
+    var fractions = dom.svg.selectAll('.fraction');
+    fractions.classed('active', false);
+
+    if (convocationId !== undefined)
+        fractions.filter(function(d) { return d.convocationId == convocationId; })
+            .classed('active', true);
+}
+
+//=====================
+
 
 function fractionPosition(fraction) {
     return [
@@ -51,7 +62,9 @@ function drawConvocations() {
 
     var labels = groups.append('g')
         .classed('convocationLabel', true)
-        .attr('transform', 'translate(0,-20)');
+        .attr('transform', 'translate(0,-20)')
+        .on('mouseover', function(d) { selectConvocation(d.id); })
+        .on('mouseout', function(d) { selectConvocation(); });
 
     labels.append('text')
         .classed('convocationYears', true)
@@ -144,6 +157,46 @@ function drawFractions() {
         .attr('width', FRACTION_WIDTH)
         .attr('height', function(d) { return d.size; })
         .attr('fill', function(d) { return d._color; });
+
+    var labels = groups.append('g')
+        .classed('fractionLabel', true)
+        .attr('transform', function(d) {
+            var y = 0;
+            var x = d.convocationId == 7 ? -13 : 7;
+            var toShift = {
+                5713: 10,
+                5714: 10,
+                5707: 10,
+                5729: 10,
+                5739: 10,
+                7000: 20,
+                5726: 15,
+                5733: 15,
+                7004: -15
+            }
+
+            if (toShift[d.id] !== undefined) y = toShift[d.id]
+
+            return 'translate({0}, {1})'.format(x, y + 2);
+        })
+        .attr('text-anchor', function(d) {
+            return d.convocationId == 7 ? 'end' : 'start';
+        });
+
+    labels.append('rect')
+        .attr('y', 0)
+        .attr('height', 16);
+
+    labels.append('text')
+        .text(function(d) { return d_parties[d.partyId].name; })
+        .attr('x', 3)
+        .attr('y', 12);
+
+    labels.each(function(d) {
+        var bbox = d3.select(this).select('text').node().getBBox();
+        d3.select(this).select('rect').attr('x', bbox.x -3 );
+        d3.select(this).select('rect').attr('width', bbox.width + 6);
+    })
 }
 
 function addDeputies() {

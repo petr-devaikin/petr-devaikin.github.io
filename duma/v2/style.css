@@ -1,5 +1,3 @@
-@import 'https://fonts.googleapis.com/css?family=Noto+Sans';
-
 body {
     margin: 0;
     background: #171717;
@@ -44,6 +42,10 @@ svg .convocation line {
     stroke: #000;
 }
 
+svg .convocationLabel {
+    cursor: pointer;
+}
+
 svg .convocationYears {
     text-anchor: middle;
     fill: #9a9a9a;
@@ -56,17 +58,33 @@ svg .convocationNumber {
     font-size: 14px;
 }
 
-
 svg .fraction rect {
+    stroke: none;
+    cursor: pointer;
+}
+
+svg .fraction .fractionLabel {
+    display: none;
+}
+
+svg .fraction.active .fractionLabel {
+    display: inline;
+}
+
+svg .fractionLabel rect {
+    fill: rgba(21, 21, 21, .7);
     stroke: none;
 }
 
-svg .fraction path {
-    stroke: none;
+svg .fractionLabel text {
+    fill: #eee;
+    font-size: 12px;
+    font-family: sans-serif;
 }
 
 svg .transition {
     opacity: .8;
+    cursor: pointer;
 }
 
 svg .transitions .jump .transition {
@@ -120,6 +138,10 @@ h2.scroll {
 .deputies .deputat {
     position: relative;
     margin: 3px 0;
+}
+
+.deputies .deputat.hidden {
+    display: none;
 }
 
 .deputies .deputat .deputatName {
