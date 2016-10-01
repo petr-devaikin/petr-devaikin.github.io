@@ -1,16 +1,11 @@
 // TODO:
-// - hover on tooltips
 // - smooth animation
-// - responsive design
 // - check on mobile
-// - sort by party on list
 // - translate to english
 // - finish selection
-// - manual sort of transitions
 // - optimize dictionaries
 // - check titles (Agrarnaya party)
 // - google analytics
-// - colors
 
 
 if (!String.prototype.format) {
@@ -34,7 +29,12 @@ var LEFT_MARGIN = 50,
 
     FRACTION_WIDTH = 10,
 
-    SHADOW_K = .1;
+    SHADOW_K = .1,
+
+    SCALE_Y = 1,
+
+    L_ALL_DEPS = 'Все депутаты',
+    L_CONVO = 'созыв';
 
 
 var dom = {
@@ -49,108 +49,121 @@ var dom = {
 
 //=====================
 
-function setTitle(name, supp) {
-    dom.header.select('#title').text(name === undefined ? 'Все депутаты' : name);
-    dom.header.select('#supp').text(supp === undefined ? '' : supp);
-    dom.header.select('#counter').text(dom.deputies.selectAll('.deputat:not(.hidden)').size());
+function setTitle(name) {
+    var counter = dom.deputies.selectAll('.deputat:not(.hidden)').size() + ' чел.';
+
+    dom.header.select('#title').html(name === undefined ? L_ALL_DEPS : name);
+    dom.header.select('#supp').text(counter);
+    //dom.header.select('#counter').text(supp === undefined ? '' : counter);
     dom.header.select('#clear').classed('hidden', name === undefined);
 }
 
-function deactivateAllActive() {
-    dom.fractions.selectAll('.fraction.active')
+function hoverConvocation(convocation) {
+    dom.fractions.selectAll('.fraction')
+        .classed('active', function(d) { return d.convocationId == convocation.id; });
+    dom.drawArea.selectAll('.transition.active')
         .classed('active', false);
-    dom.svg.selectAll('.transition.active')
-        .classed('active', false);
-}
-
-function hoverConvocation(convocationId) {
-    deactivateAllActive();
-
-    if (convocationId !== undefined)
-        dom.fractions.selectAll('.fraction').filter(function(d) { return d.convocationId == convocationId; })
-            .classed('active', true);
 }
 
 function hoverFraction(fraction) {
-    deactivateAllActive();
-
-    if (fraction !== undefined)
-        fraction.classed('active', true);
+    dom.fractions.selectAll('.fraction')
+        .classed('active', function(d) { return fraction !== undefined && d.id == fraction.id; });
 }
 
 function hoverTransition(transition) {
-    deactivateAllActive();
+    dom.drawArea.selectAll('.transition')
+        .classed('active', function(d) { return transition !== undefined && d.id == transition.id; });
 
-    if (transition !== undefined) {
-        transition
-            .classed('active', true);
-
-        dom.fractions.selectAll('.fraction').filter(function (d) {
-            return d.id == transition.datum().from || d.id == transition.datum().to;
-        })
-            .classed('active', true);
-    }
+    dom.fractions.selectAll('.fraction')
+        .classed('active', function (d) {
+            return transition !== undefined && (d.id == transition.from || d.id == transition.to);
+        });
 }
 
 function hoverDeputat(deputat) {
-    deactivateAllActive();
+        dom.fractions.selectAll('.fraction')
+            .classed('active', function(d) { return deputat !== undefined && deputat.fractionIds.indexOf(d.id) != -1; });
 
-    if (deputat !== undefined) {
-        dom.fractions.selectAll('.fraction').filter(function(d) { return deputat.fractionIds.indexOf(d.id) != -1; })
-            .classed('active', true);
-
-        dom.svg.selectAll('.transition').filter(function(d) {
-            var i = deputat.fractionIds.indexOf(d.from);
-            return i != -1 &&
-                deputat.fractionIds.indexOf(d.to) == i + 1;
-        })
-            .classed('active', true);
-    }
+        dom.drawArea.selectAll('.transition')
+            .classed('active', function(d) {
+                if (deputat === undefined)
+                    return false;
+                var i = deputat.fractionIds.indexOf(d.from);
+                return i != -1 &&
+                    deputat.fractionIds.indexOf(d.to) == i + 1;
+            });
 }
 
 function clearSelection() {
-    dom.svg.selectAll('.selected')
+    dom.drawArea.selectAll('.selected')
         .classed('selected', false);
+    dom.drawArea.selectAll('.faded')
+        .classed('faded', false);
     dom.deputies.selectAll('.deputat.hidden')
         .classed('hidden', false);
 }
 
 function selectFraction(fraction) {
-    clearSelection();
+    dom.fractions.selectAll('.fraction')
+        .classed('selected', function(d) { return d.id == fraction.datum().id; })
+        .classed('faded', function(d) { return d.id != fraction.datum().id; });
 
-    fraction.classed('selected', true)
+    dom.drawArea.selectAll('.transition')
+        .classed('faded', true)
+        .classed('selected', false);
 
-    dom.deputies.selectAll('.deputat').filter(function(d) {
-        return d.fractionIds.indexOf(fraction.datum().id) == -1;
-    })
-        .classed('hidden', true);
+
+    dom.deputies.selectAll('.deputat')
+        .classed('hidden', function(d) { return d.fractionIds.indexOf(fraction.datum().id) == -1; });
 
 
     setTitle(
-        fraction.datum()._name,
-        d_convocations[fraction.datum().convocationId].number
+        '{0}, {1}&nbsp;{2}'.format(
+            fraction.datum()._name,
+            d_convocations[fraction.datum().convocationId].number,
+            L_CONVO
+        )
     );
 }
 
 function selectTransition(transition) {
-    clearSelection();
+    //clearSelection();
 
-    transition.classed('selected', true);
+    //transition.classed('selected', true);
 
-    dom.fractions.selectAll('.fraction').filter(function (d) {
+    /*dom.fractions.selectAll('.fraction').filter(function (d) {
         return d.id == transition.datum().from || d.id == transition.datum().to;
     })
-        .classed('selected', true);
+        .classed('selected', true);*/
 
-    dom.deputies.selectAll('.deputat').filter(function(d) {
-        var i = d.fractionIds.indexOf(transition.datum().from)
-        return i == -1 || d.fractionIds.indexOf(transition.datum().to) != i + 1;
-    })
-        .classed('hidden', true);
+    dom.fractions.selectAll('.fraction')
+        .classed('faded', function(d) { return d.id != transition.datum().from && d.id != transition.datum().to; })
+        .classed('selected', function(d) { return d.id == transition.datum().from || d.id == transition.datum().to; });
+
+    dom.drawArea.selectAll('.transition')
+        .classed('faded', function(d) { return d.id != transition.datum().id; })
+        .classed('selected', function(d) { return d.id == transition.datum().id; });
+
+    dom.deputies.selectAll('.deputat')
+        .classed('hidden', function(d) {
+            var i = d.fractionIds.indexOf(transition.datum().from)
+            return i == -1 || d.fractionIds.indexOf(transition.datum().to) != i + 1;
+        });
+
 
     var title = d_fractions[transition.datum().from].partyId == d_fractions[transition.datum().to].partyId ?
-        d_fractions[transition.datum().from]._name :
-        '{0} → {1}'.format(d_fractions[transition.datum().from]._name, d_fractions[transition.datum().to]._name);
+        '{0}, {1}&nbsp;→&nbsp;{2}&nbsp;{3}'.format(
+            d_fractions[transition.datum().from]._name,
+            d_fractions[transition.datum().from]._convoName,
+            d_fractions[transition.datum().to]._convoName,
+            L_CONVO
+        ) :
+        '{0},&nbsp;{1} → {2},&nbsp;{3}'.format(
+            d_fractions[transition.datum().from]._name,
+            d_fractions[transition.datum().from]._convoName,
+            d_fractions[transition.datum().to]._name,
+            d_fractions[transition.datum().to]._convoName
+        );
 
     setTitle(
         title,
@@ -159,9 +172,17 @@ function selectTransition(transition) {
 }
 
 function selectConvocation(convo) {
-    clearSelection();
+    //clearSelection();
 
-    convo.classed('selected', true);
+    //convo.classed('selected', true);
+
+    dom.fractions.selectAll('.fraction')
+        .classed('selected', function(d) { return d.convocationId == convo.datum().id; })
+        .classed('faded', function(d) { return d.convocationId != convo.datum().id; });
+
+    dom.drawArea.selectAll('.transition')
+        .classed('faded', true)
+        .classed('selected', false);
 
     dom.deputies.selectAll('.deputat').filter(function(d) {
         return d.convocations[convo.datum().id - 1].partyId === undefined;
@@ -179,7 +200,7 @@ function selectConvocation(convo) {
 function fractionPosition(fraction) {
     return [
         (LEFT_MARGIN + (d_convocations[fraction.convocationId].id - 1) * CONVO_OFFSET),
-        fraction.offset + fraction.order * 3 + TOP_MARGIN
+        SCALE_Y * (fraction.offset + fraction.order * 3) + TOP_MARGIN
     ]
 }
 
@@ -194,7 +215,7 @@ function drawConvocations() {
     var labels = groups.append('g')
         .classed('convocationLabel', true)
         .attr('transform', 'translate(0,-20)')
-        .on('mouseover', function(d) { hoverConvocation(d.id); })
+        .on('mouseover', hoverConvocation)
         .on('mouseout', function(d) { hoverConvocation(); })
         .on('click', function(d) {
             event.stopPropagation();
@@ -215,6 +236,8 @@ function drawTransitions() {
     var transitionsDirect = dom.transitionsDirect.selectAll('.transition').data(a_transitions_direct).enter();
     var transitionsJump = dom.transitionsJump.selectAll('.transition').data(a_transitions_jump).enter();
 
+    var transitionsHover = dom.transitionsHover.selectAll('.transition').data(a_transitions_jump.concat(a_transitions_direct)).enter();
+
     var grads = dom.defs.selectAll('linearGradient')
         .data(a_transitions_direct.concat(a_transitions_jump), function(d) { return d.from + '-' + d.to })
         .enter()
@@ -233,27 +256,35 @@ function drawTransitions() {
         .attr('offset', '100%')
         .attr('stop-color', function(d) { return d_fractions[d.to]._color; });
 
-    function drawHelper(transitions) {
+    function drawHelper(transitions, forHover) {
         var groups = transitions.append('g')
-            .classed('transition', true)
-            .on('mouseover', function(d) { hoverTransition(d3.select(this)); })
-            .on('mouseout', function(d) { hoverTransition(); })
-            .on('click', function(d) {
-                event.stopPropagation();
-                selectTransition(d3.select(this));
-            });
+            .classed('transition', true);
+
+        if (forHover !== undefined)
+            groups
+                .on('mouseover', hoverTransition)
+                .on('mouseout', function(d) { hoverTransition(); })
+                .on('click', function(d) {
+                    event.stopPropagation();
+                    selectTransition(d3.select(this));
+                });
 
         var lines1 = groups.filter(function(d) {
-            return d_fractions[d.from]._position[1] + d.leftOffset == d_fractions[d.to]._position[1] + d.rightOffset;
+            return d_fractions[d.from]._position[1] + d.leftOffset * SCALE_Y == d_fractions[d.to]._position[1] + d.rightOffset * SCALE_Y;
         })
 
         lines1.append('rect')
             .attr('x', function(d) { return d_fractions[d.from]._position[0] + FRACTION_WIDTH / 2; })
-            .attr('y', function(d) { return d_fractions[d.from]._position[1] + d.leftOffset; })
+            .attr('y', function(d) { return d_fractions[d.from]._position[1] + d.leftOffset * SCALE_Y; })
             .attr('width', function(d) { return d_fractions[d.to]._position[0] - d_fractions[d.from]._position[0] - FRACTION_WIDTH; })
-            .attr('height', function(d) { return d.number; })
-            .attr('fill', function(d) { return 'url(#g{0}-{1})'.format(d.from, d.to); })
-            .attr('stroke', 'none');
+            .attr('height', function(d) { return d.number * SCALE_Y; })
+            .attr('stroke', 'none')
+            .attr('fill', function(d) {
+                if (forHover === undefined)
+                    return 'url(#g{0}-{1})'.format(d.from, d.to);
+                else
+                    return 'rgba(0, 0, 0, 0)';
+            });
 
         var lines2 = groups.filter(function(d) {
             return d_fractions[d.from]._position[1] + d.leftOffset != d_fractions[d.to]._position[1] + d.rightOffset;
@@ -264,43 +295,38 @@ function drawTransitions() {
                 var f1 = d_fractions[d.from],
                     f2 = d_fractions[d.to];
                 var result = 'M {0} {1} C {2} {3}, {4} {5}, {6} {7}'.format(
-                    f1._position[0] + FRACTION_WIDTH / 2, f1._position[1] + d.leftOffset + d.number / 2,
-                    (f1._position[0] + f2._position[0]) / 2, f1._position[1] + d.leftOffset + d.number / 2,
-                    (f1._position[0] + f2._position[0]) / 2, f2._position[1] + d.rightOffset + d.number / 2,
-                    f2._position[0] - FRACTION_WIDTH / 2, f2._position[1] + d.rightOffset + d.number / 2
+                    f1._position[0] + FRACTION_WIDTH / 2, f1._position[1] + (d.leftOffset + d.number / 2) * SCALE_Y,
+                    (f1._position[0] + f2._position[0]) / 2, f1._position[1] + (d.leftOffset + d.number / 2) * SCALE_Y,
+                    (f1._position[0] + f2._position[0]) / 2, f2._position[1] + (d.rightOffset + d.number / 2) * SCALE_Y,
+                    f2._position[0] - FRACTION_WIDTH / 2, f2._position[1] + (d.rightOffset + d.number / 2) * SCALE_Y
                 );
 
                 return result;
             })
             .attr('fill', 'none')
-            .attr('stroke', function(d) { return 'url(#g{0}-{1})'.format(d.from, d.to); })
-            .attr('stroke-width', function(d) { return d.number; });
-
-        // too thin to hover
-        lines2.filter(function(d) { return d.number < 6; }).append('path')
-            .attr('d', function(d) {
-                var f1 = d_fractions[d.from],
-                    f2 = d_fractions[d.to];
-                var result = 'M {0} {1} C {2} {3}, {4} {5}, {6} {7}'.format(
-                    f1._position[0] + FRACTION_WIDTH / 2, f1._position[1] + d.leftOffset + d.number / 2,
-                    (f1._position[0] + f2._position[0]) / 2, f1._position[1] + d.leftOffset + d.number / 2,
-                    (f1._position[0] + f2._position[0]) / 2, f2._position[1] + d.rightOffset + d.number / 2,
-                    f2._position[0] - FRACTION_WIDTH / 2, f2._position[1] + d.rightOffset + d.number / 2
-                );
-
-                return result;
+            .attr('stroke', function(d) {
+                if (forHover === undefined)
+                    return 'url(#g{0}-{1})'.format(d.from, d.to);
+                else
+                    return 'rgba(0, 0, 0, 0)';
             })
-            .attr('fill', 'none')
-            .attr('stroke', 'rgba(0, 0, 0, 0)')
-            .attr('stroke-width', 6);
+            .attr('stroke-width', function(d) {
+                if (forHover === undefined || d.number > 5)
+                    return d.number * SCALE_Y;
+                else
+                    return 6;
+            });
     }
 
     drawHelper(transitionsDirect);
     drawHelper(transitionsJump);
+    drawHelper(transitionsHover, true);
 }
 
 function drawFractions() {
     var fractions = dom.fractions.selectAll('.fraction').data(a_fractions).enter();
+    var fractionsHover = dom.fractionsHover.selectAll('.fraction').data(a_fractions).enter();
+
 
     var groups = fractions.append('g')
         .classed('fraction', true)
@@ -310,28 +336,43 @@ function drawFractions() {
             d._name = d_parties[d.partyId].name;
             d._convoName = d_convocations[d.convocationId].number;
             return 'translate({0},{1})'.format(d._position[0], d._position[1]);
+        });
+
+    var hoverGroups = fractionsHover.append('g')
+        .classed('fraction', true)
+        .attr('transform', function(d) {
+            return 'translate({0},{1})'.format(d._position[0], d._position[1]);
         })
-        .on('mouseover', function() { hoverFraction(d3.select(this)); })
+        .on('mouseover', hoverFraction)
         .on('mouseout', function() { hoverFraction(); })
         .on('click', function() {
             event.stopPropagation();
             selectFraction(d3.select(this));
         });
 
-    groups.filter(function(d) { return d.size < 5; })
-        .append('rect')
-        .attr('x', -FRACTION_WIDTH / 2)
-        .attr('y', function(d) { return -(5 - d.size) / 2; })
-        .attr('width', FRACTION_WIDTH)
-        .attr('height', 5)
-        .attr('fill', 'rgba(0, 0, 0, 0)');
-
     groups.append('rect')
         .attr('x', -FRACTION_WIDTH / 2)
         .attr('y', 0)
         .attr('width', FRACTION_WIDTH)
-        .attr('height', function(d) { return d.size; })
+        .attr('height', function(d) { return d.size * SCALE_Y; })
         .attr('fill', function(d) { return d._color; });
+
+    hoverGroups.append('rect')
+        .attr('x', -FRACTION_WIDTH / 2)
+        .attr('y', function(d) {
+            if (d.size < 5)
+                return -(5 - d.size) / 2 * SCALE_Y;
+            else
+                return 0;
+        })
+        .attr('width', FRACTION_WIDTH)
+        .attr('height', function(d) {
+            if (d.size < 5)
+                5 * SCALE_Y
+            else
+                return d.size * SCALE_Y;
+        })
+        .attr('fill', 'rgba(0, 0, 0, 0');
 
 
     var labels = groups.append('g')
@@ -348,7 +389,7 @@ function drawFractions() {
                 7000: 20,
                 5726: 15,
                 5733: 15,
-                7004: -15
+                7004: -12
             }
 
             if (toShift[d.id] !== undefined) y = toShift[d.id]
@@ -407,23 +448,32 @@ function addDeputies() {
 }
 
 function scrollEvents() {
-    var h2 = d3.select('h2');
-
     d3.select(document).on('scroll', function() {
-        h2.classed('scroll', document.body.scrollTop > 0);
+        dom.header.classed('scroll', document.body.scrollTop > 0);
     });
 }
 
 
 function draw() {
-    dom.svg = d3.select('svg');
+    if (window.innerHeight < 575 + 85) {
+        SCALE_Y = (575 - TOP_MARGIN - (575 + 85 - window.innerHeight)) / (575 - TOP_MARGIN);
+    }
+
+    if (window.innerWidth < 1000 + 210 + 20) {
+        CONVO_OFFSET = (1000 - (1000 + 210 + 20 - window.innerWidth) - 2 * LEFT_MARGIN) / 6;
+    }
+
+    dom.svg = d3.select('#diagram svg');
     dom.convocations = dom.svg.select('.convocations');
     dom.fractions = dom.svg.select('.fractions');
     dom.transitionsDirect = dom.svg.select('.transitions .direct');
     dom.transitionsJump = dom.svg.select('.transitions .jump');
     dom.defs = dom.svg.select('defs');
     dom.deputies = d3.select('.deputies');
-    dom.header = d3.select('#filterHeader');
+    dom.header = d3.select('#listHeader');
+    dom.transitionsHover = d3.select('.hoverTransitions');
+    dom.fractionsHover = d3.select('.hoverFractions');
+    dom.drawArea = d3.select('svg .drawings');
 
     drawConvocations();
     drawFractions();

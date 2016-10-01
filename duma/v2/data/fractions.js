@@ -64,5 +64,5 @@ var d_fractions = {
 }
 
 
-var a_fractions = Object.keys(d_fractions).map(a => d_fractions[a]);
+var a_fractions = Object.keys(d_fractions).map(function(a) { return d_fractions[a]; });
 a_fractions.reverse();

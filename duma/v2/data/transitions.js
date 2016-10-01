@@ -1,104 +1,170 @@
-var d_transitions = {
-    "5707": {
-        "5721": {
-            "from": 5707,
-            "to": 5721,
-            "number": 1
-        },
-        "5724": { "from": 5707, "to": 5724, "number": 1 },
-        "5725": { "from": 5707, "to": 5725, "number": 1 },
-        "5726": { "from": 5707, "to": 5726, "number": 14 },
-        "5730": { "from": 5707, "to": 5730, "number": 1 },
-        "5733": { "from": 5707, "to": 5733, "number": 1 },
-        "5744": { "from": 5707, "to": 5744, "number": 1 }
-    },
-    "5708": { "5720": { "from": 5708, "to": 5720, "number": 21 }, "5724": { "from": 5708, "to": 5724, "number": 8 } },
-    "5709": { "5723": { "from": 5709, "to": 5723, "number": 18 }, "5724": { "from": 5709, "to": 5724, "number": 2 } },
-    "5710": { "5719": { "from": 5710, "to": 5719, "number": 2 }, "5725": { "from": 5710, "to": 5725, "number": 2 }, "5729": { "from": 5710, "to": 5729, "number": 1 }, "5738": { "from": 5710, "to": 5738, "number": 1 } },
-    "5711": { "5719": { "from": 5711, "to": 5719, "number": 5 }, "5722": { "from": 5711, "to": 5722, "number": 1 }, "5724": { "from": 5711, "to": 5724, "number": 1 }, "5725": { "from": 5711, "to": 5725, "number": 2 }, "5731": { "from": 5711, "to": 5731, "number": 1 } },
-    "5712": { "5719": { "from": 5712, "to": 5719, "number": 1 }, "5724": { "from": 5712, "to": 5724, "number": 7 }, "5735": { "from": 5712, "to": 5735, "number": 4 } },
-    "5713": { "5719": { "from": 5713, "to": 5719, "number": 7 }, "5722": { "from": 5713, "to": 5722, "number": 6 }, "5723": { "from": 5713, "to": 5723, "number": 1 }, "5724": { "from": 5713, "to": 5724, "number": 7 }, "5725": { "from": 5713, "to": 5725, "number": 2 }, "5748": { "from": 5713, "to": 5748, "number": 1 } },
-    "5714": { "5721": { "from": 5714, "to": 5721, "number": 29 }, "5724": { "from": 5714, "to": 5724, "number": 3 }, "5726": { "from": 5714, "to": 5726, "number": 3 } },
-    "5715": { "5719": { "from": 5715, "to": 5719, "number": 1 }, "5724": { "from": 5715, "to": 5724, "number": 1 }, "5725": { "from": 5715, "to": 5725, "number": 2 } },
-    "5716": { "5719": { "from": 5716, "to": 5719, "number": 2 }, "5722": { "from": 5716, "to": 5722, "number": 1 }, "5726": { "from": 5716, "to": 5726, "number": 1 } },
-    "5717": { "5719": { "from": 5717, "to": 5719, "number": 2 }, "5722": { "from": 5717, "to": 5722, "number": 1 }, "5724": { "from": 5717, "to": 5724, "number": 1 }, "5725": { "from": 5717, "to": 5725, "number": 2 }, "5731": { "from": 5717, "to": 5731, "number": 1 }, "5732": { "from": 5717, "to": 5732, "number": 1 } },
-    "5718": { "5722": { "from": 5718, "to": 5722, "number": 1 }, "5724": { "from": 5718, "to": 5724, "number": 1 }, "5727": { "from": 5718, "to": 5727, "number": 1 }, "5738": { "from": 5718, "to": 5738, "number": 1 } },
-    "5719": { "5729": { "from": 5719, "to": 5729, "number": 2 }, "5730": { "from": 5719, "to": 5730, "number": 2 }, "5731": { "from": 5719, "to": 5731, "number": 1 }, "5732": { "from": 5719, "to": 5732, "number": 12 }, "5735": { "from": 5719, "to": 5735, "number": 1 }, "5738": { "from": 5719, "to": 5738, "number": 1 }, "5748": { "from": 5719, "to": 5748, "number": 1 } },
-    "5720": { "5728": { "from": 5720, "to": 5728, "number": 1 }, "5729": { "from": 5720, "to": 5729, "number": 1 }, "5731": { "from": 5720, "to": 5731, "number": 1 }, "5736": { "from": 5720, "to": 5736, "number": 6 }, "5737": { "from": 5720, "to": 5737, "number": 1 }, "5749": { "from": 5720, "to": 5749, "number": 1 } },
-    "5721": { "5727": { "from": 5721, "to": 5727, "number": 54 }, "5728": { "from": 5721, "to": 5728, "number": 2 }, "5729": { "from": 5721, "to": 5729, "number": 1 }, "5733": { "from": 5721, "to": 5733, "number": 5 }, "5739": { "from": 5721, "to": 5739, "number": 1 }, "5741": { "from": 5721, "to": 5741, "number": 1 }, "7000": { "from": 5721, "to": 7000, "number": 1 } },
-    "5722": { "5727": { "from": 5722, "to": 5727, "number": 4 }, "5728": { "from": 5722, "to": 5728, "number": 1 }, "5729": { "from": 5722, "to": 5729, "number": 1 }, "5730": { "from": 5722, "to": 5730, "number": 1 }, "5732": { "from": 5722, "to": 5732, "number": 7 }, "5733": { "from": 5722, "to": 5733, "number": 7 }, "5739": { "from": 5722, "to": 5739, "number": 1 }, "5740": { "from": 5722, "to": 5740, "number": 1 }, "5741": { "from": 5722, "to": 5741, "number": 1 }, "5744": { "from": 5722, "to": 5744, "number": 2 }, "5746": { "from": 5722, "to": 5746, "number": 1 } },
-    "5723": { "5728": { "from": 5723, "to": 5728, "number": 2 }, "5730": { "from": 5723, "to": 5730, "number": 1 }, "5734": { "from": 5723, "to": 5734, "number": 14 }, "5735": { "from": 5723, "to": 5735, "number": 2 } },
-    "5724": { "5728": { "from": 5724, "to": 5728, "number": 5 }, "5729": { "from": 5724, "to": 5729, "number": 5 }, "5730": { "from": 5724, "to": 5730, "number": 1 }, "5732": { "from": 5724, "to": 5732, "number": 1 }, "5734": { "from": 5724, "to": 5734, "number": 1 }, "5735": { "from": 5724, "to": 5735, "number": 4 }, "5738": { "from": 5724, "to": 5738, "number": 3 }, "5743": { "from": 5724, "to": 5743, "number": 1 } },
-    "5725": { "5728": { "from": 5725, "to": 5728, "number": 1 }, "5729": { "from": 5725, "to": 5729, "number": 2 }, "5730": { "from": 5725, "to": 5730, "number": 2 }, "5731": { "from": 5725, "to": 5731, "number": 5 }, "5735": { "from": 5725, "to": 5735, "number": 1 }, "5738": { "from": 5725, "to": 5738, "number": 2 } },
-    "5726": { "5730": { "from": 5726, "to": 5730, "number": 3 }, "5731": { "from": 5726, "to": 5731, "number": 2 }, "5733": { "from": 5726, "to": 5733, "number": 7 }, "5741": { "from": 5726, "to": 5741, "number": 1 } },
-    "5727": { "5739": { "from": 5727, "to": 5739, "number": 3 }, "5740": { "from": 5727, "to": 5740, "number": 1 }, "5741": { "from": 5727, "to": 5741, "number": 25 }, "5746": { "from": 5727, "to": 5746, "number": 7 }, "5747": { "from": 5727, "to": 5747, "number": 4 } },
-    "5728": { "5738": { "from": 5728, "to": 5738, "number": 1 }, "5739": { "from": 5728, "to": 5739, "number": 3 }, "5740": { "from": 5728, "to": 5740, "number": 5 }, "5745": { "from": 5728, "to": 5745, "number": 2 } },
-    "5729": { "5738": { "from": 5729, "to": 5738, "number": 21 }, "5739": { "from": 5729, "to": 5739, "number": 4 }, "5740": { "from": 5729, "to": 5740, "number": 1 }, "5744": { "from": 5729, "to": 5744, "number": 2 }, "7002": { "from": 5729, "to": 7002, "number": 1 } },
-    "5730": { "5738": { "from": 5730, "to": 5738, "number": 47 } },
-    "5731": { "5738": { "from": 5731, "to": 5738, "number": 49 }, "5748": { "from": 5731, "to": 5748, "number": 1 } },
-    "5732": { "5738": { "from": 5732, "to": 5738, "number": 18 }, "5739": { "from": 5732, "to": 5739, "number": 5 }, "5740": { "from": 5732, "to": 5740, "number": 2 }, "5744": { "from": 5732, "to": 5744, "number": 1 }, "5745": { "from": 5732, "to": 5745, "number": 1 } },
-    "5733": { "5738": { "from": 5733, "to": 5738, "number": 4 }, "5739": { "from": 5733, "to": 5739, "number": 3 }, "5740": { "from": 5733, "to": 5740, "number": 1 }, "5741": { "from": 5733, "to": 5741, "number": 7 }, "5746": { "from": 5733, "to": 5746, "number": 1 } },
-    "5734": { "5738": { "from": 5734, "to": 5738, "number": 1 }, "5740": { "from": 5734, "to": 5740, "number": 2 } },
-    "5735": { "5738": { "from": 5735, "to": 5738, "number": 3 }, "5745": { "from": 5735, "to": 5745, "number": 1 } },
-    "5736": { "5737": { "from": 5736, "to": 5737, "number": 6 }, "5738": { "from": 5736, "to": 5738, "number": 1 }, "5739": { "from": 5736, "to": 5739, "number": 1 }, "5740": { "from": 5736, "to": 5740, "number": 1 } },
-    "5737": { "5743": { "from": 5737, "to": 5743, "number": 18 }, "5749": { "from": 5737, "to": 5749, "number": 1 } },
-    "5738": { "5744": { "from": 5738, "to": 5744, "number": 168 }, "5745": { "from": 5738, "to": 5745, "number": 1 }, "5748": { "from": 5738, "to": 5748, "number": 2 }, "5750": { "from": 5738, "to": 5750, "number": 1 }, "7000": { "from": 5738, "to": 7000, "number": 1 } },
-    "5739": { "5745": { "from": 5739, "to": 5745, "number": 8 }, "5748": { "from": 5739, "to": 5748, "number": 1 } },
-    "5740": { "5745": { "from": 5740, "to": 5745, "number": 4 }, "5750": { "from": 5740, "to": 5750, "number": 1 }, "7000": { "from": 5740, "to": 7000, "number": 1 } },
-    "5741": { "5746": { "from": 5741, "to": 5746, "number": 31 }, "5747": { "from": 5741, "to": 5747, "number": 1 } },
-    "5743": { "5748": { "from": 5743, "to": 5748, "number": 1 }, "5749": { "from": 5743, "to": 5749, "number": 20 }, "5750": { "from": 5743, "to": 5750, "number": 1 } },
-    "5744": { "5748": { "from": 5744, "to": 5748, "number": 108 }, "7000": { "from": 5744, "to": 7000, "number": 7 } },
-    "5745": { "5748": { "from": 5745, "to": 5748, "number": 5 }, "5750": { "from": 5745, "to": 5750, "number": 26 }, "7002": { "from": 5745, "to": 7002, "number": 1 } },
-    "5746": { "5747": { "from": 5746, "to": 5747, "number": 46 } },
-    "5747": { "7003": { "from": 5747, "to": 7003, "number": 33 } },
-    "5748": { "7000": { "from": 5748, "to": 7000, "number": 132 }, "7002": { "from": 5748, "to": 7002, "number": 2 } },
-    "5749": { "7001": { "from": 5749, "to": 7001, "number": 25 }, "7002": { "from": 5749, "to": 7002, "number": 1 } },
-    "5750": { "7002": { "from": 5750, "to": 7002, "number": 14 } }
-}
+var a_transitions_jump = [
+    { "id": 1, "from": 5718, "to": 5727, "number": 1, "leftOffset": 3, "rightOffset": 58 },
+    { "id": 2, "from": 5710, "to": 5729, "number": 1, "leftOffset": 5, "rightOffset": 0 },
+    { "id": 3, "from": 5707, "to": 5730, "number": 1, "leftOffset": 1, "rightOffset": 9 },
+    { "id": 4, "from": 5717, "to": 5731, "number": 1, "leftOffset": 2, "rightOffset": 6 },
+    { "id": 5, "from": 5711, "to": 5731, "number": 1, "leftOffset": 2, "rightOffset": 7 },
+    { "id": 6, "from": 5717, "to": 5732, "number": 1, "leftOffset": 6, "rightOffset": 12 },
+    { "id": 7, "from": 5707, "to": 5733, "number": 1, "leftOffset": 18, "rightOffset": 7 },
+    { "id": 8, "from": 5712, "to": 5735, "number": 4, "leftOffset": 0, "rightOffset": 8 },
+    { "id": 9, "from": 5720, "to": 5737, "number": 1, "leftOffset": 10, "rightOffset": 6 },
+    { "id": 10, "from": 5710, "to": 5738, "number": 1, "leftOffset": 0, "rightOffset": 50 },
+    { "id": 11, "from": 5725, "to": 5738, "number": 2, "leftOffset": 1, "rightOffset": 51 },
+    { "id": 12, "from": 5719, "to": 5738, "number": 1, "leftOffset": 1, "rightOffset": 102 },
+    { "id": 13, "from": 5724, "to": 5738, "number": 3, "leftOffset": 4, "rightOffset": 103 },
+    { "id": 14, "from": 5718, "to": 5738, "number": 1, "leftOffset": 0, "rightOffset": 152 },
+    { "id": 15, "from": 5722, "to": 5739, "number": 1, "leftOffset": 20, "rightOffset": 13 },
+    { "id": 16, "from": 5721, "to": 5739, "number": 1, "leftOffset": 9, "rightOffset": 17 },
+    { "id": 17, "from": 5722, "to": 5740, "number": 1, "leftOffset": 19, "rightOffset": 11 },
+    { "id": 18, "from": 5726, "to": 5741, "number": 1, "leftOffset": 12, "rightOffset": 0 },
+    { "id": 19, "from": 5722, "to": 5741, "number": 1, "leftOffset": 25, "rightOffset": 1 },
+    { "id": 20, "from": 5721, "to": 5741, "number": 1, "leftOffset": 64, "rightOffset": 9 },
+    { "id": 21, "from": 5724, "to": 5743, "number": 1, "leftOffset": 20, "rightOffset": 0 },
+    { "id": 22, "from": 5729, "to": 5744, "number": 2, "leftOffset": 21, "rightOffset": 168 },
+    { "id": 23, "from": 5707, "to": 5744, "number": 1, "leftOffset": 0, "rightOffset": 170 },
+    { "id": 24, "from": 5732, "to": 5744, "number": 1, "leftOffset": 18, "rightOffset": 171 },
+    { "id": 25, "from": 5722, "to": 5744, "number": 2, "leftOffset": 0, "rightOffset": 172 },
+    { "id": 26, "from": 5735, "to": 5745, "number": 1, "leftOffset": 3, "rightOffset": 0 },
+    { "id": 27, "from": 5728, "to": 5745, "number": 2, "leftOffset": 9, "rightOffset": 2 },
+    { "id": 28, "from": 5732, "to": 5745, "number": 1, "leftOffset": 26, "rightOffset": 4 },
+    { "id": 29, "from": 5722, "to": 5746, "number": 1, "leftOffset": 26, "rightOffset": 0 },
+    { "id": 30, "from": 5733, "to": 5746, "number": 1, "leftOffset": 15, "rightOffset": 1 },
+    { "id": 31, "from": 5727, "to": 5746, "number": 7, "leftOffset": 33, "rightOffset": 33 },
+    { "id": 32, "from": 5727, "to": 5747, "number": 4, "leftOffset": 4, "rightOffset": 0 },
+    { "id": 33, "from": 5741, "to": 5747, "number": 1, "leftOffset": 0, "rightOffset": 4 },
+    { "id": 34, "from": 5738, "to": 5748, "number": 2, "leftOffset": 168, "rightOffset": 108 },
+    { "id": 35, "from": 5713, "to": 5748, "number": 1, "leftOffset": 1, "rightOffset": 110 },
+    { "id": 36, "from": 5731, "to": 5748, "number": 1, "leftOffset": 49, "rightOffset": 111 },
+    { "id": 37, "from": 5719, "to": 5748, "number": 1, "leftOffset": 2, "rightOffset": 112 },
+    { "id": 38, "from": 5739, "to": 5748, "number": 1, "leftOffset": 0, "rightOffset": 114 },
+    { "id": 39, "from": 5720, "to": 5749, "number": 1, "leftOffset": 8, "rightOffset": 0 },
+    { "id": 40, "from": 5737, "to": 5749, "number": 1, "leftOffset": 0, "rightOffset": 1 },
+    { "id": 41, "from": 5738, "to": 5750, "number": 1, "leftOffset": 171, "rightOffset": 0 },
+    { "id": 42, "from": 5740, "to": 5750, "number": 1, "leftOffset": 1, "rightOffset": 2 },
+    { "id": 43, "from": 5738, "to": 7000, "number": 1, "leftOffset": 170, "rightOffset": 139 },
+    { "id": 44, "from": 5744, "to": 7000, "number": 7, "leftOffset": 108, "rightOffset": 132 },
+    { "id": 45, "from": 5740, "to": 7000, "number": 1, "leftOffset": 0, "rightOffset": 140 },
+    { "id": 46, "from": 5721, "to": 7000, "number": 1, "leftOffset": 0, "rightOffset": 141 },
+    { "id": 47, "from": 5729, "to": 7002, "number": 1, "leftOffset": 28, "rightOffset": 17 },
+    { "id": 48, "from": 5745, "to": 7002, "number": 1, "leftOffset": 31, "rightOffset": 18 }
+];
 
-
-
-var temp = {}
-
-var a_transitions_direct = []
-var a_transitions_jump = []
-
-for (var i in d_transitions) {
-    var a = []
-    for (var j in d_transitions[i]) {
-        a.push(d_transitions[i][j]);
-
-        if (temp[j] === undefined)
-            temp[j] = []
-        temp[j].push(d_transitions[i][j]);
-    }
-
-    a.sort(function(a, b) {
-        return d_fractions[a.to].offset - d_fractions[b.to].offset;
-    });
-
-    var offset = 0;
-    for (var i in a) {
-        a[i].leftOffset = offset;
-        offset += a[i].number;
-    }
-}
-
-for (var i in temp) {
-    temp[i].sort(function(a, b) {
-        return d_fractions[a.from].offset - d_fractions[b.from].offset;
-    })
-
-    var offset = 0;
-    for (var j in temp[i]) {
-        temp[i][j].rightOffset = offset;
-        offset += temp[i][j].number;
-    }
-}
-
-for (var i in temp)
-    for (var j in temp[i])
-        if (d_fractions[temp[i][j].from].convocationId == d_fractions[temp[i][j].to].convocationId - 1)
-            a_transitions_direct.push(temp[i][j]);
-        else
-            a_transitions_jump.push(temp[i][j]);
+var a_transitions_direct = [
+    { "id": 49, "from": 5710, "to": 5719, "number": 2, "leftOffset": 3, "rightOffset": 0 },
+    { "id": 50, "from": 5715, "to": 5719, "number": 1, "leftOffset": 2, "rightOffset": 2 },
+    { "id": 51, "from": 5713, "to": 5719, "number": 7, "leftOffset": 4, "rightOffset": 3 },
+    { "id": 52, "from": 5717, "to": 5719, "number": 2, "leftOffset": 3, "rightOffset": 10 },
+    { "id": 53, "from": 5711, "to": 5719, "number": 5, "leftOffset": 3, "rightOffset": 12 },
+    { "id": 54, "from": 5712, "to": 5719, "number": 1, "leftOffset": 4, "rightOffset": 17 },
+    { "id": 55, "from": 5716, "to": 5719, "number": 2, "leftOffset": 0, "rightOffset": 18 },
+    { "id": 56, "from": 5708, "to": 5720, "number": 21, "leftOffset": 8, "rightOffset": 0 },
+    { "id": 57, "from": 5707, "to": 5721, "number": 1, "leftOffset": 19, "rightOffset": 0 },
+    { "id": 58, "from": 5714, "to": 5721, "number": 29, "leftOffset": 6, "rightOffset": 1 },
+    { "id": 59, "from": 5713, "to": 5722, "number": 6, "leftOffset": 18, "rightOffset": 0 },
+    { "id": 60, "from": 5717, "to": 5722, "number": 1, "leftOffset": 7, "rightOffset": 6 },
+    { "id": 61, "from": 5711, "to": 5722, "number": 1, "leftOffset": 9, "rightOffset": 7 },
+    { "id": 62, "from": 5716, "to": 5722, "number": 1, "leftOffset": 3, "rightOffset": 8 },
+    { "id": 63, "from": 5718, "to": 5722, "number": 1, "leftOffset": 2, "rightOffset": 9 },
+    { "id": 64, "from": 5709, "to": 5723, "number": 18, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 65, "from": 5713, "to": 5723, "number": 1, "leftOffset": 0, "rightOffset": 18 },
+    { "id": 66, "from": 5709, "to": 5724, "number": 2, "leftOffset": 18, "rightOffset": 0 },
+    { "id": 67, "from": 5715, "to": 5724, "number": 1, "leftOffset": 3, "rightOffset": 2 },
+    { "id": 68, "from": 5713, "to": 5724, "number": 7, "leftOffset": 11, "rightOffset": 3 },
+    { "id": 69, "from": 5717, "to": 5724, "number": 1, "leftOffset": 5, "rightOffset": 10 },
+    { "id": 70, "from": 5711, "to": 5724, "number": 1, "leftOffset": 8, "rightOffset": 11 },
+    { "id": 71, "from": 5712, "to": 5724, "number": 7, "leftOffset": 5, "rightOffset": 12 },
+    { "id": 72, "from": 5707, "to": 5724, "number": 1, "leftOffset": 3, "rightOffset": 19 },
+    { "id": 73, "from": 5708, "to": 5724, "number": 8, "leftOffset": 0, "rightOffset": 20 },
+    { "id": 74, "from": 5718, "to": 5724, "number": 1, "leftOffset": 1, "rightOffset": 28 },
+    { "id": 75, "from": 5714, "to": 5724, "number": 3, "leftOffset": 0, "rightOffset": 29 },
+    { "id": 76, "from": 5710, "to": 5725, "number": 2, "leftOffset": 1, "rightOffset": 0 },
+    { "id": 77, "from": 5715, "to": 5725, "number": 2, "leftOffset": 0, "rightOffset": 2 },
+    { "id": 78, "from": 5713, "to": 5725, "number": 2, "leftOffset": 2, "rightOffset": 4 },
+    { "id": 79, "from": 5717, "to": 5725, "number": 2, "leftOffset": 0, "rightOffset": 6 },
+    { "id": 80, "from": 5711, "to": 5725, "number": 2, "leftOffset": 0, "rightOffset": 8 },
+    { "id": 81, "from": 5707, "to": 5725, "number": 1, "leftOffset": 2, "rightOffset": 10 },
+    { "id": 82, "from": 5707, "to": 5726, "number": 14, "leftOffset": 4, "rightOffset": 0 },
+    { "id": 83, "from": 5716, "to": 5726, "number": 1, "leftOffset": 2, "rightOffset": 14 },
+    { "id": 84, "from": 5714, "to": 5726, "number": 3, "leftOffset": 3, "rightOffset": 15 },
+    { "id": 85, "from": 5722, "to": 5727, "number": 4, "leftOffset": 21, "rightOffset": 0 },
+    { "id": 86, "from": 5721, "to": 5727, "number": 54, "leftOffset": 10, "rightOffset": 4 },
+    { "id": 87, "from": 5723, "to": 5728, "number": 2, "leftOffset": 17, "rightOffset": 0 },
+    { "id": 88, "from": 5725, "to": 5728, "number": 1, "leftOffset": 10, "rightOffset": 2 },
+    { "id": 89, "from": 5724, "to": 5728, "number": 5, "leftOffset": 9, "rightOffset": 3 },
+    { "id": 90, "from": 5720, "to": 5728, "number": 1, "leftOffset": 7, "rightOffset": 8 },
+    { "id": 91, "from": 5722, "to": 5728, "number": 1, "leftOffset": 3, "rightOffset": 9 },
+    { "id": 92, "from": 5721, "to": 5728, "number": 2, "leftOffset": 1, "rightOffset": 10 },
+    { "id": 93, "from": 5725, "to": 5729, "number": 2, "leftOffset": 11, "rightOffset": 1 },
+    { "id": 94, "from": 5719, "to": 5729, "number": 2, "leftOffset": 6, "rightOffset": 3 },
+    { "id": 95, "from": 5724, "to": 5729, "number": 5, "leftOffset": 14, "rightOffset": 5 },
+    { "id": 96, "from": 5720, "to": 5729, "number": 1, "leftOffset": 9, "rightOffset": 10 },
+    { "id": 97, "from": 5722, "to": 5729, "number": 1, "leftOffset": 4, "rightOffset": 11 },
+    { "id": 98, "from": 5721, "to": 5729, "number": 1, "leftOffset": 3, "rightOffset": 12 },
+    { "id": 99, "from": 5723, "to": 5730, "number": 1, "leftOffset": 2, "rightOffset": 0 },
+    { "id": 100, "from": 5725, "to": 5730, "number": 2, "leftOffset": 3, "rightOffset": 1 },
+    { "id": 101, "from": 5719, "to": 5730, "number": 2, "leftOffset": 3, "rightOffset": 3 },
+    { "id": 102, "from": 5724, "to": 5730, "number": 1, "leftOffset": 7, "rightOffset": 5 },
+    { "id": 103, "from": 5726, "to": 5730, "number": 3, "leftOffset": 0, "rightOffset": 6 },
+    { "id": 104, "from": 5722, "to": 5730, "number": 1, "leftOffset": 2, "rightOffset": 10 },
+    { "id": 105, "from": 5725, "to": 5731, "number": 5, "leftOffset": 5, "rightOffset": 0 },
+    { "id": 106, "from": 5719, "to": 5731, "number": 1, "leftOffset": 5, "rightOffset": 5 },
+    { "id": 107, "from": 5726, "to": 5731, "number": 2, "leftOffset": 3, "rightOffset": 8 },
+    { "id": 108, "from": 5720, "to": 5731, "number": 1, "leftOffset": 0, "rightOffset": 10 },
+    { "id": 109, "from": 5719, "to": 5732, "number": 12, "leftOffset": 8, "rightOffset": 0 },
+    { "id": 110, "from": 5724, "to": 5732, "number": 1, "leftOffset": 19, "rightOffset": 13 },
+    { "id": 111, "from": 5722, "to": 5732, "number": 7, "leftOffset": 5, "rightOffset": 14 },
+    { "id": 112, "from": 5726, "to": 5733, "number": 7, "leftOffset": 5, "rightOffset": 0 },
+    { "id": 113, "from": 5722, "to": 5733, "number": 7, "leftOffset": 12, "rightOffset": 8 },
+    { "id": 114, "from": 5721, "to": 5733, "number": 5, "leftOffset": 4, "rightOffset": 15 },
+    { "id": 115, "from": 5723, "to": 5734, "number": 14, "leftOffset": 3, "rightOffset": 0 },
+    { "id": 116, "from": 5724, "to": 5734, "number": 1, "leftOffset": 8, "rightOffset": 14 },
+    { "id": 117, "from": 5723, "to": 5735, "number": 2, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 118, "from": 5725, "to": 5735, "number": 1, "leftOffset": 0, "rightOffset": 2 },
+    { "id": 119, "from": 5719, "to": 5735, "number": 1, "leftOffset": 0, "rightOffset": 3 },
+    { "id": 120, "from": 5724, "to": 5735, "number": 4, "leftOffset": 0, "rightOffset": 4 },
+    { "id": 121, "from": 5720, "to": 5736, "number": 6, "leftOffset": 1, "rightOffset": 0 },
+    { "id": 122, "from": 5736, "to": 5737, "number": 6, "leftOffset": 1, "rightOffset": 0 },
+    { "id": 123, "from": 5735, "to": 5738, "number": 3, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 124, "from": 5730, "to": 5738, "number": 47, "leftOffset": 0, "rightOffset": 3 },
+    { "id": 125, "from": 5731, "to": 5738, "number": 49, "leftOffset": 0, "rightOffset": 53 },
+    { "id": 126, "from": 5734, "to": 5738, "number": 1, "leftOffset": 0, "rightOffset": 106 },
+    { "id": 127, "from": 5736, "to": 5738, "number": 1, "leftOffset": 0, "rightOffset": 107 },
+    { "id": 128, "from": 5728, "to": 5738, "number": 1, "leftOffset": 0, "rightOffset": 108 },
+    { "id": 129, "from": 5729, "to": 5738, "number": 21, "leftOffset": 0, "rightOffset": 109 },
+    { "id": 130, "from": 5732, "to": 5738, "number": 18, "leftOffset": 0, "rightOffset": 130 },
+    { "id": 131, "from": 5733, "to": 5738, "number": 4, "leftOffset": 0, "rightOffset": 148 },
+    { "id": 132, "from": 5736, "to": 5739, "number": 1, "leftOffset": 8, "rightOffset": 0 },
+    { "id": 133, "from": 5728, "to": 5739, "number": 3, "leftOffset": 6, "rightOffset": 1 },
+    { "id": 134, "from": 5729, "to": 5739, "number": 4, "leftOffset": 24, "rightOffset": 4 },
+    { "id": 135, "from": 5732, "to": 5739, "number": 5, "leftOffset": 21, "rightOffset": 8 },
+    { "id": 136, "from": 5733, "to": 5739, "number": 3, "leftOffset": 5, "rightOffset": 14 },
+    { "id": 137, "from": 5727, "to": 5739, "number": 3, "leftOffset": 1, "rightOffset": 18 },
+    { "id": 138, "from": 5734, "to": 5740, "number": 2, "leftOffset": 1, "rightOffset": 0 },
+    { "id": 139, "from": 5736, "to": 5740, "number": 1, "leftOffset": 7, "rightOffset": 2 },
+    { "id": 140, "from": 5728, "to": 5740, "number": 5, "leftOffset": 1, "rightOffset": 3 },
+    { "id": 141, "from": 5729, "to": 5740, "number": 1, "leftOffset": 23, "rightOffset": 8 },
+    { "id": 142, "from": 5732, "to": 5740, "number": 2, "leftOffset": 19, "rightOffset": 9 },
+    { "id": 143, "from": 5733, "to": 5740, "number": 1, "leftOffset": 4, "rightOffset": 12 },
+    { "id": 144, "from": 5727, "to": 5740, "number": 1, "leftOffset": 0, "rightOffset": 13 },
+    { "id": 145, "from": 5733, "to": 5741, "number": 7, "leftOffset": 8, "rightOffset": 2 },
+    { "id": 146, "from": 5727, "to": 5741, "number": 25, "leftOffset": 8, "rightOffset": 10 },
+    { "id": 147, "from": 5737, "to": 5743, "number": 18, "leftOffset": 1, "rightOffset": 1 },
+    { "id": 148, "from": 5738, "to": 5744, "number": 168, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 149, "from": 5738, "to": 5745, "number": 1, "leftOffset": 172, "rightOffset": 1 },
+    { "id": 150, "from": 5740, "to": 5745, "number": 4, "leftOffset": 2, "rightOffset": 5 },
+    { "id": 151, "from": 5739, "to": 5745, "number": 8, "leftOffset": 1, "rightOffset": 9 },
+    { "id": 152, "from": 5741, "to": 5746, "number": 31, "leftOffset": 1, "rightOffset": 2 },
+    { "id": 153, "from": 5746, "to": 5747, "number": 46, "leftOffset": 0, "rightOffset": 5 },
+    { "id": 154, "from": 5744, "to": 5748, "number": 108, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 155, "from": 5743, "to": 5748, "number": 1, "leftOffset": 0, "rightOffset": 113 },
+    { "id": 156, "from": 5745, "to": 5748, "number": 5, "leftOffset": 0, "rightOffset": 115 },
+    { "id": 157, "from": 5743, "to": 5749, "number": 20, "leftOffset": 1, "rightOffset": 2 },
+    { "id": 158, "from": 5743, "to": 5750, "number": 1, "leftOffset": 21, "rightOffset": 1 },
+    { "id": 159, "from": 5745, "to": 5750, "number": 26, "leftOffset": 5, "rightOffset": 3 },
+    { "id": 160, "from": 5748, "to": 7000, "number": 132, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 161, "from": 5749, "to": 7001, "number": 25, "leftOffset": 0, "rightOffset": 0 },
+    { "id": 162, "from": 5748, "to": 7002, "number": 2, "leftOffset": 132, "rightOffset": 0 },
+    { "id": 163, "from": 5749, "to": 7002, "number": 1, "leftOffset": 25, "rightOffset": 2 },
+    { "id": 164, "from": 5750, "to": 7002, "number": 14, "leftOffset": 0, "rightOffset": 3 },
+    { "id": 165, "from": 5747, "to": 7003, "number": 33, "leftOffset": 0, "rightOffset": 0 }
+];

@@ -8,4 +8,4 @@ var d_convocations = {
     "7": { "id": 7, "number": "VII", "years": "2016 – 2021" },
 }
 
-var a_convocations = Object.keys(d_convocations).map(a => d_convocations[a]);
+var a_convocations = Object.keys(d_convocations).map(function(a) { return d_convocations[a]; });
