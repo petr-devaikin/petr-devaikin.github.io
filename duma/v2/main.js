@@ -9,10 +9,9 @@
 // - manual sort of transitions
 // - optimize dictionaries
 // - check titles (Agrarnaya party)
+// - google analytics
+// - colors
 
-// !!! PROBLEMS:
-// III convo - transition between 2 parties
-// transitions to last convo: some of them included twice! (just on select, data is ok)
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -93,6 +92,22 @@ function hoverTransition(transition) {
     }
 }
 
+function hoverDeputat(deputat) {
+    deactivateAllActive();
+
+    if (deputat !== undefined) {
+        dom.fractions.selectAll('.fraction').filter(function(d) { return deputat.fractionIds.indexOf(d.id) != -1; })
+            .classed('active', true);
+
+        dom.svg.selectAll('.transition').filter(function(d) {
+            var i = deputat.fractionIds.indexOf(d.from);
+            return i != -1 &&
+                deputat.fractionIds.indexOf(d.to) == i + 1;
+        })
+            .classed('active', true);
+    }
+}
+
 function clearSelection() {
     dom.svg.selectAll('.selected')
         .classed('selected', false);
@@ -128,7 +143,8 @@ function selectTransition(transition) {
         .classed('selected', true);
 
     dom.deputies.selectAll('.deputat').filter(function(d) {
-        return d.fractionIds.indexOf(transition.datum().from) == -1 || d.fractionIds.indexOf(transition.datum().to) == -1;
+        var i = d.fractionIds.indexOf(transition.datum().from)
+        return i == -1 || d.fractionIds.indexOf(transition.datum().to) != i + 1;
     })
         .classed('hidden', true);
 
@@ -139,6 +155,21 @@ function selectTransition(transition) {
     setTitle(
         title,
         '{0} → {1}'.format(d_fractions[transition.datum().from]._convoName, d_fractions[transition.datum().to]._convoName)
+    );
+}
+
+function selectConvocation(convo) {
+    clearSelection();
+
+    convo.classed('selected', true);
+
+    dom.deputies.selectAll('.deputat').filter(function(d) {
+        return d.convocations[convo.datum().id - 1].partyId === undefined;
+    })
+        .classed('hidden', true);
+
+    setTitle(
+        'Депутаты {0} созыва'.format(convo.datum().number)
     );
 }
 
@@ -164,7 +195,11 @@ function drawConvocations() {
         .classed('convocationLabel', true)
         .attr('transform', 'translate(0,-20)')
         .on('mouseover', function(d) { hoverConvocation(d.id); })
-        .on('mouseout', function(d) { hoverConvocation(); });
+        .on('mouseout', function(d) { hoverConvocation(); })
+        .on('click', function(d) {
+            event.stopPropagation();
+            selectConvocation(d3.select(this.parentNode));
+        });
 
     labels.append('text')
         .classed('convocationYears', true)
@@ -275,20 +310,29 @@ function drawFractions() {
             d._name = d_parties[d.partyId].name;
             d._convoName = d_convocations[d.convocationId].number;
             return 'translate({0},{1})'.format(d._position[0], d._position[1]);
+        })
+        .on('mouseover', function() { hoverFraction(d3.select(this)); })
+        .on('mouseout', function() { hoverFraction(); })
+        .on('click', function() {
+            event.stopPropagation();
+            selectFraction(d3.select(this));
         });
+
+    groups.filter(function(d) { return d.size < 5; })
+        .append('rect')
+        .attr('x', -FRACTION_WIDTH / 2)
+        .attr('y', function(d) { return -(5 - d.size) / 2; })
+        .attr('width', FRACTION_WIDTH)
+        .attr('height', 5)
+        .attr('fill', 'rgba(0, 0, 0, 0)');
 
     groups.append('rect')
         .attr('x', -FRACTION_WIDTH / 2)
         .attr('y', 0)
         .attr('width', FRACTION_WIDTH)
         .attr('height', function(d) { return d.size; })
-        .attr('fill', function(d) { return d._color; })
-        .on('mouseover', function() { hoverFraction(d3.select(this.parentNode)); })
-        .on('mouseout', function() { hoverFraction(); })
-        .on('click', function() {
-            event.stopPropagation();
-            selectFraction(d3.select(this.parentNode));
-        });
+        .attr('fill', function(d) { return d._color; });
+
 
     var labels = groups.append('g')
         .classed('fractionLabel', true)
@@ -336,6 +380,9 @@ function addDeputies() {
 
     deputies
         .classed('deputat', true)
+        .attr('title', function(d) { return d.name; })
+        .on('mouseover', function(d) { hoverDeputat(d); })
+        .on('mouseout', function(d) { hoverDeputat(); })
         .append('div')
             .classed('deputatName', true)
             .text(function(d) {

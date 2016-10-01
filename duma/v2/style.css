@@ -9,7 +9,7 @@ body {
     position: relative;
     width: 100%;
     max-width: 1300px;
-    min-height: 800px;
+    min-width: 800px;
     margin-left: auto;
     margin-right: auto;
     height: 50px;
@@ -158,6 +158,11 @@ h2.scroll {
     position: relative;
     margin-left: 65px;
     font-size: 12px;
+    cursor: default;
+}
+
+.deputies .deputat:hover .deputatName {
+    color: #eee;
 }
 
 .depConvos {
