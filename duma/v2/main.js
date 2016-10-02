@@ -1,5 +1,5 @@
 // TODO:
-// - smooth animation
+// - complete hover logic (when no selection, hover on deputat)
 // - check on mobile
 // - translate to english
 // - finish selection
@@ -60,7 +60,7 @@ function setTitle(name) {
 
 function hoverConvocation(convocation) {
     dom.fractions.selectAll('.fraction')
-        .classed('active', function(d) { return d.convocationId == convocation.id; });
+        .classed('active', function(d) { return convocation !== undefined && d.convocationId == convocation.id; });
     dom.drawArea.selectAll('.transition.active')
         .classed('active', false);
 }
@@ -81,20 +81,44 @@ function hoverTransition(transition) {
 }
 
 function hoverDeputat(deputat) {
-        dom.fractions.selectAll('.fraction')
-            .classed('active', function(d) { return deputat !== undefined && deputat.fractionIds.indexOf(d.id) != -1; });
-
-        dom.drawArea.selectAll('.transition')
-            .classed('active', function(d) {
-                if (deputat === undefined)
-                    return false;
-                var i = deputat.fractionIds.indexOf(d.from);
-                return i != -1 &&
-                    deputat.fractionIds.indexOf(d.to) == i + 1;
+    dom.fractions.selectAll('.fraction')
+        .classed('active', function(d) {
+            return deputat !== undefined && deputat.fractionIds.indexOf(d.id) != -1;
+        })
+        .classed('faded', function(d) {
+            if (deputat !== undefined)
+                return deputat.fractionIds.indexOf(d.id) == -1;
+            else
+                if (noSelection)
+                    return false
+                else
+                    return !d3.select(this).classed('selected');
             });
+
+    dom.drawArea.selectAll('.transition')
+        .classed('active', function(d) {
+            if (deputat === undefined)
+                return false;
+            var i = deputat.fractionIds.indexOf(d.from);
+            return i != -1 && deputat.fractionIds.indexOf(d.to) == i + 1;
+        })
+        .classed('faded', function(d) {
+            if (deputat !== undefined) {
+                var i = deputat.fractionIds.indexOf(d.from);
+                return i == -1 || deputat.fractionIds.indexOf(d.to) != i + 1;
+            }
+            else
+                if (noSelection)
+                    return false;
+                else
+                    return !d3.select(this).classed('selected');
+        });
 }
 
+var noSelection = true;
 function clearSelection() {
+    noSelection = true;
+
     dom.drawArea.selectAll('.selected')
         .classed('selected', false);
     dom.drawArea.selectAll('.faded')
@@ -104,6 +128,8 @@ function clearSelection() {
 }
 
 function selectFraction(fraction) {
+    noSelection = false;
+
     dom.fractions.selectAll('.fraction')
         .classed('selected', function(d) { return d.id == fraction.datum().id; })
         .classed('faded', function(d) { return d.id != fraction.datum().id; });
@@ -127,6 +153,7 @@ function selectFraction(fraction) {
 }
 
 function selectTransition(transition) {
+    noSelection = false;
     //clearSelection();
 
     //transition.classed('selected', true);
@@ -172,6 +199,7 @@ function selectTransition(transition) {
 }
 
 function selectConvocation(convo) {
+    noSelection = false;
     //clearSelection();
 
     //convo.classed('selected', true);

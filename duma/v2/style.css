@@ -88,6 +88,10 @@ svg .fraction.selected .fractionLabel {
     opacity: 1;
 }
 
+svg .fraction.selected.faded .fractionLabel {
+    opacity: 0;
+}
+
 svg .fractionLabel rect {
     fill: rgba(21, 21, 21, .7);
     stroke: none;
@@ -105,11 +109,11 @@ svg .transition {
 }
 
 svg .transitions .jump .transition {
-    opacity: .5;
+    opacity: .6;
 }
 
 svg .faded:not(.active) {
-    opacity: .2 !important;
+    opacity: .15 !important;
 }
 
 #rightPanel {
@@ -212,7 +216,7 @@ svg .faded:not(.active) {
 
 .deputies .deputat {
     position: relative;
-    margin: 3px 0;
+    padding: 3px 0;
 }
 
 .deputies .deputat.hidden {
@@ -234,7 +238,7 @@ svg .faded:not(.active) {
 .depConvos {
     position: absolute;
     left: 0;
-    top: 7px;
+    top: 10px;
     width: 70px;
 }
 
