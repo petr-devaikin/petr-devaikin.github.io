@@ -1,0 +1,33 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="div1"></div>
+        <br/>
+        <div id="div2"></div>
+
+        <script src="data/convocations.js"></script>
+        <script src="data/deputies.js"></script>
+        <script src="data/parties.js"></script>
+        <script src="data/fractions.js"></script>
+        <script src="data/transitions.js"></script>
+
+        <script src="data/er.js"></script>
+        <script src="data/kprf.js"></script>
+        <script src="data/sr.js"></script>
+        <script src="data/ldpr.js"></script>
+
+        <script>
+            for (var i = 0; i < a_deputies.length; i++) {
+                a_deputies[i].name = a_deputies[i].name.replace('ё', 'е').replace('Ё', 'Е');
+
+                for (var j = 0; j <= i; j++)
+                    if (a_deputies[i].name == a_deputies[j].name)
+                        console.log(a_deputies[i]);
+            }
+
+            //document.getElementById("div1").innerText = JSON.stringify(d_transitions);
+        </script>
+    </body>
+</html>
+
