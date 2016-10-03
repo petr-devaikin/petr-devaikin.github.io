@@ -398,7 +398,7 @@ function drawFractions() {
             else
                 return d.size * SCALE_Y;
         })
-        .attr('fill', 'rgba(0, 0, 0, 0');
+        .attr('fill', 'rgba(0, 0, 0, 0)');
 
 
     var labels = groups.append('g')
