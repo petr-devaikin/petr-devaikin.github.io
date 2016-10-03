@@ -131,11 +131,11 @@ function clearSelection() {
     if (!noSelection) {
         noSelection = true;
 
-        s.fractions.classed('selected', false);
-        s.fractions.classed('faded', false);
-        s.transitions.classed('selected', false);
-        s.transitions.classed('faded', false);
-        s.deputies.classed('hidden', false);
+        s.fractions.filter('.selected').classed('selected', false);
+        s.fractions.filter('.faded').classed('faded', false);
+        s.transitions.filter('.selected').classed('selected', false);
+        s.transitions.filter('.faded').classed('faded', false);
+        s.deputies.filter('.hidden').classed('hidden', false);
     }
 }
 
