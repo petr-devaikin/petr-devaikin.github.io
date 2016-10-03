@@ -494,9 +494,9 @@ function draw(eng) {
     if (eng) {
         ENGLISH = true;
 
-        L_ALL_DEPS = 'All deputies';
-        L_CONVO = 'convocation';
-        L_DEP_OF_CONVO = 'Deputies, {0} convocation';
+        L_ALL_DEPS = 'All Deputies';
+        L_CONVO = 'Convocation';
+        L_DEP_OF_CONVO = 'Deputies, {0} Convocation';
         L_PPL = '{0} pers.'
     }
 
