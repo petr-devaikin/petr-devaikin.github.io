@@ -138,7 +138,7 @@ svg .faded:not(.active) {
     font-weight: normal;
     font-size: 14px;
     color: #eee;
-    background: rgba(21, 21, 21, .85);
+    background: rgba(23, 23, 23, .85);
     z-index: 1;
 
     border-bottom: 1px solid #171717;
