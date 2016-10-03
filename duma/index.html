@@ -4,9 +4,14 @@
         <title>Государственная Дума России</title>
 
         <meta charset="UTF-8">
-        <meta name="description" content="Визуализация структуры Государственной Думы Федерального Собрания Российской Федерации">
+        <meta name="description" content="Визуализация состава Государственной Думы Федерального Собрания Российской Федерации">
         <meta name="keywords" content="дума,рф,россия,парламент,визуализация,duma,russia,parlament,infovis">
         <meta name="author" content="Petr Devaikin">
+
+        <meta property="og:title" content="Государственная Дема России" />
+        <meta property="og:description" content="Визуализация состава Государственной Думы Федерального Собрания Российской Федерации" />
+        <meta property="og:url" content="http://petr-devaikin.github.io/duma/" />
+        <meta property="og:image" content="http://petr-devaikin.github.io/duma/screen.jpg" />
 
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="style.css">
@@ -16,6 +21,7 @@
         <script src="data/convocations.js"></script>
         <script src="data/fractions.js"></script>
         <script src="data/parties.js"></script>
+        <script src="data/transitions.js"></script>
         <script src="data/deputies.js"></script>
 
         <script src="main.js"></script>
@@ -57,13 +63,29 @@
                 <div class="deputies">
                 </div>
             </div>
+
+            <div id="footer">
+                &copy; 2016 <a href="http://petr-devaikin.github.io">Пётр Девайкин</a> |
+                Данные <a href="http://duma.gov.ru">duma.gov.ru</a> |
+                <a href="en/">EN</a>
+            </div>
         </div>
 
-        <div id="data" style="color: white"></div>
 
-        <script src="data/transitions.js"></script>
+
         <script>
             draw();
+        </script>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-54989348-1', 'auto');
+          ga('send', 'pageview');
+
         </script>
     </dody>
 </html>

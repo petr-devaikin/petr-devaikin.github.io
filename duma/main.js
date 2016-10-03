@@ -1,11 +1,5 @@
 // TODO:
-// - complete hover logic (when no selection, hover on deputat)
 // - check on mobile
-// - translate to english
-// - finish selection
-// - optimize dictionaries
-// - check titles (Agrarnaya party)
-// - google analytics
 
 
 if (!String.prototype.format) {
@@ -18,6 +12,17 @@ if (!String.prototype.format) {
       ;
     });
   };
+}
+
+
+if (!String.prototype.transliterate) {
+    var tr = {"Ё":"Yo","Й":"I","Ц":"Ts","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"Sh","Щ":"Sch","З":"Z","Х":"H","Ъ":"'","ё":"yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"'","Ф":"F","Ы":"I","В":"V","А":"A","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"Zh","Э":"E","ф":"f","ы":"i","в":"v","а":"a","п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"Ch","С":"S","М":"M","И":"I","Т":"T","Ь":"'","Б":"B","Ю":"Yu","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"'","б":"b","ю":"yu"};
+
+    String.prototype.transliterate = function() {
+        return this.split('').map(function (char) {
+            return tr[char] || char;
+        }).join('');
+    }
 }
 
 //=====================
@@ -34,7 +39,11 @@ var LEFT_MARGIN = 50,
     SCALE_Y = 1,
 
     L_ALL_DEPS = 'Все депутаты',
-    L_CONVO = 'созыв';
+    L_CONVO = 'созыв',
+    L_DEP_OF_CONVO = 'Депутаты {0} созыва',
+    L_PPL = '{0} чел.'
+
+    ENGLISH = false;
 
 
 var dom = {
@@ -50,7 +59,7 @@ var dom = {
 //=====================
 
 function setTitle(name) {
-    var counter = dom.deputies.selectAll('.deputat:not(.hidden)').size() + ' чел.';
+    var counter = L_PPL.format(dom.deputies.selectAll('.deputat:not(.hidden)').size());
 
     dom.header.select('#title').html(name === undefined ? L_ALL_DEPS : name);
     dom.header.select('#supp').text(counter);
@@ -117,14 +126,16 @@ function hoverDeputat(deputat) {
 
 var noSelection = true;
 function clearSelection() {
-    noSelection = true;
+    if (!noSelection) {
+        noSelection = true;
 
-    dom.drawArea.selectAll('.selected')
-        .classed('selected', false);
-    dom.drawArea.selectAll('.faded')
-        .classed('faded', false);
-    dom.deputies.selectAll('.deputat.hidden')
-        .classed('hidden', false);
+        dom.drawArea.selectAll('.selected')
+            .classed('selected', false);
+        dom.drawArea.selectAll('.faded')
+            .classed('faded', false);
+        dom.deputies.selectAll('.deputat.hidden')
+            .classed('hidden', false);
+    }
 }
 
 function selectFraction(fraction) {
@@ -154,14 +165,6 @@ function selectFraction(fraction) {
 
 function selectTransition(transition) {
     noSelection = false;
-    //clearSelection();
-
-    //transition.classed('selected', true);
-
-    /*dom.fractions.selectAll('.fraction').filter(function (d) {
-        return d.id == transition.datum().from || d.id == transition.datum().to;
-    })
-        .classed('selected', true);*/
 
     dom.fractions.selectAll('.fraction')
         .classed('faded', function(d) { return d.id != transition.datum().from && d.id != transition.datum().to; })
@@ -200,9 +203,6 @@ function selectTransition(transition) {
 
 function selectConvocation(convo) {
     noSelection = false;
-    //clearSelection();
-
-    //convo.classed('selected', true);
 
     dom.fractions.selectAll('.fraction')
         .classed('selected', function(d) { return d.convocationId == convo.datum().id; })
@@ -212,13 +212,11 @@ function selectConvocation(convo) {
         .classed('faded', true)
         .classed('selected', false);
 
-    dom.deputies.selectAll('.deputat').filter(function(d) {
-        return d.convocations[convo.datum().id - 1].partyId === undefined;
-    })
-        .classed('hidden', true);
+    dom.deputies.selectAll('.deputat')
+        .classed('hidden', function(d) { return d.convocations[convo.datum().id - 1].partyId === undefined; });
 
     setTitle(
-        'Депутаты {0} созыва'.format(convo.datum().number)
+        L_DEP_OF_CONVO.format(convo.datum().number)
     );
 }
 
@@ -361,7 +359,7 @@ function drawFractions() {
         .attr('transform', function(d) {
             d._position = fractionPosition(d);
             d._color = d_parties[d.partyId].color;
-            d._name = d_parties[d.partyId].name;
+            d._name = d_parties[d.partyId].name.transliterate();
             d._convoName = d_convocations[d.convocationId].number;
             return 'translate({0},{1})'.format(d._position[0], d._position[1]);
         });
@@ -433,7 +431,7 @@ function drawFractions() {
         .attr('height', 16);
 
     labels.append('text')
-        .text(function(d) { return d_parties[d.partyId].name; })
+        .text(function(d) { return d._name; })
         .attr('x', 3)
         .attr('y', 12);
 
@@ -449,14 +447,15 @@ function addDeputies() {
 
     deputies
         .classed('deputat', true)
-        .attr('title', function(d) { return d.name; })
+        .attr('title', function(d) { return d.name.transliterate(); })
         .on('mouseover', function(d) { hoverDeputat(d); })
         .on('mouseout', function(d) { hoverDeputat(); })
+        .on('click', function(d) { event.stopPropagation(); })
         .append('div')
             .classed('deputatName', true)
             .text(function(d) {
                 var fio = d.name.split(' ');
-                return '{0} {1}.{2}.'.format(fio[0], fio[1][0], fio[2][0]);
+                return '{0} {1}.{2}.'.format(fio[0], fio[1][0], fio[2][0]).transliterate();
             });
 
     var convos = deputies
@@ -482,9 +481,18 @@ function scrollEvents() {
 }
 
 
-function draw() {
-    if (window.innerHeight < 575 + 85) {
-        SCALE_Y = (575 - TOP_MARGIN - (575 + 85 - window.innerHeight)) / (575 - TOP_MARGIN);
+function draw(eng) {
+    if (eng) {
+        ENGLISH = true;
+
+        L_ALL_DEPS = 'All deputies';
+        L_CONVO = 'convocation';
+        L_DEP_OF_CONVO = 'Deputies, {0} convocation';
+        L_PPL = '{0} pers.'
+    }
+
+    if (window.innerHeight < 575 + 85 + 25) {
+        SCALE_Y = (575 - TOP_MARGIN - (575 + 85 + 25 - window.innerHeight)) / (575 - TOP_MARGIN);
     }
 
     if (window.innerWidth < 1000 + 210 + 20) {

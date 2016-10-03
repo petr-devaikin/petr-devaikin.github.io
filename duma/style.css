@@ -18,6 +18,7 @@ body {
 #diagram {
     position: fixed;
     top: 84px;
+    bottom: 0;
 }
 
 h1 {
@@ -217,6 +218,7 @@ svg .faded:not(.active) {
 .deputies .deputat {
     position: relative;
     padding: 3px 0;
+    cursor: default;
 }
 
 .deputies .deputat.hidden {
@@ -228,7 +230,6 @@ svg .faded:not(.active) {
     position: relative;
     margin-left: 65px;
     font-size: 12px;
-    cursor: default;
 }
 
 .deputies .deputat:hover .deputatName {
@@ -254,4 +255,41 @@ svg .faded:not(.active) {
 
 .depConvo.empty {
     border: 1px solid #333;
+}
+
+#footer {
+    position: fixed;
+    font-size: 10px;
+    bottom: 7px;
+    margin-left: 45px;
+    opacity: .3;
+    -webkit-transition: opacity .3s;
+    transition: opacity .3s;
+}
+
+#footer:hover {
+    opacity: 1;
+}
+
+#footer a {
+    position: relative;
+    color: #eee;
+    text-decoration: none;
+}
+
+#footer a:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 1px;
+    background: #9a9a9a;
+    opacity: 0;
+    -webkit-transition: opacity .3s;
+    transition: opacity .3s;
+}
+
+#footer a:hover:after {
+    opacity: 1;
 }

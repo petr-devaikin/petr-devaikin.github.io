@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Russian State Duma</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="Visualization of the lower house of the Federal Assembly of Russia (parliament) structure">
+        <meta name="keywords" content="duma,russia,parlament,infovis,дума,рф,россия,парламент,визуализация">
+        <meta name="author" content="Petr Devaikin">
+
+        <meta property="og:title" content="Russian State Duma" />
+        <meta property="og:description" content="Visualization of the lower house of the Federal Assembly of Russia (parliament) structure" />
+        <meta property="og:url" content="http://petr-devaikin.github.io/duma/en/" />
+        <meta property="og:image" content="http://petr-devaikin.github.io/duma/screen.jpg" />
+
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../style.css">
+
+        <script src="../d3.min.js"></script>
+
+        <script src="../data/convocations.js"></script>
+        <script src="../data/fractions.js"></script>
+        <script src="../data/parties.js"></script>
+        <script src="../data/transitions.js"></script>
+        <script src="../data/deputies.js"></script>
+
+        <script src="../main.js"></script>
+    </head>
+    <body>
+        <div id="wrap">
+            <h1>Russian State Duma</h1>
+            <div id="diagram">
+                <svg>
+                    <defs>
+                    </defs>
+                    <g class="drawings">
+                        <g class="convocations"></g>
+                        <g class="transitions">
+                            <g class="jump"></g>
+                            <g class="direct"></g>
+                        </g>
+                        <g class="fractions"></g>
+                    </g>
+                    <g class="hovers">
+                        <g class="hoverTransitions"></g>
+                        <g class="hoverFractions"></g>
+                    </g>
+                </svg>
+            </div>
+
+            <div id="rightPanel">
+                <div id="listHeader">
+                    <span id="supp"></span>
+                    <span id="title"></span>
+                    <span id="counter"></span>
+                    <span id="clear">
+                        <svg>
+                            <line x1="0" x2="100%" y1="0" y2="100%" />
+                            <line x1="100%" x2="0%" y1="0" y2="100%" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="deputies">
+                </div>
+            </div>
+
+            <div id="footer">
+                &copy; 2016 <a href="http://petr-devaikin.github.io">Petr Devaikin</a> |
+                Data from <a href="http://duma.gov.ru">duma.gov.ru</a> |
+                <a href="../">RU</a>
+            </div>
+        </div>
+
+
+
+        <script>
+            draw(true);
+        </script>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-54989348-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+    </dody>
+</html>
