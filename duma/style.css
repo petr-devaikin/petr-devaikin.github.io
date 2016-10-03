@@ -95,7 +95,7 @@ svg .fraction.selected.faded .fractionLabel {
 }
 
 svg .fractionLabel rect {
-    fill: rgba(21, 21, 21, .7);
+    fill: rgba(23, 23, 23, .7);
     stroke: none;
 }
 
