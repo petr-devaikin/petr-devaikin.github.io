@@ -491,7 +491,7 @@ function scrollEvents() {
 
 
 function draw(eng) {
-    if (eng) {
+    if (eng !== undefined) {
         ENGLISH = true;
 
         L_ALL_DEPS = 'All Deputies';
