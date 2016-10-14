@@ -1,0 +1,161 @@
+transition()
+    -moz-transition arguments
+    -o-transition arguments
+    -webkit-transition arguments
+    transition arguments
+
+
+squareSize = 240px
+cardMargin = 40px
+cardPadding = 20px
+
+cardBorderColor = #000
+fontColor = #000
+bgColor = #fff
+
+cardHeaderFontSize = 16px
+cardTextFontSize = 12px
+cardDateFontSize = 12px
+
+
+@font-face
+    font-family 'PT Sans'
+    font-style normal
+    src url('https://fonts.googleapis.com/css?family=PT+Sans')
+
+
+
+body
+    margin 0
+    background bgColor
+    color fontColor
+    font-family 'PT Sans', sans-serif
+
+
+.content
+    box-sizing border-box
+    position relative
+    width 100%
+    max-width squareSize * 4 + cardMargin * 3
+    padding 0 cardMargin
+    margin-top 1.5 * cardMargin
+    margin-left auto
+    margin-right auto
+    overflow hidden
+
+    *
+        box-sizing border-box
+
+    &__copy
+        position relative
+        font-size cardTextFontSize
+
+        text-align right
+        padding-right cardPadding
+
+        margin-bottom cardMargin
+
+        clear both
+
+
+.card
+    position relative
+    float left
+    width squareSize * 2
+    height squareSize
+    margin-bottom cardMargin
+    color fontColor
+
+    &:nth-child(2n)
+        margin-left cardMargin
+
+
+    &__main
+        position absolute
+        left 0
+        top 0
+        width squareSize
+        height 100%
+
+        padding cardPadding
+
+        background-position center center
+        background-size cover
+
+        border 1px solid cardBorderColor
+
+        &:after
+            content ''
+            position absolute
+            left 0
+            top 0
+            width 100%
+            height 100%
+            background rgba(255, 255, 255, .2)
+            background-image url('../img/dot.png')
+            opacity 0
+            transition opacity .1s
+
+        &--empty
+            &:after
+                display none
+
+    &:hover
+        .card__main
+            &:after
+                opacity .7
+
+
+    &__desc
+        position absolute
+        left squareSize
+        height 100%
+        width squareSize
+
+        border 1px solid cardBorderColor
+        border-left none
+
+        padding cardPadding 2 * cardPadding cardPadding cardPadding
+
+        a
+            color fontColor
+            text-decoration none
+            border-bottom 1px solid black
+
+            &:hover
+                border-bottom 3px double black
+
+        &__header
+            margin 0
+            font-size cardHeaderFontSize
+            font-weight normal
+
+        &__text
+            font-size cardTextFontSize
+            margin 1.5 * cardPadding 0 0
+            line-height 1.5
+
+        &__date
+            position absolute
+            bottom .5 * cardPadding
+            font-size cardDateFontSize
+
+        &__supp
+            display none
+
+
+h1
+    margin 0
+    font-weight normal
+    font-size 30px
+    line-height 1
+
+
+ul
+    margin 0
+    padding 0
+
+    li
+        margin 0
+        padding 0
+        list-style none

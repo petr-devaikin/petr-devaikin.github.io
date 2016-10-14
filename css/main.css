@@ -1,152 +1,126 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
-
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  src: url("https://fonts.googleapis.com/css?family=PT+Sans");
+}
 body {
-    margin: 25px 0;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    background: #fefefe;
-    color: #111;
-    line-height: 1.5;
-    padding: 0 15px;
+  margin: 0;
+  background: #fff;
+  color: #000;
+  font-family: 'PT Sans', sans-serif;
 }
-
+.content {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  padding: 0 40px;
+  margin-top: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+.content * {
+  box-sizing: border-box;
+}
+.content__copy {
+  position: relative;
+  font-size: 12px;
+  text-align: right;
+  padding-right: 20px;
+  margin-bottom: 40px;
+  clear: both;
+}
+.card {
+  position: relative;
+  float: left;
+  width: 480px;
+  height: 240px;
+  margin-bottom: 40px;
+  color: #000;
+}
+.card:nth-child(2n) {
+  margin-left: 40px;
+}
+.card__main {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100%;
+  padding: 20px;
+  background-position: center center;
+  background-size: cover;
+  border: 1px solid #000;
+}
+.card__main:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  background-image: url("../img/dot.png");
+  opacity: 0;
+  -moz-transition: opacity 0.1s;
+  -o-transition: opacity 0.1s;
+  -webkit-transition: opacity 0.1s;
+  transition: opacity 0.1s;
+}
+.card__main--empty:after {
+  display: none;
+}
+.card:hover .card__main:after {
+  opacity: 0.7;
+}
+.card__desc {
+  position: absolute;
+  left: 240px;
+  height: 100%;
+  width: 240px;
+  border: 1px solid #000;
+  border-left: none;
+  padding: 20px 40px 20px 20px;
+}
+.card__desc a {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #000;
+}
+.card__desc a:hover {
+  border-bottom: 3px double #000;
+}
+.card__desc__header {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+}
+.card__desc__text {
+  font-size: 12px;
+  margin: 30px 0 0;
+  line-height: 1.5;
+}
+.card__desc__date {
+  position: absolute;
+  bottom: 10px;
+  font-size: 12px;
+}
+.card__desc__supp {
+  display: none;
+}
 h1 {
-    font-size: 16.5px;
-    font-weight: normal;
-    margin-bottom: 0px;
-    margin-top: 50px;
-    color: #111111;
-    margin-left: 0px;
+  margin: 0;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 1;
 }
-
-a {
-    color: #2B7F94;
-    text-decoration: none;
-    border-bottom: 1px solid #fefefe;
-    -webkit-transition: border .2s;
-    transition: border .2s;
-}
-
-a:hover {
-    color: #2B7F94;
-    border-bottom: 1px solid rgba(43, 127, 148, 0.3);
-}
-
-#content {
-    position: relative;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.screenshot a {
-    padding: 0;
-    display: block;
-    width: 100px;
-    margin: 0;
-}
-
-.screenshot a:hover {
-    background: none;
-}
-
-.project {
-    position: relative;
-    margin-bottom: 40px;
-    overflow: hidden;
-}
-
-.project div {
-    position: relative;
-}
-
-
-.screenshot {
-    float: left;
-    width: 100px;
-    left: 0px;
-    height: 100px;
-    margin-top: 6px;
-    background: silver;
-    margin-bottom: 10px;
-}
-
-.screenshot img {
-    display: block;
-    position: relative;
-    top: -1px;
-    width: 100px;
-    height: 100px;
-    border-top: 1px dotted #777;
-    border-bottom: 1px dotted #777;
-}
-
-.title {
-    float: left;
-    width: 165px;
-    margin-left: 25px;
-}
-
-.title a {
-    margin-left: -2px;
-}
-
-.description {
-    margin-left: 307px;
-    color: #2E353D;
-    padding-bottom: 10px;
-}
-
-#copy {
-    margin-left: 307px;
-}
-
-#contacts {
-    position: relative;
-    margin-bottom: 75px;
-    margin-left: 125px;
-}
-
-@media only screen
-  and (max-device-width: 600px) {
-
-
-  .title {
-    width: auto;
-    float: none;
-    margin-left: 125px;
-  }
-
-  .description {
-    margin-left: 125px;
-    margin-top: 6px;
-  }
-
-  #copy {
-    margin-left: 125px;
-  }
-
-  #contacts {
-    margin-bottom: 50px;
-  }
-
-  .project {
-    margin-bottom: 50px;
-  }
-}
-
-.technologies {
-    display: none;
-}
-
 ul {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
-
-li {
-    list-style-type: none;
-    margin-bottom: 0.1em;
-    margin-right: 30px;
+ul li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
