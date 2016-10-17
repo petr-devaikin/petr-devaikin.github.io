@@ -4,6 +4,23 @@ transition()
     -webkit-transition arguments
     transition arguments
 
+respond-below($width)
+    $width = $width - 1
+    media = 'all and (max-width: %s)' % $width
+    @media media
+        {block}
+
+respond-above($width)
+    media = 'all and (min-width: %s)' % $width
+    @media media
+        {block}
+
+respond-between($min-width, $max-width)
+    $max-width = $max-width - 1
+    media = 'all and (min-width: %s) and (max-width: %s)' % ($min-width $max-width)
+    @media media
+        {block}
+
 
 squareSize = 240px
 cardMargin = 40px
@@ -18,6 +35,12 @@ bgColor = #fff
 cardHeaderFontSize = 16px
 cardTextFontSize = 12px
 cardDateFontSize = 12px
+
+smallScreenFontHeaderSize = 30px
+smallScreenFontSize = 20px
+
+mdScreen = 1000px
+smScreen = 500px
 
 
 @font-face
@@ -43,53 +66,185 @@ body
     margin-top 1.5 * cardMargin
     margin-left auto
     margin-right auto
-    overflow hidden
 
     *
         box-sizing border-box
 
-    &__copy
+    &__inner
         position relative
-        font-size cardTextFontSize
+        overflow hidden
 
-        text-align right
-        padding-right cardPadding
+        &__copy
+            position relative
+            font-size cardTextFontSize
 
-        margin-bottom cardMargin
+            text-align right
 
-        clear both
+            margin-bottom cardMargin
+
+            clear both
+
+            +respond-below(mdScreen)
+                text-align center
+
+            +respond-below(smScreen)
+                font-size smallScreenFontSize
 
 
 .card
     position relative
+    display block
     float left
-    width squareSize * 2
-    height squareSize
+    width 50%
     margin-bottom cardMargin
     color fontColor
+    overflow hidden
+    text-decoration none
 
     &:nth-child(2n)
-        margin-left cardMargin
+        padding-left .5 * cardMargin
+
+    &:nth-child(2n + 1)
+        padding-right .5 * cardMargin
+
+    +respond-below(mdScreen)
+        width 100%
+        max-width 2 * squareSize
+        float none
+        margin-left auto
+        margin-right auto
+
+        &:nth-child(2n)
+            padding-left 0
+
+        &:nth-child(2n + 1)
+            padding-right 0
+
+    +respond-below(smScreen)
+        max-width none
 
 
-    &__main
-        position absolute
-        left 0
-        top 0
-        width squareSize
-        height 100%
+    &__inner
+        position relative
 
-        padding cardPadding
+        &__expander
+            content ''
+            position relative
+            box-sizing content-box
+            width 100%
+            height 0
+            padding-top 50%
 
-        background-position center center
-        background-size cover
+            +respond-below(smScreen)
+                display none
 
-        border 1px solid cardBorderColor
+        &__main
+            position absolute
+            left 0
+            top 0
+            width 50%
+            height 100%
+            padding cardPadding
 
-        transition border .1s
+            background-position center center
+            background-size cover
+
+            border 1px solid cardBorderColor
+
+            transition border .1s
+
+            +respond-below(smScreen)
+                position relative
+                width 100%
+                height auto
+
+
+        &__desc
+            position absolute
+            left 50%
+            top 0
+            height 100%
+            width 50%
+
+            border 1px solid cardBorderColor
+            border-left none
+
+            transition border .1s, color .1s
+
+            padding cardPadding 2 * cardPadding cardPadding cardPadding
+
+            +respond-below(smScreen)
+                position relative
+                left 0
+                width 100%
+                height auto
+                border none
+                padding-left 0
+                padding-right 0
+                padding-top 1.2 * cardPadding
+                padding-bottom 3 * cardPadding
+
+            a
+                color fontColor
+                text-decoration none
+                border-bottom 1px solid black
+
+                &:hover
+                    border-bottom 3px double black
+
+            &__header
+                margin 0
+                font-size cardHeaderFontSize
+                font-weight normal
+
+                +respond-below(smScreen)
+                    font-size smallScreenFontHeaderSize
+
+            &__text
+                font-size cardTextFontSize
+                margin 1.5 * cardPadding 0 0
+                line-height 1.5
+
+                +respond-below(smScreen)
+                    margin-top 1 * cardPadding
+                    font-size smallScreenFontSize
+
+            &__date
+                position absolute
+                bottom .5 * cardPadding
+                font-size cardDateFontSize
+
+                +respond-below(smScreen)
+                    position relative
+                    bottom 0
+                    margin-top cardPadding
+                    font-size smallScreenFontSize
+                    font-style italic
+                    opacity .3
+
+            &__supp
+                display none
 
     &:not(.card--empty)
-        .card__main
+        .card__inner__main
+            +respond-below(smScreen)
+                position relative
+                width 100%
+                height auto
+                padding 0 0 100% 0
+                border none
+
+                &:before
+                    content ''
+                    position absolute
+                    z-index 2
+                    left 0
+                    top 0
+                    width 100%
+                    height 100%
+                    border 1px solid cardBorderColor
+                    box-sizing border-box
+
             &:after
                 content ''
                 position absolute
@@ -105,53 +260,35 @@ body
         &:hover
             color fontColorHover
 
-            .card__main
+            .card__inner__main
                 border-color cardBorderColorHover
                 &:after
                     opacity .7
 
-            .card__desc
+            .card__inner__desc
                 border-color cardBorderColorHover
 
+    &--empty
+        +respond-below(smScreen)
+            .card__inner__main
+                padding 0
+                border none
 
-    &__desc
-        position absolute
-        left squareSize
-        height 100%
-        width squareSize
+                h1
+                    font-size 42px
 
-        border 1px solid cardBorderColor
-        border-left none
+            .card__inner__desc
+                border none
+                padding cardPadding 0 0 0
 
-        transition border .1s, color .1s
+                &__header
+                    font-size smallScreenFontHeaderSize
 
-        padding cardPadding 2 * cardPadding cardPadding cardPadding
-
-        a
-            color fontColor
-            text-decoration none
-            border-bottom 1px solid black
-
-            &:hover
-                border-bottom 3px double black
-
-        &__header
-            margin 0
-            font-size cardHeaderFontSize
-            font-weight normal
-
-        &__text
-            font-size cardTextFontSize
-            margin 1.5 * cardPadding 0 0
-            line-height 1.5
-
-        &__date
-            position absolute
-            bottom .5 * cardPadding
-            font-size cardDateFontSize
-
-        &__supp
-            display none
+                &__text
+                    font-size smallScreenFontSize
+                    margin-top cardPadding
+                    margin-bottom 3 * cardPadding
+                    line-height 1.5em
 
 
 h1
