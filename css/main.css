@@ -34,7 +34,6 @@ body {
 .content__inner__copy {
   position: relative;
   font-size: 12px;
-  text-align: right;
   margin-bottom: 40px;
   clear: both;
 }
