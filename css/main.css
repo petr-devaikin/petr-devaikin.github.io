@@ -52,8 +52,12 @@ body {
   background-position: center center;
   background-size: cover;
   border: 1px solid #000;
+  -moz-transition: border 0.1s;
+  -o-transition: border 0.1s;
+  -webkit-transition: border 0.1s;
+  transition: border 0.1s;
 }
-.card__main:after {
+.card:not(.card--empty) .card__main:after {
   content: '';
   position: absolute;
   left: 0;
@@ -68,11 +72,17 @@ body {
   -webkit-transition: opacity 0.1s;
   transition: opacity 0.1s;
 }
-.card__main--empty:after {
-  display: none;
+.card:not(.card--empty):hover {
+  color: #555;
 }
-.card:hover .card__main:after {
+.card:not(.card--empty):hover .card__main {
+  border-color: #555;
+}
+.card:not(.card--empty):hover .card__main:after {
   opacity: 0.7;
+}
+.card:not(.card--empty):hover .card__desc {
+  border-color: #555;
 }
 .card__desc {
   position: absolute;
@@ -81,6 +91,10 @@ body {
   width: 240px;
   border: 1px solid #000;
   border-left: none;
+  -moz-transition: border 0.1s, color 0.1s;
+  -o-transition: border 0.1s, color 0.1s;
+  -webkit-transition: border 0.1s, color 0.1s;
+  transition: border 0.1s, color 0.1s;
   padding: 20px 40px 20px 20px;
 }
 .card__desc a {

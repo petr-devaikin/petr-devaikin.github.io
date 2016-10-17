@@ -10,7 +10,9 @@ cardMargin = 40px
 cardPadding = 20px
 
 cardBorderColor = #000
+cardBorderColorHover = #555
 fontColor = #000
+fontColorHover = #555
 bgColor = #fff
 
 cardHeaderFontSize = 16px
@@ -84,26 +86,32 @@ body
 
         border 1px solid cardBorderColor
 
-        &:after
-            content ''
-            position absolute
-            left 0
-            top 0
-            width 100%
-            height 100%
-            background rgba(255, 255, 255, .2)
-            background-image url('../img/dot.png')
-            opacity 0
-            transition opacity .1s
+        transition border .1s
 
-        &--empty
-            &:after
-                display none
-
-    &:hover
+    &:not(.card--empty)
         .card__main
             &:after
-                opacity .7
+                content ''
+                position absolute
+                left 0
+                top 0
+                width 100%
+                height 100%
+                background rgba(255, 255, 255, .2)
+                background-image url('../img/dot.png')
+                opacity 0
+                transition opacity .1s
+
+        &:hover
+            color fontColorHover
+
+            .card__main
+                border-color cardBorderColorHover
+                &:after
+                    opacity .7
+
+            .card__desc
+                border-color cardBorderColorHover
 
 
     &__desc
@@ -114,6 +122,8 @@ body
 
         border 1px solid cardBorderColor
         border-left none
+
+        transition border .1s, color .1s
 
         padding cardPadding 2 * cardPadding cardPadding cardPadding
 
