@@ -19,6 +19,11 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+@media all and (max-width: 499px) {
+  .content {
+    padding: 0 10px;
+  }
+}
 .content * {
   box-sizing: border-box;
 }
