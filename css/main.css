@@ -253,7 +253,7 @@ body {
   }
   .card--empty .card__inner__desc {
     border: none;
-    padding: 20px 0 0 0;
+    padding: 40px 0 0 0;
   }
   .card--empty .card__inner__desc__header {
     font-size: 30px;
