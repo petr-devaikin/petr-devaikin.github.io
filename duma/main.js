@@ -401,7 +401,7 @@ function drawFractions() {
         .attr('width', FRACTION_WIDTH)
         .attr('height', function(d) {
             if (d.size < 5)
-                5 * SCALE_Y
+                return 5 * SCALE_Y;
             else
                 return d.size * SCALE_Y;
         })
