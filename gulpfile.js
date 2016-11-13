@@ -20,6 +20,11 @@ gulp.task('img', function () {
 });
 
 
+gulp.task('js', function () {
+    browserSync.reload({ stream: true });
+});
+
+
 gulp.task('html', function () {
     browserSync.reload({ stream: true });
 });
@@ -33,6 +38,8 @@ gulp.task('serve', ['html', 'css', 'img'], function () {
     });
 
     gulp.watch('./css/*.styl', ['css'])
+    gulp.watch('./js/*.js', ['js'])
     gulp.watch('./img/*.*', ['img'])
     gulp.watch('./index.html', ['html'])
+    gulp.watch('./projects/*.html', ['html'])
 });

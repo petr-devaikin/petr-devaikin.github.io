@@ -46,7 +46,7 @@ smScreen = 500px
 @font-face
     font-family 'PT Sans'
     font-style normal
-    src url('https://fonts.googleapis.com/css?family=PT+Sans')
+    src url('http://fonts.googleapis.com/css?family=PT+Sans')
 
 
 
@@ -154,6 +154,13 @@ body
 
             transition border .1s
 
+            h1
+                margin 0 0 15px
+                font-weight normal
+                font-size 30px
+                line-height 1
+
+
             +respond-below(smScreen)
                 position relative
                 width 100%
@@ -210,7 +217,8 @@ body
                     margin-top 1 * cardPadding
                     font-size smallScreenFontSize
 
-            &__date
+
+            &__tag
                 position absolute
                 bottom .5 * cardPadding
                 font-size cardDateFontSize
@@ -222,6 +230,22 @@ body
                     font-size smallScreenFontSize
                     font-style italic
                     opacity .3
+
+            &__date
+                position absolute
+                bottom .5 * cardPadding
+                font-size cardDateFontSize
+                right 15px
+
+                +respond-below(smScreen)
+                    position relative
+                    bottom 0
+                    margin-top .5 * cardPadding
+                    font-size smallScreenFontSize
+                    font-style italic
+                    opacity .3
+                    right auto
+
 
             &__supp
                 display none
@@ -266,10 +290,14 @@ body
                 &:after
                     opacity .7
 
+
             .card__inner__desc
                 border-color cardBorderColorHover
 
     &--empty
+        .card__inner__desc__text
+            margin-top 26px
+
         +respond-below(smScreen)
             .card__inner__main
                 padding 0
@@ -287,23 +315,18 @@ body
 
                 &__text
                     font-size smallScreenFontSize
-                    margin-top cardPadding
+                    margin-top cardPadding - 20px
                     margin-bottom 3 * cardPadding
                     line-height 1.5em
 
 
-h1
-    margin 0
-    font-weight normal
-    font-size 30px
-    line-height 1
 
 
 ul
-    margin 0
+    margin 0 0 0
     padding 0
 
     li
-        margin 0
+        margin 0 0 0px
         padding 0
         list-style none

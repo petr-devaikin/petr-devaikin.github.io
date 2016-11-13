@@ -1,0 +1,198 @@
+a {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #000;
+}
+a:hover {
+  border-bottom: 3px double #000;
+}
+.menu {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 20px;
+  padding: 10px 20px;
+  border-right: 1px solid #000;
+}
+.menu__name {
+  display: block;
+  border-bottom: none;
+  font-size: 18px;
+  line-height: 1;
+}
+.menu__name:hover {
+  border-bottom: none;
+}
+.menu__back {
+  font-size: 12px;
+  margin-top: -10px;
+}
+.project-container {
+  position: relative;
+  width: 100%;
+  max-height: 1024px;
+}
+.project-container__foreground {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+}
+.project-container__content {
+  position: relative;
+  z-index: 1;
+}
+.project-container__content__img {
+  position: relative;
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+.project-container__curtain {
+  position: fixed;
+  display: none;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 2;
+  bottom: 0;
+}
+.header {
+  position: relative;
+  background: #fff;
+  padding-bottom: 20px;
+}
+.header p {
+  margin: 0;
+}
+.header__name {
+  text-align: center;
+  font-size: 30px;
+  font-weight: normal;
+  margin: 30px 0 20px;
+}
+.header__description {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+}
+.header__link {
+  text-align: center;
+}
+.header__date {
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+}
+.screens {
+  position: relative;
+  width: 100%;
+}
+.screens__menu {
+  position: relative;
+  text-align: center;
+  background: #fff;
+  z-index: 11;
+  padding: 25px 0 25px;
+}
+.screens__menu__item {
+  position: relative;
+  padding: 5px 10px 4px;
+  background: rgba(255,255,255,0.7);
+  font-size: 12px;
+  text-decoration: none;
+  color: #3048c7;
+  border-radius: 5px;
+  background: #f3f3f3;
+  text-transform: uppercase;
+  border-bottom: none;
+}
+.screens__menu__item--device {
+  font-size: 10px;
+}
+.screens__menu__item+.screens__menu__item {
+  margin-left: 5px;
+}
+.screens__menu__item:hover {
+  opacity: 0.8;
+  border-bottom: none;
+}
+.screens__menu__item--active {
+  cursor: default;
+  color: #000;
+  background: #eee;
+  border-color: #e9e9e9;
+}
+.screens__menu__item--active:hover {
+  opacity: 1;
+}
+.screens__menu__item--active:after {
+  display: none;
+}
+.screens__frame {
+  position: relative;
+  width: 100%;
+  left: 0;
+}
+.screens__frame__device {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  box-sizing: border-box;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+.screens__frame__device--mac {
+  background-image: url("../img/macbook.png");
+}
+.screens__frame__device--ipad {
+  background-image: url("../img/ipad.png");
+}
+.screens__frame__device--iphone {
+  background-image: url("../img/iphone.png");
+}
+.screens__bottom {
+  position: relative;
+  left: 0;
+  width: 100%;
+  padding: 15px 0 20px;
+  background: #fff;
+  text-align: center;
+}
+.screens__bottom__item {
+  position: relative;
+  padding: 5px 10px 4px;
+  background: rgba(255,255,255,0.7);
+  font-size: 10px;
+  text-decoration: none;
+  color: #3048c7;
+  border-radius: 5px;
+  background: #f3f3f3;
+  text-transform: uppercase;
+  border-bottom: none;
+}
+.screens__bottom__item+.screens__bottom__item {
+  margin-left: 5px;
+}
+.screens__bottom__item:hover {
+  opacity: 0.8;
+  border-bottom: none;
+}
+.screens__bottom__item--active {
+  cursor: default;
+  color: #000;
+  background: #eee;
+  border-color: #e9e9e9;
+}
+.screens__bottom__item--active:hover {
+  opacity: 1;
+  border-bottom: none;
+}
+.screens__bottom__item--active:after {
+  display: none;
+}
