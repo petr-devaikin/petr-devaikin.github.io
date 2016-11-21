@@ -1,0 +1,30 @@
+$smallButtonSize = 45px
+$mediumButtonSize = 55px
+$bigButtonSize = 60px
+
+.m-button
+    position relative
+    background #fff
+    border-radius 50%
+    background-position center center
+    background-size contain
+    background-repeat no-repeat
+
+    &--small
+        width $smallButtonSize
+        height $smallButtonSize
+
+    &--medium
+        width $mediumButtonSize
+        height $mediumButtonSize
+
+    &--like
+        background-image url('../img/button_like.jpg')
+
+    &--dislike
+        background-image url('../img/button_cross.jpg')
+
+    &--superlike
+        background-image url('../img/button_superlike.jpg')
+
+

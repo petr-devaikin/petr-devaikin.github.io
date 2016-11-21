@@ -1,0 +1,254 @@
+
+@font-face {
+  font-family: 'NTR';
+  font-style: normal;
+  src: url("http://fonts.googleapis.com/css?family=NTR");
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #404040;
+  font-family: 'NTR', sans-serif;
+}
+body * {
+  box-sizing: border-box;
+}
+.m-fullscreen {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  background: #fff;
+  margin-top: 2000px;
+}
+.l-screen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  max-width: 375px;
+  height: 100%;
+  max-height: 667px;
+  background: #fff;
+}
+.l-screen:after {
+  display: none;
+  content: '';
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-image: url("../img/s_main.jpg");
+  background-size: contain;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+}
+
+.m-button {
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.m-button--small {
+  width: 45px;
+  height: 45px;
+}
+.m-button--medium {
+  width: 55px;
+  height: 55px;
+}
+.m-button--like {
+  background-image: url("../img/button_like.jpg");
+}
+.m-button--dislike {
+  background-image: url("../img/button_cross.jpg");
+}
+.m-button--superlike {
+  background-image: url("../img/button_superlike.jpg");
+}
+
+.m-mainview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #f6f7fb; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#fff, #f6f7fb); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#fff, #f6f7fb); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#fff, #f6f7fb); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#fff, #f6f7fb); /* Standard syntax */
+}
+.m-mainview__header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 55px;
+  background-image: url("../img/logo.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 90px;
+}
+.m-mainview__card {
+  position: absolute;
+  left: 10px;
+  top: 55px;
+  right: 10px;
+  bottom: 85px;
+}
+.m-mainview__footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 85px;
+  text-align: center;
+}
+.m-mainview__footer__inner {
+  position: absolute;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: 205px;
+}
+.m-mainview__footer__inner > * {
+  display: inline-block;
+  float: left;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.m-mainview__footer__inner .m-button + .m-button {
+  margin-left: 25px;
+}
+.m-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  overflow: hidden;
+  z-index: 5;
+}
+.m-card--empty {
+  display: none;
+}
+.m-card.released {
+  transition: left 0.1s, top 0.1s, transform 0.1s;
+}
+.m-card__status {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 200px;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.2s;
+}
+.m-card__status--liked {
+  background-image: url("../img/like.png");
+  background-position: left top;
+}
+.m-card__status--disliked {
+  background-image: url("../img/nope.png");
+  background-position: right top;
+}
+.m-card__status--superliked {
+  background-image: url("../img/superlike.png");
+  background-position: center 80%;
+}
+.m-card.liked .m-card__status--liked {
+  opacity: 1;
+}
+.m-card.disliked .m-card__status--disliked {
+  opacity: 1;
+}
+.m-card.superliked .m-card__status--superliked {
+  opacity: 1;
+}
+.m-card__photo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 70px;
+  background-position: center center;
+  background-size: cover;
+}
+.m-card__title {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  height: 70px;
+  background: #fff;
+}
+.m-card__title__inner {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding: 0 20px;
+  font-size: 22px;
+}
+.m-card__title__inner__name {
+  font-weight: bold;
+}
+.m-card__title__inner__desc {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #7e7e7e;
+}
+.m-card__title__inner__friends {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 22px;
+  color: #fd4f68;
+  padding-left: 30px;
+  background-image: url("../img/icon_friends.jpg");
+  background-size: 26px;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+.m-card__title__inner__interests {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 22px;
+  color: #cecece;
+  padding-left: 30px;
+  background-image: url("../img/icon_interests.jpg");
+  background-size: 26px;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+.m-card__title__inner__interests + .m-card__title__inner__friends {
+  right: 85px;
+}
+
