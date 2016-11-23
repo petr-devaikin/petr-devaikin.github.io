@@ -14,6 +14,7 @@ $photoTitleHeight = 70px
     width 100%
     height 100%
     verticalGradient #ffffff, #f6f7fb
+    z-index 1
 
     &__header
         position absolute
@@ -137,14 +138,14 @@ $photoTitleHeight = 70px
             width 100%
             transform translateY(-50%)
             padding 0 2 * $mainMargins
-            font-size 22px
+            font-size 28px
 
             &__name
                 font-weight bold
 
             &__desc
-                margin-top 2px
-                font-size 14px
+                margin-top 0px
+                font-size 18px
                 color $greyColor
 
             &__friends
@@ -152,12 +153,12 @@ $photoTitleHeight = 70px
                 right 1.5 * $mainMargins
                 top 50%
                 transform translateY(-50%)
-                font-size 22px
+                font-size 30px
                 color $pinkColor
-                padding-left 30px
+                padding-left 28px
                 background-image url('../img/icon_friends.jpg')
                 background-size 26px
-                background-position left center
+                background-position left 3px
                 background-repeat no-repeat
 
             &__interests
@@ -165,12 +166,12 @@ $photoTitleHeight = 70px
                 right 1.5 * $mainMargins
                 top 50%
                 transform translateY(-50%)
-                font-size 22px
+                font-size 30px
                 color $lightGreyColor
-                padding-left 30px
+                padding-left 28px
                 background-image url('../img/icon_interests.jpg')
                 background-size 26px
-                background-position left center
+                background-position left 3px
                 background-repeat no-repeat
 
                 & + .m-card__title__inner__friends

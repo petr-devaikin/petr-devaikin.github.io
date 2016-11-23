@@ -1,3 +1,6 @@
+@import "help"
+
+
 $smallButtonSize = 45px
 $mediumButtonSize = 55px
 $bigButtonSize = 60px
@@ -18,13 +21,29 @@ $bigButtonSize = 60px
         width $mediumButtonSize
         height $mediumButtonSize
 
+    &--big
+        width $bigButtonSize
+        height $bigButtonSize
+
     &--like
         background-image url('../img/button_like.jpg')
+
+        &.m-button--inverted
+            background-color $greenColor
+            background-image url('../img/button_like_white.png')
 
     &--dislike
         background-image url('../img/button_cross.jpg')
 
+        &.m-button--inverted
+            background-color $pinkColor
+            background-image url('../img/button_cross_white.png')
+
     &--superlike
         background-image url('../img/button_superlike.jpg')
+
+        &.m-button--inverted
+            background-color $blueColor
+            background-image url('../img/button_superlike_white.png')
 
 

@@ -4,6 +4,7 @@
         <title>INDERx</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
         <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=NTR" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <script src="js/jquery-3.1.1.js"></script>
         <script src="js/hammer.min.js"></script>
@@ -40,9 +41,49 @@
                     </div>
                 </div>
             </div>
+
             <div class="m-profile">
-            </div>
-            <div class="m-photos">
+                <div class="m-profile__close"></div>
+                <div class="m-profile__buttons">
+                    <div class="m-button m-button--big m-button--dislike m-button--inverted"></div>
+                    <div class="m-button m-button--big m-button--superlike m-button--inverted"></div>
+                    <div class="m-button m-button--big m-button--like m-button--inverted"></div>
+                </div>
+                <div class="m-profile__photos">
+                    <div class="m-slider">
+                        <div class="m-slider__nav">
+                            <div class="m-slider__nav__item m-slider__nav__item--active"></div>
+                            <div class="m-slider__nav__item"></div>
+                        </div>
+                        <div class="m-slider__container">
+                            <div class="m-slider__slide" style="background-image: url('img/mattia.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-profile__info">
+                    <div>
+                        <span class="m-profile__info__name"></span>,
+                        <span class="m-profile__info__age"></span>
+                    </div>
+                    <p class="m-profile__info__desc" id="details_desc"></p>
+                    <p class="m-profile__info__desc" id="details_dist"></p>
+                </div>
+                <div class="m-profile__profile"></div>
+                <div class="m-profile__friends">
+                    <div class="m-profile__friends__counter">1 Common Connection</div>
+                    <div class="m-profile__friends__container">
+                        <div class="m-profile__friends__friend">
+                            <div class="m-profile__friends__friend__photo" style="background-image: url('img/mattia.jpg')"></div>
+                            Braulio Bandwidth
+                        </div>
+                    </div>
+                </div>
+                <div class="m-profile__interests">
+                    <div class="m-profile__interests__counter">2 Interests</div>
+                    <div class="m-profile__interests__items">
+                        <div class="m-profile__interests__item">Sisyphos</div>
+                    </div>
+                </div>
             </div>
         </div>
 

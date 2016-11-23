@@ -1,0 +1,178 @@
+@import "help"
+
+.m-profile
+    position absolute
+    left 0
+    width 100%
+    height 100%
+    overflow auto
+    z-index 2
+    background #fff
+    font-size 18px
+    padding-bottom 150px
+    display none
+
+    &__close
+        position fixed
+        left 10px
+        top 20px
+        width 35px
+        height 35px
+        border-radius 50%
+        background-color rgba(0, 0, 0, .5)
+        background-image url('../img/close.png')
+        background-size cover
+        background-position center center
+        z-index 3
+
+    &__buttons
+        position fixed
+        bottom 0
+        left 0
+        width 100%
+        height 100px
+        verticalGradient rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)
+        z-index 3
+        text-align center
+        padding-top 20px
+
+        > *
+            display inline-block
+            margin 0 15px
+
+    &__photos
+        position relative
+        width 100%
+        height 0
+        padding-bottom 100%
+        background #eee
+
+    &__info
+        padding 20px 15px
+        border-bottom 1px solid $lightestGreyColor
+
+        &__name
+            font-weight bold
+            font-size 24px
+
+        &__age
+            font-size 24px
+
+        &__desc
+            margin 5px 0 0
+            color $greyColor
+
+    &__profile
+        padding 15px 15px
+        border-bottom 1px solid $lightestGreyColor
+        color $greyColor
+
+    &__friends
+        padding 15px 15px
+        border-bottom 1px solid $lightestGreyColor
+        color $greyColor
+
+        &__counter
+            font-weight bold
+            margin-bottom 10px
+
+        &__container
+            overflow hidden
+
+        &__friend
+            position relative
+            float left
+            width 30%
+            margin-bottom 10px
+            margin-top 10px
+            white-space nowrap
+            overflow hidden
+            font-size 16px
+            color $greyColor
+
+            &:nth-child(3n+2)
+                margin-left 5%
+                margin-right 5%
+
+            &__photo
+                width 100%
+                height 0px
+                padding-top 100%
+                border-radius 50%
+                background-size cover
+                background-position center center
+                margin-bottom 5px
+
+    &__interests
+        padding 15px 15px
+        border-bottom 1px solid $lightestGreyColor
+        color $greyColor
+
+        &__counter
+            font-weight bold
+            margin-bottom 10px
+
+        &__item
+            display inline-block
+            padding 7px 10px
+            border 1px solid $pinkColor
+            color $pinkColor
+            border-radius 5px
+            margin 0 6px 7px 0
+
+
+
+
+.m-slider
+    position absolute
+    left 0
+    top 0
+    width 100%
+    height 100%
+    overflow hidden
+
+    &__nav
+        position absolute
+        top 18px
+        left 0
+        width 100%
+        text-align center
+        z-index 2
+
+        &__item
+            position relative
+            display inline-block
+            width 7px
+            height 7px
+            border-radius 50%
+            background $lightGreyColor
+
+            & + &
+                margin-left 5px
+
+            &--active
+                background $pinkColor
+
+    &__container
+        position absolute
+        left 0
+        top 0
+        width 100%
+        height 100%
+
+        &.released
+            transition left .1s
+
+
+    &__slide
+        position relative
+        float left
+        left 0
+        top 0
+        height 100%
+        background-size cover
+        background-position center center
+
+
+
+
