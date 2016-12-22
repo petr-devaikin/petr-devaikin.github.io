@@ -70,7 +70,7 @@ function setScreenSize() {
     var screenTop = $('.screens').position().top;
 
     var frameWidth = frameHeight * 2048 / 1136;
-    var image = $('.project-container__content__img[device=' + activeDevice);
+    var image = $('.project-container__content__img[device=' + activeDevice + ']');
     image.css('width', frameWidth * RATIOS[activeDevice].width);
     image.css('padding-top', frameWidth * RATIOS[activeDevice].top + screenMenuHeight + screenTop);
     image.css('padding-bottom', frameWidth * RATIOS[activeDevice].bottom + curtainHeight + bottomHeight);
