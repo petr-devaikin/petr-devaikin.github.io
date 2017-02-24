@@ -72,8 +72,6 @@ a
     background bgColor
     padding-bottom 20px
 
-    p
-        margin 0
 
     &__name
         text-align center
@@ -82,9 +80,10 @@ a
         margin 30px 0 20px
 
     &__description
-        margin 0
+        margin 0 auto
         text-align center
         font-size 14px
+        max-width 700px
 
     &__link
         text-align center
@@ -94,6 +93,12 @@ a
         font-size 11px
         color #999
 
+
+.subheader
+    margin 40px 0 20px
+    font-size 20px
+    font-weight normal
+    text-align center
 
 .screens
     position relative
@@ -208,3 +213,50 @@ a
                 &:after
                     display none
 
+
+.pictures
+    margin-top 50px
+    max-width 720px
+    margin 0 auto 50px
+    overflow hidden
+
+    &__item
+        position relative
+        float left
+        width 200px
+        height 192px
+        margin 30px 20px 20px
+
+        text-align center
+        font-size 12px
+
+        img
+            width 100%
+            margin-top 10px
+            border-radius 10px
+
+.video
+    margin-top 30px
+    margin-left auto
+    margin-right auto
+    margin-bottom 100px
+    width 680px
+    height 382px
+    border-radius 10px
+    overflow hidden
+
+.gesture
+    position absolute
+    width 57px
+    height 75px
+    background-image url('../img/tap.png')
+    background-size cover
+    z-index 5
+    left 90px
+    top 140px
+    opacity .8
+
+    &--flicker
+        background-image url('../img/flicker.png')
+        left 70px
+        top 140px
