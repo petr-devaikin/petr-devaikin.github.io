@@ -83,7 +83,7 @@ a:hover {
   color: #999;
 }
 .subheader {
-  margin: 40px 0 20px;
+  margin: 40px 0 30px;
   font-size: 20px;
   font-weight: normal;
   text-align: center;
@@ -201,9 +201,8 @@ a:hover {
   display: none;
 }
 .pictures {
-  margin-top: 50px;
   max-width: 720px;
-  margin: 0 auto 50px;
+  margin: 0px auto 30px;
   overflow: hidden;
 }
 .pictures__item {
@@ -211,7 +210,7 @@ a:hover {
   float: left;
   width: 200px;
   height: 192px;
-  margin: 30px 20px 20px;
+  margin: 0px 20px 40px;
   text-align: center;
   font-size: 12px;
 }
@@ -221,7 +220,7 @@ a:hover {
   border-radius: 10px;
 }
 .video {
-  margin-top: 30px;
+  margin-top: 0px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 100px;
@@ -239,7 +238,6 @@ a:hover {
   z-index: 5;
   left: 90px;
   top: 140px;
-  opacity: 0.8;
 }
 .gesture--flicker {
   background-image: url("../img/flicker.png");
