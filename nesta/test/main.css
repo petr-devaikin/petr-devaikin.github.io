@@ -1,0 +1,22 @@
+.m-canvas {
+	width: 1000px;
+	height: 500px;
+}
+
+svg .line polyline {
+	fill: none;
+}
+
+.m-filters {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 10px;
+	background: rgba(200, 200, 200, .8);
+	width: 220px;
+	z-index: 100;
+}
+
+.m-filters label {
+	display: block;
+}

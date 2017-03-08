@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>What are the hot trends in Welsh tech networking?</title>
+		<meta charset=“utf-8”>
+		<script src="d3.js"></script>
+		<link rel="stylesheet" type="text/css" href="main.css">
+	</head>
+	<body>
+		<svg class="m-canvas">
+		</svg>
+
+		<div class="m-filters">
+			<label>
+				Source:
+				<select class="m-filters__source">
+					<option value="wales_tags_eigenvector_centrality.csv">eigenvector_centrality</option>
+					<option value="wales_tags_betweenness_centrality.csv">betweenness_centrality</option>
+				</select>
+			</label>
+			<hr/>
+
+			Show
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="10" checked="checked" /> top 10
+			</label>
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="20" /> top 20
+			</label>
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="50" /> top 50
+			</label>
+			<hr/>
+
+			Color
+			<label>
+				<input class="m-filters__color" type="radio" name="color" value="trends" checked="checked" /> trends
+			</label>
+			<label>
+				<input class="m-filters__color" type="radio" name="color" value="bw" /> b/w
+			</label>
+			<label>
+				<input class="m-filters__color" type="radio" name="color" value="rainbow" /> rainbow
+			</label>
+		</div>
+
+		<script src="main.js"></script>
+	</body>
+</html>
