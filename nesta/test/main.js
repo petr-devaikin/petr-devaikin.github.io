@@ -208,6 +208,52 @@ function drawData(data) {
 	});
 
 	addHint();
+	updateKey();
+}
+
+// KEY
+
+function updateKey() {
+	var color = d3.select('.m-key__color');
+	color.html('Change in ranking:<br/><span style="position: relative; float: left;">' + '-' + maxChange + '</span>');
+	var colors = new Array(maxChange * 2 + 1);
+	var j = -maxChange;
+	for (var i = 0; i < colors.length; i++)
+		colors[i] = j++;
+	color.selectAll('.col-tip').data(colors).enter()
+		.append('div')
+			.classed('col-tip', true)
+			.style('background', function(d) { return COLOR_SCALE(d / maxChange); });
+
+	color.append('span')
+		.style('position', 'relative')
+		.style('float', 'left')
+		.text('+' + maxChange);
+
+
+	var maxRate = getFilterValues().maxRate;
+
+	var thick = d3.select('.m-key__thick');
+	thick.html('Highest position: <br/><span style="position: relative; float: left;">1</span>');
+	var positions = new Array(maxRate);
+	for (var i = 0; i < positions.length; i++) {
+		positions[i] = i + 1;
+	}
+
+
+	thick.selectAll('.thick-tip').data(positions).enter()
+		.append('div')
+			.classed('thick-tip', true)
+			.style('width', (100 / maxRate) + 'px')
+			.style('border-bottom-width', function(d) {
+				return (1 + 100 / maxRate / maxRate * (maxRate - d + 1)) + 'px';
+			});
+
+
+	thick.append('span')
+		.style('position', 'relative')
+		.style('float', 'left')
+		.text(getFilterValues().maxRate);
 }
 
 // FILTERS
