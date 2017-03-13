@@ -26,6 +26,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		showLegend: true,
 		legendSteps: 7,
 		legendSampleWidth: 20,
+		legendRoundTo: 0,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -191,7 +192,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			legend.append('rect')
 				.classed('vis__legend__bg', true)
 				.attr('width', 20 + legendWidth)
-				.attr('height', params.legendSampleWidth + 40);
+				.attr('height', params.legendSampleWidth + 30);
 
 			var steps = [];
 			for (var i = 0; i < params.legendSteps; i++)
@@ -203,16 +204,19 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				.attr('width', params.legendSampleWidth)
 				.attr('height', params.legendSampleWidth)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, params.legendSampleWidth);
+					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, 10);
 				});
+
+			var multiplicator = Math.pow(10, params.legendRoundTo);
 
 			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
 				.classed('vis__legend__tips', true)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
+					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 10 + params.legendSampleWidth);
 				})
 				.attr('text-anchor', 'middle')
-				.text(function(d) { return Math.round(d); });
+				.attr('alignment-baseline', 'before-edge')
+				.text(function(d) { return Math.round(d * multiplicator) / multiplicator; });
 		}
 		if (params.showLegend)
 			drawLegend();

@@ -37,6 +37,6 @@ d3.csv('normalised_attendants_in_other_cities.csv', function(rawData) {
 	}
 	prepareData();
 
-	var heatmap = new Heatmap(svg, xValues, yValues, data, { maxValue: maxValue });
+	var heatmap = new Heatmap(svg, xValues, yValues, data, { maxValue: maxValue, legendRoundTo: 2, legendSampleWidth: 25 });
 	heatmap.draw();
 });

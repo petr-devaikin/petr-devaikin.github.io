@@ -1,4 +1,4 @@
-var width = 950,
+var width = 1020,
 	height = 750;
 
 var svg = d3.select("body").append("svg")
@@ -44,7 +44,8 @@ d3.csv('engineering_tech_lad.csv', function(rawData) {
 		maxValue: maxValue,
 		leftMargin: 200,
 		rotateYAxisTips: false,
-		cellWidth: 90
+		cellWidth: 90,
+		legendSteps: 10
 	});
 	heatmap.draw();
 });
