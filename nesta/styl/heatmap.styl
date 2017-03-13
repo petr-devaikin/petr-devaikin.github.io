@@ -1,0 +1,45 @@
+.vis--heatmap
+	.vis__axis
+		font-size 10px
+		fill #777
+
+		&__tip
+			&.selected
+				font-weight bold
+				fill #000
+
+	.vis__graph
+		&__cell
+			&__bg
+				stroke none
+				fill #fff
+				opacity 0
+
+			&__value
+				stroke none
+
+
+		&__hint
+			pointer-events none
+
+			rect
+				stroke #999
+				fill #fff
+				opacity .7
+			text
+				text-anchor middle
+				fill #000
+				font-size 10px
+
+		&__highlight
+			stroke none
+			fill rgba(150, 150, 150, .1)
+
+	.vis__legend
+		&__bg
+			stroke #444
+			stroke-width 1
+			fill #fff
+
+		text
+			font-size 10px
