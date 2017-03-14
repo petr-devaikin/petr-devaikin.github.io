@@ -13,7 +13,7 @@ if (!String.prototype.format) {
 
 function Heatmap(svg, xValues, yValues, data, p) {
 	var params = {
-		leftMargin: 150,
+		leftMargin: 100,
 		topMargin: 10,
 		cellWidth: 10,
 		cellHeight: 10,
