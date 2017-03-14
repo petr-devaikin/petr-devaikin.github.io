@@ -29,7 +29,20 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 				if (prop != xValuesName && rawData[0].hasOwnProperty(prop)) 
 					yValues.push(prop);
 
-			var columnSum;
+			// fix this hell
+			/*console.log(yValues);
+			yValues.sort(function(a, b) {
+				if ((cities.indexOf(a) != -1 && cities.indexOf(b) != -1) || (cities.indexOf(a) == -1 && cities.indexOf(b) == -1)) {
+					if (a < b) return -1;
+					if (a > b) return 1;
+					return 0;
+				}
+				if (cities.indexOf(a) != -1)
+					return -1;
+				if (cities.indexOf(b) != -1)
+					return 1;
+			});
+			console.log(yValues);*/
 
 			var xCounter = 0;
 			rawData.forEach(function(d, i) {
@@ -43,14 +56,14 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 				if (found) {
 					xValues.push(d[xValuesName]);
 					yValues.forEach(function(y, j) {
-						if (cities.indexOf(d[xValuesName]) != -1 || cities.indexOf(y) != -1) {
+						//if (cities.indexOf(d[xValuesName]) != -1 || cities.indexOf(y) != -1) {
 							data.push({
 								value: parseFloat(d[y]),
 								x: xCounter,
 								y: j
 							});
 							maxValue = Math.max(maxValue, d[y]);
-						}
+						//}
 					});
 					xCounter++;
 				}
@@ -73,12 +86,12 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 				var filtered = data.filter(function(d) { return d.y == i && cityYPositions.indexOf(d.x) != -1; });
 				var sum = filtered.reduce(function(a, b) { return a + b.value; }, 0);
 				if (sum == 0) {
-					console.log('remove ' + (i - shift) + ' ' + yValues[i - shift]);
+					//console.log('remove ' + (i - shift) + ' ' + yValues[i - shift]);
 					yValues.splice(i - shift, 1);
 					shift++;
 				}
 				else if (shift > 0) {
-					console.log('shift ' + i + ' to ' + shift);
+					//console.log('shift ' + i + ' to ' + shift);
 					var row = data.filter(function(d) { return d.y == i; })
 					row.forEach(function(d) { d.y -= shift; });
 					cleanData = cleanData.concat(row);
@@ -94,7 +107,10 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 			legendRoundTo: 2,
 			legendSampleWidth: 25,
 			leftMargin: 150,
-			bottomMargim: 150
+			bottomMargim: 10,
+			topMargin: 150,
+			showTopAxis: true,
+			showBottomAxis: false,
 		});
 		heatmap.draw();
 	});

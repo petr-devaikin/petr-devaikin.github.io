@@ -27,6 +27,8 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		legendSteps: 7,
 		legendSampleWidth: 20,
 		legendRoundTo: 0,
+		showTopAxis: false,
+		showBottomAxis: true,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -48,6 +50,10 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		var bottomAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + graphHeight))
 			.classed('vis__axis vis__axis--bottom', true);
+
+		var topAxis = svg.append('g')
+			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
+			.classed('vis__axis vis__axis--top', true);
 
 		var graphArea = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
@@ -73,20 +79,39 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(i)); })
 				.text(function(d) { return d; });
 
-			var bottomTips = bottomAxis.selectAll('vis__axis__tip').data(xValues).enter().append('text')
-				.classed('vis__axis__tip', true)
-				.text(function(d) { return d; });
+			if (params.showBottomAxis) {
+				var bottomTips = bottomAxis.selectAll('vis__axis__tip').data(xValues).enter().append('text')
+					.classed('vis__axis__tip', true)
+					.text(function(d) { return d; });
 
-			if (params.rotateYAxisTips)
-				bottomTips
-					.attr('text-anchor', 'end')
-					.attr('alignment-baseline', 'middle')
-					.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), 5); });
-			else
-				bottomTips
-					.attr('text-anchor', 'middle')
-					.attr('alignment-baseline', 'before-edge')
-					.attr('transform', function(d, i) { return 'translate({0},{1})'.format(xScale(i), 5); });
+				if (params.rotateYAxisTips)
+					bottomTips
+						.attr('text-anchor', 'end')
+						.attr('alignment-baseline', 'middle')
+						.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), 5); });
+				else
+					bottomTips
+						.attr('text-anchor', 'middle')
+						.attr('alignment-baseline', 'before-edge')
+						.attr('transform', function(d, i) { return 'translate({0},{1})'.format(xScale(i), 5); });
+			}
+
+			if  (params.showTopAxis) {
+				var topTips = topAxis.selectAll('vis__axis__tip').data(xValues).enter().append('text')
+					.classed('vis__axis__tip', true)
+					.text(function(d) { return d; });
+
+				if (params.rotateYAxisTips)
+					topTips
+						.attr('text-anchor', 'start')
+						.attr('alignment-baseline', 'middle')
+						.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), -5); });
+				else
+					topTips
+						.attr('text-anchor', 'middle')
+						.attr('alignment-baseline', 'after-edge')
+						.attr('transform', function(d, i) { return 'translate({0},{1})'.format(xScale(i), -5); });
+			}
 		}
 		drawAxes();
 
@@ -129,20 +154,33 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				.attr('width', xScale(d.x + 0.5))
 				.attr('y', yScale(d.y - 0.5));
 
-			columnHighlight
-				.attr('visibility', 'visible')
-				.attr('x', xScale(d.x - 0.5))
-				.attr('y', yScale(d.y + 0.5))
-				.attr('height', graphHeight - yScale(d.y + 0.5));
+			if (params.showBottomAxis) // <--------------------- FIX!!!
+				columnHighlight
+					.attr('visibility', 'visible')
+					.attr('x', xScale(d.x - 0.5))
+					.attr('y', yScale(d.y + 0.5))
+					.attr('height', graphHeight - yScale(d.y + 0.5));
+			else
+				columnHighlight
+					.attr('visibility', 'visible')
+					.attr('x', xScale(d.x - 0.5))
+					.attr('y', 0)
+					.attr('height', yScale(d.y - 0.5));
 
 			leftAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return i == d.y; } ).classed('selected', true);
+			topAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return i == d.x; }).classed('selected', true);
 			bottomAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return i == d.x; }).classed('selected', true);
 		}
 
 		function hideHint() {
 			hint.attr('visibility', 'hidden');
+			
 			leftAxis.select('.vis__axis__tip.selected').classed('selected', false);
+			topAxis.select('.vis__axis__tip.selected').classed('selected', false);
 			bottomAxis.select('.vis__axis__tip.selected').classed('selected', false);
+
+			rowHighlight.attr('visibility', 'hidden');
+			columnHighlight.attr('visibility', 'hidden');
 		}
 
 		function drawData() {
@@ -176,12 +214,6 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 		drawData();
 		drawHint();
-
-		function hideHint() {
-			hint.attr('visibility', 'hidden');
-			leftAxis.select('.vis__axis__tip.selected').classed('selected', false);
-			bottomAxis.select('.vis__axis__tip.selected').classed('selected', false);
-		}
 
 		function drawLegend() {
 			var legend = svg.append('g')
