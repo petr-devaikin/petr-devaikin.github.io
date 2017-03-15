@@ -1,23 +1,9 @@
-if (!String.prototype.format) {
-	String.prototype.format = function() {
-		var args = arguments;
-		return this.replace(/{(\d+)}/g, function(match, number) { 
-			return typeof args[number] != 'undefined'
-				? args[number]
-				: match
-			;
-		});
-	};
-}
-
-
 function Heatmap(svg, xValues, yValues, data, p) {
 	var params = {
 		leftMargin: 100,
 		topMargin: 10,
 		cellWidth: 10,
 		cellHeight: 10,
-		yValuesName: '',
 		minValue: 0,
 		maxValue: 1,
 		minColor: '#f7fcfd',
@@ -27,8 +13,12 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		legendSteps: 7,
 		legendSampleWidth: 20,
 		legendRoundTo: 0,
+		showLeftAxis: true,
+		showRightAxis: false,
 		showTopAxis: false,
 		showBottomAxis: true,
+		highlightedRows: 0, // to hightlight background
+		highlightedColumns: 0,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -72,24 +62,30 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			columnHighlight;
 
 		function drawAxes() {
-			leftAxis.selectAll('vis__axis__tip').data(yValues).enter().append('text')
-				.classed('vis__axis__tip', true)
-				.attr('alignment-baseline', 'middle')
-				.attr('text-anchor', 'end')
-				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(i)); })
-				.text(function(d) { return d; });
+			function addTips(axis, data) {
+				return axis.selectAll('vis__axis__tip').data(data).enter().append('text')
+					.classed('vis__axis__tip', true)
+					.attr('text-anchor', 'end')
+					.attr('alignment-baseline', 'middle')
+					.text(function(d) { return d; });
+			}
+
+			var leftTips = addTips(leftAxis, yValues);
+			leftTips
+				.classed('highlighted', function(d, i) { return i < params.highlightedRows; })
+				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(i)); });
+
+
+			function addHorizontalTips(axis) {
+				return addTips(axis, xValues)
+					.classed('highlighted', function(d, i) { return i < params.highlightedColumns; })
+					.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), 5); });
+			}
 
 			if (params.showBottomAxis) {
-				var bottomTips = bottomAxis.selectAll('vis__axis__tip').data(xValues).enter().append('text')
-					.classed('vis__axis__tip', true)
-					.text(function(d) { return d; });
+				var bottomTips = addHorizontalTips(bottomAxis);
 
-				if (params.rotateYAxisTips)
-					bottomTips
-						.attr('text-anchor', 'end')
-						.attr('alignment-baseline', 'middle')
-						.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), 5); });
-				else
+				if (!params.rotateYAxisTips)
 					bottomTips
 						.attr('text-anchor', 'middle')
 						.attr('alignment-baseline', 'before-edge')
@@ -97,23 +93,37 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			}
 
 			if  (params.showTopAxis) {
-				var topTips = topAxis.selectAll('vis__axis__tip').data(xValues).enter().append('text')
-					.classed('vis__axis__tip', true)
-					.text(function(d) { return d; });
+				var topTips = addHorizontalTips(topAxis);
 
-				if (params.rotateYAxisTips)
-					topTips
-						.attr('text-anchor', 'start')
-						.attr('alignment-baseline', 'middle')
-						.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(i), -5); });
-				else
-					topTips
-						.attr('text-anchor', 'middle')
-						.attr('alignment-baseline', 'after-edge')
-						.attr('transform', function(d, i) { return 'translate({0},{1})'.format(xScale(i), -5); });
+				topTips
+					.attr('text-anchor', params.rotateYAxisTips ? 'start' : 'middle')
+					.attr('alignment-baseline', params.rotateYAxisTips ? 'middle' : 'after-edge')
+					.attr('transform', function(d, i) {
+						return 'translate({0},{1}) rotate({2})'.format(xScale(i), -5, params.rotateYAxisTips ? -90 : 0);
+					});
 			}
 		}
 		drawAxes();
+
+		// draw bg for highlighted rows and columns
+		function drawHighlighted() {
+			if (params.highlightedColumns)
+				graphArea.append('rect')
+					.classed('vis__graph__high-bg', true)
+					.attr('x', 0)
+					.attr('y', 0)
+					.attr('width', xScale(params.highlightedColumns - 0.5))
+					.attr('height', graphHeight);
+
+			if (params.highlightedRows)
+				graphArea.append('rect')
+					.classed('vis__graph__high-bg', true)
+					.attr('x', 0)
+					.attr('y', 0)
+					.attr('height', yScale(params.highlightedRows - 0.5))
+					.attr('width', graphWidth);
+		}
+		drawHighlighted();
 
 		function drawHint() {
 			hint = graphArea.append('g')

@@ -17,7 +17,7 @@ d3.csv('engineering_tech_lad.csv', function(rawData) {
 		yValues = [];
 		data = [];
 
-		var xValuesName = Object.keys(rawData[0])[0];
+		var xValuesName = 'lad_name';
 
 		for (var prop in rawData[0])
 			if (prop != xValuesName && rawData[0].hasOwnProperty(prop))

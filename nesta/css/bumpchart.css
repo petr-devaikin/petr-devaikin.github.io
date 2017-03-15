@@ -1,0 +1,21 @@
+.vis--bumpchart .vis__axis {
+  font-size: 10px;
+}
+.vis--bumpchart .vis__axis .tick.selected {
+  font-weight: bold;
+}
+.vis--bumpchart .vis__graph__line {
+  fill: none;
+  stroke-width: 3;
+}
+.vis--bumpchart .vis__graph__hint {
+  pointer-events: none;
+}
+.vis--bumpchart .vis__legend__bg {
+  stroke: #444;
+  stroke-width: 1;
+  fill: #fff;
+}
+.vis--bumpchart .vis__legend text {
+  font-size: 10px;
+}
