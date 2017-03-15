@@ -77,8 +77,8 @@ function Bumpchart(svg, xValues, data, p) {
 			var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
 			hints
 				.attr('transform', setHintPosition)
-				.attr('visibility', 'visible');
-			hints.select('text').text(function(d) { return d.position; });
+				.attr('visibility', function(d) { return d !== undefined; });
+			hints.select('text').text(function(d) { return (d !== undefined) ? d.position : ''; });
 
 			hints.exit().attr('visibility', 'hidden');
 			var newHints = hints.enter().append('g')
