@@ -1,15 +1,26 @@
 .vis--bumpchart .vis__axis {
   font-size: 10px;
 }
-.vis--bumpchart .vis__axis .tick.selected {
-  font-weight: bold;
+.vis--bumpchart .vis__axis .tick.blured text {
+  opacity: 0.2;
 }
 .vis--bumpchart .vis__graph__line {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 5;
 }
-.vis--bumpchart .vis__graph__hint {
+.vis--bumpchart .vis__graph__line.blured {
+  opacity: 0.2;
+}
+.vis--bumpchart .vis__hints__hint {
   pointer-events: none;
+}
+.vis--bumpchart .vis__hints__hint path {
+  stroke: #000;
+  stroke-width: 1;
+  fill: #fff;
+}
+.vis--bumpchart .vis__hints__hint text {
+  font-size: 10px;
 }
 .vis--bumpchart .vis__legend__bg {
   stroke: #444;
