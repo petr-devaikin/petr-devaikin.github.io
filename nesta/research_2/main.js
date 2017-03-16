@@ -45,7 +45,8 @@ d3.csv('engineering_tech_lad.csv', function(rawData) {
 		leftMargin: 200,
 		rotateYAxisTips: false,
 		cellWidth: 90,
-		legendSteps: 10
+		legendSteps: 10,
+		legendText: 'engineering_tech_lad'
 	});
 	heatmap.draw();
 });

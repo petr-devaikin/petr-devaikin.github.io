@@ -116,7 +116,8 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 			highlightedColumns: welshCols, // <----- FIX THIS
 			highlightedRows: welshRows,
 			highlightedValues: walshCities,
-			sorting: true
+			sorting: true,
+			legendText: 'Normalised attendants (to/from)'
 		});
 		heatmap.draw();
 	});

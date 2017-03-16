@@ -77,14 +77,14 @@ function Bumpchart(svg, xValues, data, p) {
 			var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
 			hints
 				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return d !== undefined; });
+				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
 			hints.select('text').text(function(d) { return (d !== undefined) ? d.position : ''; });
 
-			hints.exit().attr('visibility', 'hidden');
+			hints.exit().remove();
 			var newHints = hints.enter().append('g')
 				.classed('vis__hints__hint', true)
 				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return d !== undefined; });
+				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
 			
 			newHints.append('path')
 				.attr('d', 'M0 0 L-5 -5 L-20 -5 L-20 -20 L20 -20 L20 -5 L5 -5 Z');
@@ -92,7 +92,7 @@ function Bumpchart(svg, xValues, data, p) {
 				.attr('dy', -5)
 				.attr('text-anchor', 'middle')
 				.attr('alignment-baseline', 'after-edge')
-				.text(function(d) { return d.position; });
+				.text(function(d) { return (d !== undefined) ? d.position : ''; });
 
 			graphArea.selectAll('.vis__graph__line')
 				.classed('blured', function(d) { return d != line; });
@@ -146,12 +146,15 @@ function Bumpchart(svg, xValues, data, p) {
 			rightAxis.call(d3.axisRight(yScale).ticks(params.showTop)
 				.tickFormat(function(d, i) { return d + ' - ' + rightNames[d].name; }));
 
-			function setTickColor(axis, names) {
-				axis.selectAll('.tick').select('text')
-					.attr('fill', function(d, i) { return colorScale(names[i + 1].change / maxChange); });
+			function setTickColorAndHover(axis, names) {
+				axis.selectAll('.tick')
+					.on('mouseover', function(d, i) { showHints(names[i + 1]); })
+					.on('mouseout', function(d, i) { hideHints(); })
+					.select('text')
+						.attr('fill', function(d, i) { return colorScale(names[i + 1].change / maxChange); });
 			}
-			setTickColor(leftAxis, leftNames);
-			setTickColor(rightAxis, rightNames);
+			setTickColorAndHover(leftAxis, leftNames);
+			setTickColorAndHover(rightAxis, rightNames);
 		}
 		drawAxes();
 
@@ -182,7 +185,11 @@ function Bumpchart(svg, xValues, data, p) {
 			legend.append('rect')
 				.classed('vis__legend__bg', true)
 				.attr('width', 20 + legendWidth)
-				.attr('height', params.legendSampleWidth + 30);
+				.attr('height', params.legendSampleWidth + 50);
+
+			legend.append('text') // <-- FIX
+				.attr('transform', 'translate({0},{1})'.format(10, 20))
+				.text('Change in ranking');
 
 			var steps = [];
 			for (var i = 0; i < params.legendSteps; i++)
@@ -194,7 +201,7 @@ function Bumpchart(svg, xValues, data, p) {
 				.attr('width', params.legendSampleWidth)
 				.attr('height', params.legendSampleWidth)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, 10);
+					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, 30);
 				});
 
 			var multiplicator = Math.pow(10, params.legendRoundTo);
@@ -202,7 +209,7 @@ function Bumpchart(svg, xValues, data, p) {
 			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
 				.classed('vis__legend__tips', true)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 10 + params.legendSampleWidth);
+					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
 				})
 				.attr('text-anchor', 'middle')
 				.attr('alignment-baseline', 'before-edge')
