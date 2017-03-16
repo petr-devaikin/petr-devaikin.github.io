@@ -5,48 +5,54 @@ var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
+var yValues = [],
+	xValues = [],
+	maxValue = 0;
 
-d3.csv('engineering_tech_lad.csv', function(rawData) {
-	var xValues,
-		yValues,
-		data,
-		maxValue = 0;
+d3.csv(
+	'engineering_tech_lad.csv',
+	function(line, i) {
+		var propsToIgnore = ['lad_name'];
 
-	function prepareData() {
-		xValues = [];
-		yValues = [];
-		data = [];
-
-		var xValuesName = 'lad_name';
-
-		for (var prop in rawData[0])
-			if (prop != xValuesName && rawData[0].hasOwnProperty(prop))
-				yValues.push(prop);
-
-		rawData.forEach(function(d, i) {
-			xValues.push(d[xValuesName]);
-			yValues.forEach(function(y, j) {
-				data.push({
-					value: d[y],
-					x: i,
-					y: j
-				});
-				maxValue = Math.max(maxValue, d[y]);
+		if (i == 0) {
+			Object.keys(line).forEach(function(prop, j) {
+				if (propsToIgnore.indexOf(prop) == -1) {
+					yValues.push(prop);
+				}
 			});
+		}
+		else {
+			xValues.push(line['lad_name']);
+		}
+
+		var res = []
+		yValues.forEach(function(y, j) {
+			if (line[y] !== undefined && line[y] != '') {
+				var v = {
+					x: line['lad_name'],
+					y: y,
+					value: parseFloat(line[y])
+				}
+				res.push(v);
+				maxValue = Math.max(maxValue, v.value);
+			}
 		});
+		return res;
+	},
+	function(rawData) {
+		var data = rawData.reduce(function(a, b) { return a.concat(b); }, []);
 
-		for (var i = 0; i < yValues.length; i++)
-			yValues[i] = yValues[i].split('_').join(' ');
-	}
-	prepareData();
-
-	var heatmap = new Heatmap(svg, xValues, yValues, data, {
-		maxValue: maxValue,
-		leftMargin: 200,
-		rotateYAxisTips: false,
-		cellWidth: 90,
-		legendSteps: 10,
-		legendText: 'engineering_tech_lad'
-	});
-	heatmap.draw();
+		var heatmap = new Heatmap(svg, xValues, yValues, data, {
+			maxValue: maxValue,
+			leftMargin: 200,
+			rotateYAxisTips: false,
+			cellWidth: 90,
+			legendSteps: 10,
+			showTopAxis: true,
+			showBottomAxis: false,
+			topMargin: 40,
+			sorting: true,
+			legendText: 'engineering_tech_lad'
+		});
+		heatmap.draw();
 });
