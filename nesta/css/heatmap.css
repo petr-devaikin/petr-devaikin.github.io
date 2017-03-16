@@ -9,6 +9,10 @@
   font-weight: bold;
   fill: #000;
 }
+.vis--heatmap .vis__graph__cell {
+  -webkit-transition: transform 0.5s;
+  transition: transform 0.5s;
+}
 .vis--heatmap .vis__graph__cell__bg {
   stroke: none;
   fill: #fff;

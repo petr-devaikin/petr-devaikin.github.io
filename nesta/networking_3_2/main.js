@@ -70,8 +70,8 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 						if (parseFloat(currentColumn[y]) > 0) {
 							data.push({
 								value: parseFloat(currentColumn[y]),
-								x: i,
-								y: j
+								x: currentCityName,
+								y: y
 							});
 							maxValue = Math.max(maxValue, currentColumn[y]);
 						}
@@ -80,32 +80,20 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 			}
 
 			// remove extra rows
-			
-			var cityYPositions = [];
-			for (var j = 0; j < walshCities.length; j++) {
-				var pos = xValues.indexOf(walshCities[j]);
-				if (pos != -1)
-					cityYPositions.push(pos);
-			}
 
 			var cleanData = [];
 
 			var shift = 0;
-			var length = yValues.length;
-			for (var i = 0; i < length; i++) {
-				var filtered = data.filter(function(d) { return d.y == i && cityYPositions.indexOf(d.x) != -1; });
+			for (var i = 0; i < yValues.length; i++) {
+				var filtered = data.filter(function(d) { return d.y == yValues[i] && walshCities.indexOf(d.x) != -1; });
 				var sum = filtered.reduce(function(a, b) { return a + b.value; }, 0);
 				if (sum == 0) {
 					//console.log('remove ' + (i - shift) + ' ' + yValues[i - shift]);
 					yValues.splice(i - shift, 1);
-					shift++;
+					i--;
 				}
 				else {
-					var row = data.filter(function(d) { return d.y == i; })
-					if (shift > 0) {
-						//console.log('shift ' + i + ' to ' + shift);
-						row.forEach(function(d) { d.y -= shift; });
-					}
+					var row = data.filter(function(d) { return d.y == yValues[i]; });
 					cleanData = cleanData.concat(row);
 				}
 			}
@@ -125,8 +113,10 @@ d3.csv('find_area_from_lad.csv', function(citiesData) {
 			showBottomAxis: false,
 			minColor: '#ffeda0',
 			maxColor: '#f03b20',
-			highlightedColumns: welshCols,
-			highlightedRows: welshRows
+			highlightedColumns: welshCols, // <----- FIX THIS
+			highlightedRows: welshRows,
+			highlightedValues: walshCities,
+			sorting: true
 		});
 		heatmap.draw();
 	});
