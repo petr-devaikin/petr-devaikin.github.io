@@ -21,6 +21,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		highlightedColumns: 0,
 		highlightedValues: [],
 		sorting: false,
+		animationDuration: 200,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -110,18 +111,24 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			}
 
 			graphArea.selectAll('.vis__graph__cell')
-				.attr('transform', function(d) {
-					return 'translate({0},{1})'.format(xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2);
-				});
+				.transition()
+				.duration(params.animationDuration)
+					.attr('transform', function(d) {
+						return 'translate({0},{1})'.format(xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2);
+					});
 
 			leftAxis.selectAll('.vis__axis__tip')
-				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
+				.transition()
+				.duration(params.animationDuration)
+					.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
 
 			// FIX THIS!
 			topAxis.selectAll('.vis__axis__tip')
-				.attr('transform', function(d, i) {
-					return 'translate({0},{1}) rotate({2})'.format(xScale(d), -5, params.rotateYAxisTips ? -90 : 0);
-				});
+				.transition()
+				.duration(params.animationDuration)
+					.attr('transform', function(d, i) {
+						return 'translate({0},{1}) rotate({2})'.format(xScale(d), -5, params.rotateYAxisTips ? -90 : 0);
+					});
 		}
 
 		function drawAxes() {
