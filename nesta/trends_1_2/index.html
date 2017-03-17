@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>How is Wales economy likely to evolve in the near future?</title>
+		<meta charset=“utf-8”>
+		<script src="d3.js"></script>
+		<link rel="stylesheet" type="text/css" href="main.css">
+	</head>
+	<body>
+		<h3>How is Wales economy likely to evolve in the near future?</h3>
+
+		<div class="m-filters">
+			<label>
+				Source:
+				<select class="m-filters__source">
+					<option value="wales_tags_eigenvector_centrality.csv">eigenvector_centrality</option>
+					<option value="wales_tags_betweenness_centrality.csv">betweenness_centrality</option>
+				</select>
+			</label>
+			<hr/>
+
+			Show
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="10" checked="checked" /> top 10
+			</label>
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="20" /> top 20
+			</label>
+			<label>
+				<input class="m-filters__top" type="radio" name="show" value="50" /> top 50
+			</label>
+		</div>
+
+		<script src="d3.js" charset="utf-8"></script>
+		<script src="../js/helpers.js"></script>
+		<script src="../js/datareader.js"></script>
+		<script src="main.js"></script>
+	</body>
+</html>
