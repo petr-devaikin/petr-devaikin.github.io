@@ -7,10 +7,15 @@
 	text-transform: uppercase;
 }
 
-.cluster rect {
+.cluster__border {
 	fill: none;
 	stroke: #000;
 	stroke-width: 1;
+}
+
+.cluster__bg {
+	stroke: none;
+	visibility: hidden;
 }
 
 .leaf text {
@@ -38,4 +43,14 @@
 .hint text {
 	alignment-baseline: before-edge;
 	text-anchor: middle;
+}
+
+.vis__legend {
+	font-size: 10px;
+}
+
+.vis__legend__bg {
+	stroke: #000;
+	stroke-width: 1;
+	fill: #fff;
 }

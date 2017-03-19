@@ -11,23 +11,24 @@
 
 		<div class="m-filters">
 			<label>
-				Source:
-				<select class="m-filters__source">
-					<option value="wales_tags_eigenvector_centrality.csv">eigenvector_centrality</option>
-					<option value="wales_tags_betweenness_centrality.csv">betweenness_centrality</option>
-				</select>
+				<input class="m-filters__range" type="radio" name="range" value="2009" checked="checked" /> 2009 – 2014
 			</label>
-			<hr/>
+			<label>
+				<input class="m-filters__range" type="radio" name="range" value="2010" /> 2010 – 2014
+			</label>
+			<label>
+				<input class="m-filters__range" type="radio" name="range" value="2011" /> 2011 – 2014
+			</label>
+			<label>
+				<input class="m-filters__range" type="radio" name="range" value="2012" /> 2012 – 2014
+			</label>
+			<label>
+				<input class="m-filters__range" type="radio" name="range" value="2013" /> 2013 – 2014
+			</label>
 
-			Show
+			<hr/>
 			<label>
-				<input class="m-filters__top" type="radio" name="show" value="10" checked="checked" /> top 10
-			</label>
-			<label>
-				<input class="m-filters__top" type="radio" name="show" value="20" /> top 20
-			</label>
-			<label>
-				<input class="m-filters__top" type="radio" name="show" value="50" /> top 50
+				<input class="m-filters__cities" type="checkbox" name="show" checked="checked" /> Show cities
 			</label>
 		</div>
 
