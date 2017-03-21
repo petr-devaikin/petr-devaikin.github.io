@@ -1,4 +1,4 @@
-function Bubblechart(svg, xValues, yValues, data, p) {
+function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 	var params = {
 		leftMargin: 100,
 		rightMargin: 20,
@@ -10,15 +10,23 @@ function Bubblechart(svg, xValues, yValues, data, p) {
 		showRightAxis: false,
 		showTopAxis: false,
 		showBottomAxis: true,
+		leftLabel: '',
+		bottomLabel: '',
+		useLogXScale: false,
+		useLogYScale: false,
+		categories: [],
+		minRadius: 1,
+		maxRadius: 10,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
+	console.log(rValues);
 
 	this.draw = function() {
 		svg.attr('class', 'vis vis--bubblechart');
 
-		function addClipRect() {
+		/*function addClipRect() {
 			svg.append('defs').append('clipPath').attr('id', 'graph-clip')
 				.append('rect')
 					.attr('x', 0)
@@ -26,14 +34,17 @@ function Bubblechart(svg, xValues, yValues, data, p) {
 					.attr('width', params.graphWidth)
 					.attr('height', params.graphHeight);
 		}
-		addClipRect();
+		addClipRect();*/
+
+		var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+			.domain(params.categories);
 
 		var leftAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__axis vis__axis--left', true);
 
 		var bottomAxis = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + graphHeight))
+			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + params.graphHeight))
 			.classed('vis__axis vis__axis--bottom', true);
 
 		var graphArea = svg.append('g')
@@ -45,13 +56,17 @@ function Bubblechart(svg, xValues, yValues, data, p) {
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__hints', true);
 
-		var xScale = d3.scaleLinear()
-			.domain([xValues[0] - 1, xValues[1] + 1])
+		var xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
+			.domain([xValues[0], xValues[1]])
 			.range([0, params.graphWidth]);
 
-		var yScale = d3.scaleLinear()
-			.domain([yValues[0] - 1, yValues[1] + 1])
+		var yScale = (params.useLogYScale ? d3.scaleLog() : d3.scaleLinear())
+			.domain([yValues[1], yValues[0]])
 			.range([0, params.graphHeight]);
+
+		var rScale = d3.scaleSqrt()
+			.domain(rValues)
+			.range([params.minRadius, params.maxRadius]);
 
 		/*
 		function showHints(line) {
@@ -102,8 +117,20 @@ function Bubblechart(svg, xValues, yValues, data, p) {
 
 
 		function drawAxes() {
-			bottomAxis.call(d3.axisBottom(xScale));
-			leftAxis.call(d3.axisLeft(yScale));
+			bottomAxis.call(d3.axisBottom(xScale).ticks(20, ",.1s"));
+			leftAxis.call(d3.axisLeft(yScale).ticks(20, ",.1s"));
+
+			bottomAxis.append('text')
+				.classed('axis-label', true)
+				.attr('transform', 'translate({0},{1})'.format(params.graphWidth / 2, 40))
+				.attr('text-anchor', 'middle')
+				.text(params.bottomLabel);
+
+			leftAxis.append('text')
+				.classed('axis-label', true)
+				.attr('transform', 'translate({0},{1}) rotate(-90)'.format(-50, params.graphHeight / 2))
+				.attr('text-anchor', 'middle')
+				.text(params.leftLabel);
 		}
 		drawAxes();
 
@@ -111,57 +138,28 @@ function Bubblechart(svg, xValues, yValues, data, p) {
 		function drawData() {
 			graphArea.selectAll('.vis__graph__item').data(data).enter().append('circle')
 				.classed('vis__graph__item', true)
-				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
-				.attr('fill', function(d) { return rgba(0, 0, 0, 100); })
+				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x + 1), yScale(d.y + 1)); })
+				.attr('fill', function(d) { return colorScale(d.category); })
 				.attr('cx', 0)
 				.attr('cy', 0)
-				.attr('r', 10);
+				.attr('r', function(d) { return rScale(d.projects.welshProportion); });
 		}
 		drawData();
 
-		/*
+		
 		function drawLegend() {
-			var legend = svg.append('g')
-				.classed('vis__legend', true)
-				.attr('transform', 'translate({0},{1})'.format(params.graphWidth + params.leftMargin + params.rightMargin + 50, params.topMargin));
+			var legend = d3.select('.m-legend');
 
-			var legendWidth = params.legendSteps * params.legendSampleWidth;
-			legend.append('rect')
-				.classed('vis__legend__bg', true)
-				.attr('width', 20 + legendWidth)
-				.attr('height', params.legendSampleWidth + 50);
+			legend.append('h1').text('Categories');
 
-			legend.append('text') // <-- FIX
-				.attr('transform', 'translate({0},{1})'.format(10, 20))
-				.text('Change in ranking');
-
-			var steps = [];
-			for (var i = 0; i < params.legendSteps; i++)
-				steps.push(-maxChange + maxChange * 2 / (params.legendSteps - 1) * i);
-
-			legend.selectAll('vis__legend__sample').data(steps).enter().append('rect')
-				.classed('vis__legend__sample', true)
-				.attr('fill', function(d) { return colorScale(d / maxChange); })
-				.attr('width', params.legendSampleWidth)
-				.attr('height', params.legendSampleWidth)
-				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, 30);
-				});
-
-			var multiplicator = Math.pow(10, params.legendRoundTo);
-
-			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
-				.classed('vis__legend__tips', true)
-				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
-				})
-				.attr('text-anchor', 'middle')
-				.attr('alignment-baseline', 'before-edge')
-				.text(function(d) { return Math.round(d * multiplicator) / multiplicator; });
+			var categories = legend.selectAll('.m-legend__category').data(params.categories).enter()
+				.append('div')
+					.classed('m-legend__category', true)
+					.style('border-left-color', function(d) { return colorScale(d); })
+					.text(function(d) { return d; });
 			
 		}
-		if (params.showLegend)
-			drawLegend();*/
+		if (params.showLegend) drawLegend();
 	}
 }
 

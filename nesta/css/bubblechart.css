@@ -1,0 +1,27 @@
+.vis--bubblechart .vis__graph__item {
+  stroke: none;
+  opacity: 0.5;
+}
+.vis--bubblechart .axis-label {
+  fill: #000;
+  font-size: 14px;
+}
+.m-legend {
+  position: fixed;
+  right: 5px;
+  top: 5px;
+  width: 200px;
+  border: 1px solid #c0c0c0;
+  padding: 10px;
+  font-size: 12px;
+}
+.m-legend h1 {
+  margin: 10px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.m-legend__category {
+  border-left: 15px solid #c0c0c0;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}

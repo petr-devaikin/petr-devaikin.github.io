@@ -45,8 +45,9 @@ function Datareader(base) {
 						if (disciplines.indexOf(line.discipline) == -1)
 							disciplines.push(line.discipline);
 
-						topics.push({
+						var item = {
 							name: line.research_topic,
+							category: line.discipline,
 							value: {
 								nonWelsh: parseFloat(line.value_pounds_Non_Welsh),
 								welsh: parseFloat(line.value_pounds_Welsh),
@@ -56,7 +57,10 @@ function Datareader(base) {
 								welsh: parseFloat(line.number_of_projects_Welsh),
 								welshProportion: parseFloat(line.number_of_projects_Welsh_proportion),
 							},
-						});
+						};
+
+						if (item.value.welsh > 0 && item.projects.welsh > 0)
+							topics.push(item);
 					});
 
 					callback(disciplines, topics);
