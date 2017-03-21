@@ -34,5 +34,34 @@ function Datareader(base) {
 				}
 			);
 		}
+		else if (fileName == 'bubble_chart_source_data.csv') {
+			d3.csv(
+				base + fileName,
+				function(data) {
+					var disciplines = [];
+					var topics = [];
+
+					data.forEach(function(line) {
+						if (disciplines.indexOf(line.discipline) == -1)
+							disciplines.push(line.discipline);
+
+						topics.push({
+							name: line.research_topic,
+							value: {
+								nonWelsh: parseFloat(line.value_pounds_Non_Welsh),
+								welsh: parseFloat(line.value_pounds_Welsh),
+							},
+							projects: {
+								nonWelsh: parseFloat(line.number_of_projects_Non_Welsh),
+								welsh: parseFloat(line.number_of_projects_Welsh),
+								welshProportion: parseFloat(line.number_of_projects_Welsh_proportion),
+							},
+						});
+					});
+
+					callback(disciplines, topics);
+				}
+			);
+		}
 	}
 }
