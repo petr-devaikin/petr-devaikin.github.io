@@ -1,9 +1,10 @@
 var width = 700,
-	height = 650;
+	height = 700;
 
 var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
+
 
 
 d3.json("uk.json", function(error, uk) {
@@ -11,183 +12,185 @@ d3.json("uk.json", function(error, uk) {
 
 	var subunits = topojson.feature(uk, uk.objects.subunits);
 	var projection = d3.geoAlbers()
-		.center([0, 53])
+		.center([2, 53.5])
 		.rotate([4.4, 0])
 		.parallels([50, 60])
-		.scale(5500)
+		.scale(6000)
 		.translate([width / 2, height / 2]);
     var path = d3.geoPath(projection);
 
     svg.selectAll(".subunit")
-		.data(topojson.feature(uk, uk.objects.subunits).features)
+		.data(subunits.features)
 		.enter().append("path")
 		.attr("class", function(d) { return "subunit " + d.properties.BRK_A3; })
 		.attr("d", path);
 
-	svg.append("path")
-		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
-		.attr("d", path)
-		.attr("class", "subunit-boundary");
-
-	svg.append("path")
-		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
-		.attr("d", path)
-		.attr("class", "subunit-boundary IRL");
-
 	// countries
 	
+	/*
 	svg.selectAll(".subunit-label")
 		.data(topojson.feature(uk, uk.objects.subunits).features)
 		.enter().append("text")
 		.attr("class", function(d) { return "subunit-label " + d.id; })
 		.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 		.attr("dy", ".35em")
-		.text(function(d) { return d.properties.BRK_NAME; });
+		.text(function(d) { return d.properties.BRK_NAME; });*/
 
-	// districts
-	var districts = topojson.feature(uk, uk.objects.districts).features;
-	console.log(districts);
-
-
-	// cities
-	/*var places = topojson.feature(uk, uk.objects.place);
-	console.log(uk.objects);
-	svg.append("path")
-		.datum(places)
-		.attr("d", path)
-		.attr("class", "place");
-
-	svg.selectAll(".place-label")
-		.data(places.features)
-			.enter().append("text")
-				.attr("class", "place-label")
-				.attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
-				.attr("dy", ".35em")
-				.text(function(d) { return d.properties.ADM1NAME; });
-
-	svg.selectAll(".place-label")
-		.attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
-		.style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; });*/
-
-
-	// load data
-
-	function findCityOnMap(name) {
-		return districts.find(function(a) {
-			return a.properties.name.toLowerCase() == name.toLowerCase();
+	d3.json('lads.json', function(error2, lads) {
+		var cityCoordinates = {};
+		lads.features.forEach(function(c) {
+			cityCoordinates[c.properties.lad16nm] = [c.properties.long, c.properties.lat];
 		});
-	}
 
-	d3.csv('normalised_attendants_in_other_cities.csv', function(data) {
-		var cities = {};
-		var citiesTo = [];
+		d3.csv('find_area_from_lad.csv', function(citiesData) {
+			var welshCities = [];
+			for (var i = 0; i < citiesData.length; i++)
+				if (citiesData[i].Areas == 'Wales')
+					welshCities.push(citiesData[i].LAD13NM_LGDName);
 
-		function addCity(name) {
-			if (cities[name] === undefined) {
-				var district = findCityOnMap(name);
-				cities[name] = {
-					name: name,
-					path: district,
-					income: 0,
-					outcome: 0,
-					incomeCities: [],
-					outcomeCities: []
+			function isWelsh(cityName) {
+				return welshCities.indexOf(cityName) != -1;
+			}
+		
+			d3.csv('normalised_attendants_in_other_cities.csv', function(data) {
+				var cities = {};
+				var citiesTo = [];
+
+				var maxValue = 0;
+
+				function addCity(name) {
+					if (cities[name] === undefined) {
+						var coords = cityCoordinates[name];
+						if (coords === undefined)
+							console.log('NOT FOUND: ' + name);
+							else
+								cities[name] = {
+									name: name,
+									coords: coords,
+									sum: 0,
+									connections: []
+								}
+					}
+					return cities[name];
 				}
-			}
-			return cities[name];
-		}
 
-		for (var prop in data[0])
-			if (prop != 'lad_name' && data[0].hasOwnProperty(prop)) {
-				addCity(prop);
-				citiesTo.push(prop);
-			}
+				for (var prop in data[0])
+					if (prop != 'LAD13NM_LGDName' && data[0].hasOwnProperty(prop)) {
+						addCity(prop);
+						citiesTo.push(prop);
+					}
 
-		for (var i = 0 ; i < data.length; i++) {
-			var row = data[i];
-			var name = row['LAD13NM_LGDName'];
-			var city = addCity(name);
-			for (var j = 0; j < citiesTo.length; j++) {
-				var secondCity = cities[citiesTo[j]];
-				var v = parseInt(row[citiesTo[j]]);
-				if (v > 0 && city.path !== undefined && secondCity.path !== undefined &&
-							 (city.path.properties.geonunit == 'Wales' || secondCity.path.properties.geonunit == 'Wales')) {
-					city.income += v;
-					city.incomeCities.push({
-						city: secondCity,
-						value: v
-					});
-					secondCity.outcome += v;
-					secondCity.outcomeCities.push({
-						city: city,
-						value: v
+				for (var i = 0 ; i < data.length; i++) {
+					var row = data[i];
+					var name = row['LAD13NM_LGDName'];
+					var city1 = addCity(name);
+
+					if (city1 === undefined) continue; // not on map!
+
+					citiesTo.forEach(function(cityName2) {
+						var city2 = cities[cityName2];
+						var value = parseFloat(row[cityName2]);
+
+						if (city2 === undefined) return; // not on map!
+
+						if (value > 0 && (isWelsh(city1.name) || isWelsh(city2.name))) {
+							city1.sum += value;
+							city2.sum += value;
+							var connection = city1.connections.find(function(c) { return c.to == city2; });
+							if (connection === undefined)
+								city1.connections.push({
+									to: city2,
+									value: value,
+								});
+							else
+								connection.value += value;
+
+							city2.connections.find(function(c) { return c.to == city1; });
+							if (connection === undefined)
+								city2.connections.push({
+									to: city1,
+									value: value,
+								});
+							else
+								connection.value += value;
+
+
+						}
 					});
 				}
-			}
-		}
 
-		var keys = Object.keys(cities);
-		var cityArray = keys.map(function(v) { return cities[v]; }).filter(function(d) {
-			return d.outcome > 0 || d.income > 0;
-		});
-
-		var mapCities = svg.selectAll('.city').data(cityArray).enter()
-			.append('g')
-				.classed('city', true)
-				.attr('transform', function(d) { return "translate(" + path.centroid(d.path.geometry) + ")"; });
-
-		mapCities
-			.append('circle')
-				.attr('r', function(d) { return Math.sqrt(d.income) * 10; })
-				.attr('fill', 'rgba(255,0,0,.3)');
-
-		mapCities
-			.append('circle')
-				.attr('r', function(d) { return Math.sqrt(d.outcome) * 10; })
-				.attr('fill', 'rgba(0,0,255,.3)');
-
-		mapCities.each(function(d) {
-			d3.select(this).selectAll('.line.lineIncome').data(function(d) { return d.incomeCities; }).enter()
-				.append('line')
-					.attr('x1', 0).attr('y1', 0)
-					.attr('x2', function(dd) {
-						return path.centroid(dd.city.path.geometry)[0] - path.centroid(d.path.geometry)[0];
+				var cityArray = Object.keys(cities).map(function(v) { return cities[v]; }).filter(function(d) {
+					d.connections.forEach(function(cc) {
+						maxValue = Math.max(maxValue, cc.value);
 					})
-					.attr('y2', function(dd) {
-						return path.centroid(dd.city.path.geometry)[1] - path.centroid(d.path.geometry)[1];
-					})
-					.attr('stroke', 'rgb(255,0,0)')
-					.attr('stroke-width', function(dd) { return dd.value * 2; })
+					return d.sum > 0;
+				});
+
+
+				var colorScale = d3.scaleLinear()
+					.domain([0, maxValue])
+					.range(['red', 'blue']);
+
+				var mapCities = svg.selectAll('.city').data(cityArray).enter()
+					.append('g')
+						.classed('city', true)
+						.attr('transform', function(d) { return "translate(" + projection(d.coords) + ")"; });
+
+					
+				mapCities.each(function(d) {
+					d3.select(this).selectAll('.line.lineIncome').data(function(d) { return d.connections; }).enter()
+						.append('line')
+							.attr('x1', 0).attr('y1', 0)
+							.attr('x2', function(dd) {
+								return projection(dd.to.coords)[0] - projection(d.coords)[0];
+							})
+							.attr('y2', function(dd) {
+								return projection(dd.to.coords)[1] - projection(d.coords)[1];
+							})
+							.attr('stroke', 'rgba(255, 0, 0, .1)')
+							.style('pointer-events', 'none')
+							.attr('stroke-width', 1)
+							//.attr('opacity', function(d) { return Math.log(d.value / maxValue); })
+							.attr('visibility', 'visible');
+				});
+
+				mapCities
+					.append('circle')
+						.attr('r', function(d) { return Math.sqrt(d.sum) * 10; })
+						.attr('fill', function(d) {
+							if (isWelsh(d.name))
+								return 'rgba(255,0,0,.3)';
+							else
+								return 'rgba(0,0,255,.3)';
+						});
+
+				mapCities.append('text')
+					.attr('font-size', 10)
+					.attr('text-anchor', 'middle')
+					.style('pointer-events', 'none')
+					.text(function(d) { return d.name; })
 					.attr('visibility', 'hidden');
-			d3.select(this).selectAll('.line.lineOutcome').data(function(d) { return d.outcomeCities; }).enter()
-				.append('line')
-					.attr('x1', 0).attr('y1', 0)
-					.attr('x2', function(dd) {
-						return path.centroid(dd.city.path.geometry)[0] - path.centroid(d.path.geometry)[0];
-					})
-					.attr('y2', function(dd) {
-						return path.centroid(dd.city.path.geometry)[1] - path.centroid(d.path.geometry)[1];
-					})
-					.attr('stroke', 'rgb(0,0,255)')
-					.attr('stroke-width', function(dd) { return dd.value * 2; })
-					.attr('visibility', 'hidden');
-		});
 
-		mapCities.append('text')
-			.attr('font-size', 12)
-			.text(function(d) { return d.name; });
+				mapCities.on('mouseover', function(d) {
+					d3.select(this).selectAll('line').attr('visibility', 'visible');
+					d3.select(this).select('text').attr('visibility', 'visible');
 
-		mapCities.on('mouseover', function(d) {
-			d3.select(this).selectAll('line').attr('visibility', 'visible');
-			svg.selectAll('.city').filter(function(dd) {
-				return dd != d && 
-					d.incomeCities.find(function(c) { return c.city == dd; }) === undefined && 
-					d.outcomeCities.find(function(c) { return c.city == dd; }) === undefined;
-			}).classed('blured', true);
-		});
-		mapCities.on('mouseout', function(d) {
-			d3.select(this).selectAll('line').attr('visibility', 'hidden');
-			svg.selectAll('.city.blured').classed('blured', false);
+					svg.selectAll('.city').filter(function(dd) {
+						return dd != d && d.connections.find(function(c) { return c.to == dd; }) === undefined;
+					}).classed('blured', true);
+
+					svg.selectAll('.city').filter(function(dd) {
+						return d.connections.find(function(c) { return c.to == dd; }) !== undefined;
+					}).select('text').attr('visibility', 'visible');
+				});
+				mapCities.on('mouseout', function(d) {
+					d3.select(this).selectAll('line').attr('visibility', 'hidden');
+					d3.selectAll('.city').select('text').attr('visibility', 'hidden');
+					svg.selectAll('.city.blured').classed('blured', false);
+				});
+
+
+			});
 		});
 	});
 });
