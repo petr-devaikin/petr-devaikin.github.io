@@ -15,8 +15,10 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		useLogXScale: false,
 		useLogYScale: false,
 		categories: [],
-		minRadius: 1,
-		maxRadius: 10,
+		minRadius: 0,
+		maxRadius: 15,
+		legendSteps: 7,
+		legendRoundTo: 4,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -58,62 +60,33 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 		var xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([xValues[0], xValues[1]])
-			.range([0, params.graphWidth]);
+			.range([50, params.graphWidth]);
 
 		var yScale = (params.useLogYScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([yValues[1], yValues[0]])
 			.range([0, params.graphHeight]);
 
 		var rScale = d3.scaleSqrt()
-			.domain(rValues)
+			.domain([0, rValues[1]])
 			.range([params.minRadius, params.maxRadius]);
 
-		/*
-		function showHints(line) {
-			function setHintPosition(d, i) {
-				if (d === undefined)
-					return '';
-				return 'translate({0},{1})'.format(xScale(i), (d.position <= params.showTop) ? yScale(d.position) : yScale(params.showTop + 0.5));
-			}
+		
+		var hint = hintsArea.append('g')
+			.classed('vis__hints__hint', true)
+			.attr('visibility', 'hidden');
+		hint.append('text');
 
-			var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
-			hints
-				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
-			hints.select('text').text(function(d) { return (d !== undefined) ? d.position : ''; });
-
-			hints.exit().remove();
-			var newHints = hints.enter().append('g')
-				.classed('vis__hints__hint', true)
-				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
-			
-			newHints.append('path')
-				.attr('d', 'M0 0 L-5 -5 L-20 -5 L-20 -20 L20 -20 L20 -5 L5 -5 Z');
-			newHints.append('text')
-				.attr('dy', -5)
-				.attr('text-anchor', 'middle')
-				.attr('alignment-baseline', 'after-edge')
-				.text(function(d) { return (d !== undefined) ? d.position : ''; });
-
-			graphArea.selectAll('.vis__graph__line')
-				.classed('blured', function(d) { return d != line; });
-
-			function blurTicks(axis, names) {
-				axis.selectAll('.tick')
-					.classed('blured', function(d, i) { return names[d] != line; })
-			}
-			blurTicks(leftAxis, leftNames);
-			blurTicks(rightAxis, rightNames);
+		function showHint(d) {
+			hint.select('text')
+				.text('{0}. Proj: {1} / {2}. Value: {3}'.format(d.name, d.projects.welsh, d.projects.nonWelsh, d.value.welsh));
+			hint
+				.attr('transform', 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)))
+				.attr('visibility', 'visible');
 		}
 
-		function hideHints() {
-			hintsArea.selectAll('.vis__hints__hint').attr('visibility', 'hidden');
-			graphArea.selectAll('.vis__graph__line.blured').classed('blured', false);
-
-			leftAxis.selectAll('.tick.blured').classed('blured', false)
-			rightAxis.selectAll('.tick.blured').classed('blured', false)
-		}*/
+		function hideHint(d) {
+			hint.attr('visibility', 'hidden');
+		}
 
 
 		function drawAxes() {
@@ -138,11 +111,13 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		function drawData() {
 			graphArea.selectAll('.vis__graph__item').data(data).enter().append('circle')
 				.classed('vis__graph__item', true)
-				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x + 1), yScale(d.y + 1)); })
+				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
 				.attr('fill', function(d) { return colorScale(d.category); })
 				.attr('cx', 0)
 				.attr('cy', 0)
-				.attr('r', function(d) { return rScale(d.projects.welshProportion); });
+				.attr('r', function(d) { return rScale(d.projects.welshProportion); })
+				.on('mouseover', showHint)
+				.on('mouseout', hideHint);
 		}
 		drawData();
 
@@ -153,11 +128,36 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 			legend.append('h1').text('Categories');
 
 			var categories = legend.selectAll('.m-legend__category').data(params.categories).enter()
-				.append('div')
+				.append('label')
 					.classed('m-legend__category', true)
 					.style('border-left-color', function(d) { return colorScale(d); })
 					.text(function(d) { return d; });
-			
+
+			categories.append('input')
+				.attr('type', 'checkbox')
+				.attr('value', function(d) { return d; })
+				.attr('checked', 'checked')
+				.on('change', function(d) {
+					d3.selectAll('.vis__graph__item').filter(function(dd) { return dd.category == d; })
+						.attr('visibility', this.checked ? 'visiblie' : 'hidden');
+				});
+
+			legend.append('h1').text('Number of project. Welsh proportion');
+
+			var sizes = [];
+
+			for (var i = 0; i < params.legendSteps; i++)
+				sizes[i] = rValues[0] + (rValues[1] - rValues[0]) * Math.pow(i / (params.legendSteps - 1), 2);
+
+			var multiplicator = Math.pow(10, params.legendRoundTo);
+
+			legend.append('div')
+				.text(Math.round(sizes[0] * multiplicator) / multiplicator + ' - ' + sizes[params.legendSteps - 1]);
+
+			legend.selectAll('.m-legend__size').data(sizes).enter().append('div')
+				.classed('m-legend__size', true)
+				.style('width', function(d) { return rScale(d) * 2 + 'px'; })
+				.style('height', function(d) { return rScale(d) * 2 + 'px'; });
 		}
 		if (params.showLegend) drawLegend();
 	}

@@ -8,6 +8,16 @@
 		fill #000
 		font-size 14px
 
+	.vis__hints
+		&__hint
+			pointer-events none
+
+			text
+				text-anchor middle
+				alignment-baseline after-edge
+				font-size 12px
+				fill #000
+
 
 .m-legend
 	position fixed
@@ -24,6 +34,19 @@
 		text-transform uppercase
 
 	&__category
+		display block
 		border-left 15px solid silver
 		padding-left 10px
-		margin-bottom 5px
+		margin 0 0 5px
+
+		input
+			position relative
+			float left
+			top -2px
+
+	&__size
+		position relative
+		float left
+		margin-right 6px
+		border-radius 50%
+		background silver

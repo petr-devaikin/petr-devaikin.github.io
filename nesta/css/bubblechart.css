@@ -6,6 +6,15 @@
   fill: #000;
   font-size: 14px;
 }
+.vis--bubblechart .vis__hints__hint {
+  pointer-events: none;
+}
+.vis--bubblechart .vis__hints__hint text {
+  text-anchor: middle;
+  alignment-baseline: after-edge;
+  font-size: 12px;
+  fill: #000;
+}
 .m-legend {
   position: fixed;
   right: 5px;
@@ -21,7 +30,20 @@
   text-transform: uppercase;
 }
 .m-legend__category {
+  display: block;
   border-left: 15px solid #c0c0c0;
   padding-left: 10px;
-  margin-bottom: 5px;
+  margin: 0 0 5px;
+}
+.m-legend__category input {
+  position: relative;
+  float: left;
+  top: -2px;
+}
+.m-legend__size {
+  position: relative;
+  float: left;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #c0c0c0;
 }
