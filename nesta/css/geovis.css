@@ -1,0 +1,44 @@
+.vis--geovis {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.vis--geovis .vis__map__lad {
+  stroke-width: 1;
+  stroke: #fff;
+}
+.vis--geovis .vis__map__border {
+  stroke: #999;
+  stroke-width: 2;
+  fill: none;
+}
+.legend {
+  position: fixed;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  width: 200px;
+  border: 1px solid #999;
+  background: rgba(255,255,255,0.8);
+  padding: 5px;
+  font-size: 12px;
+  overflow: auto;
+}
+.legend h1 {
+  margin: 20px 0 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.legend label {
+  display: block;
+  margin: 0 0 5px;
+  overflow: hidden;
+}
+.legend label input {
+  position: relative;
+  float: left;
+  top: -2px;
+}
+.legend label.topic {
+  border-left: 15px solid #fff;
+}

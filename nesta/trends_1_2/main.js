@@ -34,7 +34,7 @@ function draw() {
 			.style('stroke', '#1a9850')
 			.style('stroke-width', 1);
 
-	datareader.read('bc_big_sector_year_welsh.csv', function(cities, sectors, years) {
+	datareader.readData(Datareader.DATASETS.BigSectorYearWelsh, function(cities, sectors, years) {
 		var treemap = d3.treemap()
 			.tile(d3.treemapSquarify)
 			.size([width - 200, height])

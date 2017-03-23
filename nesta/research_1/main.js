@@ -7,7 +7,7 @@ var svg = d3.select("body").append("svg")
 
 
 var datareader = new Datareader();
-datareader.read('bubble_chart_source_data.csv', function(disciplines, topics) {
+datareader.readData(Datareader.DATASETS.Bubblechart, function(disciplines, topics) {
 	var xValues = [1, 0];
 	var yValues = [1, 0];
 	var rValues = [undefined, 0];
