@@ -131,16 +131,38 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 						if (selectedData[city] !== undefined) {
 							if (selectedTopic == 'all')
 								return topicScale(selectedData[city].favorite.topic);
-							else {
-								//console.log(maxValue + ' ' + selectedData[city][selectedTopic]);
+							else
 								return rangeScale(selectedData[city][selectedTopic]);
-							}
 						}
 						else {
 							//if (gbLads[ladName] == 'Wales')
 							//	console.log(d.properties.lad16nm);
 							return 'rgb(240, 240, 240)';
 						}
+					})
+					.on('mouseover', function(d) {
+						var ladName = d.properties.lad16nm;
+						if (showOnlyWales && gbLads[ladName] != 'Wales') return 'rgb(240, 240, 240)';
+						var city = lad2city[ladName] !== undefined ? lad2city[ladName] : ladName;
+
+						var text = 'no data';
+
+						if (selectedData[city] !== undefined)
+							if (selectedTopic == 'all')
+								text = 'Popular topic: ' + selectedData[city].favorite.topic;
+							else
+								text = selectedTopic + ' popularity: ' + selectedData[city][selectedTopic];
+
+						var bbox = this.getBBox();
+
+						svg.select('.vis__hint')
+							.attr('transform', 'translate({0},{1})'.format(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2))
+							.attr('visibility', 'visible')
+							.select('text')
+								.text(d.properties.lad16nm + '. ' + text);
+					})
+					.on('mouseout', function() {
+						svg.select('.vis__hint').attr('visibility', 'hidden');
 					});
 
 
@@ -216,6 +238,16 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			}
 			drawLegend();
 			repaint();
+
+
+			function addHint() {
+				var hint = svg.append('g')
+					.classed('vis__hint', true)
+					.attr('visibility', 'hidden');
+
+				hint.append('text');
+			}
+			addHint();
 		});
 	});
 });

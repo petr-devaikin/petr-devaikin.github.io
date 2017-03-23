@@ -12,6 +12,14 @@
   stroke-width: 2;
   fill: none;
 }
+.vis--geovis .vis__hint {
+  pointer-events: none;
+}
+.vis--geovis .vis__hint text {
+  text-anchor: middle;
+  font-size: 12px;
+  alignment-baseline: after-edge;
+}
 .legend {
   position: fixed;
   right: 5px;
