@@ -3,12 +3,39 @@
   left: 0;
   top: 0;
 }
+.vis--forcegraph .vis__graph__links line {
+  stroke: rgba(0,0,0,0.05);
+}
+.vis--forcegraph .vis__graph__links line.blured {
+  opacity: 0.2;
+}
+.vis--forcegraph .vis__graph__links line.highlighted {
+  stroke: #f00;
+}
+.vis--forcegraph .vis__graph__nodes__node circle {
+  fill: #fff;
+  stroke-width: 1;
+  stroke: rgba(0,0,0,0.5);
+}
+.vis--forcegraph .vis__graph__nodes__node.blured {
+  opacity: 0.2;
+}
+.vis--forcegraph .vis__graph__nodes__node.highlighted circle {
+  stroke: #f00;
+}
+.vis--forcegraph .vis__graph__nodes__node.highlighted text {
+  visibility: visible;
+}
+.vis--forcegraph .vis__graph__nodes__node text {
+  pointer-events: none;
+  text-anchor: middle;
+  alignment-baseline: after-edge;
+  font-size: 10px;
+  visibility: hidden;
+}
 .vis--forcegraph .vis__loader {
   font-size: 18px;
   text-anchor: middle;
   alignment-baseline: middle;
   fill: #000;
-}
-.vis--forcegraph line {
-  stroke: rgba(0,0,0,0.1);
 }

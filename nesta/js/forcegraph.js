@@ -1,7 +1,7 @@
 function Forcegraph(svg, nodes, links, p) {
 	var params = {
 		margin: 50,
-		forceMaxDistance: 150,
+		forceMaxDistance: 100,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -26,24 +26,55 @@ function Forcegraph(svg, nodes, links, p) {
 			.force("center", d3.forceCenter(0, 0));
 
 		var link = graph.append("g")
-			.attr("class", "links")
+			.attr("class", "vis__graph__links")
 			.selectAll("line")
 			.data(links)
-			.enter().append("line")
-			.attr('visibility', 'hidden')
-			.attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+				.enter().append("line")
+				.attr('visibility', 'hidden')
+				.attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
 		var node = graph.append("g")
-			.attr("class", "nodes")
-			.selectAll("circle")
+			.attr("class", "vis__graph__nodes")
+			.selectAll("vis__graph__nodes__node")
 			.data(nodes)
-			.enter().append("circle")
-			.attr("r", 5)
-			.attr('visibility', 'hidden')
-			.attr("fill", function(d) { return 'red'; });
+			.enter().append('g')
+				.classed('vis__graph__nodes__node', true)
+				.attr('visibility', 'hidden');
 
-		node.append("title")
-			.text(function(d) { return d.name; });
+		node.append("circle")
+			.attr("r", 5)
+			.on('mouseover', nodeHover)
+			.on('mouseout', nodeOut);
+
+		node.append('text')
+			.text(function(d) { return d.name; })
+			.attr('dy', -5);
+
+		function nodeHover(d) {
+			var highlightedNodes = [];
+
+			link.classed('blured', true);
+			link.each(function(l) {
+				if (l.source == d || l.target == d) {
+					d3.select(this).classed('blured', false).classed('highlighted', true);
+					if (highlightedNodes.indexOf(l.source) == -1) highlightedNodes.push(l.sourse);
+					if (highlightedNodes.indexOf(l.target) == -1) highlightedNodes.push(l.target);
+				}
+			});
+
+			node
+				.classed('blured', function(n) { return highlightedNodes.indexOf(n) == -1; })
+				.classed('highlighted', function(n) { return highlightedNodes.indexOf(n) != -1; });
+		}
+
+		function nodeOut() {
+			node
+				.classed('highlighted', false)
+				.classed('blured', false);
+			link
+				.classed('highlighted', false)
+				.classed('blured', false);
+		}
 
       	simulation
 			.nodes(nodes)
@@ -59,20 +90,21 @@ function Forcegraph(svg, nodes, links, p) {
 
 		function drawGraph() {
 			loader.attr('visibility', 'hidden');
-			link
-				.attr("x1", function(d) { return d.source.x; })
-				.attr("y1", function(d) { return d.source.y; })
-				.attr("x2", function(d) { return d.target.x; })
-				.attr("y2", function(d) { return d.target.y; })
-				.attr('visibility', 'visible');
-
-			node
-				.attr("cx", function(d) { return d.x; })
-				.attr("cy", function(d) { return d.y; })
-				.attr('visibility', 'visible');
+			link.attr('visibility', 'visible');
+			node.attr('visibility', 'visible');
 
 			// calculate auto zoom
-			var bbox = graph.node().getBBox();
+			var bbox = { x: Infinity, y: Infinity, width: 0, height: 0 }
+
+			nodes.forEach(function(n) {
+				bbox.x = Math.min(bbox.x, n.x);
+				bbox.y = Math.min(bbox.y, n.y);
+				bbox.width = Math.max(bbox.width, n.x);
+				bbox.height = Math.max(bbox.height, n.y);
+			});
+			bbox.width -= bbox.x;
+			bbox.height -= bbox.y;
+
 			var dx, dy, z;
 			if ((width - 2 * params.margin) / (height - 2 * params.margin) > bbox.width / bbox.height) {
 				console.log('Adjust by height');
@@ -112,8 +144,10 @@ function Forcegraph(svg, nodes, links, p) {
 				.attr("y2", function(d) { return transform.apply([d.target.x, d.target.y])[1]; });
 
 			node
-				.attr("cx", function(d) { return transform.apply([d.x, d.y])[0]; })
-				.attr("cy", function(d) { return transform.apply([d.x, d.y])[1]; });
+				.attr('transform', function(d) {
+					var coords = transform.apply([d.x, d.y]);
+					return 'translate({0},{1})'.format(coords[0], coords[1]);
+				});
 		}
 	}
 

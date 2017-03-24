@@ -3,11 +3,43 @@
 	left 0
 	top 0
 	
+	.vis__graph
+		&__links
+			line
+				stroke rgba(0, 0, 0, .05)
+			
+				&.blured
+					opacity .2
+					
+				&.highlighted
+					stroke red
+		
+		&__nodes
+			&__node
+				circle
+					fill #fff
+					stroke-width 1
+					stroke rgba(0, 0, 0, .5)
+				
+				&.blured
+					opacity .2
+				
+				&.highlighted
+					circle
+						stroke red
+						
+					text
+						visibility visible
+						
+				text
+					pointer-events none
+					text-anchor middle
+					alignment-baseline after-edge
+					font-size 10px
+					visibility hidden
+
 	.vis__loader
 		font-size 18px
 		text-anchor middle
 		alignment-baseline middle
 		fill #000
-
-	line
-		stroke rgba(0, 0, 0, .1);
