@@ -136,6 +136,40 @@ function Datareader(base) {
 				callback(years, topics, dataForYears);
 			})
 	}
+
+	// Groups topics
+	readers[Datareader.DATASETS.GroupsTopic] = function(callback) {
+		d3.csv(
+			base + Datareader.DATASETS.GroupsTopic,
+			function(line, i) {
+				return {
+					sourceId: line.id_x,
+					sourceName: line.Source,
+					targetId: line.id_y,
+					targetName: line.Target
+				}
+			},
+			function(data) {
+				var nodes = {};
+				var linkes = [];
+				data.forEach(function(d) {
+					if (nodes[d.sourceId] === undefined) nodes[d.sourceId] = d.sourceName;
+					if (nodes[d.targetId] === undefined) nodes[d.targetId] = d.targetName;
+
+					linkes.push({
+						source: d.sourceId,
+						target: d.targetId,
+						value: 1
+					});
+				})
+
+				callback(
+					Object.keys(nodes).map(function(k) { return { id: k, name: nodes[k]}; }),
+					linkes
+				);
+			}
+		)
+	}
 }
 
 Datareader.DATASETS = {
@@ -144,4 +178,5 @@ Datareader.DATASETS = {
 	BigSectorYearWelsh: 'bc_big_sector_year_welsh.csv',
 	Bubblechart: 'bubble_chart_source_data.csv',
 	TopicPopularity: 'topic_popularity/topic_popularity_by_city_scaled_{0}.csv',
+	GroupsTopic: 'wales_groups_topic_ids_2013_2014_2015_2016.csv',
 }
