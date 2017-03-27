@@ -1,8 +1,43 @@
 .vis--bubblechart
 	.vis__graph
-		&__item
-			stroke none
-			opacity .5
+		&__bg
+			.vis__graph__item
+				stroke none
+				fill rgb(220, 220, 220)
+				opacity .3
+				
+				&.selected
+					visibility hidden
+					
+				&.highlighted
+					visibility hidden
+					
+				&.blured
+					visibility visible
+				
+		&__active
+			.vis__graph__item
+				stroke none
+				fill rgb(31, 119, 180)
+				opacity .9
+				visibility hidden
+				
+				&.selected
+					visibility visible
+					
+				&.highlighted
+					visibility visible
+					opacity .5
+					
+					&.selected
+						opacity .9
+					
+				&.blured
+					visibility hidden
+					
+		.vis__graph__item
+			&.hovered
+				fill red
 
 	.axis-label
 		fill #000
@@ -10,11 +45,16 @@
 
 	.vis__hints
 		&__hint
+			&__bg
+				stroke #999
+				fill #fff
+				opacity .8
+
 			pointer-events none
 
 			text
-				text-anchor middle
-				alignment-baseline middle
+				text-anchor left
+				alignment-baseline before-edge
 				font-size 12px
 				fill #000
 
@@ -23,7 +63,7 @@
 	position fixed
 	right 5px
 	top 5px
-	width 200px
+	width 270px
 	border 1px solid silver
 	padding 10px
 	font-size 12px
@@ -35,9 +75,8 @@
 
 	&__category
 		display block
-		border-left 15px solid silver
-		padding-left 10px
-		margin 0 0 5px
+		padding 0 0 5px
+		cursor pointer
 
 		input
 			position relative
@@ -48,5 +87,11 @@
 		position relative
 		float left
 		margin-right 6px
-		border-radius 50%
-		background silver
+		width 30px
+		text-align center
+		
+		&__sample
+			position relative
+			border-radius 50%
+			background rgb(31, 119, 180)
+			opacity .9

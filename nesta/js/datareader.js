@@ -54,7 +54,7 @@ function Datareader(base) {
 						disciplines.push(line.discipline);
 
 					var item = {
-						name: line.research_topic,
+						name: line.research_topic.split('_').join(' '),
 						category: line.discipline,
 						value: {
 							nonWelsh: parseFloat(line.value_pounds_Non_Welsh),

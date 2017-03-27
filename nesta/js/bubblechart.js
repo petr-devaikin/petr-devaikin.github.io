@@ -1,3 +1,39 @@
+function abbrNum(number, decPlaces) {
+    // 2 decimal places => 100, 3 => 1000, etc
+    decPlaces = Math.pow(10,decPlaces);
+
+    // Enumerate number abbreviations
+    var abbrev = [ "k", "m", "b", "t" ];
+
+    // Go through the array backwards, so we do the largest first
+    for (var i=abbrev.length-1; i>=0; i--) {
+
+        // Convert array index to "1000", "1000000", etc
+        var size = Math.pow(10,(i+1)*3);
+
+        // If the number is bigger or equal do the abbreviation
+        if(size <= number) {
+             // Here, we multiply by decPlaces, round, and then divide by decPlaces.
+             // This gives us nice rounding to a particular decimal place.
+             number = Math.round(number*decPlaces/size)/decPlaces;
+
+             // Handle special case where we round up to the next abbreviation
+             if((number == 1000) && (i < abbrev.length - 1)) {
+                 number = 1;
+                 i++;
+             }
+
+             // Add the letter for the abbreviation
+             number += abbrev[i];
+
+             // We are done... stop
+             break;
+        }
+    }
+
+    return number;
+}
+
 function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 	var params = {
 		leftMargin: 100,
@@ -15,10 +51,8 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		useLogXScale: false,
 		useLogYScale: false,
 		categories: [],
-		minRadius: 0,
-		maxRadius: 15,
-		legendSteps: 7,
-		legendRoundTo: 4,
+		maxCircleArea: 200,
+		sampleCount: 7,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -26,6 +60,8 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 	console.log(rValues);
 
 	this.draw = function() {
+		data.sort(function(a, b) { return b.r - a.r; });
+
 		svg.attr('class', 'vis vis--bubblechart');
 
 		/*function addClipRect() {
@@ -37,9 +73,6 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 					.attr('height', params.graphHeight);
 		}
 		addClipRect();*/
-
-		var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-			.domain(params.categories);
 
 		var leftAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
@@ -54,37 +87,79 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 			.classed('vis__graph', true)
 			.attr('clip-path', 'url(#graph-clip)');
 
+		var graphAreaBg = graphArea.append('g')
+			.classed('vis__graph__bg', true);
+		var graphAreaActive = graphArea.append('g')
+			.classed('vis__graph__active', true);
+
 		var hintsArea = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__hints', true);
 
 		var xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([xValues[0], xValues[1]])
-			.range([50, params.graphWidth]);
+			.range([30, params.graphWidth]);
 
 		var yScale = (params.useLogYScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([yValues[1], yValues[0]])
 			.range([0, params.graphHeight]);
 
-		var rScale = d3.scaleSqrt()
+		var rSampleValues = [];
+		for (var i = 0; i < params.sampleCount; i++)
+			rSampleValues.push(Math.sqrt(params.maxCircleArea / params.sampleCount * (i + 0.5)));
+		var rScale = d3.scaleQuantize()
 			.domain([0, rValues[1]])
-			.range([params.minRadius, params.maxRadius]);
+			.range(rSampleValues);
 
 		
-		var hint = hintsArea.append('g')
-			.classed('vis__hints__hint', true)
-			.attr('visibility', 'hidden');
-		hint.append('text');
+		var hint;
+		function addHint() {
+			hint = hintsArea.append('g')
+				.classed('vis__hints__hint', true)
+				.attr('visibility', 'hidden');
+			hint.append('rect').classed('vis__hints__hint__bg', true);
+			hint.append('text').classed('vis__hints__hint__name', true);
+			hint.append('text').classed('vis__hints__hint__category', true).attr('dy', 15);
+			hint.append('text').classed('vis__hints__hint__value--all', true).attr('dy', 40);
+			hint.append('text').classed('vis__hints__hint__value', true).attr('dy', 55);
+			hint.append('text').classed('vis__hints__hint__number--all', true).attr('dy', 70);
+			hint.append('text').classed('vis__hints__hint__number', true).attr('dy', 85);
+		}
+		addHint();
 
 		function showHint(d) {
-			hint.select('text')
-				.text('{0}. Proj: {1} / {2}. Value: {3}'.format(d.name, d.projects.welsh, d.projects.nonWelsh, d.value.welsh));
+			d3.select(this).classed('hovered', true);
+
+			hint.select('.vis__hints__hint__bg').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
+
+			hint.select('.vis__hints__hint__category').text('Category: ' + d.category);
+			hint.select('.vis__hints__hint__name').text('Project [!]: ' + d.name);
+			hint.select('.vis__hints__hint__value').text('Value per project in Wales: ' + Math.round(d.r) + ' [UNITS?]');
+			hint.select('.vis__hints__hint__value--all').text(
+				'Value per project in [UK?]: {0} [UNITS?]'.format( 
+					Math.round((d.value.welsh + d.value.nonWelsh) / (d.projects.welsh + d.projects.nonWelsh))
+				)
+			);
+			hint.select('.vis__hints__hint__number').text(
+				'Number of projects in Wales: {0} ({1}%)'.format(d.projects.welsh, Math.round(d.y * 100))
+			);
+			hint.select('.vis__hints__hint__number--all').text('Number of projects in [UK?]: ' + (d.projects.nonWelsh + d.projects.welsh));
+
+			var bbox = hint.node().getBBox();
+
+			hint.select('.vis__hints__hint__bg')
+				.attr('x', -5)
+				.attr('y', -5)
+				.attr('width', bbox.width + 10)
+				.attr('height', bbox.height + 10);
+
 			hint
-				.attr('transform', 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)))
+				.attr('transform', 'translate({0},{1})'.format(xScale(d.x) - bbox.width / 2, yScale(d.y) + rScale(d.r) + 10))
 				.attr('visibility', 'visible');
 		}
 
 		function hideHint(d) {
+			d3.select(this).classed('hovered', false);
 			hint.attr('visibility', 'hidden');
 		}
 
@@ -109,17 +184,53 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 
 		function drawData() {
-			graphArea.selectAll('.vis__graph__item').data(data).enter().append('circle')
+			graphAreaBg.selectAll('.vis__graph__item').data(data).enter().append('circle')
 				.classed('vis__graph__item', true)
 				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
-				.attr('fill', function(d) { return colorScale(d.category); })
 				.attr('cx', 0)
 				.attr('cy', 0)
-				.attr('r', function(d) { return rScale(d.projects.welshProportion); })
+				.attr('r', function(d) { return rScale(d.r); })
 				.on('mouseover', showHint)
-				.on('mouseout', hideHint);
+				.on('mouseout', hideHint)
+				.classed('selected', true);
+
+			graphAreaActive.selectAll('.vis__graph__item').data(data).enter().append('circle')
+				.classed('vis__graph__item', true)
+				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
+				.attr('cx', 0)
+				.attr('cy', 0)
+				.attr('r', function(d) { return rScale(d.r); })
+				.on('mouseover', showHint)
+				.on('mouseout', hideHint)
+				.classed('selected', true);
 		}
 		drawData();
+
+
+		function selectCategory(categoryName) {
+			graphArea.selectAll('.vis__graph__item')
+				.classed('selected', function(d) {
+					return d.category == categoryName || categoryName == 'all';
+				});
+		}
+
+		function highlightCategory(categoryName) {
+			graphArea.selectAll('.vis__graph__item')
+				.classed('highlighted', function(d) {
+					if (categoryName === undefined)
+						return false;
+					else 
+						return d.category == categoryName || categoryName == 'all';
+				});
+
+			graphArea.selectAll('.vis__graph__item')
+				.classed('blured', function(d) {
+					if (categoryName === undefined)
+						return false;
+					else 
+						return d.category != categoryName && categoryName != 'all';
+				});
+		}
 
 		
 		function drawLegend() {
@@ -127,37 +238,55 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 			legend.append('h1').text('Categories');
 
+			legend.append('label')
+				.classed('m-legend__category', true)
+				.text('All')
+				.on('mouseover', function(d) { highlightCategory('all'); })
+				.on('mouseout', function(d) { highlightCategory(); })
+				.append('input')
+					.attr('type', 'radio')
+					.attr('value', 'all')
+					.attr('name', 'category')
+					.attr('checked', 'checked')
+					.on('change', function(d) { selectCategory('all'); })
+					.on('mouseover', function(d) { highlightCategory('all'); })
+					.on('mouseout', function(d) { highlightCategory(); });
+
 			var categories = legend.selectAll('.m-legend__category').data(params.categories).enter()
 				.append('label')
 					.classed('m-legend__category', true)
-					.style('border-left-color', function(d) { return colorScale(d); })
-					.text(function(d) { return d; });
+					.text(function(d) { return d; })
+					.on('mouseover', function(d) { highlightCategory(d); })
+					.on('mouseout', function(d) { highlightCategory(); });
 
 			categories.append('input')
-				.attr('type', 'checkbox')
+				.attr('type', 'radio')
+				.attr('name', 'category')
 				.attr('value', function(d) { return d; })
-				.attr('checked', 'checked')
-				.on('change', function(d) {
-					d3.selectAll('.vis__graph__item').filter(function(dd) { return dd.category == d; })
-						.attr('visibility', this.checked ? 'visiblie' : 'hidden');
+				.on('change', function(d) { selectCategory(d); })
+				.on('mouseover', function(d) { highlightCategory(d); })
+				.on('mouseout', function(d) { highlightCategory(); });
+
+			legend.append('h1').text('Value per project [UNITS?]');
+
+
+			var legendSamples = [];
+			for (var i = 0; i < params.sampleCount; i++)
+				legendSamples.push({
+					min: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * i,
+					max: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * (i + 1),
+					avg: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * (i + .5)
 				});
-
-			legend.append('h1').text('Number of project. Welsh proportion');
-
-			var sizes = [];
-
-			for (var i = 0; i < params.legendSteps; i++)
-				sizes[i] = rValues[0] + (rValues[1] - rValues[0]) * Math.pow(i / (params.legendSteps - 1), 2);
-
-			var multiplicator = Math.pow(10, params.legendRoundTo);
-
-			legend.append('div')
-				.text(Math.round(sizes[0] * multiplicator) / multiplicator + ' - ' + sizes[params.legendSteps - 1]);
-
-			legend.selectAll('.m-legend__size').data(sizes).enter().append('div')
+			legend.selectAll('.m-legend__size').data(legendSamples).enter().append('div')
 				.classed('m-legend__size', true)
-				.style('width', function(d) { return rScale(d) * 2 + 'px'; })
-				.style('height', function(d) { return rScale(d) * 2 + 'px'; });
+				.text(function(d) {
+					return d.avg < 1000000 ? abbrNum(d.avg, -2) : abbrNum(d.avg, 0);
+				})
+				.append('div')
+					.classed('m-legend__size__sample', true)
+					.style('width', function(d) { return rScale(d.avg) * 2 + 'px'; })
+					.style('height', function(d) { return rScale(d.avg) * 2 + 'px'; })
+					.style('left', function(d) { return (30 / 2 - rScale(d.avg)) + 'px'; });
 		}
 		if (params.showLegend) drawLegend();
 	}
