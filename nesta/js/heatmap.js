@@ -76,10 +76,12 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 
 		xValues.sort(function(a, b) {
-			if ((!a.highlighted && !b.highlighted) || (a.highlighted && b.highlighted))
-				return (xValuesMeta[b].sum - xValuesMeta[a].sum) * 1000 +
-					(xValuesMeta[b].initialOrder - xValuesMeta[a].initialOrder);
-			else if (a.highlighted)
+			if ((!xValuesMeta[a].highlighted && !xValuesMeta[b].highlighted) || (xValuesMeta[a].highlighted && xValuesMeta[b].highlighted))
+				if (xValuesMeta[b].sum != xValuesMeta[a].sum)
+					return xValuesMeta[b].sum - xValuesMeta[a].sum;
+				else
+					return xValuesMeta[b].initialOrder - xValuesMeta[a].initialOrder;
+			else if (xValuesMeta[a].highlighted)
 				return -1;
 			else
 				return 1;
@@ -100,13 +102,13 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 
 		yValues.sort(function(a, b) {
-			if ((!a.highlighted && !b.highlighted) || (a.highlighted && b.highlighted)) {
+			if ((!yValuesMeta[a].highlighted && !yValuesMeta[b].highlighted) || (yValuesMeta[a].highlighted && yValuesMeta[b].highlighted)) {
 				if (yValuesMeta[b].sum != yValuesMeta[a].sum)
 					return yValuesMeta[b].sum - yValuesMeta[a].sum;
 				else
 					return yValuesMeta[b].initialOrder - yValuesMeta[a].initialOrder;
 			}
-			else if (a.highlighted)
+			else if (yValuesMeta[a].highlighted)
 				return -1;
 			else
 				return 1;
@@ -141,7 +143,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 			// rewrite this. hard to understand
 			function sortFunction(a, b) {
-				if ((a.highlighted && b.highlighted) || (!a.highlighted && !b.highlighted)) {
+				if ((meta[a].highlighted && meta[b].highlighted) || (!meta[a].highlighted && !meta[b].highlighted)) {
 					if (currentValues[a] !== undefined && currentValues[b] !== undefined) {
 						if (currentValues[b] != currentValues[a]) // try to compare by value
 							return currentValues[b] - currentValues[a];
@@ -161,7 +163,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 						else
 							return meta[b].initialOrder - meta[a].initialOrder;
 				}
-				else if (a.highlighted)
+				else if (meta[a].highlighted)
 					return -1;
 				else
 					return 1;
