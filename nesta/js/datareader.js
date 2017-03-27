@@ -170,6 +170,38 @@ function Datareader(base) {
 			}
 		)
 	}
+
+	// Engineering Tech Lad
+	readers[Datareader.DATASETS.EngineeringTechLad] = function(callback) {
+		d3.csv(
+			base + Datareader.DATASETS.EngineeringTechLad,
+			function(data) {
+				var lads = [];
+				var topics = [];
+				var res = [];
+
+				data.forEach(function(line, i) {
+					if (i == 0)
+						Object.keys(line).forEach(function(prop, j) {
+							if (prop != 'lad_name') topics.push(prop);
+						});
+					else
+						lads.push(line['lad_name']);
+
+					topics.forEach(function(topic, j) {
+						if (line[topic] !== undefined && line[topic] != '' && line[topic] != '0')
+							res.push({
+								lad: line['lad_name'],
+								topic: topic,
+								value: parseFloat(line[topic])
+							});
+					});
+				});
+
+				callback(lads, topics, res);
+			}
+		);
+	}
 }
 
 Datareader.DATASETS = {
@@ -179,4 +211,5 @@ Datareader.DATASETS = {
 	Bubblechart: 'bubble_chart_source_data.csv',
 	TopicPopularity: 'topic_popularity/topic_popularity_by_city_scaled_{0}.csv',
 	GroupsTopic: 'wales_groups_topic_ids_2013_2014_2015_2016.csv',
+	EngineeringTechLad: 'engineering_tech_lad.csv',
 }

@@ -6,8 +6,8 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		cellHeight: 10,
 		minValue: 0,
 		maxValue: 1,
-		minColor: '#f7fcfd',
-		maxColor: '#00441b',
+		minColor: '#ffeda0',
+		maxColor: '#f03b20',
 		rotateYAxisTips: true,
 		showLegend: true,
 		legendSteps: 7,
@@ -32,8 +32,11 @@ function Heatmap(svg, xValues, yValues, data, p) {
 	var graphWidth = xValues.length * params.cellWidth,
 		graphHeight = yValues.length * params.cellHeight;
 
+	xValues.forEach(function(v, i) { xValues.originalOrder = i; });
+	yValues.forEach(function(v, i) { yValues.originalOrder = i; });
+
 	this.draw = function() {
-		svg.attr('class', 'vis vis--heatmap')
+		svg.attr('class', 'vis vis--heatmap');
 
 		var leftAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
@@ -51,18 +54,32 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__graph', true);
 
+		var hintsArea = svg.append('g')
+			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
+			.classed('vis__hints', true);
+
+
+		var xValuesMeta = {};
+			// initialOrder: 0,
+			// sum: 0,
+			// highlighted: false,
+		var yValuesMeta = {};
+
 		var xScaleRange = [];
-		var xValuesSums = {};
 		for (var i = 0; i < xValues.length; i++) {
 			xScaleRange.push(params.cellWidth / 2 + params.cellWidth * i);
-			xValuesSums[xValues[i]] = data.reduce(function(a, b) { return a + (b.x == xValues[i] ? b.value : 0); }, 0); // calculate the sum
+			xValuesMeta[xValues[i]] = {
+				sum: data.reduce(function(a, b) { return a + (b.x == xValues[i] ? b.value : 0); }, 0), // calculate the sum
+				highlighted: params.highlightedValues.indexOf(xValues[i]) != -1,
+				initialOrder: i
+			}
 		}
 
 		xValues.sort(function(a, b) {
-			if ((params.highlightedValues.indexOf(a) != -1 && params.highlightedValues.indexOf(b) != -1) ||
-				(params.highlightedValues.indexOf(a) == -1 && params.highlightedValues.indexOf(b) == -1))
-				return xValuesSums[b] - xValuesSums[a];
-			else if (params.highlightedValues.indexOf(a) != -1)
+			if ((!a.highlighted && !b.highlighted) || (a.highlighted && b.highlighted))
+				return (xValuesMeta[b].sum - xValuesMeta[a].sum) * 1000 +
+					(xValuesMeta[b].initialOrder - xValuesMeta[a].initialOrder);
+			else if (a.highlighted)
 				return -1;
 			else
 				return 1;
@@ -73,17 +90,23 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			.range(xScaleRange);
 
 		var yScaleRange = [];
-		var yValuesSums = {};
 		for (var i = 0; i < yValues.length; i++) {
 			yScaleRange.push(params.cellHeight / 2 + params.cellHeight * i);
-			yValuesSums[yValues[i]] = data.reduce(function(a, b) { return a + (b.y == yValues[i] ? b.value : 0); }, 0); // calculate the sum
+			yValuesMeta[yValues[i]] = {
+				sum: data.reduce(function(a, b) { return a + (b.y == yValues[i] ? b.value : 0); }, 0), // calculate the sum
+				highlighted: params.highlightedValues.indexOf(yValues[i]) != -1,
+				initialOrder: i
+			}
 		}
 
 		yValues.sort(function(a, b) {
-			if ((params.highlightedValues.indexOf(a) != -1 && params.highlightedValues.indexOf(b) != -1) ||
-				(params.highlightedValues.indexOf(a) == -1 && params.highlightedValues.indexOf(b) == -1))
-				return yValuesSums[b] - yValuesSums[a];
-			else if (params.highlightedValues.indexOf(a) != -1)
+			if ((!a.highlighted && !b.highlighted) || (a.highlighted && b.highlighted)) {
+				if (yValuesMeta[b].sum != yValuesMeta[a].sum)
+					return yValuesMeta[b].sum - yValuesMeta[a].sum;
+				else
+					return yValuesMeta[b].initialOrder - yValuesMeta[a].initialOrder;
+			}
+			else if (a.highlighted)
 				return -1;
 			else
 				return 1;
@@ -98,6 +121,12 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			columnHighlight;
 
 		function sortColumn(value, axis) {
+			var axisSelection = axis == 'y' ? leftAxis : topAxis;
+			var sortingSymbol = axis == 'x' ? '▾' : '▸';
+			axisSelection.selectAll('.vis__axis__tick')
+				.classed('sorting', function(d) { return d == value; })
+				.text(function(d) { return d == value ? d + ' ' + sortingSymbol : d; });
+
 			var oppositeAxis = (axis == 'x') ? 'y': 'x';
 			var cells = graphArea.selectAll('.vis__graph__cell').filter(function(d, i) {
 				return d[axis] == value;
@@ -108,30 +137,31 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				currentValues[d[oppositeAxis]] = d.value;
 			});
 
+			var meta = axis == 'x' ? yValuesMeta : xValuesMeta;
+
 			// rewrite this. hard to understand
 			function sortFunction(a, b) {
-				if ((params.highlightedValues.indexOf(a) != -1 && params.highlightedValues.indexOf(b) != -1) ||
-					(params.highlightedValues.indexOf(a) == -1 && params.highlightedValues.indexOf(b) == -1)) {
+				if ((a.highlighted && b.highlighted) || (!a.highlighted && !b.highlighted)) {
 					if (currentValues[a] !== undefined && currentValues[b] !== undefined) {
 						if (currentValues[b] != currentValues[a]) // try to compare by value
 							return currentValues[b] - currentValues[a];
-						else if (axis == 'x') // if values are equal, compare by full col/row sum
-							return yValuesSums[b] - yValuesSums[a];
 						else
-							return xValuesSums[b] - xValuesSums[a];
+							if (meta[b].sum != meta[a].sum)
+								return meta[b].sum - meta[a].sum;
+							else
+								return meta[b].initialOrder - meta[a].initialOrder;
 					}
 					else if (currentValues[a] !== undefined)
 						return -1;
 					else if (currentValues[b] !== undefined)
 						return 1;
-					else {
-						if (axis == 'x')
-							return yValuesSums[b] - yValuesSums[a];
+					else
+						if (meta[b].sum != meta[a].sum)
+							return meta[b].sum - meta[a].sum;
 						else
-							return xValuesSums[b] - xValuesSums[a];
-					}
+							return meta[b].initialOrder - meta[a].initialOrder;
 				}
-				else if (params.highlightedValues.indexOf(a) != -1)
+				else if (a.highlighted)
 					return -1;
 				else
 					return 1;
@@ -153,13 +183,13 @@ function Heatmap(svg, xValues, yValues, data, p) {
 						return 'translate({0},{1})'.format(xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2);
 					});
 
-			leftAxis.selectAll('.vis__axis__tip')
+			leftAxis.selectAll('.vis__axis__tick')
 				.transition()
 				.duration(params.animationDuration)
 					.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
 
 			// FIX THIS!
-			topAxis.selectAll('.vis__axis__tip')
+			topAxis.selectAll('.vis__axis__tick')
 				.transition()
 				.duration(params.animationDuration)
 					.attr('transform', function(d, i) {
@@ -168,16 +198,18 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 
 		function drawAxes() {
-			function addTips(axis, data) {
-				return axis.selectAll('vis__axis__tip').data(data).enter().append('text')
-					.classed('vis__axis__tip', true)
+			function addTicks(axis, data) {
+				var ticks = axis.selectAll('vis__axis__tick').data(data).enter().append('text')
+					.classed('vis__axis__tick', true)
 					.attr('text-anchor', 'end')
 					.attr('alignment-baseline', 'middle')
 					.classed('highlighted', function(d, i) { return params.highlightedValues.indexOf(d) != -1; })
 					.text(function(d) { return d; });
+
+				return ticks;
 			}
 
-			var leftTips = addTips(leftAxis, yValues);
+			var leftTips = addTicks(leftAxis, yValues);
 			leftTips
 				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
 
@@ -188,7 +220,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 
 			function addHorizontalTips(axis) {
-				var tips = addTips(axis, xValues)
+				var tips = addTicks(axis, xValues)
 					.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(d), 5); });
 				if (params.sorting)
 					tips
@@ -245,24 +277,18 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		drawHighlighted();
 		
 
+		var hintWindow;
 		function drawHint() {
-			hint = graphArea.append('g')
-				.classed('vis__graph__hint', true)
+			hint = hintsArea.append('g')
+				.classed('vis__hints__hint', true)
 				.attr('visibility', 'visible');
 			hint.append('rect');
 			hint.append('text')
-				.attr('dy', 10)
+				.attr('dy', 5)
 				.attr('alignment-baseline', 'before-edge');
 
-			rowHighlight = graphArea.insert('rect', ':first-child')
-				.classed('vis__graph__highlight', true)
-				.attr('x', 0)
-				.attr('height', params.cellHeight)
-				.attr('visibility', 'hidden');
-
-			columnHighlight = graphArea.insert('rect', ':first-child')
-				.classed('vis__graph__highlight', true)
-				.attr('width', params.cellWidth)
+			hintWindow = hintsArea.append('path')
+				.classed('vis__hints__window', true)
 				.attr('visibility', 'hidden');
 		}
 
@@ -279,38 +305,37 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				.attr('width', bbox.width + 8)
 				.attr('height', bbox.height + 4);
 
-			rowHighlight
-				.attr('visibility', 'visible')
-				.attr('width', xScale(d.x) + params.cellWidth / 2)
-				.attr('y', yScale(d.y) - params.cellHeight / 2);
+			var leftTick = leftAxis.selectAll('.vis__axis__tick').filter(function(dd, i) { return dd == d.y; });
+			var topTick = topAxis.selectAll('.vis__axis__tick').filter(function(dd, i) { return dd == d.x; });
+			var bottomTick = topAxis.selectAll('.vis__axis__bottom').filter(function(dd, i) { return dd == d.x; });
 
-			if (params.showBottomAxis) // <--------------------- FIX!!!
-				columnHighlight
-					.attr('visibility', 'visible')
-					.attr('x', xScale(d.x) - params.cellWidth / 2)
-					.attr('y', yScale(d.y) + params.cellHeight / 2)
-					.attr('height', graphHeight - yScale(d.y) + params.cellHeight / 2);
-			else
-				columnHighlight
-					.attr('visibility', 'visible')
-					.attr('x', xScale(d.x) - params.cellWidth / 2)
-					.attr('y', 0)
-					.attr('height', yScale(d.y) - params.cellHeight / 2);
+			leftTick.classed('selected', true);
+			topTick.classed('selected', true);
+			bottomAxis.selectAll('.vis__axis__tick').filter(function(dd, i) { return dd == d.x; }).classed('selected', true);
 
-			leftAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return dd == d.y; } ).classed('selected', true);
-			topAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return dd == d.x; }).classed('selected', true);
-			bottomAxis.selectAll('.vis__axis__tip').filter(function(dd, i) { return dd == d.x; }).classed('selected', true);
+			var leftTickWidth = leftTick.node().getBBox().width;
+			var topTickHeight = topTick.node().getBBox().height;
+
+
+			hintWindow.attr('d', 'M{0} {1} L{2} {3} L{4} {5} L{6} {7} L{8} {9} L{10} {11} Z'.format(
+					-leftTickWidth - 10, yScale(d.y) + params.cellHeight / 2,
+					-leftTickWidth - 10, yScale(d.y) - params.cellHeight / 2,
+					xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2,
+					xScale(d.x) - params.cellWidth / 2, -topTickHeight - 10,
+					xScale(d.x) + params.cellWidth / 2, -topTickHeight - 10,
+					xScale(d.x) + params.cellWidth / 2, yScale(d.y) + params.cellHeight / 2
+				))
+				.attr('visibility', 'visible');
 		}
 
 		function hideHint() {
 			hint.attr('visibility', 'hidden');
 			
-			leftAxis.select('.vis__axis__tip.selected').classed('selected', false);
-			topAxis.select('.vis__axis__tip.selected').classed('selected', false);
-			bottomAxis.select('.vis__axis__tip.selected').classed('selected', false);
+			leftAxis.select('.vis__axis__tick.selected').classed('selected', false);
+			topAxis.select('.vis__axis__tick.selected').classed('selected', false);
+			bottomAxis.select('.vis__axis__tick.selected').classed('selected', false);
 
-			rowHighlight.attr('visibility', 'hidden');
-			columnHighlight.attr('visibility', 'hidden');
+			hintWindow.attr('visibility', 'hidden');
 		}
 
 		function drawData() {
@@ -362,7 +387,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 			var steps = [];
 			for (var i = 0; i < params.legendSteps; i++)
-				steps.push(params.minValue + (params.maxValue - params.minValue) / (params.legendSteps - 1) * i);
+				steps.push(params.minValue + (params.maxValue - params.minValue) / params.legendSteps * (i + 0.5));
 
 			legend.selectAll('vis__legend__sample').data(steps).enter().append('rect')
 				.classed('vis__legend__sample', true)
@@ -375,12 +400,18 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 			var multiplicator = Math.pow(10, params.legendRoundTo);
 
-			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
+			var ticks = [];
+			for (var i = 0; i < params.legendSteps; i++) {
+				ticks.push(params.minValue + (params.maxValue - params.minValue + 1) / params.legendSteps * i);
+				ticks.push(params.minValue + (params.maxValue - params.minValue + 1) / params.legendSteps * (i + 1) - 1);
+			}
+
+			legend.selectAll('vis__legend__tips').data(ticks).enter().append('text')
 				.classed('vis__legend__tips', true)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
+					return 'translate({0},{1})'.format(i * params.legendSampleWidth / 2 + 10, 30 + params.legendSampleWidth);
 				})
-				.attr('text-anchor', 'middle')
+				.attr('text-anchor', 'left')
 				.attr('alignment-baseline', 'before-edge')
 				.text(function(d) { return Math.round(d * multiplicator) / multiplicator; });
 		}

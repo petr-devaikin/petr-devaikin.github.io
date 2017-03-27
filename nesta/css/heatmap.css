@@ -2,11 +2,14 @@
   font-size: 10px;
   fill: #999;
 }
-.vis--heatmap .vis__axis__tip.highlighted {
+.vis--heatmap .vis__axis__tick.highlighted {
   fill: #008000;
 }
-.vis--heatmap .vis__axis__tip.selected {
+.vis--heatmap .vis__axis__tick.selected {
   font-weight: bold;
+  fill: #000;
+}
+.vis--heatmap .vis__axis__tick.sorting {
   fill: #000;
 }
 .vis--heatmap .vis__graph__cell {
@@ -21,19 +24,6 @@
 .vis--heatmap .vis__graph__cell__value {
   stroke: none;
 }
-.vis--heatmap .vis__graph__hint {
-  pointer-events: none;
-}
-.vis--heatmap .vis__graph__hint rect {
-  stroke: #999;
-  fill: #fff;
-  opacity: 0.7;
-}
-.vis--heatmap .vis__graph__hint text {
-  text-anchor: middle;
-  fill: #000;
-  font-size: 10px;
-}
 .vis--heatmap .vis__graph__high-bg {
   stroke: none;
   fill: rgba(200,200,200,0.1);
@@ -41,6 +31,23 @@
 .vis--heatmap .vis__graph__highlight {
   stroke: none;
   fill: rgba(170,170,170,0.1);
+}
+.vis--heatmap .vis__hints {
+  pointer-events: none;
+}
+.vis--heatmap .vis__hints__hint rect {
+  stroke: #999;
+  fill: #fff;
+  opacity: 0.7;
+}
+.vis--heatmap .vis__hints__hint text {
+  text-anchor: middle;
+  fill: #000;
+  font-size: 10px;
+}
+.vis--heatmap .vis__hints__window {
+  fill: none;
+  stroke: #000;
 }
 .vis--heatmap .vis__legend__bg {
   stroke: #444;

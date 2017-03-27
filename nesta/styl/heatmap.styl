@@ -3,11 +3,13 @@
 		font-size 10px
 		fill #999
 
-		&__tip
+		&__tick
 			&.highlighted
 				fill green
 			&.selected
 				font-weight bold
+				fill #000
+			&.sorting
 				fill #000
 
 	.vis__graph
@@ -24,17 +26,6 @@
 				stroke none
 
 
-		&__hint
-			pointer-events none
-
-			rect
-				stroke #999
-				fill #fff
-				opacity .7
-			text
-				text-anchor middle
-				fill #000
-				font-size 10px
 
 		&__high-bg
 			stroke none
@@ -43,6 +34,23 @@
 		&__highlight
 			stroke none
 			fill rgba(170, 170, 170, .1)
+			
+	.vis__hints
+		pointer-events none
+		
+		&__hint
+			rect
+				stroke #999
+				fill #fff
+				opacity .7
+			text
+				text-anchor middle
+				fill #000
+				font-size 10px
+		
+		&__window
+			fill none
+			stroke #000
 
 	.vis__legend
 		&__bg
