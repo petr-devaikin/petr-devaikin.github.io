@@ -8,6 +8,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		maxValue: 1,
 		minColor: '#ffeda0',
 		maxColor: '#f03b20',
+		logarythmicValueScale: false,
 		rotateYAxisTips: true,
 		showLegend: true,
 		legendSteps: 7,
@@ -25,9 +26,29 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
-	var colorScale = d3.scaleLinear()
-		.domain([params.minValue, params.maxValue])
-		.range([params.minColor, params.maxColor]);
+	var colorScale;
+	var _logScale;
+	if (params.logarythmicValueScale) {
+		_logScale = d3.scaleLog().domain([params.minValue, params.maxValue]).range([0, 1]);
+
+		var colorThresholds = [];
+		var colorValues = [params.minColor];
+		for (var i = 0; i < params.legendSteps; i++) {
+			colorThresholds.push(_logScale.invert(i / params.legendSteps));
+			colorValues.push(d3.interpolateRgb(params.minColor, params.maxColor)(i / (params.legendSteps - 1)))
+		}
+		colorScale = d3.scaleThreshold().domain(colorThresholds).range(colorValues);
+		console.log(colorThresholds);
+	}
+	else {
+		var colorSteps = [];
+		for (var i = 0; i < params.legendSteps; i++)
+			colorSteps.push(d3.interpolateRgb(params.minColor, params.maxColor)(i / (params.legendSteps - 1)));
+
+		colorScale = d3.scaleQuantize()
+			.domain([params.minValue, params.maxValue])
+			.range(colorSteps);
+		}
 
 	var graphWidth = xValues.length * params.cellWidth,
 		graphHeight = yValues.length * params.cellHeight;
@@ -80,7 +101,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				if (xValuesMeta[b].sum != xValuesMeta[a].sum)
 					return xValuesMeta[b].sum - xValuesMeta[a].sum;
 				else
-					return xValuesMeta[b].initialOrder - xValuesMeta[a].initialOrder;
+					return xValuesMeta[a].initialOrder - xValuesMeta[b].initialOrder;
 			else if (xValuesMeta[a].highlighted)
 				return -1;
 			else
@@ -106,13 +127,15 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				if (yValuesMeta[b].sum != yValuesMeta[a].sum)
 					return yValuesMeta[b].sum - yValuesMeta[a].sum;
 				else
-					return yValuesMeta[b].initialOrder - yValuesMeta[a].initialOrder;
+					return yValuesMeta[a].initialOrder - yValuesMeta[b].initialOrder;
 			}
 			else if (yValuesMeta[a].highlighted)
 				return -1;
 			else
 				return 1;
 		});
+
+		console.log(xValuesMeta);
 
 		var yScale = d3.scaleOrdinal()
 			.domain(yValues)
@@ -151,7 +174,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 							if (meta[b].sum != meta[a].sum)
 								return meta[b].sum - meta[a].sum;
 							else
-								return meta[b].initialOrder - meta[a].initialOrder;
+								return meta[a].initialOrder - meta[b].initialOrder;
 					}
 					else if (currentValues[a] !== undefined)
 						return -1;
@@ -161,7 +184,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 						if (meta[b].sum != meta[a].sum)
 							return meta[b].sum - meta[a].sum;
 						else
-							return meta[b].initialOrder - meta[a].initialOrder;
+							return meta[a].initialOrder - meta[b].initialOrder;
 				}
 				else if (meta[a].highlighted)
 					return -1;
@@ -315,17 +338,23 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			topTick.classed('selected', true);
 			bottomAxis.selectAll('.vis__axis__tick').filter(function(dd, i) { return dd == d.x; }).classed('selected', true);
 
-			var leftTickWidth = leftTick.node().getBBox().width;
-			var topTickHeight = topTick.node().getBBox().height;
+			//var leftTickWidth = leftTick.node().getBBox().width;
+			//var topTickHeight = topTick.node().getBBox().height;
 
 
 			hintWindow.attr('d', 'M{0} {1} L{2} {3} L{4} {5} L{6} {7} L{8} {9} L{10} {11} Z'.format(
-					-leftTickWidth - 10, yScale(d.y) + params.cellHeight / 2,
+					-3, yScale(d.y) + params.cellHeight / 2,
+					-3, yScale(d.y) - params.cellHeight / 2,
+					xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2,
+					xScale(d.x) - params.cellWidth / 2, -3,
+					xScale(d.x) + params.cellWidth / 2, -3,
+					xScale(d.x) + params.cellWidth / 2, yScale(d.y) + params.cellHeight / 2
+					/*-leftTickWidth - 10, yScale(d.y) + params.cellHeight / 2,
 					-leftTickWidth - 10, yScale(d.y) - params.cellHeight / 2,
 					xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2,
 					xScale(d.x) - params.cellWidth / 2, -topTickHeight - 10,
 					xScale(d.x) + params.cellWidth / 2, -topTickHeight - 10,
-					xScale(d.x) + params.cellWidth / 2, yScale(d.y) + params.cellHeight / 2
+					xScale(d.x) + params.cellWidth / 2, yScale(d.y) + params.cellHeight / 2*/
 				))
 				.attr('visibility', 'visible');
 		}
@@ -388,8 +417,12 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				.text(params.legendText);
 
 			var steps = [];
+
 			for (var i = 0; i < params.legendSteps; i++)
-				steps.push(params.minValue + (params.maxValue - params.minValue) / params.legendSteps * (i + 0.5));
+				if (!params.logarythmicValueScale)
+					steps.push(params.minValue + (params.maxValue - params.minValue + 1) / params.legendSteps * (i + 0.5));
+				else
+					steps.push(_logScale.invert(i / params.legendSteps));
 
 			legend.selectAll('vis__legend__sample').data(steps).enter().append('rect')
 				.classed('vis__legend__sample', true)
@@ -405,17 +438,23 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			var ticks = [];
 			for (var i = 0; i < params.legendSteps; i++) {
 				ticks.push(params.minValue + (params.maxValue - params.minValue + 1) / params.legendSteps * i);
-				ticks.push(params.minValue + (params.maxValue - params.minValue + 1) / params.legendSteps * (i + 1) - 1);
 			}
 
 			legend.selectAll('vis__legend__tips').data(ticks).enter().append('text')
 				.classed('vis__legend__tips', true)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(i * params.legendSampleWidth / 2 + 10, 30 + params.legendSampleWidth);
+					return 'translate({0},{1})'.format(i * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
 				})
-				.attr('text-anchor', 'left')
+				.attr('text-anchor', 'start')
 				.attr('alignment-baseline', 'before-edge')
-				.text(function(d) { return Math.round(d * multiplicator) / multiplicator; });
+				.text(function(d) { return d.abbrNum(); });
+
+			legend.append('text')
+				.classed('vis__legend__tips', true)
+				.attr('transform', 'translate({0},{1})'.format(params.legendSteps * params.legendSampleWidth + 10, 30 + params.legendSampleWidth))
+				.attr('text-anchor', 'end')
+				.attr('alignment-baseline', 'before-edge')
+				.text(params.maxValue.abbrNum());
 		}
 		if (params.showLegend)
 			drawLegend();

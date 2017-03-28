@@ -197,8 +197,37 @@ function Datareader(base) {
 							});
 					});
 				});
-
 				callback(lads, topics, res);
+			}
+		);
+	}
+
+	// Attendants
+	readers[Datareader.DATASETS.Attendants] = function(callback) {
+		d3.csv(
+			base + Datareader.DATASETS.Attendants,
+			function(rawData) {
+				from = [];
+				to = [];
+				data = [];
+
+				rawData.forEach(function(line, i) {
+					if (i == 0)
+						Object.keys(line).forEach(function(prop, j) {
+							if (prop != 'registration_city' && prop != '') to.push(prop);
+						});
+					else
+						from.push(line['registration_city']);
+
+					to.forEach(function(toCity, j) {
+						data.push({
+							from: line['registration_city'],
+							to: toCity,
+							value: parseInt(line[toCity])
+						});
+					});
+				});
+				callback(from, to, data);
 			}
 		);
 	}
@@ -212,4 +241,5 @@ Datareader.DATASETS = {
 	TopicPopularity: 'topic_popularity/topic_popularity_by_city_scaled_{0}.csv',
 	GroupsTopic: 'wales_groups_topic_ids_2013_2014_2015_2016.csv',
 	EngineeringTechLad: 'engineering_tech_lad.csv',
+	Attendants: 'attendants_in_other_cities.csv',
 }
