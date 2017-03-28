@@ -49,17 +49,20 @@ datareader.readData(Datareader.DATASETS.Lads, function(lads) {
 		var heatmap = new Heatmap(svg, filteredTo, filteredFrom, filteredAttendants, {
 			minValue: 1,
 			maxValue: maxValue,
+			cellWidth: 10,
+			cellHeight: 10,
 			legendRoundTo: 0,
 			legendSampleWidth: 35,
 			leftMargin: 150,
-			bottomMargim: 10,
 			topMargin: 150,
 			showTopAxis: true,
 			showBottomAxis: false,
 			highlightedValues: welshCities,
 			sorting: true,
 			logarythmicValueScale: true,
-			legendText: 'Number of attendants ... (?)'
+			legendText: 'Number of attendants of ... (?) in 201(?)',
+			leftAxisLabel: 'From',
+			topAxisLabel: 'To',
 		});
 		heatmap.draw();
 	})

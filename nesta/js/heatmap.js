@@ -22,6 +22,8 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		sorting: false,
 		animationDuration: 200,
 		legendText: '',
+		leftAxisLabel: undefined,
+		topAxisLabel: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -38,7 +40,6 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			colorValues.push(d3.interpolateRgb(params.minColor, params.maxColor)(i / (params.legendSteps - 1)))
 		}
 		colorScale = d3.scaleThreshold().domain(colorThresholds).range(colorValues);
-		console.log(colorThresholds);
 	}
 	else {
 		var colorSteps = [];
@@ -135,8 +136,6 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				return 1;
 		});
 
-		console.log(xValuesMeta);
-
 		var yScale = d3.scaleOrdinal()
 			.domain(yValues)
 			.range(yScaleRange);
@@ -147,10 +146,21 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 		function sortColumn(value, axis) {
 			var axisSelection = axis == 'y' ? leftAxis : topAxis;
-			var sortingSymbol = axis == 'x' ? '▾' : '▸';
-			axisSelection.selectAll('.vis__axis__tick')
+
+			var ticks = axisSelection.selectAll('.vis__axis__tick')
 				.classed('sorting', function(d) { return d == value; })
-				.text(function(d) { return d == value ? d + ' ' + sortingSymbol : d; });
+				.text(function(d) {
+					if (d == value)
+						if (axis == 'y')
+							return d + ' ▶';
+						else
+							if (params.rotateYAxisTips)
+								return '◀ ' + d;
+							else
+								return d + ' ▼';
+					else
+						return d;
+				});
 
 			var oppositeAxis = (axis == 'x') ? 'y': 'x';
 			var cells = graphArea.selectAll('.vis__graph__cell').filter(function(d, i) {
@@ -234,24 +244,26 @@ function Heatmap(svg, xValues, yValues, data, p) {
 				return ticks;
 			}
 
-			var leftTips = addTicks(leftAxis, yValues);
-			leftTips
+			var leftTicks = addTicks(leftAxis, yValues);
+			leftTicks
 				.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
 
 			if (params.sorting)
-				leftTips
+				leftTicks
 					.style('cursor', 'pointer')
 					.on('click', function(d, i) { sortColumn(d, 'y'); });
 
 
 			function addHorizontalTips(axis) {
-				var tips = addTicks(axis, xValues)
-					.attr('transform', function(d, i) { return 'translate({0},{1}) rotate(-90)'.format(xScale(d), 5); });
+				var ticks = addTicks(axis, xValues)
+					.attr('transform', function(d, i) {
+						return 'translate({0},{1}) rotate({2})'.format(xScale(d), -5, params.rotateYAxisTips ? -90 : 0);
+					});
 				if (params.sorting)
-					tips
+					ticks
 						.style('cursor', 'pointer')
 						.on('click', function(d, i) { sortColumn(d, 'x'); });
-				return tips;
+				return ticks;
 			}
 
 			// FIX THIS!
@@ -270,11 +282,30 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 				topTips
 					.attr('text-anchor', params.rotateYAxisTips ? 'start' : 'middle')
-					.attr('alignment-baseline', params.rotateYAxisTips ? 'middle' : 'after-edge')
-					.attr('transform', function(d, i) {
-						return 'translate({0},{1}) rotate({2})'.format(xScale(d), -5, params.rotateYAxisTips ? -90 : 0);
-					});
+					.attr('alignment-baseline', params.rotateYAxisTips ? 'middle' : 'after-edge');
 			}
+
+			if (params.leftAxisLabel !== undefined)
+				leftAxis.append('text')
+					.classed('vis__axis__label', true)
+					.text(params.leftAxisLabel)
+					.attr('text-anchor', 'end')
+					.attr('alignment-baseline', 'middle')
+					.attr('transform', 'translate({0},{1})'.format(-40, -20));
+
+			if (params.topAxisLabel !== undefined)
+				topAxis.append('text')
+					.classed('vis__axis__label', true)
+					.text(params.topAxisLabel)
+					.attr('text-anchor', 'start')
+					.attr('alignment-baseline', 'middle')
+					.attr('transform', 'translate({0},{1}) rotate({2})'.format(-20, -40, params.rotateYAxisTips ? - 90 : 0));
+
+			if (params.topAxisLabel !== undefined || params.leftAxisLabel !== undefined)
+				topAxis.append('line')
+					.classed('vis__axis__divider', true)
+					.attr('x1', -15).attr('y1', -15)
+					.attr('x2', -40).attr('y2', -40);
 		}
 		drawAxes();
 

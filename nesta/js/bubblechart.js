@@ -21,7 +21,6 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
-	console.log(rValues);
 
 	this.draw = function() {
 		data.sort(function(a, b) { return b.r - a.r; });

@@ -10,7 +10,15 @@
   fill: #000;
 }
 .vis--heatmap .vis__axis__tick.sorting {
+  font-weight: bold;
+}
+.vis--heatmap .vis__axis__label {
   fill: #000;
+  font-size: 14px;
+}
+.vis--heatmap .vis__axis__divider {
+  fill: none;
+  stroke: #000;
 }
 .vis--heatmap .vis__graph__cell {
   -webkit-transition: transform 0.5s;
