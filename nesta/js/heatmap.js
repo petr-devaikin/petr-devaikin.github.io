@@ -144,7 +144,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 			rowHighlight,
 			columnHighlight;
 
-		function sortColumn(value, axis) {
+		function sortColumn(value, axis, instantly) {
 			var axisSelection = axis == 'y' ? leftAxis : topAxis;
 
 			var ticks = axisSelection.selectAll('.vis__axis__tick')
@@ -213,20 +213,20 @@ function Heatmap(svg, xValues, yValues, data, p) {
 
 			graphArea.selectAll('.vis__graph__cell')
 				.transition()
-				.duration(params.animationDuration)
+				.duration(instantly ? 0 : params.animationDuration)
 					.attr('transform', function(d) {
 						return 'translate({0},{1})'.format(xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2);
 					});
 
 			leftAxis.selectAll('.vis__axis__tick')
 				.transition()
-				.duration(params.animationDuration)
+				.duration(instantly ? 0 : params.animationDuration)
 					.attr('transform', function(d, i) { return 'translate({0},{1})'.format(-5, yScale(d)); });
 
 			// FIX THIS!
 			topAxis.selectAll('.vis__axis__tick')
 				.transition()
-				.duration(params.animationDuration)
+				.duration(instantly ? 0 : params.animationDuration)
 					.attr('transform', function(d, i) {
 						return 'translate({0},{1}) rotate({2})'.format(xScale(d), -5, params.rotateYAxisTips ? -90 : 0);
 					});
@@ -489,6 +489,11 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 		if (params.showLegend)
 			drawLegend();
+
+
+		// initial sort
+		sortColumn(xScale.domain()[0], 'x', true);
+		sortColumn(yScale.domain()[0], 'y', true);
 	}
 }
 
