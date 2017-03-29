@@ -7,6 +7,9 @@
   stroke-width: 1;
   stroke: #fff;
 }
+.vis--geovis .vis__map__lad.no-data {
+  fill: #eee;
+}
 .vis--geovis .vis__map__border {
   stroke: #999;
   stroke-width: 2;
@@ -15,10 +18,41 @@
 .vis--geovis .vis__hint {
   pointer-events: none;
 }
+.vis--geovis .vis__hint rect {
+  fill: #fff;
+  stroke: #999;
+  opacity: 0.8;
+}
 .vis--geovis .vis__hint text {
-  text-anchor: middle;
+  text-anchor: start;
+  alignment-baseline: before-edge;
+}
+.vis--geovis .vis__hint text.vis__hint__city {
+  font-weight: bold;
+  font-size: 14px;
+}
+.vis--geovis .vis__hint__topic {
   font-size: 12px;
-  alignment-baseline: after-edge;
+}
+.vis--geovis .vis__hint__topic.selected {
+  font-weight: bold;
+  fill: #c80000;
+}
+.vis--geovis .vis__legend__bg {
+  stroke: #444;
+  stroke-width: 1;
+  fill: #fff;
+}
+.vis--geovis .vis__legend text {
+  font-size: 10px;
+}
+.title {
+  position: absolute;
+  z-index: 100;
+  left: 10px;
+  top: 10px;
+  margin: 0;
+  font-size: 18px;
 }
 .legend {
   position: fixed;
@@ -46,7 +80,4 @@
   position: relative;
   float: left;
   top: -2px;
-}
-.legend label.topic {
-  border-left: 15px solid #fff;
 }

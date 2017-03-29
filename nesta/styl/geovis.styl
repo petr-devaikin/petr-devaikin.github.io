@@ -12,6 +12,9 @@
 			&--welsh
 				//stroke #000
 				//fill red
+					
+			&.no-data
+				fill #eee
 			
 		&__border
 			stroke #999
@@ -21,11 +24,42 @@
 	.vis__hint
 		pointer-events none
 		
+		rect
+			fill #fff
+			stroke #999
+			opacity .8
+		
 		text
-			text-anchor middle
-			font-size 12px
-			alignment-baseline after-edge
+			text-anchor start
+			alignment-baseline before-edge
 			
+			&.vis__hint__city
+				font-weight bold
+				font-size 14px
+				
+		&__topic
+			font-size 12px
+			
+			&.selected
+				font-weight bold
+				fill rgb(200, 0, 0)
+			
+	.vis__legend
+		&__bg
+			stroke #444
+			stroke-width 1
+			fill #fff
+
+		text
+			font-size 10px
+			
+.title
+	position absolute
+	z-index 100
+	left 10px
+	top 10px
+	margin 0
+	font-size 18px
 
 .legend
 	position fixed
@@ -56,5 +90,3 @@
 			float left
 			top -2px
 			
-		&.topic
-			border-left 15px solid #fff
