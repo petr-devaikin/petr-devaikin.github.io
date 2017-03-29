@@ -26,7 +26,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 				legendSteps: 5,
 				legendSampleWidth: 40,
 				legendSampleHeight: 20,
-				legendText: 'Popularity of topic ?? [UNITS?]',
+				legendText: 'Popularity of topic ?? [UNITS?] in 2016',
 				minColor: '#ffeda0',
 				maxColor: '#f03b20',
 			}
@@ -189,6 +189,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			function drawLegend() {
 				var legend = d3.select('body').append('div').classed('legend', true);
 
+				/*
 				legend.append('h1').text('Years');
 				years.forEach(function(year) {
 					legend.append('label')
@@ -202,7 +203,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 								selectedYear = year;
 								repaint();
 							});
-				});
+				});*/
 
 				legend.append('h1').text('Topics');
 

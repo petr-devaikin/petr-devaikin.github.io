@@ -6,7 +6,7 @@ var svg = d3.select("body").append("svg")
 	.attr("height", height);
 
 var datareader = new Datareader();
-datareader.read('bc_big_sector_year_welsh.csv', function(cities, sectors, years) {
+datareader.readData(Datareader.DATASETS.BigSectorYearWelsh, function(cities, sectors, years) {
 	var treemap = d3.treemap()
 		.tile(d3.treemapSquarify)
 		.size([width, height])
