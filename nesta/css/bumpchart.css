@@ -4,9 +4,14 @@
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
 }
-.vis--bumpchart .vis__graph__line {
+.vis--bumpchart .vis__graph__line__line {
   fill: none;
   stroke-width: 2;
+}
+.vis--bumpchart .vis__graph__line__bg {
+  fill: none;
+  stroke: rgba(255,255,255,0);
+  stroke-width: 7;
 }
 .vis--bumpchart .vis__graph__line.blured {
   opacity: 0.2;

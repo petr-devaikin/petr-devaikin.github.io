@@ -69,6 +69,9 @@ function Bumpchart(svg, xValues, data, p) {
 		// hints
 
 		function showHints(line) {
+			if (line === undefined)
+				return;
+
 			function setHintPosition(d, i) {
 				if (d === undefined)
 					return '';
@@ -185,8 +188,8 @@ function Bumpchart(svg, xValues, data, p) {
 
 
 		function drawData() {
-			function drawLines(selection) {
-				selection.attr('points', function(line) {
+			function positionLines(selection) {
+				selection.selectAll('polyline').attr('points', function(line) {
 					var res = '';
 					line.values.forEach(function(x, i) {
 						res += ' ' + xScale(i) + ' ' + yScale(x.position);
@@ -196,14 +199,19 @@ function Bumpchart(svg, xValues, data, p) {
 			}
 
 			var points = graphArea.selectAll('.vis__graph__line').data(data)
-				.call(drawLines);
+				.call(positionLines);
 
-			points.enter().append('polyline')
+			var newLines = points.enter().append('g')
 				.classed('vis__graph__line', true)
-				.attr('stroke', function(d) { return colorScale(d.change); })
 				.on('mouseover', showHints)
-				.on('mouseout', hideHints)
-				.call(drawLines);
+				.on('mouseout', hideHints);
+
+			newLines.append('polyline')
+				.classed('vis__graph__line__bg', true);
+			newLines.append('polyline')
+				.classed('vis__graph__line__line', true)
+				.attr('stroke', function(d) { return colorScale(d.change); });
+			newLines.call(positionLines);
 		}
 
 
