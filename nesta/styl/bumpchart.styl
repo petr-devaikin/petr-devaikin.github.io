@@ -6,6 +6,11 @@
 			&.blured
 				text
 					opacity .2
+					
+			&.selected
+				text
+					font-weight bold
+					font-size 12px
 
 	.vis__graph
 		&__line
@@ -19,6 +24,10 @@
 
 			&.blured
 				opacity .2
+				
+			&.selected
+				.vis__graph__line__line
+					stroke-width 4
 
 	.vis__hints
 		&__hint

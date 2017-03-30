@@ -51,3 +51,7 @@ svg .line polyline {
 	border-style: solid;
 	box-sizing: border-box;
 }
+
+#searchbox {
+	width: 220px;
+}

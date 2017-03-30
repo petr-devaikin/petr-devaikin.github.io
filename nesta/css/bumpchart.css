@@ -4,6 +4,10 @@
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
 }
+.vis--bumpchart .vis__axis .tick.selected text {
+  font-weight: bold;
+  font-size: 12px;
+}
 .vis--bumpchart .vis__graph__line__line {
   fill: none;
   stroke-width: 2;
@@ -15,6 +19,9 @@
 }
 .vis--bumpchart .vis__graph__line.blured {
   opacity: 0.2;
+}
+.vis--bumpchart .vis__graph__line.selected .vis__graph__line__line {
+  stroke-width: 4;
 }
 .vis--bumpchart .vis__hints__hint {
   pointer-events: none;

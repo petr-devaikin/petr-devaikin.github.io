@@ -24,6 +24,146 @@ function Bumpchart(svg, xValues, data, p) {
 	var graphHeight = params.showPositions * params.positionHeight;
 	var maxChange = 0;
 
+	var leftAxis,
+		rightAxis,
+		bottomAxis,
+		graphArea,
+		hintsArea,
+		xScale,
+		yScale,
+		colorScale;
+
+	var leftNames = [];
+	var rightNames = [];
+
+	var selectedItem;
+
+	var zoom;
+
+
+	function isPositionVisible(position) {
+		var y = yScale(position);
+		return (y >= 0 && y < graphHeight);
+	}
+
+	function drawAxes() {
+		bottomAxis.call(d3.axisBottom(xScale).ticks(xValues.length)
+			.tickFormat(function(d, i) { return xValues[d]; }));
+		leftAxis.call(d3.axisLeft(yScale).ticks(params.showPositions)
+			.tickFormat(function(d, i) {
+				if (leftNames[d] !== undefined)
+					return leftNames[d].name + ' - ' + d;
+				else
+					return '';
+			}));
+		rightAxis.call(d3.axisRight(yScale).ticks(params.showPositions)
+			.tickFormat(function(d, i) {
+				if (rightNames[d] !== undefined)
+					return d + ' - ' + rightNames[d].name;
+				else
+					return '';
+			}));
+
+		
+		function setTickColorAndHover(axis, names) {
+			axis.selectAll('.tick')
+				.on('mouseover', function(d, i) { showHints(names[d]); })
+				.on('mouseout', function(d, i) { hideHints(); })
+				.classed('selected', function(d) { return d !== undefined && names[d] !== undefined && names[d] == selectedItem; })
+				.select('text')
+					.attr('fill', function(d, i) {
+						if (names[d] !== undefined) 
+							return colorScale(names[d].change);
+						else
+							return colorScale(0);
+					});
+		}
+		setTickColorAndHover(leftAxis, leftNames);
+		setTickColorAndHover(rightAxis, rightNames);
+	}
+
+	// hints
+	function showHints(line) {
+		if (line === undefined)
+			return;
+
+		function setHint(hints) {
+			hints.select('text').text(function(d, i) {
+				if (d === undefined)
+					return '';
+				
+				var isVisible = isPositionVisible(d.position);
+				if ((i == 0 && !isVisible) || (i < 0 && line.values.indexOf(d) == 0)) // on the left axis or the first appearance
+					return '{0} - {1}'.format(leftNames[d.position].name, d.position);
+				if ((i == xValues.length - 1 && !isVisible) || (i == line.values.length -1 && i < xValues.length - 1)) // right axis or the last appearance
+					return '{0} - {1}'.format(d.position, rightNames[d.position].name);
+				else
+					return d.position;
+			});
+			hints.attr('transform', function(d, i) {
+				if (d === undefined)
+					return '';
+
+				var yPosition = yScale(d.position);
+				if (yPosition < 0) yPosition = 0;
+				else if (yPosition > graphHeight) yPosition = graphHeight;
+				return 'translate({0},{1})'.format(xScale(i), yPosition);
+			});
+
+			hints.each(function(d) {
+				var _this = d3.select(this);
+				var bbox = _this.select('text').node().getBBox();
+				_this.select('path')
+					.attr('d', 'M0 0 L-5 -5 L-{0} -5 L-{0} -20 L{0} -20 L{0} -5 L5 -5 Z'.format(bbox.width / 2 + 5));
+			})
+
+			hints.attr('visibility', function(d, i) {
+				if (d === undefined)
+					return 'hidden';
+
+				if ((i == 0 || i == xValues.length - 1) && isPositionVisible(d.position))
+					return 'hidden';
+				else
+					return 'visible';
+			});
+		}
+
+		var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
+		hints.call(setHint);
+
+		hints.exit().remove();
+		var newHints = hints.enter().append('g')
+			.classed('vis__hints__hint', true)
+			.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
+		
+		newHints.append('path');
+		newHints.append('text')
+			.attr('dy', -10)
+			.attr('text-anchor', 'middle');
+
+		newHints.call(setHint);
+
+		// lines
+		graphArea.selectAll('.vis__graph__line')
+			.classed('blured', function(d) { return d != line; });
+
+		function blurTicks(axis, names) {
+			axis.selectAll('.tick')
+				.classed('blured', function(d, i) { return names[d] != line; })
+		}
+		blurTicks(leftAxis, leftNames);
+		blurTicks(rightAxis, rightNames);
+	}
+
+	function hideHints() {
+		hintsArea.selectAll('.vis__hints__hint').attr('visibility', 'hidden');
+		graphArea.selectAll('.vis__graph__line.blured').classed('blured', false);
+
+		leftAxis.selectAll('.tick.blured').classed('blured', false)
+		rightAxis.selectAll('.tick.blured').classed('blured', false)
+	}
+
+	// draw
 	this.draw = function() {
 		svg.attr('class', 'vis vis--bumpchart');
 
@@ -37,92 +177,38 @@ function Bumpchart(svg, xValues, data, p) {
 		}
 		addClipRect();
 
-		var leftAxis = svg.append('g')
+		leftAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__axis vis__axis--left', true);
 
-		var rightAxis = svg.append('g')
+		rightAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin + params.graphWidth, params.topMargin))
 			.classed('vis__axis vis__axis--left', true);
 
-		var bottomAxis = svg.append('g')
+		bottomAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + graphHeight))
 			.classed('vis__axis vis__axis--bottom', true);
 
-		var graphArea = svg.append('g')
+		graphArea = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__graph', true)
 			.attr('clip-path', 'url(#graph-clip)');
 
-		var hintsArea = svg.append('g')
+		hintsArea = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__hints', true);
 
-		var xScale = d3.scaleLinear()
+		xScale = d3.scaleLinear()
 			.domain([0, xValues.length - 1])
 			.range([0, params.graphWidth]);
 
-		var yScale = d3.scaleLinear()
+		yScale = d3.scaleLinear()
 			.domain([0.5, params.showPositions + 0.5])
 			.range([0, graphHeight]);
 
 		// hints
 
-		function showHints(line) {
-			if (line === undefined)
-				return;
-
-			function setHintPosition(d, i) {
-				if (d === undefined)
-					return '';
-
-				var yPosition = yScale(d.position);
-				if (yPosition < 0) yPosition = 0;
-				else if (yPosition > graphHeight) yPosition = graphHeight;
-				return 'translate({0},{1})'.format(xScale(i), yPosition);
-			}
-
-			var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
-			hints
-				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
-			hints.select('text').text(function(d) { return (d !== undefined) ? d.position : ''; });
-
-			hints.exit().remove();
-			var newHints = hints.enter().append('g')
-				.classed('vis__hints__hint', true)
-				.attr('transform', setHintPosition)
-				.attr('visibility', function(d) { return (d !== undefined) ? 'visible' : 'hidden'; });
-			
-			newHints.append('path')
-				.attr('d', 'M0 0 L-5 -5 L-20 -5 L-20 -20 L20 -20 L20 -5 L5 -5 Z');
-			newHints.append('text')
-				.attr('dy', -5)
-				.attr('text-anchor', 'middle')
-				.attr('alignment-baseline', 'after-edge')
-				.text(function(d) { return (d !== undefined) ? d.position : ''; });
-
-			graphArea.selectAll('.vis__graph__line')
-				.classed('blured', function(d) { return d != line; });
-
-			function blurTicks(axis, names) {
-				axis.selectAll('.tick')
-					.classed('blured', function(d, i) { return names[d] != line; })
-			}
-			blurTicks(leftAxis, leftNames);
-			blurTicks(rightAxis, rightNames);
-		}
-
-		function hideHints() {
-			hintsArea.selectAll('.vis__hints__hint').attr('visibility', 'hidden');
-			graphArea.selectAll('.vis__graph__line.blured').classed('blured', false);
-
-			leftAxis.selectAll('.tick.blured').classed('blured', false)
-			rightAxis.selectAll('.tick.blured').classed('blured', false)
-		}
-
-		var leftNames = [];
-		var rightNames = [];
+		
 
 		// find names for the left and the right axes
 		// calculate change for all lines and max change
@@ -145,46 +231,9 @@ function Bumpchart(svg, xValues, data, p) {
 			colorSteps.push(d3.interpolateRgb(params.zeroColor, params.maxColor)(i / (params.legendSteps)));
 		}
 
-		var colorScale = d3.scaleQuantize()
+		colorScale = d3.scaleQuantize()
 			.domain([-maxChange, maxChange])
 			.range(colorSteps);
-
-
-		function drawAxes() {
-			bottomAxis.call(d3.axisBottom(xScale).ticks(xValues.length)
-				.tickFormat(function(d, i) { return xValues[d]; }));
-			leftAxis.call(d3.axisLeft(yScale).ticks(params.showPositions)
-				.tickFormat(function(d, i) {
-					if (leftNames[d] !== undefined)
-						return leftNames[d].name + ' - ' + d;
-					else
-						return '';
-				}));
-			rightAxis.call(d3.axisRight(yScale).ticks(params.showPositions)
-				.tickFormat(function(d, i) {
-					if (rightNames[d] !== undefined)
-						return d + ' - ' + rightNames[d].name;
-					else
-						return '';
-				}));
-
-			
-			function setTickColorAndHover(axis, names) {
-				axis.selectAll('.tick')
-					.on('mouseover', function(d, i) { showHints(names[d]); })
-					.on('mouseout', function(d, i) { hideHints(); })
-					.select('text')
-						.attr('fill', function(d, i) {
-							if (names[d] !== undefined) 
-								return colorScale(names[d].change);
-							else
-								return colorScale(0);
-						});
-			}
-			setTickColorAndHover(leftAxis, leftNames);
-			setTickColorAndHover(rightAxis, rightNames);
-			
-		}
 
 
 		function drawData() {
@@ -231,7 +280,6 @@ function Bumpchart(svg, xValues, data, p) {
 				.text('Change in ranking');
 
 			var steps = [];
-			console.log(maxChange);
 			for (var i = -params.legendSteps; i <= params.legendSteps; i++)
 				steps.push(maxChange / (params.legendSteps + 0.5) * i);
 
@@ -255,31 +303,47 @@ function Bumpchart(svg, xValues, data, p) {
 			
 
 				// zoom behaviour
-
-				var t = d3.zoomIdentity.translate(0, 0).scale(1);
-				var zoom = d3.zoom()
+				
+				zoom = d3.zoom()
 					.scaleExtent([1, 1])
-					.translateExtent([[0, 0], [0, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
+					.translateExtent([[0, 0], [svg.node().clientWidth, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
 					.on('zoom', zoomed);
 
 				
 
 				function zoomed() {
 					var transform = d3.zoomTransform(this);
+					console.log(transform);
 					var shift = -transform.y / params.positionHeight;
-					console.log(zoom.translateExtent());
-					console.log(transform.y);
 					yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
 
 					drawAxes();
 					drawData();
 				}
 
+				var t = d3.zoomIdentity.translate(0, 0).scale(1);
 				svg.call(zoom.transform, t);
 				svg.call(zoom);
 		}
 		if (params.showLegend)
 			drawLegend();
+	}
+
+	this.select = function(item) {
+		selectedItem = item;
+		graphArea.selectAll('.vis__graph__line')
+			.classed('selected', function(d) { return d == item; });
+		drawAxes();
+
+		var lastValue = item.values[item.values.length - 1];
+		var t = d3.zoomTransform(svg.node());
+		var shift = graphHeight / 2 - yScale(lastValue.position);
+		if (t.y - shift < 0) shift = -t.y;
+
+		svg.transition()
+			.duration(500)
+			.ease(d3.easeLinear)
+			.call(zoom.transform, t.translate(0, shift));
 	}
 }
 

@@ -81,6 +81,16 @@ function loadData() {
 				bottomMargim: 150,
 			});
 			bumpchart.draw();
+
+			var searchboxData = lines.map(function(l) { return l.name; });
+			searchboxData.sort();
+			searchboxData.unshift('');
+			$("#searchbox").select2({
+				data: searchboxData
+			}).change(function() {
+				var selectedTopic = $('#searchbox').val();
+				bumpchart.select(lines.find(function(l) { return l.name == selectedTopic; }));
+			});
 		}
 	);
 }
