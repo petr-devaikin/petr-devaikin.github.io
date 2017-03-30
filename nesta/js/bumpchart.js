@@ -9,20 +9,19 @@ function Bumpchart(svg, xValues, data, p) {
 		maxColor: '#1a9850',
 		rotateYAxisTips: true,
 		showLegend: true,
-		legendSteps: 7,
+		legendSteps: 3,
 		legendSampleWidth: 20,
 		legendRoundTo: 0,
 		showLeftAxis: true,
 		showRightAxis: true,
-		showTopAxis: false,
 		showBottomAxis: true,
-		showTop: 10,
+		showPositions: 20,
 		positionHeight: 15,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
-	var graphHeight = params.showTop * params.positionHeight;
+	var graphHeight = params.showPositions * params.positionHeight;
 	var maxChange = 0;
 
 	this.draw = function() {
@@ -64,14 +63,20 @@ function Bumpchart(svg, xValues, data, p) {
 			.range([0, params.graphWidth]);
 
 		var yScale = d3.scaleLinear()
-			.domain([0.5, params.showTop + 0.5])
+			.domain([0.5, params.showPositions + 0.5])
 			.range([0, graphHeight]);
+
+		// hints
 
 		function showHints(line) {
 			function setHintPosition(d, i) {
 				if (d === undefined)
 					return '';
-				return 'translate({0},{1})'.format(xScale(i), (d.position <= params.showTop) ? yScale(d.position) : yScale(params.showTop + 0.5));
+
+				var yPosition = yScale(d.position);
+				if (yPosition < 0) yPosition = 0;
+				else if (yPosition > graphHeight) yPosition = graphHeight;
+				return 'translate({0},{1})'.format(xScale(i), yPosition);
 			}
 
 			var hints = hintsArea.selectAll('.vis__hints__hint').data(line.values);
@@ -119,61 +124,87 @@ function Bumpchart(svg, xValues, data, p) {
 		// find names for the left and the right axes
 		// calculate change for all lines and max change
 		data.forEach(function(d) {
-			if (d.values[0] !== undefined && d.values[0].position <= params.showTop)
+			if (d.values[0] !== undefined)
 				leftNames[d.values[0].position] = d;
-			if (d.values[xValues.length - 1] !== undefined && d.values[xValues.length - 1].position <= params.showTop)
+			if (d.values[xValues.length - 1] !== undefined)
 				rightNames[d.values[xValues.length - 1].position] = d;
 
-			d.maxPosition = Math.min.apply(null, Object.keys(d.values).map(function(k) { return d.values[k].position; }));
-
 			d.change = d.values[Object.keys(d.values)[0]].position - d.values[d.values.length - 1].position;
-			if (d.maxPosition <= params.showTop)
-				maxChange = Math.max(Math.abs(d.change), maxChange);
+			maxChange = Math.max(maxChange, Math.abs(d.change));
 		});
-		data = data.filter(function(d) { return d.maxPosition <= params.showTop; });
 		
 		// color scale
-		var colorScale = d3.scaleLinear()
-			.domain([-1, 0, 1])
-			.range([params.minColor, params.zeroColor, params.maxColor]);
+		var colorSteps = [];
+		for (var i = 0; i < params.legendSteps + 1; i++) {
+			colorSteps.push(d3.interpolateRgb(params.minColor, params.zeroColor)(i / (params.legendSteps)));
+		}
+		for (var i = 1; i < params.legendSteps + 1; i++) {
+			colorSteps.push(d3.interpolateRgb(params.zeroColor, params.maxColor)(i / (params.legendSteps)));
+		}
+
+		var colorScale = d3.scaleQuantize()
+			.domain([-maxChange, maxChange])
+			.range(colorSteps);
 
 
 		function drawAxes() {
 			bottomAxis.call(d3.axisBottom(xScale).ticks(xValues.length)
 				.tickFormat(function(d, i) { return xValues[d]; }));
-			leftAxis.call(d3.axisLeft(yScale).ticks(params.showTop)
-				.tickFormat(function(d, i) { return leftNames[d].name + ' - ' + d; }));
-			rightAxis.call(d3.axisRight(yScale).ticks(params.showTop)
-				.tickFormat(function(d, i) { return d + ' - ' + rightNames[d].name; }));
+			leftAxis.call(d3.axisLeft(yScale).ticks(params.showPositions)
+				.tickFormat(function(d, i) {
+					if (leftNames[d] !== undefined)
+						return leftNames[d].name + ' - ' + d;
+					else
+						return '';
+				}));
+			rightAxis.call(d3.axisRight(yScale).ticks(params.showPositions)
+				.tickFormat(function(d, i) {
+					if (rightNames[d] !== undefined)
+						return d + ' - ' + rightNames[d].name;
+					else
+						return '';
+				}));
 
+			
 			function setTickColorAndHover(axis, names) {
 				axis.selectAll('.tick')
-					.on('mouseover', function(d, i) { showHints(names[i + 1]); })
+					.on('mouseover', function(d, i) { showHints(names[d]); })
 					.on('mouseout', function(d, i) { hideHints(); })
 					.select('text')
-						.attr('fill', function(d, i) { return colorScale(names[i + 1].change / maxChange); });
+						.attr('fill', function(d, i) {
+							if (names[d] !== undefined) 
+								return colorScale(names[d].change);
+							else
+								return colorScale(0);
+						});
 			}
 			setTickColorAndHover(leftAxis, leftNames);
 			setTickColorAndHover(rightAxis, rightNames);
+			
 		}
-		drawAxes();
 
 
 		function drawData() {
-			graphArea.selectAll('.vis__graph__line').data(data).enter().append('polyline')
-				.classed('vis__graph__line', true)
-				.attr('stroke', function(d) { return colorScale(d.change / maxChange); })
-				.attr('points', function(line) {
+			function drawLines(selection) {
+				selection.attr('points', function(line) {
 					var res = '';
 					line.values.forEach(function(x, i) {
 						res += ' ' + xScale(i) + ' ' + yScale(x.position);
 					});
 					return res;
-				})
+				});
+			}
+
+			var points = graphArea.selectAll('.vis__graph__line').data(data)
+				.call(drawLines);
+
+			points.enter().append('polyline')
+				.classed('vis__graph__line', true)
+				.attr('stroke', function(d) { return colorScale(d.change); })
 				.on('mouseover', showHints)
-				.on('mouseout', hideHints);
+				.on('mouseout', hideHints)
+				.call(drawLines);
 		}
-		drawData();
 
 
 		function drawLegend() {
@@ -181,7 +212,7 @@ function Bumpchart(svg, xValues, data, p) {
 				.classed('vis__legend', true)
 				.attr('transform', 'translate({0},{1})'.format(params.graphWidth + params.leftMargin + params.rightMargin + 50, params.topMargin));
 
-			var legendWidth = params.legendSteps * params.legendSampleWidth;
+			var legendWidth = (2 * params.legendSteps + 1) * params.legendSampleWidth;
 			legend.append('rect')
 				.classed('vis__legend__bg', true)
 				.attr('width', 20 + legendWidth)
@@ -192,29 +223,52 @@ function Bumpchart(svg, xValues, data, p) {
 				.text('Change in ranking');
 
 			var steps = [];
-			for (var i = 0; i < params.legendSteps; i++)
-				steps.push(-maxChange + maxChange * 2 / (params.legendSteps - 1) * i);
+			console.log(maxChange);
+			for (var i = -params.legendSteps; i <= params.legendSteps; i++)
+				steps.push(maxChange / (params.legendSteps + 0.5) * i);
 
 			legend.selectAll('vis__legend__sample').data(steps).enter().append('rect')
 				.classed('vis__legend__sample', true)
-				.attr('fill', function(d) { return colorScale(d / maxChange); })
-				.attr('width', params.legendSampleWidth)
-				.attr('height', params.legendSampleWidth)
+				.attr('fill', function(d) { return colorScale(d); })
+				.attr('width', 20)
+				.attr('height', 20)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(10 + i * params.legendSampleWidth, 30);
+					return 'translate({0},{1})'.format(10 + i * 20, 30);
 				});
-
-			var multiplicator = Math.pow(10, params.legendRoundTo);
 
 			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
 				.classed('vis__legend__tips', true)
 				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * params.legendSampleWidth + 10, 30 + params.legendSampleWidth);
+					return 'translate({0},{1})'.format((i + 0.5) * 20 + 10, 30 + 20);
 				})
 				.attr('text-anchor', 'middle')
 				.attr('alignment-baseline', 'before-edge')
-				.text(function(d) { return Math.round(d * multiplicator) / multiplicator; });
+				.text(function(d) { return Math.round(d); });
 			
+
+				// zoom behaviour
+
+				var t = d3.zoomIdentity.translate(0, 0).scale(1);
+				var zoom = d3.zoom()
+					.scaleExtent([1, 1])
+					.translateExtent([[0, 0], [0, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
+					.on('zoom', zoomed);
+
+				
+
+				function zoomed() {
+					var transform = d3.zoomTransform(this);
+					var shift = -transform.y / params.positionHeight;
+					console.log(zoom.translateExtent());
+					console.log(transform.y);
+					yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
+
+					drawAxes();
+					drawData();
+				}
+
+				svg.call(zoom.transform, t);
+				svg.call(zoom);
 		}
 		if (params.showLegend)
 			drawLegend();

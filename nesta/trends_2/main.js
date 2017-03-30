@@ -9,7 +9,6 @@ var svg = d3.select("body").append("svg")
 function getFilterValues() {
 	return {
 		source: d3.select('.m-filters__source').node().value,
-		maxRate: parseInt(d3.select('.m-filters__top:checked').node().value)
 	}
 }	
 
@@ -80,7 +79,6 @@ function loadData() {
 				leftMargin: 150,
 				rightMargin: 150,
 				bottomMargim: 150,
-				showTop: getFilterValues().maxRate
 			});
 			bumpchart.draw();
 		}
