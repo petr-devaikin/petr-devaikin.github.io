@@ -2,12 +2,29 @@ function Forcegraph(svg, nodes, links, p) {
 	var params = {
 		margin: 50,
 		forceMaxDistance: 100,
+		numberOfLabelsToShow: 10,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
 	var width = svg.node().getBoundingClientRect().width;
 	var height = svg.node().getBoundingClientRect().height;
+
+	var nodeConnections = {}
+
+	links.forEach(function(link) {
+		if (nodeConnections[link.sourceId] === undefined) nodeConnections[link.sourceId] = 0;
+		if (nodeConnections[link.targetId] === undefined) nodeConnections[link.targetId] = 0;
+		nodeConnections[link.sourceId]++;
+		nodeConnections[link.targetId]++;
+	});
+
+	nodes.sort(function(a, b) {
+		return nodeConnections[b] - nodeConnections[a];
+	});
+
+	var selectedNode;
+	var selectedNeighbors = [];
 
 	this.draw = function() {
 		svg.html('');
@@ -19,6 +36,7 @@ function Forcegraph(svg, nodes, links, p) {
 			.text('Loading 0%');
 
 		var graph = svg.append('g').classed('vis__graph', true);
+		var titles = svg.append('g').classed('vis__titles', true).attr('visibility', 'hidden');
 
 		var simulation = d3.forceSimulation()
 			.force("link", d3.forceLink().id(function(d) { return d.id; }))
@@ -44,16 +62,62 @@ function Forcegraph(svg, nodes, links, p) {
 		node.append("circle")
 			.attr("r", 5)
 			.on('mouseover', nodeHover)
-			.on('mouseout', nodeOut);
+			.on('mouseout', nodeOut)
+			.on('click', selectNode);
 
-		node.append('text')
-			.text(function(d) { return d.name; })
-			.attr('dy', -5);
+		var labels = titles.selectAll('.vis__titles__label').data(nodes).enter().append('g')
+			.classed('vis__titles__label', true)
+			.classed('default', function(d, i) { return i < params.numberOfLabelsToShow; })
+
+		labels.each(function(d, i) {
+			var rect = d3.select(this).append('rect');
+			var text = d3.select(this).append('text')
+				.attr('dy', -15)
+				.text(function(d) { return d.name; });
+			var bbox = text.node().getBBox();
+			rect
+				.attr('x', bbox.x - 2)
+				.attr('y', bbox.y - 2)
+				.attr('width', bbox.width + 4)
+				.attr('height', bbox.height + 4);
+		});
+
+		function selectNode(d) {
+			d3.event.stopPropagation();
+
+			selectedNode = d;
+			selectedNeighbors = [];
+
+			node.classed('selected', false);
+	        link.classed('selected', false);
+
+			d3.select(this).classed('selected', true);
+
+			link.each(function(l) {
+				if (l.source == d || l.target == d) {
+					d3.select(this).classed('blured', false).classed('selected', true);
+					if (selectedNeighbors.indexOf(l.source) == -1) selectedNeighbors.push(l.sourse);
+					if (selectedNeighbors.indexOf(l.target) == -1) selectedNeighbors.push(l.target);
+				}
+			});
+
+			node
+				.classed('blured', function(n) { return selectedNeighbors.indexOf(n) == -1; })
+				.classed('selected', function(n) { return selectedNeighbors.indexOf(n) != -1; });
+
+			labels
+				.classed('selected', function(n) { return selectedNeighbors.indexOf(n) != -1; });
+
+			nodeHover(d);
+		}
 
 		function nodeHover(d) {
-			var highlightedNodes = [];
 
 			link.classed('blured', true);
+			node
+				.classed('blured', function(dd) { return dd != d; })
+				.classed('highlighted', function(dd) { return dd == d; });
+			/*
 			link.each(function(l) {
 				if (l.source == d || l.target == d) {
 					d3.select(this).classed('blured', false).classed('highlighted', true);
@@ -64,16 +128,42 @@ function Forcegraph(svg, nodes, links, p) {
 
 			node
 				.classed('blured', function(n) { return highlightedNodes.indexOf(n) == -1; })
-				.classed('highlighted', function(n) { return highlightedNodes.indexOf(n) != -1; });
+				.classed('highlighted', function(n) { return highlightedNodes.indexOf(n) != -1; });*/
+
+			labels
+				.style('visibility', function(dd, i) {
+					if (dd == d || dd == selectedNode)
+						return 'visible';
+					else
+						return 'hidden';
+				});
 		}
 
 		function nodeOut() {
 			node
 				.classed('highlighted', false)
-				.classed('blured', false);
+				.classed('blured', function(d) {
+					if (selectedNode !== undefined)
+						return !d3.select(this).classed('selected');
+					else
+						return false;
+				});
 			link
 				.classed('highlighted', false)
-				.classed('blured', false);
+				.classed('blured', function(d) {
+					if (selectedNode === undefined)
+						return false;
+					else
+						return d.sourceId == selectNode.id || d.targetId == selectNode.id;
+				});
+
+			labels
+				.style('visibility', function(dd, i) {
+					if ((d3.select(this).classed('default') && selectedNode === undefined) || dd == selectedNode)
+						return 'visible';
+					else
+						return 'hidden';
+				});
 		}
 
       	simulation
@@ -92,6 +182,9 @@ function Forcegraph(svg, nodes, links, p) {
 			loader.attr('visibility', 'hidden');
 			link.attr('visibility', 'visible');
 			node.attr('visibility', 'visible');
+			titles.attr('visibility', 'visible');
+
+			titles.selectAll('.default').style('visibility', 'visible');
 
 			// calculate auto zoom
 			var bbox = { x: Infinity, y: Infinity, width: 0, height: 0 }
@@ -148,7 +241,29 @@ function Forcegraph(svg, nodes, links, p) {
 					var coords = transform.apply([d.x, d.y]);
 					return 'translate({0},{1})'.format(coords[0], coords[1]);
 				});
+
+			labels
+				.attr('transform', function(d) {
+					var coords = transform.apply([d.x, d.y]);
+					return 'translate({0},{1})'.format(coords[0], coords[1]);
+				});
 		}
+
+		function equalToEventTarget() {
+		    return this == d3.event.target;
+		}
+
+		svg.on("click", function() {
+	    	console.log('reset selection');
+
+	        selectedNode = undefined;
+	        selectedNeighbors = [];
+
+	        node.classed('selected', false);
+	        link.classed('selected', false);
+
+	        nodeOut();
+		});
 	}
 
 };

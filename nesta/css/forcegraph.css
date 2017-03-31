@@ -4,34 +4,43 @@
   top: 0;
 }
 .vis--forcegraph .vis__graph__links line {
-  stroke: rgba(0,0,0,0.05);
+  stroke: rgba(50,50,50,0.05);
 }
 .vis--forcegraph .vis__graph__links line.blured {
-  opacity: 0.2;
+  opacity: 0.5;
 }
-.vis--forcegraph .vis__graph__links line.highlighted {
+.vis--forcegraph .vis__graph__links line.selected {
   stroke: #f00;
+}
+.vis--forcegraph .vis__graph__nodes__node {
+  cursor: pointer;
 }
 .vis--forcegraph .vis__graph__nodes__node circle {
   fill: #fff;
   stroke-width: 1;
-  stroke: rgba(0,0,0,0.5);
+  stroke: #bbb;
 }
 .vis--forcegraph .vis__graph__nodes__node.blured {
-  opacity: 0.2;
+  opacity: 0.5;
 }
-.vis--forcegraph .vis__graph__nodes__node.highlighted circle {
+.vis--forcegraph .vis__graph__nodes__node.selected {
+  opacity: 1;
+}
+.vis--forcegraph .vis__graph__nodes__node.selected circle {
   stroke: #f00;
 }
-.vis--forcegraph .vis__graph__nodes__node.highlighted text {
-  visibility: visible;
-}
-.vis--forcegraph .vis__graph__nodes__node text {
+.vis--forcegraph .vis__titles__label {
   pointer-events: none;
-  text-anchor: middle;
-  alignment-baseline: after-edge;
-  font-size: 10px;
   visibility: hidden;
+}
+.vis--forcegraph .vis__titles__label rect {
+  stroke: none;
+  fill: rgba(255,255,255,0.8);
+}
+.vis--forcegraph .vis__titles__label text {
+  text-anchor: middle;
+  alignment-baseline: middle;
+  font-size: 12px;
 }
 .vis--forcegraph .vis__loader {
   font-size: 18px;

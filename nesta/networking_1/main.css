@@ -1,43 +1,17 @@
-body, html {
-  paddin: 0;
+h1 {
+  position: absolute;
+  left: 10px;
+  top: 10px;
   margin: 0;
+  font-size: 18px;
+  z-index: 100;
 }
 
-svg {
-  position absolute;
-}
-
-.subunit.SCT { fill: #eee; }
-.subunit.WLS { fill: #ccc; }
-.subunit.NIR { fill: #eee; }
-.subunit.ENG { fill: #eee; }
-.subunit.IRL { fill: #eee; }
-
-.subunit-boundary {
-  fill: none;
-  stroke: #777;
-  stroke-dasharray: 2,2;
-  stroke-linejoin: round;
-}
-
-.district-boundary {
-  fill: none;
-  stroke: red;
-  stroke-linejoin: round;
-}
-
-.subunit-boundary.IRL {
-  stroke: #aaa;
-}
-
-.subunit-label {
-  fill: #777;
-  fill-opacity: .5;
-  font-size: 20px;
-  font-weight: 300;
-  text-anchor: middle;
-}
-
-.blured {
-	opacity: .1;
+h2 {
+  position: absolute;
+  left: 10px;
+  top: 40px;
+  margin: 0;
+  font-size: 14px;
+  z-index: 100;
 }

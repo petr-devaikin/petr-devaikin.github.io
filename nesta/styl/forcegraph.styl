@@ -6,37 +6,44 @@
 	.vis__graph
 		&__links
 			line
-				stroke rgba(0, 0, 0, .05)
+				stroke rgba(50, 50, 50, .05)
 			
 				&.blured
-					opacity .2
+					opacity .5
 					
-				&.highlighted
+				&.selected
 					stroke red
 		
 		&__nodes
 			&__node
+				cursor pointer
+				
 				circle
 					fill #fff
 					stroke-width 1
-					stroke rgba(0, 0, 0, .5)
+					stroke #bbb
 				
 				&.blured
-					opacity .2
+					opacity .5
 				
-				&.highlighted
+				&.selected
+					opacity 1
 					circle
 						stroke red
-						
-					text
-						visibility visible
-						
-				text
-					pointer-events none
-					text-anchor middle
-					alignment-baseline after-edge
-					font-size 10px
-					visibility hidden
+					
+	.vis__titles
+		&__label
+			pointer-events none
+			visibility hidden
+			
+			rect
+				stroke none
+				fill rgba(255, 255, 255, .8)
+			
+			text
+				text-anchor middle
+				alignment-baseline middle
+				font-size 12px
 
 	.vis__loader
 		font-size 18px
