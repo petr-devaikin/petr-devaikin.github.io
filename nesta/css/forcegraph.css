@@ -21,7 +21,7 @@
   stroke: #bbb;
 }
 .vis--forcegraph .vis__graph__nodes__node.blured {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .vis--forcegraph .vis__graph__nodes__node.selected {
   opacity: 1;

@@ -138,9 +138,11 @@ function Datareader(base) {
 	}
 
 	// Groups topics
-	readers[Datareader.DATASETS.GroupsTopic] = function(callback) {
+	readers[Datareader.DATASETS.GroupsTopic] = function(callback, old) {
+		var filename = base + Datareader.DATASETS.GroupsTopic + (old ? '_2013' : '_2013_2014_2015_2016') + '.csv';
+		console.log(filename);
 		d3.csv(
-			base + Datareader.DATASETS.GroupsTopic,
+			filename,
 			function(line, i) {
 				return {
 					sourceId: line.id_x,
@@ -156,11 +158,15 @@ function Datareader(base) {
 					if (nodes[d.sourceId] === undefined) nodes[d.sourceId] = d.sourceName;
 					if (nodes[d.targetId] === undefined) nodes[d.targetId] = d.targetName;
 
-					linkes.push({
-						source: d.sourceId,
-						target: d.targetId,
-						value: 1
-					});
+					if (linkes.find(function(l) {
+						return (l.target == d.sourceId && l.source == d.targetId) ||
+							(l.source == d.sourceId && l.target == d.targetId);
+					}) === undefined)
+						linkes.push({
+							source: d.sourceId,
+							target: d.targetId,
+							value: 1
+						});
 				})
 
 				callback(
@@ -239,7 +245,7 @@ Datareader.DATASETS = {
 	BigSectorYearWelsh: 'bc_big_sector_year_welsh.csv',
 	Bubblechart: 'bubble_chart_source_data.csv',
 	TopicPopularity: 'topic_popularity/topic_popularity_by_city_scaled_{0}.csv',
-	GroupsTopic: 'wales_groups_topic_ids_2013_2014_2015_2016.csv',
+	GroupsTopic: 'wales_groups_topic_ids',
 	EngineeringTechLad: 'engineering_tech_lad.csv',
 	Attendants: 'attendants_in_other_cities.csv',
 }

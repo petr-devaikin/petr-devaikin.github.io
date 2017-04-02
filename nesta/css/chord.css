@@ -1,0 +1,49 @@
+h1 {
+  margin: 0;
+  font-size: 16px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 100;
+}
+.vis--chord {
+  margin-top: 50px;
+}
+.vis--chord .vis__chord__labels__label {
+  font-size: 8px;
+  text-anchor: start;
+  alignment-baseline: middle;
+  fill: #000;
+  cursor: default;
+}
+.vis--chord .vis__chord__labels__label--left {
+  text-anchor: end;
+}
+.vis--chord .vis__chord__labels__label.selected {
+  fill: #1f77b4;
+  font-weight: bold;
+}
+.vis--chord .vis__chord__labels__label.highlighted {
+  fill: #1f77b4;
+}
+.vis--chord .vis__chord__labels__label.blured {
+  fill: #ccc;
+}
+.vis--chord .vis__chord__ribbons__line {
+  fill: none;
+  stroke: #999;
+  stroke-width: 1;
+  opacity: 0.05;
+}
+.vis--chord .vis__chord__ribbons__line.selected {
+  stroke: #1f77b4;
+  opacity: 1;
+}
+.vis--chord .vis__chord__ribbons__line.old {
+  stroke: #f00;
+  opacity: 1;
+}
+.vis--chord .vis__chord__ribbons__line.new {
+  stroke: #0f0;
+  opacity: 1;
+}

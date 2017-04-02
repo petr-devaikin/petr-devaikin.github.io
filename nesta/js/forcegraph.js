@@ -13,14 +13,14 @@ function Forcegraph(svg, nodes, links, p) {
 	var nodeConnections = {}
 
 	links.forEach(function(link) {
-		if (nodeConnections[link.sourceId] === undefined) nodeConnections[link.sourceId] = 0;
-		if (nodeConnections[link.targetId] === undefined) nodeConnections[link.targetId] = 0;
-		nodeConnections[link.sourceId]++;
-		nodeConnections[link.targetId]++;
+		if (nodeConnections[link.source] === undefined) nodeConnections[link.source] = 0;
+		if (nodeConnections[link.target] === undefined) nodeConnections[link.target] = 0;
+		nodeConnections[link.source]++;
+		nodeConnections[link.target]++;
 	});
 
 	nodes.sort(function(a, b) {
-		return nodeConnections[b] - nodeConnections[a];
+		return nodeConnections[b.id] - nodeConnections[a.id];
 	});
 
 	var selectedNode;
@@ -94,19 +94,19 @@ function Forcegraph(svg, nodes, links, p) {
 			d3.select(this).classed('selected', true);
 
 			link.each(function(l) {
-				if (l.source == d || l.target == d) {
+				if (l.source.id == d.id || l.target.id == d.id) {
 					d3.select(this).classed('blured', false).classed('selected', true);
-					if (selectedNeighbors.indexOf(l.source) == -1) selectedNeighbors.push(l.sourse);
-					if (selectedNeighbors.indexOf(l.target) == -1) selectedNeighbors.push(l.target);
+					if (selectedNeighbors.indexOf(l.source.id) == -1) selectedNeighbors.push(l.source.id);
+					if (selectedNeighbors.indexOf(l.target.id) == -1) selectedNeighbors.push(l.target.id);
 				}
 			});
 
 			node
-				.classed('blured', function(n) { return selectedNeighbors.indexOf(n) == -1; })
-				.classed('selected', function(n) { return selectedNeighbors.indexOf(n) != -1; });
+				.classed('blured', function(n) { return selectedNeighbors.indexOf(n.id) == -1; })
+				.classed('selected', function(n) { return selectedNeighbors.indexOf(n.id) != -1; });
 
 			labels
-				.classed('selected', function(n) { return selectedNeighbors.indexOf(n) != -1; });
+				.classed('selected', function(n) { return selectedNeighbors.indexOf(n.id) != -1; });
 
 			nodeHover(d);
 		}
@@ -154,7 +154,7 @@ function Forcegraph(svg, nodes, links, p) {
 					if (selectedNode === undefined)
 						return false;
 					else
-						return d.sourceId == selectNode.id || d.targetId == selectNode.id;
+						return d.source.id == selectedNode.id || d.target.id == selectedNode.id;
 				});
 
 			labels

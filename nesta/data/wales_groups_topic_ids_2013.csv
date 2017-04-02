@@ -1,0 +1,1161 @@
+,source_node,target_node,Unnamed: 0_x,urlkey_x,id_x,Source,merge_key_x,Unnamed: 0_y,urlkey_y,id_y,Target,merge_key_y
+0,21441,104717,67,mobile-development,21441,Mobile Development,21441,2065,user-interface-design,104717,User Interface Design,104717
+1,1215292,104717,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,2065,user-interface-design,104717,User Interface Design,104717
+2,133497,104717,1447,windows-phone-developers,133497,Windows Phone Developers,133497,2065,user-interface-design,104717,User Interface Design,104717
+3,497332,104717,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,2065,user-interface-design,104717,User Interface Design,104717
+4,827,104717,57,dotnet,827,.NET,827,2065,user-interface-design,104717,User Interface Design,104717
+5,2260,104717,261,csharp,2260,C#,2260,2065,user-interface-design,104717,User Interface Design,104717
+6,16216,104717,41,mobile-technology,16216,Mobile Technology,16216,2065,user-interface-design,104717,User Interface Design,104717
+7,51642,104717,1956,windows-phone,51642,Windows Phone,51642,2065,user-interface-design,104717,User Interface Design,104717
+8,752732,104717,1963,windows-8,752732,Windows 8,752732,2065,user-interface-design,104717,User Interface Design,104717
+9,85534,104717,5612,mobile-design,85534,Mobile Design,85534,2065,user-interface-design,104717,User Interface Design,104717
+10,104717,104717,2065,user-interface-design,104717,User Interface Design,104717,2065,user-interface-design,104717,User Interface Design,104717
+11,450862,104717,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,2065,user-interface-design,104717,User Interface Design,104717
+12,3833,104717,10,softwaredev,3833,Software Development,3833,2065,user-interface-design,104717,User Interface Design,104717
+13,438992,104717,1960,windows-8-development,438992,Windows 8 Development,438992,2065,user-interface-design,104717,User Interface Design,104717
+14,99537,104717,2413,microsoft-technology,99537,Microsoft Technology,99537,2065,user-interface-design,104717,User Interface Design,104717
+15,21441,21441,67,mobile-development,21441,Mobile Development,21441,67,mobile-development,21441,Mobile Development,21441
+16,1215292,21441,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,67,mobile-development,21441,Mobile Development,21441
+17,133497,21441,1447,windows-phone-developers,133497,Windows Phone Developers,133497,67,mobile-development,21441,Mobile Development,21441
+18,497332,21441,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,67,mobile-development,21441,Mobile Development,21441
+19,827,21441,57,dotnet,827,.NET,827,67,mobile-development,21441,Mobile Development,21441
+20,2260,21441,261,csharp,2260,C#,2260,67,mobile-development,21441,Mobile Development,21441
+21,16216,21441,41,mobile-technology,16216,Mobile Technology,16216,67,mobile-development,21441,Mobile Development,21441
+22,51642,21441,1956,windows-phone,51642,Windows Phone,51642,67,mobile-development,21441,Mobile Development,21441
+23,752732,21441,1963,windows-8,752732,Windows 8,752732,67,mobile-development,21441,Mobile Development,21441
+24,85534,21441,5612,mobile-design,85534,Mobile Design,85534,67,mobile-development,21441,Mobile Development,21441
+25,104717,21441,2065,user-interface-design,104717,User Interface Design,104717,67,mobile-development,21441,Mobile Development,21441
+26,450862,21441,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,67,mobile-development,21441,Mobile Development,21441
+27,3833,21441,10,softwaredev,3833,Software Development,3833,67,mobile-development,21441,Mobile Development,21441
+28,438992,21441,1960,windows-8-development,438992,Windows 8 Development,438992,67,mobile-development,21441,Mobile Development,21441
+29,99537,21441,2413,microsoft-technology,99537,Microsoft Technology,99537,67,mobile-development,21441,Mobile Development,21441
+30,21441,450862,67,mobile-development,21441,Mobile Development,21441,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+31,1215292,450862,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+32,133497,450862,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+33,497332,450862,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+34,827,450862,57,dotnet,827,.NET,827,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+35,2260,450862,261,csharp,2260,C#,2260,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+36,16216,450862,41,mobile-technology,16216,Mobile Technology,16216,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+37,51642,450862,1956,windows-phone,51642,Windows Phone,51642,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+38,752732,450862,1963,windows-8,752732,Windows 8,752732,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+39,85534,450862,5612,mobile-design,85534,Mobile Design,85534,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+40,104717,450862,2065,user-interface-design,104717,User Interface Design,104717,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+41,450862,450862,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+42,3833,450862,10,softwaredev,3833,Software Development,3833,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+43,438992,450862,1960,windows-8-development,438992,Windows 8 Development,438992,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+44,99537,450862,2413,microsoft-technology,99537,Microsoft Technology,99537,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862
+45,21441,85534,67,mobile-development,21441,Mobile Development,21441,5612,mobile-design,85534,Mobile Design,85534
+46,1215292,85534,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,5612,mobile-design,85534,Mobile Design,85534
+47,133497,85534,1447,windows-phone-developers,133497,Windows Phone Developers,133497,5612,mobile-design,85534,Mobile Design,85534
+48,497332,85534,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,5612,mobile-design,85534,Mobile Design,85534
+49,827,85534,57,dotnet,827,.NET,827,5612,mobile-design,85534,Mobile Design,85534
+50,2260,85534,261,csharp,2260,C#,2260,5612,mobile-design,85534,Mobile Design,85534
+51,16216,85534,41,mobile-technology,16216,Mobile Technology,16216,5612,mobile-design,85534,Mobile Design,85534
+52,51642,85534,1956,windows-phone,51642,Windows Phone,51642,5612,mobile-design,85534,Mobile Design,85534
+53,752732,85534,1963,windows-8,752732,Windows 8,752732,5612,mobile-design,85534,Mobile Design,85534
+54,85534,85534,5612,mobile-design,85534,Mobile Design,85534,5612,mobile-design,85534,Mobile Design,85534
+55,104717,85534,2065,user-interface-design,104717,User Interface Design,104717,5612,mobile-design,85534,Mobile Design,85534
+56,450862,85534,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,5612,mobile-design,85534,Mobile Design,85534
+57,3833,85534,10,softwaredev,3833,Software Development,3833,5612,mobile-design,85534,Mobile Design,85534
+58,438992,85534,1960,windows-8-development,438992,Windows 8 Development,438992,5612,mobile-design,85534,Mobile Design,85534
+59,99537,85534,2413,microsoft-technology,99537,Microsoft Technology,99537,5612,mobile-design,85534,Mobile Design,85534
+60,21441,497332,67,mobile-development,21441,Mobile Development,21441,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+61,1215292,497332,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+62,133497,497332,1447,windows-phone-developers,133497,Windows Phone Developers,133497,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+63,497332,497332,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+64,827,497332,57,dotnet,827,.NET,827,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+65,2260,497332,261,csharp,2260,C#,2260,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+66,16216,497332,41,mobile-technology,16216,Mobile Technology,16216,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+67,51642,497332,1956,windows-phone,51642,Windows Phone,51642,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+68,752732,497332,1963,windows-8,752732,Windows 8,752732,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+69,85534,497332,5612,mobile-design,85534,Mobile Design,85534,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+70,104717,497332,2065,user-interface-design,104717,User Interface Design,104717,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+71,450862,497332,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+72,3833,497332,10,softwaredev,3833,Software Development,3833,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+73,438992,497332,1960,windows-8-development,438992,Windows 8 Development,438992,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+74,99537,497332,2413,microsoft-technology,99537,Microsoft Technology,99537,5618,mobile-design-and-development,497332,Mobile Design and Development,497332
+75,21441,3833,67,mobile-development,21441,Mobile Development,21441,10,softwaredev,3833,Software Development,3833
+76,1215292,3833,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,10,softwaredev,3833,Software Development,3833
+77,133497,3833,1447,windows-phone-developers,133497,Windows Phone Developers,133497,10,softwaredev,3833,Software Development,3833
+78,35062,3833,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,10,softwaredev,3833,Software Development,3833
+79,497332,3833,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,10,softwaredev,3833,Software Development,3833
+80,48471,3833,32,computer-programming,48471,Computer programming,48471,10,softwaredev,3833,Software Development,3833
+81,827,3833,57,dotnet,827,.NET,827,10,softwaredev,3833,Software Development,3833
+82,2260,3833,261,csharp,2260,C#,2260,10,softwaredev,3833,Software Development,3833
+83,172426,3833,2562,software-development-technologies,172426,Software Development Technologies,172426,10,softwaredev,3833,Software Development,3833
+84,15582,3833,3,web-development,15582,Web Development,15582,10,softwaredev,3833,Software Development,3833
+85,16216,3833,41,mobile-technology,16216,Mobile Technology,16216,10,softwaredev,3833,Software Development,3833
+86,842232,3833,4743,software-development-process,842232,Software Development Process,842232,10,softwaredev,3833,Software Development,3833
+87,659,3833,8,webdesign,659,Web Design,659,10,softwaredev,3833,Software Development,3833
+88,85951,3833,4,javascript-frameworks,85951,JavaScript Frameworks,85951,10,softwaredev,3833,Software Development,3833
+89,51642,3833,1956,windows-phone,51642,Windows Phone,51642,10,softwaredev,3833,Software Development,3833
+90,752732,3833,1963,windows-8,752732,Windows 8,752732,10,softwaredev,3833,Software Development,3833
+91,85534,3833,5612,mobile-design,85534,Mobile Design,85534,10,softwaredev,3833,Software Development,3833
+92,104717,3833,2065,user-interface-design,104717,User Interface Design,104717,10,softwaredev,3833,Software Development,3833
+93,450862,3833,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,10,softwaredev,3833,Software Development,3833
+94,16325,3833,602,software-engineering,16325,Software Engineering,16325,10,softwaredev,3833,Software Development,3833
+95,3833,3833,10,softwaredev,3833,Software Development,3833,10,softwaredev,3833,Software Development,3833
+96,88244,3833,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,10,softwaredev,3833,Software Development,3833
+97,438992,3833,1960,windows-8-development,438992,Windows 8 Development,438992,10,softwaredev,3833,Software Development,3833
+98,99537,3833,2413,microsoft-technology,99537,Microsoft Technology,99537,10,softwaredev,3833,Software Development,3833
+99,78565,3833,68,html5,78565,HTML5,78565,10,softwaredev,3833,Software Development,3833
+100,921432,3833,2328,meteor,921432,Meteor,921432,10,softwaredev,3833,Software Development,3833
+101,16137,3833,263,jquery,16137,JQuery,16137,10,softwaredev,3833,Software Development,3833
+102,9886,3833,24,ria,9886,Rich Internet Applications,9886,10,softwaredev,3833,Software Development,3833
+103,62946,3833,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,10,softwaredev,3833,Software Development,3833
+104,91146,3833,4741,tech-talks,91146,Tech Talks,91146,10,softwaredev,3833,Software Development,3833
+105,9696,3833,1,newtech,9696,New Technology,9696,10,softwaredev,3833,Software Development,3833
+106,405512,3833,2320,backbone-js,405512,Backbone.js,405512,10,softwaredev,3833,Software Development,3833
+107,7029,3833,0,javascript,7029,JavaScript,7029,10,softwaredev,3833,Software Development,3833
+108,56555,3833,656,javascript-libraries,56555,JavaScript Libraries,56555,10,softwaredev,3833,Software Development,3833
+109,563,3833,7,opensource,563,Open Source,563,10,softwaredev,3833,Software Development,3833
+110,10209,3833,2,web,10209,Web Technology,10209,10,softwaredev,3833,Software Development,3833
+111,21441,16216,67,mobile-development,21441,Mobile Development,21441,41,mobile-technology,16216,Mobile Technology,16216
+112,1215292,16216,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,41,mobile-technology,16216,Mobile Technology,16216
+113,133497,16216,1447,windows-phone-developers,133497,Windows Phone Developers,133497,41,mobile-technology,16216,Mobile Technology,16216
+114,497332,16216,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,41,mobile-technology,16216,Mobile Technology,16216
+115,827,16216,57,dotnet,827,.NET,827,41,mobile-technology,16216,Mobile Technology,16216
+116,2260,16216,261,csharp,2260,C#,2260,41,mobile-technology,16216,Mobile Technology,16216
+117,16216,16216,41,mobile-technology,16216,Mobile Technology,16216,41,mobile-technology,16216,Mobile Technology,16216
+118,51642,16216,1956,windows-phone,51642,Windows Phone,51642,41,mobile-technology,16216,Mobile Technology,16216
+119,752732,16216,1963,windows-8,752732,Windows 8,752732,41,mobile-technology,16216,Mobile Technology,16216
+120,85534,16216,5612,mobile-design,85534,Mobile Design,85534,41,mobile-technology,16216,Mobile Technology,16216
+121,104717,16216,2065,user-interface-design,104717,User Interface Design,104717,41,mobile-technology,16216,Mobile Technology,16216
+122,450862,16216,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,41,mobile-technology,16216,Mobile Technology,16216
+123,3833,16216,10,softwaredev,3833,Software Development,3833,41,mobile-technology,16216,Mobile Technology,16216
+124,438992,16216,1960,windows-8-development,438992,Windows 8 Development,438992,41,mobile-technology,16216,Mobile Technology,16216
+125,99537,16216,2413,microsoft-technology,99537,Microsoft Technology,99537,41,mobile-technology,16216,Mobile Technology,16216
+126,21441,827,67,mobile-development,21441,Mobile Development,21441,57,dotnet,827,.NET,827
+127,1215292,827,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,57,dotnet,827,.NET,827
+128,133497,827,1447,windows-phone-developers,133497,Windows Phone Developers,133497,57,dotnet,827,.NET,827
+129,497332,827,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,57,dotnet,827,.NET,827
+130,827,827,57,dotnet,827,.NET,827,57,dotnet,827,.NET,827
+131,2260,827,261,csharp,2260,C#,2260,57,dotnet,827,.NET,827
+132,16216,827,41,mobile-technology,16216,Mobile Technology,16216,57,dotnet,827,.NET,827
+133,51642,827,1956,windows-phone,51642,Windows Phone,51642,57,dotnet,827,.NET,827
+134,752732,827,1963,windows-8,752732,Windows 8,752732,57,dotnet,827,.NET,827
+135,85534,827,5612,mobile-design,85534,Mobile Design,85534,57,dotnet,827,.NET,827
+136,104717,827,2065,user-interface-design,104717,User Interface Design,104717,57,dotnet,827,.NET,827
+137,450862,827,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,57,dotnet,827,.NET,827
+138,3833,827,10,softwaredev,3833,Software Development,3833,57,dotnet,827,.NET,827
+139,438992,827,1960,windows-8-development,438992,Windows 8 Development,438992,57,dotnet,827,.NET,827
+140,99537,827,2413,microsoft-technology,99537,Microsoft Technology,99537,57,dotnet,827,.NET,827
+141,21441,752732,67,mobile-development,21441,Mobile Development,21441,1963,windows-8,752732,Windows 8,752732
+142,1215292,752732,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1963,windows-8,752732,Windows 8,752732
+143,133497,752732,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1963,windows-8,752732,Windows 8,752732
+144,497332,752732,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1963,windows-8,752732,Windows 8,752732
+145,827,752732,57,dotnet,827,.NET,827,1963,windows-8,752732,Windows 8,752732
+146,2260,752732,261,csharp,2260,C#,2260,1963,windows-8,752732,Windows 8,752732
+147,16216,752732,41,mobile-technology,16216,Mobile Technology,16216,1963,windows-8,752732,Windows 8,752732
+148,51642,752732,1956,windows-phone,51642,Windows Phone,51642,1963,windows-8,752732,Windows 8,752732
+149,752732,752732,1963,windows-8,752732,Windows 8,752732,1963,windows-8,752732,Windows 8,752732
+150,85534,752732,5612,mobile-design,85534,Mobile Design,85534,1963,windows-8,752732,Windows 8,752732
+151,104717,752732,2065,user-interface-design,104717,User Interface Design,104717,1963,windows-8,752732,Windows 8,752732
+152,450862,752732,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1963,windows-8,752732,Windows 8,752732
+153,3833,752732,10,softwaredev,3833,Software Development,3833,1963,windows-8,752732,Windows 8,752732
+154,438992,752732,1960,windows-8-development,438992,Windows 8 Development,438992,1963,windows-8,752732,Windows 8,752732
+155,99537,752732,2413,microsoft-technology,99537,Microsoft Technology,99537,1963,windows-8,752732,Windows 8,752732
+156,21441,133497,67,mobile-development,21441,Mobile Development,21441,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+157,1215292,133497,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+158,133497,133497,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+159,497332,133497,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+160,827,133497,57,dotnet,827,.NET,827,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+161,2260,133497,261,csharp,2260,C#,2260,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+162,16216,133497,41,mobile-technology,16216,Mobile Technology,16216,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+163,51642,133497,1956,windows-phone,51642,Windows Phone,51642,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+164,752732,133497,1963,windows-8,752732,Windows 8,752732,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+165,85534,133497,5612,mobile-design,85534,Mobile Design,85534,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+166,104717,133497,2065,user-interface-design,104717,User Interface Design,104717,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+167,450862,133497,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+168,3833,133497,10,softwaredev,3833,Software Development,3833,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+169,438992,133497,1960,windows-8-development,438992,Windows 8 Development,438992,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+170,99537,133497,2413,microsoft-technology,99537,Microsoft Technology,99537,1447,windows-phone-developers,133497,Windows Phone Developers,133497
+171,21441,99537,67,mobile-development,21441,Mobile Development,21441,2413,microsoft-technology,99537,Microsoft Technology,99537
+172,1215292,99537,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,2413,microsoft-technology,99537,Microsoft Technology,99537
+173,133497,99537,1447,windows-phone-developers,133497,Windows Phone Developers,133497,2413,microsoft-technology,99537,Microsoft Technology,99537
+174,497332,99537,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,2413,microsoft-technology,99537,Microsoft Technology,99537
+175,827,99537,57,dotnet,827,.NET,827,2413,microsoft-technology,99537,Microsoft Technology,99537
+176,2260,99537,261,csharp,2260,C#,2260,2413,microsoft-technology,99537,Microsoft Technology,99537
+177,16216,99537,41,mobile-technology,16216,Mobile Technology,16216,2413,microsoft-technology,99537,Microsoft Technology,99537
+178,51642,99537,1956,windows-phone,51642,Windows Phone,51642,2413,microsoft-technology,99537,Microsoft Technology,99537
+179,752732,99537,1963,windows-8,752732,Windows 8,752732,2413,microsoft-technology,99537,Microsoft Technology,99537
+180,85534,99537,5612,mobile-design,85534,Mobile Design,85534,2413,microsoft-technology,99537,Microsoft Technology,99537
+181,104717,99537,2065,user-interface-design,104717,User Interface Design,104717,2413,microsoft-technology,99537,Microsoft Technology,99537
+182,450862,99537,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,2413,microsoft-technology,99537,Microsoft Technology,99537
+183,3833,99537,10,softwaredev,3833,Software Development,3833,2413,microsoft-technology,99537,Microsoft Technology,99537
+184,438992,99537,1960,windows-8-development,438992,Windows 8 Development,438992,2413,microsoft-technology,99537,Microsoft Technology,99537
+185,99537,99537,2413,microsoft-technology,99537,Microsoft Technology,99537,2413,microsoft-technology,99537,Microsoft Technology,99537
+186,21441,1215292,67,mobile-development,21441,Mobile Development,21441,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+187,1215292,1215292,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+188,133497,1215292,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+189,497332,1215292,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+190,827,1215292,57,dotnet,827,.NET,827,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+191,2260,1215292,261,csharp,2260,C#,2260,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+192,16216,1215292,41,mobile-technology,16216,Mobile Technology,16216,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+193,51642,1215292,1956,windows-phone,51642,Windows Phone,51642,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+194,752732,1215292,1963,windows-8,752732,Windows 8,752732,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+195,85534,1215292,5612,mobile-design,85534,Mobile Design,85534,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+196,104717,1215292,2065,user-interface-design,104717,User Interface Design,104717,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+197,450862,1215292,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+198,3833,1215292,10,softwaredev,3833,Software Development,3833,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+199,438992,1215292,1960,windows-8-development,438992,Windows 8 Development,438992,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+200,99537,1215292,2413,microsoft-technology,99537,Microsoft Technology,99537,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292
+201,21441,51642,67,mobile-development,21441,Mobile Development,21441,1956,windows-phone,51642,Windows Phone,51642
+202,1215292,51642,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1956,windows-phone,51642,Windows Phone,51642
+203,133497,51642,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1956,windows-phone,51642,Windows Phone,51642
+204,497332,51642,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1956,windows-phone,51642,Windows Phone,51642
+205,827,51642,57,dotnet,827,.NET,827,1956,windows-phone,51642,Windows Phone,51642
+206,2260,51642,261,csharp,2260,C#,2260,1956,windows-phone,51642,Windows Phone,51642
+207,16216,51642,41,mobile-technology,16216,Mobile Technology,16216,1956,windows-phone,51642,Windows Phone,51642
+208,51642,51642,1956,windows-phone,51642,Windows Phone,51642,1956,windows-phone,51642,Windows Phone,51642
+209,752732,51642,1963,windows-8,752732,Windows 8,752732,1956,windows-phone,51642,Windows Phone,51642
+210,85534,51642,5612,mobile-design,85534,Mobile Design,85534,1956,windows-phone,51642,Windows Phone,51642
+211,104717,51642,2065,user-interface-design,104717,User Interface Design,104717,1956,windows-phone,51642,Windows Phone,51642
+212,450862,51642,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1956,windows-phone,51642,Windows Phone,51642
+213,3833,51642,10,softwaredev,3833,Software Development,3833,1956,windows-phone,51642,Windows Phone,51642
+214,438992,51642,1960,windows-8-development,438992,Windows 8 Development,438992,1956,windows-phone,51642,Windows Phone,51642
+215,99537,51642,2413,microsoft-technology,99537,Microsoft Technology,99537,1956,windows-phone,51642,Windows Phone,51642
+216,21441,438992,67,mobile-development,21441,Mobile Development,21441,1960,windows-8-development,438992,Windows 8 Development,438992
+217,1215292,438992,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,1960,windows-8-development,438992,Windows 8 Development,438992
+218,133497,438992,1447,windows-phone-developers,133497,Windows Phone Developers,133497,1960,windows-8-development,438992,Windows 8 Development,438992
+219,497332,438992,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,1960,windows-8-development,438992,Windows 8 Development,438992
+220,827,438992,57,dotnet,827,.NET,827,1960,windows-8-development,438992,Windows 8 Development,438992
+221,2260,438992,261,csharp,2260,C#,2260,1960,windows-8-development,438992,Windows 8 Development,438992
+222,16216,438992,41,mobile-technology,16216,Mobile Technology,16216,1960,windows-8-development,438992,Windows 8 Development,438992
+223,51642,438992,1956,windows-phone,51642,Windows Phone,51642,1960,windows-8-development,438992,Windows 8 Development,438992
+224,752732,438992,1963,windows-8,752732,Windows 8,752732,1960,windows-8-development,438992,Windows 8 Development,438992
+225,85534,438992,5612,mobile-design,85534,Mobile Design,85534,1960,windows-8-development,438992,Windows 8 Development,438992
+226,104717,438992,2065,user-interface-design,104717,User Interface Design,104717,1960,windows-8-development,438992,Windows 8 Development,438992
+227,450862,438992,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,1960,windows-8-development,438992,Windows 8 Development,438992
+228,3833,438992,10,softwaredev,3833,Software Development,3833,1960,windows-8-development,438992,Windows 8 Development,438992
+229,438992,438992,1960,windows-8-development,438992,Windows 8 Development,438992,1960,windows-8-development,438992,Windows 8 Development,438992
+230,99537,438992,2413,microsoft-technology,99537,Microsoft Technology,99537,1960,windows-8-development,438992,Windows 8 Development,438992
+231,21441,2260,67,mobile-development,21441,Mobile Development,21441,261,csharp,2260,C#,2260
+232,1215292,2260,1965,windows-phone-8-development,1215292,Windows Phone 8 Development,1215292,261,csharp,2260,C#,2260
+233,133497,2260,1447,windows-phone-developers,133497,Windows Phone Developers,133497,261,csharp,2260,C#,2260
+234,497332,2260,5618,mobile-design-and-development,497332,Mobile Design and Development,497332,261,csharp,2260,C#,2260
+235,827,2260,57,dotnet,827,.NET,827,261,csharp,2260,C#,2260
+236,2260,2260,261,csharp,2260,C#,2260,261,csharp,2260,C#,2260
+237,16216,2260,41,mobile-technology,16216,Mobile Technology,16216,261,csharp,2260,C#,2260
+238,51642,2260,1956,windows-phone,51642,Windows Phone,51642,261,csharp,2260,C#,2260
+239,752732,2260,1963,windows-8,752732,Windows 8,752732,261,csharp,2260,C#,2260
+240,85534,2260,5612,mobile-design,85534,Mobile Design,85534,261,csharp,2260,C#,2260
+241,104717,2260,2065,user-interface-design,104717,User Interface Design,104717,261,csharp,2260,C#,2260
+242,450862,2260,1961,windows-8-metro-app-development,450862,Windows 8 Metro App Development,450862,261,csharp,2260,C#,2260
+243,3833,2260,10,softwaredev,3833,Software Development,3833,261,csharp,2260,C#,2260
+244,438992,2260,1960,windows-8-development,438992,Windows 8 Development,438992,261,csharp,2260,C#,2260
+245,99537,2260,2413,microsoft-technology,99537,Microsoft Technology,99537,261,csharp,2260,C#,2260
+246,18060,1245,1067,hadoop,18060,Hadoop,18060,1063,databasepro,1245,Database Professionals,1245
+247,55324,1245,566,data-mining,55324,Data Mining,55324,1063,databasepro,1245,Database Professionals,1245
+248,10494,1245,1297,datamanagement,10494,Data Management,10494,1063,databasepro,1245,Database Professionals,1245
+249,48471,1245,32,computer-programming,48471,Computer programming,48471,1063,databasepro,1245,Database Professionals,1245
+250,7463,1245,4172,sqlserver,7463,SQL Server,7463,1063,databasepro,1245,Database Professionals,1245
+251,1245,1245,1063,databasepro,1245,Database Professionals,1245,1063,databasepro,1245,Database Professionals,1245
+252,102811,1245,572,data-science,102811,Data Science,102811,1063,databasepro,1245,Database Professionals,1245
+253,18062,1245,433,big-data,18062,Big Data,18062,1063,databasepro,1245,Database Professionals,1245
+254,10538,1245,432,businessintell,10538,Business Intelligence,10538,1063,databasepro,1245,Database Professionals,1245
+255,15167,1245,100,cloud-computing,15167,Cloud Computing,15167,1063,databasepro,1245,Database Professionals,1245
+256,30928,1245,438,data-analytics,30928,Data Analytics,30928,1063,databasepro,1245,Database Professionals,1245
+257,37381,1245,563,data-visualization,37381,Data Visualization,37381,1063,databasepro,1245,Database Professionals,1245
+258,383411,1245,573,big-data-analytics,383411,Big Data Analytics,383411,1063,databasepro,1245,Database Professionals,1245
+259,21506,1245,1283,database-development,21506,Database Development,21506,1063,databasepro,1245,Database Professionals,1245
+260,18060,29971,1067,hadoop,18060,Hadoop,18060,1070,machine-learning,29971,Machine Learning,29971
+261,38458,29971,565,predictive-analytics,38458,Predictive Analytics,38458,1070,machine-learning,29971,Machine Learning,29971
+262,55324,29971,566,data-mining,55324,Data Mining,55324,1070,machine-learning,29971,Machine Learning,29971
+263,102811,29971,572,data-science,102811,Data Science,102811,1070,machine-learning,29971,Machine Learning,29971
+264,60043,29971,1043,open-data,60043,Open Data,60043,1070,machine-learning,29971,Machine Learning,29971
+265,18062,29971,433,big-data,18062,Big Data,18062,1070,machine-learning,29971,Machine Learning,29971
+266,10538,29971,432,businessintell,10538,Business Intelligence,10538,1070,machine-learning,29971,Machine Learning,29971
+267,15167,29971,100,cloud-computing,15167,Cloud Computing,15167,1070,machine-learning,29971,Machine Learning,29971
+268,30928,29971,438,data-analytics,30928,Data Analytics,30928,1070,machine-learning,29971,Machine Learning,29971
+269,117260,29971,4942,spatial-data,117260,Spatial Data,117260,1070,machine-learning,29971,Machine Learning,29971
+270,29971,29971,1070,machine-learning,29971,Machine Learning,29971,1070,machine-learning,29971,Machine Learning,29971
+271,37381,29971,563,data-visualization,37381,Data Visualization,37381,1070,machine-learning,29971,Machine Learning,29971
+272,24778,29971,287,linked-data,24778,Linked Data,24778,1070,machine-learning,29971,Machine Learning,29971
+273,383411,29971,573,big-data-analytics,383411,Big Data Analytics,383411,1070,machine-learning,29971,Machine Learning,29971
+274,563,29971,7,opensource,563,Open Source,563,1070,machine-learning,29971,Machine Learning,29971
+275,18060,102811,1067,hadoop,18060,Hadoop,18060,572,data-science,102811,Data Science,102811
+276,38458,102811,565,predictive-analytics,38458,Predictive Analytics,38458,572,data-science,102811,Data Science,102811
+277,55324,102811,566,data-mining,55324,Data Mining,55324,572,data-science,102811,Data Science,102811
+278,10494,102811,1297,datamanagement,10494,Data Management,10494,572,data-science,102811,Data Science,102811
+279,48471,102811,32,computer-programming,48471,Computer programming,48471,572,data-science,102811,Data Science,102811
+280,7463,102811,4172,sqlserver,7463,SQL Server,7463,572,data-science,102811,Data Science,102811
+281,1245,102811,1063,databasepro,1245,Database Professionals,1245,572,data-science,102811,Data Science,102811
+282,102811,102811,572,data-science,102811,Data Science,102811,572,data-science,102811,Data Science,102811
+283,60043,102811,1043,open-data,60043,Open Data,60043,572,data-science,102811,Data Science,102811
+284,18062,102811,433,big-data,18062,Big Data,18062,572,data-science,102811,Data Science,102811
+285,10538,102811,432,businessintell,10538,Business Intelligence,10538,572,data-science,102811,Data Science,102811
+286,15167,102811,100,cloud-computing,15167,Cloud Computing,15167,572,data-science,102811,Data Science,102811
+287,30928,102811,438,data-analytics,30928,Data Analytics,30928,572,data-science,102811,Data Science,102811
+288,117260,102811,4942,spatial-data,117260,Spatial Data,117260,572,data-science,102811,Data Science,102811
+289,29971,102811,1070,machine-learning,29971,Machine Learning,29971,572,data-science,102811,Data Science,102811
+290,37381,102811,563,data-visualization,37381,Data Visualization,37381,572,data-science,102811,Data Science,102811
+291,24778,102811,287,linked-data,24778,Linked Data,24778,572,data-science,102811,Data Science,102811
+292,383411,102811,573,big-data-analytics,383411,Big Data Analytics,383411,572,data-science,102811,Data Science,102811
+293,21506,102811,1283,database-development,21506,Database Development,21506,572,data-science,102811,Data Science,102811
+294,563,102811,7,opensource,563,Open Source,563,572,data-science,102811,Data Science,102811
+295,18060,117260,1067,hadoop,18060,Hadoop,18060,4942,spatial-data,117260,Spatial Data,117260
+296,38458,117260,565,predictive-analytics,38458,Predictive Analytics,38458,4942,spatial-data,117260,Spatial Data,117260
+297,55324,117260,566,data-mining,55324,Data Mining,55324,4942,spatial-data,117260,Spatial Data,117260
+298,102811,117260,572,data-science,102811,Data Science,102811,4942,spatial-data,117260,Spatial Data,117260
+299,60043,117260,1043,open-data,60043,Open Data,60043,4942,spatial-data,117260,Spatial Data,117260
+300,18062,117260,433,big-data,18062,Big Data,18062,4942,spatial-data,117260,Spatial Data,117260
+301,10538,117260,432,businessintell,10538,Business Intelligence,10538,4942,spatial-data,117260,Spatial Data,117260
+302,15167,117260,100,cloud-computing,15167,Cloud Computing,15167,4942,spatial-data,117260,Spatial Data,117260
+303,30928,117260,438,data-analytics,30928,Data Analytics,30928,4942,spatial-data,117260,Spatial Data,117260
+304,117260,117260,4942,spatial-data,117260,Spatial Data,117260,4942,spatial-data,117260,Spatial Data,117260
+305,29971,117260,1070,machine-learning,29971,Machine Learning,29971,4942,spatial-data,117260,Spatial Data,117260
+306,37381,117260,563,data-visualization,37381,Data Visualization,37381,4942,spatial-data,117260,Spatial Data,117260
+307,24778,117260,287,linked-data,24778,Linked Data,24778,4942,spatial-data,117260,Spatial Data,117260
+308,383411,117260,573,big-data-analytics,383411,Big Data Analytics,383411,4942,spatial-data,117260,Spatial Data,117260
+309,563,117260,7,opensource,563,Open Source,563,4942,spatial-data,117260,Spatial Data,117260
+310,18060,10538,1067,hadoop,18060,Hadoop,18060,432,businessintell,10538,Business Intelligence,10538
+311,38458,10538,565,predictive-analytics,38458,Predictive Analytics,38458,432,businessintell,10538,Business Intelligence,10538
+312,55324,10538,566,data-mining,55324,Data Mining,55324,432,businessintell,10538,Business Intelligence,10538
+313,10494,10538,1297,datamanagement,10494,Data Management,10494,432,businessintell,10538,Business Intelligence,10538
+314,48471,10538,32,computer-programming,48471,Computer programming,48471,432,businessintell,10538,Business Intelligence,10538
+315,7463,10538,4172,sqlserver,7463,SQL Server,7463,432,businessintell,10538,Business Intelligence,10538
+316,1245,10538,1063,databasepro,1245,Database Professionals,1245,432,businessintell,10538,Business Intelligence,10538
+317,102811,10538,572,data-science,102811,Data Science,102811,432,businessintell,10538,Business Intelligence,10538
+318,60043,10538,1043,open-data,60043,Open Data,60043,432,businessintell,10538,Business Intelligence,10538
+319,18062,10538,433,big-data,18062,Big Data,18062,432,businessintell,10538,Business Intelligence,10538
+320,10538,10538,432,businessintell,10538,Business Intelligence,10538,432,businessintell,10538,Business Intelligence,10538
+321,15167,10538,100,cloud-computing,15167,Cloud Computing,15167,432,businessintell,10538,Business Intelligence,10538
+322,30928,10538,438,data-analytics,30928,Data Analytics,30928,432,businessintell,10538,Business Intelligence,10538
+323,117260,10538,4942,spatial-data,117260,Spatial Data,117260,432,businessintell,10538,Business Intelligence,10538
+324,29971,10538,1070,machine-learning,29971,Machine Learning,29971,432,businessintell,10538,Business Intelligence,10538
+325,37381,10538,563,data-visualization,37381,Data Visualization,37381,432,businessintell,10538,Business Intelligence,10538
+326,24778,10538,287,linked-data,24778,Linked Data,24778,432,businessintell,10538,Business Intelligence,10538
+327,383411,10538,573,big-data-analytics,383411,Big Data Analytics,383411,432,businessintell,10538,Business Intelligence,10538
+328,21506,10538,1283,database-development,21506,Database Development,21506,432,businessintell,10538,Business Intelligence,10538
+329,563,10538,7,opensource,563,Open Source,563,432,businessintell,10538,Business Intelligence,10538
+330,18060,383411,1067,hadoop,18060,Hadoop,18060,573,big-data-analytics,383411,Big Data Analytics,383411
+331,38458,383411,565,predictive-analytics,38458,Predictive Analytics,38458,573,big-data-analytics,383411,Big Data Analytics,383411
+332,55324,383411,566,data-mining,55324,Data Mining,55324,573,big-data-analytics,383411,Big Data Analytics,383411
+333,10494,383411,1297,datamanagement,10494,Data Management,10494,573,big-data-analytics,383411,Big Data Analytics,383411
+334,48471,383411,32,computer-programming,48471,Computer programming,48471,573,big-data-analytics,383411,Big Data Analytics,383411
+335,7463,383411,4172,sqlserver,7463,SQL Server,7463,573,big-data-analytics,383411,Big Data Analytics,383411
+336,1245,383411,1063,databasepro,1245,Database Professionals,1245,573,big-data-analytics,383411,Big Data Analytics,383411
+337,102811,383411,572,data-science,102811,Data Science,102811,573,big-data-analytics,383411,Big Data Analytics,383411
+338,60043,383411,1043,open-data,60043,Open Data,60043,573,big-data-analytics,383411,Big Data Analytics,383411
+339,18062,383411,433,big-data,18062,Big Data,18062,573,big-data-analytics,383411,Big Data Analytics,383411
+340,10538,383411,432,businessintell,10538,Business Intelligence,10538,573,big-data-analytics,383411,Big Data Analytics,383411
+341,15167,383411,100,cloud-computing,15167,Cloud Computing,15167,573,big-data-analytics,383411,Big Data Analytics,383411
+342,30928,383411,438,data-analytics,30928,Data Analytics,30928,573,big-data-analytics,383411,Big Data Analytics,383411
+343,117260,383411,4942,spatial-data,117260,Spatial Data,117260,573,big-data-analytics,383411,Big Data Analytics,383411
+344,29971,383411,1070,machine-learning,29971,Machine Learning,29971,573,big-data-analytics,383411,Big Data Analytics,383411
+345,37381,383411,563,data-visualization,37381,Data Visualization,37381,573,big-data-analytics,383411,Big Data Analytics,383411
+346,24778,383411,287,linked-data,24778,Linked Data,24778,573,big-data-analytics,383411,Big Data Analytics,383411
+347,383411,383411,573,big-data-analytics,383411,Big Data Analytics,383411,573,big-data-analytics,383411,Big Data Analytics,383411
+348,21506,383411,1283,database-development,21506,Database Development,21506,573,big-data-analytics,383411,Big Data Analytics,383411
+349,563,383411,7,opensource,563,Open Source,563,573,big-data-analytics,383411,Big Data Analytics,383411
+350,18060,38458,1067,hadoop,18060,Hadoop,18060,565,predictive-analytics,38458,Predictive Analytics,38458
+351,38458,38458,565,predictive-analytics,38458,Predictive Analytics,38458,565,predictive-analytics,38458,Predictive Analytics,38458
+352,55324,38458,566,data-mining,55324,Data Mining,55324,565,predictive-analytics,38458,Predictive Analytics,38458
+353,102811,38458,572,data-science,102811,Data Science,102811,565,predictive-analytics,38458,Predictive Analytics,38458
+354,60043,38458,1043,open-data,60043,Open Data,60043,565,predictive-analytics,38458,Predictive Analytics,38458
+355,18062,38458,433,big-data,18062,Big Data,18062,565,predictive-analytics,38458,Predictive Analytics,38458
+356,10538,38458,432,businessintell,10538,Business Intelligence,10538,565,predictive-analytics,38458,Predictive Analytics,38458
+357,15167,38458,100,cloud-computing,15167,Cloud Computing,15167,565,predictive-analytics,38458,Predictive Analytics,38458
+358,30928,38458,438,data-analytics,30928,Data Analytics,30928,565,predictive-analytics,38458,Predictive Analytics,38458
+359,117260,38458,4942,spatial-data,117260,Spatial Data,117260,565,predictive-analytics,38458,Predictive Analytics,38458
+360,29971,38458,1070,machine-learning,29971,Machine Learning,29971,565,predictive-analytics,38458,Predictive Analytics,38458
+361,37381,38458,563,data-visualization,37381,Data Visualization,37381,565,predictive-analytics,38458,Predictive Analytics,38458
+362,24778,38458,287,linked-data,24778,Linked Data,24778,565,predictive-analytics,38458,Predictive Analytics,38458
+363,383411,38458,573,big-data-analytics,383411,Big Data Analytics,383411,565,predictive-analytics,38458,Predictive Analytics,38458
+364,563,38458,7,opensource,563,Open Source,563,565,predictive-analytics,38458,Predictive Analytics,38458
+365,18060,60043,1067,hadoop,18060,Hadoop,18060,1043,open-data,60043,Open Data,60043
+366,38458,60043,565,predictive-analytics,38458,Predictive Analytics,38458,1043,open-data,60043,Open Data,60043
+367,55324,60043,566,data-mining,55324,Data Mining,55324,1043,open-data,60043,Open Data,60043
+368,102811,60043,572,data-science,102811,Data Science,102811,1043,open-data,60043,Open Data,60043
+369,60043,60043,1043,open-data,60043,Open Data,60043,1043,open-data,60043,Open Data,60043
+370,18062,60043,433,big-data,18062,Big Data,18062,1043,open-data,60043,Open Data,60043
+371,10538,60043,432,businessintell,10538,Business Intelligence,10538,1043,open-data,60043,Open Data,60043
+372,15167,60043,100,cloud-computing,15167,Cloud Computing,15167,1043,open-data,60043,Open Data,60043
+373,30928,60043,438,data-analytics,30928,Data Analytics,30928,1043,open-data,60043,Open Data,60043
+374,117260,60043,4942,spatial-data,117260,Spatial Data,117260,1043,open-data,60043,Open Data,60043
+375,29971,60043,1070,machine-learning,29971,Machine Learning,29971,1043,open-data,60043,Open Data,60043
+376,37381,60043,563,data-visualization,37381,Data Visualization,37381,1043,open-data,60043,Open Data,60043
+377,24778,60043,287,linked-data,24778,Linked Data,24778,1043,open-data,60043,Open Data,60043
+378,383411,60043,573,big-data-analytics,383411,Big Data Analytics,383411,1043,open-data,60043,Open Data,60043
+379,563,60043,7,opensource,563,Open Source,563,1043,open-data,60043,Open Data,60043
+380,18060,55324,1067,hadoop,18060,Hadoop,18060,566,data-mining,55324,Data Mining,55324
+381,38458,55324,565,predictive-analytics,38458,Predictive Analytics,38458,566,data-mining,55324,Data Mining,55324
+382,55324,55324,566,data-mining,55324,Data Mining,55324,566,data-mining,55324,Data Mining,55324
+383,10494,55324,1297,datamanagement,10494,Data Management,10494,566,data-mining,55324,Data Mining,55324
+384,48471,55324,32,computer-programming,48471,Computer programming,48471,566,data-mining,55324,Data Mining,55324
+385,7463,55324,4172,sqlserver,7463,SQL Server,7463,566,data-mining,55324,Data Mining,55324
+386,1245,55324,1063,databasepro,1245,Database Professionals,1245,566,data-mining,55324,Data Mining,55324
+387,102811,55324,572,data-science,102811,Data Science,102811,566,data-mining,55324,Data Mining,55324
+388,60043,55324,1043,open-data,60043,Open Data,60043,566,data-mining,55324,Data Mining,55324
+389,18062,55324,433,big-data,18062,Big Data,18062,566,data-mining,55324,Data Mining,55324
+390,10538,55324,432,businessintell,10538,Business Intelligence,10538,566,data-mining,55324,Data Mining,55324
+391,15167,55324,100,cloud-computing,15167,Cloud Computing,15167,566,data-mining,55324,Data Mining,55324
+392,30928,55324,438,data-analytics,30928,Data Analytics,30928,566,data-mining,55324,Data Mining,55324
+393,117260,55324,4942,spatial-data,117260,Spatial Data,117260,566,data-mining,55324,Data Mining,55324
+394,29971,55324,1070,machine-learning,29971,Machine Learning,29971,566,data-mining,55324,Data Mining,55324
+395,37381,55324,563,data-visualization,37381,Data Visualization,37381,566,data-mining,55324,Data Mining,55324
+396,24778,55324,287,linked-data,24778,Linked Data,24778,566,data-mining,55324,Data Mining,55324
+397,383411,55324,573,big-data-analytics,383411,Big Data Analytics,383411,566,data-mining,55324,Data Mining,55324
+398,21506,55324,1283,database-development,21506,Database Development,21506,566,data-mining,55324,Data Mining,55324
+399,563,55324,7,opensource,563,Open Source,563,566,data-mining,55324,Data Mining,55324
+400,18060,37381,1067,hadoop,18060,Hadoop,18060,563,data-visualization,37381,Data Visualization,37381
+401,38458,37381,565,predictive-analytics,38458,Predictive Analytics,38458,563,data-visualization,37381,Data Visualization,37381
+402,55324,37381,566,data-mining,55324,Data Mining,55324,563,data-visualization,37381,Data Visualization,37381
+403,10494,37381,1297,datamanagement,10494,Data Management,10494,563,data-visualization,37381,Data Visualization,37381
+404,48471,37381,32,computer-programming,48471,Computer programming,48471,563,data-visualization,37381,Data Visualization,37381
+405,7463,37381,4172,sqlserver,7463,SQL Server,7463,563,data-visualization,37381,Data Visualization,37381
+406,1245,37381,1063,databasepro,1245,Database Professionals,1245,563,data-visualization,37381,Data Visualization,37381
+407,102811,37381,572,data-science,102811,Data Science,102811,563,data-visualization,37381,Data Visualization,37381
+408,60043,37381,1043,open-data,60043,Open Data,60043,563,data-visualization,37381,Data Visualization,37381
+409,18062,37381,433,big-data,18062,Big Data,18062,563,data-visualization,37381,Data Visualization,37381
+410,10538,37381,432,businessintell,10538,Business Intelligence,10538,563,data-visualization,37381,Data Visualization,37381
+411,15167,37381,100,cloud-computing,15167,Cloud Computing,15167,563,data-visualization,37381,Data Visualization,37381
+412,30928,37381,438,data-analytics,30928,Data Analytics,30928,563,data-visualization,37381,Data Visualization,37381
+413,117260,37381,4942,spatial-data,117260,Spatial Data,117260,563,data-visualization,37381,Data Visualization,37381
+414,29971,37381,1070,machine-learning,29971,Machine Learning,29971,563,data-visualization,37381,Data Visualization,37381
+415,37381,37381,563,data-visualization,37381,Data Visualization,37381,563,data-visualization,37381,Data Visualization,37381
+416,24778,37381,287,linked-data,24778,Linked Data,24778,563,data-visualization,37381,Data Visualization,37381
+417,383411,37381,573,big-data-analytics,383411,Big Data Analytics,383411,563,data-visualization,37381,Data Visualization,37381
+418,21506,37381,1283,database-development,21506,Database Development,21506,563,data-visualization,37381,Data Visualization,37381
+419,563,37381,7,opensource,563,Open Source,563,563,data-visualization,37381,Data Visualization,37381
+420,18060,10494,1067,hadoop,18060,Hadoop,18060,1297,datamanagement,10494,Data Management,10494
+421,55324,10494,566,data-mining,55324,Data Mining,55324,1297,datamanagement,10494,Data Management,10494
+422,10494,10494,1297,datamanagement,10494,Data Management,10494,1297,datamanagement,10494,Data Management,10494
+423,48471,10494,32,computer-programming,48471,Computer programming,48471,1297,datamanagement,10494,Data Management,10494
+424,7463,10494,4172,sqlserver,7463,SQL Server,7463,1297,datamanagement,10494,Data Management,10494
+425,1245,10494,1063,databasepro,1245,Database Professionals,1245,1297,datamanagement,10494,Data Management,10494
+426,102811,10494,572,data-science,102811,Data Science,102811,1297,datamanagement,10494,Data Management,10494
+427,18062,10494,433,big-data,18062,Big Data,18062,1297,datamanagement,10494,Data Management,10494
+428,10538,10494,432,businessintell,10538,Business Intelligence,10538,1297,datamanagement,10494,Data Management,10494
+429,15167,10494,100,cloud-computing,15167,Cloud Computing,15167,1297,datamanagement,10494,Data Management,10494
+430,30928,10494,438,data-analytics,30928,Data Analytics,30928,1297,datamanagement,10494,Data Management,10494
+431,37381,10494,563,data-visualization,37381,Data Visualization,37381,1297,datamanagement,10494,Data Management,10494
+432,383411,10494,573,big-data-analytics,383411,Big Data Analytics,383411,1297,datamanagement,10494,Data Management,10494
+433,21506,10494,1283,database-development,21506,Database Development,21506,1297,datamanagement,10494,Data Management,10494
+434,18060,18062,1067,hadoop,18060,Hadoop,18060,433,big-data,18062,Big Data,18062
+435,38458,18062,565,predictive-analytics,38458,Predictive Analytics,38458,433,big-data,18062,Big Data,18062
+436,55324,18062,566,data-mining,55324,Data Mining,55324,433,big-data,18062,Big Data,18062
+437,10494,18062,1297,datamanagement,10494,Data Management,10494,433,big-data,18062,Big Data,18062
+438,48471,18062,32,computer-programming,48471,Computer programming,48471,433,big-data,18062,Big Data,18062
+439,7463,18062,4172,sqlserver,7463,SQL Server,7463,433,big-data,18062,Big Data,18062
+440,1245,18062,1063,databasepro,1245,Database Professionals,1245,433,big-data,18062,Big Data,18062
+441,102811,18062,572,data-science,102811,Data Science,102811,433,big-data,18062,Big Data,18062
+442,60043,18062,1043,open-data,60043,Open Data,60043,433,big-data,18062,Big Data,18062
+443,18062,18062,433,big-data,18062,Big Data,18062,433,big-data,18062,Big Data,18062
+444,10538,18062,432,businessintell,10538,Business Intelligence,10538,433,big-data,18062,Big Data,18062
+445,15167,18062,100,cloud-computing,15167,Cloud Computing,15167,433,big-data,18062,Big Data,18062
+446,30928,18062,438,data-analytics,30928,Data Analytics,30928,433,big-data,18062,Big Data,18062
+447,117260,18062,4942,spatial-data,117260,Spatial Data,117260,433,big-data,18062,Big Data,18062
+448,29971,18062,1070,machine-learning,29971,Machine Learning,29971,433,big-data,18062,Big Data,18062
+449,37381,18062,563,data-visualization,37381,Data Visualization,37381,433,big-data,18062,Big Data,18062
+450,24778,18062,287,linked-data,24778,Linked Data,24778,433,big-data,18062,Big Data,18062
+451,383411,18062,573,big-data-analytics,383411,Big Data Analytics,383411,433,big-data,18062,Big Data,18062
+452,21506,18062,1283,database-development,21506,Database Development,21506,433,big-data,18062,Big Data,18062
+453,563,18062,7,opensource,563,Open Source,563,433,big-data,18062,Big Data,18062
+454,18060,15167,1067,hadoop,18060,Hadoop,18060,100,cloud-computing,15167,Cloud Computing,15167
+455,38458,15167,565,predictive-analytics,38458,Predictive Analytics,38458,100,cloud-computing,15167,Cloud Computing,15167
+456,55324,15167,566,data-mining,55324,Data Mining,55324,100,cloud-computing,15167,Cloud Computing,15167
+457,10494,15167,1297,datamanagement,10494,Data Management,10494,100,cloud-computing,15167,Cloud Computing,15167
+458,48471,15167,32,computer-programming,48471,Computer programming,48471,100,cloud-computing,15167,Cloud Computing,15167
+459,15225,15167,5366,computer,15225,Computers,15225,100,cloud-computing,15167,Cloud Computing,15167
+460,7463,15167,4172,sqlserver,7463,SQL Server,7463,100,cloud-computing,15167,Cloud Computing,15167
+461,1245,15167,1063,databasepro,1245,Database Professionals,1245,100,cloud-computing,15167,Cloud Computing,15167
+462,102811,15167,572,data-science,102811,Data Science,102811,100,cloud-computing,15167,Cloud Computing,15167
+463,15568,15167,1378,information-technology,15568,Information Technology,15568,100,cloud-computing,15167,Cloud Computing,15167
+464,60043,15167,1043,open-data,60043,Open Data,60043,100,cloud-computing,15167,Cloud Computing,15167
+465,18062,15167,433,big-data,18062,Big Data,18062,100,cloud-computing,15167,Cloud Computing,15167
+466,10579,15167,29,technology,10579,Technology,10579,100,cloud-computing,15167,Cloud Computing,15167
+467,22239,15167,778,information-technology-in-business,22239,Information Technology in Business,22239,100,cloud-computing,15167,Cloud Computing,15167
+468,62480,15167,5374,high-tech-professional,62480,High-Tech Professional,62480,100,cloud-computing,15167,Cloud Computing,15167
+469,10538,15167,432,businessintell,10538,Business Intelligence,10538,100,cloud-computing,15167,Cloud Computing,15167
+470,22203,15167,582,technology-professionals,22203,Technology Professionals,22203,100,cloud-computing,15167,Cloud Computing,15167
+471,15167,15167,100,cloud-computing,15167,Cloud Computing,15167,100,cloud-computing,15167,Cloud Computing,15167
+472,32688,15167,5371,computer-training,32688,Computer Training,32688,100,cloud-computing,15167,Cloud Computing,15167
+473,30928,15167,438,data-analytics,30928,Data Analytics,30928,100,cloud-computing,15167,Cloud Computing,15167
+474,77687,15167,710,high-performance-computing,77687,High Performance Computing,77687,100,cloud-computing,15167,Cloud Computing,15167
+475,21751,15167,1924,computer-science,21751,Computer Science,21751,100,cloud-computing,15167,Cloud Computing,15167
+476,117260,15167,4942,spatial-data,117260,Spatial Data,117260,100,cloud-computing,15167,Cloud Computing,15167
+477,29971,15167,1070,machine-learning,29971,Machine Learning,29971,100,cloud-computing,15167,Cloud Computing,15167
+478,91146,15167,4741,tech-talks,91146,Tech Talks,91146,100,cloud-computing,15167,Cloud Computing,15167
+479,37381,15167,563,data-visualization,37381,Data Visualization,37381,100,cloud-computing,15167,Cloud Computing,15167
+480,50927,15167,5372,computing,50927,Computing,50927,100,cloud-computing,15167,Cloud Computing,15167
+481,24778,15167,287,linked-data,24778,Linked Data,24778,100,cloud-computing,15167,Cloud Computing,15167
+482,383411,15167,573,big-data-analytics,383411,Big Data Analytics,383411,100,cloud-computing,15167,Cloud Computing,15167
+483,52794,15167,5373,science-technology,52794,Science & Technology,52794,100,cloud-computing,15167,Cloud Computing,15167
+484,21506,15167,1283,database-development,21506,Database Development,21506,100,cloud-computing,15167,Cloud Computing,15167
+485,563,15167,7,opensource,563,Open Source,563,100,cloud-computing,15167,Cloud Computing,15167
+486,18060,30928,1067,hadoop,18060,Hadoop,18060,438,data-analytics,30928,Data Analytics,30928
+487,38458,30928,565,predictive-analytics,38458,Predictive Analytics,38458,438,data-analytics,30928,Data Analytics,30928
+488,55324,30928,566,data-mining,55324,Data Mining,55324,438,data-analytics,30928,Data Analytics,30928
+489,10494,30928,1297,datamanagement,10494,Data Management,10494,438,data-analytics,30928,Data Analytics,30928
+490,48471,30928,32,computer-programming,48471,Computer programming,48471,438,data-analytics,30928,Data Analytics,30928
+491,7463,30928,4172,sqlserver,7463,SQL Server,7463,438,data-analytics,30928,Data Analytics,30928
+492,1245,30928,1063,databasepro,1245,Database Professionals,1245,438,data-analytics,30928,Data Analytics,30928
+493,102811,30928,572,data-science,102811,Data Science,102811,438,data-analytics,30928,Data Analytics,30928
+494,60043,30928,1043,open-data,60043,Open Data,60043,438,data-analytics,30928,Data Analytics,30928
+495,18062,30928,433,big-data,18062,Big Data,18062,438,data-analytics,30928,Data Analytics,30928
+496,10538,30928,432,businessintell,10538,Business Intelligence,10538,438,data-analytics,30928,Data Analytics,30928
+497,15167,30928,100,cloud-computing,15167,Cloud Computing,15167,438,data-analytics,30928,Data Analytics,30928
+498,30928,30928,438,data-analytics,30928,Data Analytics,30928,438,data-analytics,30928,Data Analytics,30928
+499,117260,30928,4942,spatial-data,117260,Spatial Data,117260,438,data-analytics,30928,Data Analytics,30928
+500,29971,30928,1070,machine-learning,29971,Machine Learning,29971,438,data-analytics,30928,Data Analytics,30928
+501,37381,30928,563,data-visualization,37381,Data Visualization,37381,438,data-analytics,30928,Data Analytics,30928
+502,24778,30928,287,linked-data,24778,Linked Data,24778,438,data-analytics,30928,Data Analytics,30928
+503,383411,30928,573,big-data-analytics,383411,Big Data Analytics,383411,438,data-analytics,30928,Data Analytics,30928
+504,21506,30928,1283,database-development,21506,Database Development,21506,438,data-analytics,30928,Data Analytics,30928
+505,563,30928,7,opensource,563,Open Source,563,438,data-analytics,30928,Data Analytics,30928
+506,18060,18060,1067,hadoop,18060,Hadoop,18060,1067,hadoop,18060,Hadoop,18060
+507,38458,18060,565,predictive-analytics,38458,Predictive Analytics,38458,1067,hadoop,18060,Hadoop,18060
+508,55324,18060,566,data-mining,55324,Data Mining,55324,1067,hadoop,18060,Hadoop,18060
+509,10494,18060,1297,datamanagement,10494,Data Management,10494,1067,hadoop,18060,Hadoop,18060
+510,48471,18060,32,computer-programming,48471,Computer programming,48471,1067,hadoop,18060,Hadoop,18060
+511,7463,18060,4172,sqlserver,7463,SQL Server,7463,1067,hadoop,18060,Hadoop,18060
+512,1245,18060,1063,databasepro,1245,Database Professionals,1245,1067,hadoop,18060,Hadoop,18060
+513,102811,18060,572,data-science,102811,Data Science,102811,1067,hadoop,18060,Hadoop,18060
+514,60043,18060,1043,open-data,60043,Open Data,60043,1067,hadoop,18060,Hadoop,18060
+515,18062,18060,433,big-data,18062,Big Data,18062,1067,hadoop,18060,Hadoop,18060
+516,10538,18060,432,businessintell,10538,Business Intelligence,10538,1067,hadoop,18060,Hadoop,18060
+517,15167,18060,100,cloud-computing,15167,Cloud Computing,15167,1067,hadoop,18060,Hadoop,18060
+518,30928,18060,438,data-analytics,30928,Data Analytics,30928,1067,hadoop,18060,Hadoop,18060
+519,117260,18060,4942,spatial-data,117260,Spatial Data,117260,1067,hadoop,18060,Hadoop,18060
+520,29971,18060,1070,machine-learning,29971,Machine Learning,29971,1067,hadoop,18060,Hadoop,18060
+521,37381,18060,563,data-visualization,37381,Data Visualization,37381,1067,hadoop,18060,Hadoop,18060
+522,24778,18060,287,linked-data,24778,Linked Data,24778,1067,hadoop,18060,Hadoop,18060
+523,383411,18060,573,big-data-analytics,383411,Big Data Analytics,383411,1067,hadoop,18060,Hadoop,18060
+524,21506,18060,1283,database-development,21506,Database Development,21506,1067,hadoop,18060,Hadoop,18060
+525,563,18060,7,opensource,563,Open Source,563,1067,hadoop,18060,Hadoop,18060
+526,18060,48471,1067,hadoop,18060,Hadoop,18060,32,computer-programming,48471,Computer programming,48471
+527,133666,48471,3931,product-management-in-agile,133666,Product management in agile,133666,32,computer-programming,48471,Computer programming,48471
+528,21549,48471,83,agile-project-management,21549,Agile Project Management,21549,32,computer-programming,48471,Computer programming,48471
+529,55324,48471,566,data-mining,55324,Data Mining,55324,32,computer-programming,48471,Computer programming,48471
+530,10494,48471,1297,datamanagement,10494,Data Management,10494,32,computer-programming,48471,Computer programming,48471
+531,48471,48471,32,computer-programming,48471,Computer programming,48471,32,computer-programming,48471,Computer programming,48471
+532,7463,48471,4172,sqlserver,7463,SQL Server,7463,32,computer-programming,48471,Computer programming,48471
+533,15582,48471,3,web-development,15582,Web Development,15582,32,computer-programming,48471,Computer programming,48471
+534,1245,48471,1063,databasepro,1245,Database Professionals,1245,32,computer-programming,48471,Computer programming,48471
+535,102811,48471,572,data-science,102811,Data Science,102811,32,computer-programming,48471,Computer programming,48471
+536,438282,48471,3369,agile-transformation,438282,Agile Transformation,438282,32,computer-programming,48471,Computer programming,48471
+537,10043,48471,205,scrum,10043,Scrum,10043,32,computer-programming,48471,Computer programming,48471
+538,18062,48471,433,big-data,18062,Big Data,18062,32,computer-programming,48471,Computer programming,48471
+539,659,48471,8,webdesign,659,Web Design,659,32,computer-programming,48471,Computer programming,48471
+540,85951,48471,4,javascript-frameworks,85951,JavaScript Frameworks,85951,32,computer-programming,48471,Computer programming,48471
+541,438272,48471,3646,agile-leadership,438272,Agile Leadership,438272,32,computer-programming,48471,Computer programming,48471
+542,122939,48471,904,agile-coaching,122939,Agile Coaching,122939,32,computer-programming,48471,Computer programming,48471
+543,3833,48471,10,softwaredev,3833,Software Development,3833,32,computer-programming,48471,Computer programming,48471
+544,10538,48471,432,businessintell,10538,Business Intelligence,10538,32,computer-programming,48471,Computer programming,48471
+545,78565,48471,68,html5,78565,HTML5,78565,32,computer-programming,48471,Computer programming,48471
+546,867522,48471,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,32,computer-programming,48471,Computer programming,48471
+547,15167,48471,100,cloud-computing,15167,Cloud Computing,15167,32,computer-programming,48471,Computer programming,48471
+548,30928,48471,438,data-analytics,30928,Data Analytics,30928,32,computer-programming,48471,Computer programming,48471
+549,38660,48471,121,lean-startup,38660,Lean Startup,38660,32,computer-programming,48471,Computer programming,48471
+550,921432,48471,2328,meteor,921432,Meteor,921432,32,computer-programming,48471,Computer programming,48471
+551,16137,48471,263,jquery,16137,JQuery,16137,32,computer-programming,48471,Computer programming,48471
+552,9886,48471,24,ria,9886,Rich Internet Applications,9886,32,computer-programming,48471,Computer programming,48471
+553,9696,48471,1,newtech,9696,New Technology,9696,32,computer-programming,48471,Computer programming,48471
+554,405512,48471,2320,backbone-js,405512,Backbone.js,405512,32,computer-programming,48471,Computer programming,48471
+555,118991,48471,3190,lean-project-management,118991,Lean Project Management,118991,32,computer-programming,48471,Computer programming,48471
+556,37381,48471,563,data-visualization,37381,Data Visualization,37381,32,computer-programming,48471,Computer programming,48471
+557,7029,48471,0,javascript,7029,JavaScript,7029,32,computer-programming,48471,Computer programming,48471
+558,37339,48471,404,kanban,37339,Kanban,37339,32,computer-programming,48471,Computer programming,48471
+559,56555,48471,656,javascript-libraries,56555,JavaScript Libraries,56555,32,computer-programming,48471,Computer programming,48471
+560,383411,48471,573,big-data-analytics,383411,Big Data Analytics,383411,32,computer-programming,48471,Computer programming,48471
+561,21506,48471,1283,database-development,21506,Database Development,21506,32,computer-programming,48471,Computer programming,48471
+562,5938,48471,401,xp,5938,Extreme Programming,5938,32,computer-programming,48471,Computer programming,48471
+563,563,48471,7,opensource,563,Open Source,563,32,computer-programming,48471,Computer programming,48471
+564,10209,48471,2,web,10209,Web Technology,10209,32,computer-programming,48471,Computer programming,48471
+565,18060,7463,1067,hadoop,18060,Hadoop,18060,4172,sqlserver,7463,SQL Server,7463
+566,55324,7463,566,data-mining,55324,Data Mining,55324,4172,sqlserver,7463,SQL Server,7463
+567,10494,7463,1297,datamanagement,10494,Data Management,10494,4172,sqlserver,7463,SQL Server,7463
+568,48471,7463,32,computer-programming,48471,Computer programming,48471,4172,sqlserver,7463,SQL Server,7463
+569,7463,7463,4172,sqlserver,7463,SQL Server,7463,4172,sqlserver,7463,SQL Server,7463
+570,1245,7463,1063,databasepro,1245,Database Professionals,1245,4172,sqlserver,7463,SQL Server,7463
+571,102811,7463,572,data-science,102811,Data Science,102811,4172,sqlserver,7463,SQL Server,7463
+572,18062,7463,433,big-data,18062,Big Data,18062,4172,sqlserver,7463,SQL Server,7463
+573,10538,7463,432,businessintell,10538,Business Intelligence,10538,4172,sqlserver,7463,SQL Server,7463
+574,15167,7463,100,cloud-computing,15167,Cloud Computing,15167,4172,sqlserver,7463,SQL Server,7463
+575,30928,7463,438,data-analytics,30928,Data Analytics,30928,4172,sqlserver,7463,SQL Server,7463
+576,37381,7463,563,data-visualization,37381,Data Visualization,37381,4172,sqlserver,7463,SQL Server,7463
+577,383411,7463,573,big-data-analytics,383411,Big Data Analytics,383411,4172,sqlserver,7463,SQL Server,7463
+578,21506,7463,1283,database-development,21506,Database Development,21506,4172,sqlserver,7463,SQL Server,7463
+579,18060,563,1067,hadoop,18060,Hadoop,18060,7,opensource,563,Open Source,563
+580,38458,563,565,predictive-analytics,38458,Predictive Analytics,38458,7,opensource,563,Open Source,563
+581,55324,563,566,data-mining,55324,Data Mining,55324,7,opensource,563,Open Source,563
+582,48471,563,32,computer-programming,48471,Computer programming,48471,7,opensource,563,Open Source,563
+583,15582,563,3,web-development,15582,Web Development,15582,7,opensource,563,Open Source,563
+584,102811,563,572,data-science,102811,Data Science,102811,7,opensource,563,Open Source,563
+585,60043,563,1043,open-data,60043,Open Data,60043,7,opensource,563,Open Source,563
+586,18062,563,433,big-data,18062,Big Data,18062,7,opensource,563,Open Source,563
+587,659,563,8,webdesign,659,Web Design,659,7,opensource,563,Open Source,563
+588,85951,563,4,javascript-frameworks,85951,JavaScript Frameworks,85951,7,opensource,563,Open Source,563
+589,3833,563,10,softwaredev,3833,Software Development,3833,7,opensource,563,Open Source,563
+590,10538,563,432,businessintell,10538,Business Intelligence,10538,7,opensource,563,Open Source,563
+591,78565,563,68,html5,78565,HTML5,78565,7,opensource,563,Open Source,563
+592,15167,563,100,cloud-computing,15167,Cloud Computing,15167,7,opensource,563,Open Source,563
+593,30928,563,438,data-analytics,30928,Data Analytics,30928,7,opensource,563,Open Source,563
+594,117260,563,4942,spatial-data,117260,Spatial Data,117260,7,opensource,563,Open Source,563
+595,921432,563,2328,meteor,921432,Meteor,921432,7,opensource,563,Open Source,563
+596,16137,563,263,jquery,16137,JQuery,16137,7,opensource,563,Open Source,563
+597,9886,563,24,ria,9886,Rich Internet Applications,9886,7,opensource,563,Open Source,563
+598,29971,563,1070,machine-learning,29971,Machine Learning,29971,7,opensource,563,Open Source,563
+599,9696,563,1,newtech,9696,New Technology,9696,7,opensource,563,Open Source,563
+600,405512,563,2320,backbone-js,405512,Backbone.js,405512,7,opensource,563,Open Source,563
+601,37381,563,563,data-visualization,37381,Data Visualization,37381,7,opensource,563,Open Source,563
+602,7029,563,0,javascript,7029,JavaScript,7029,7,opensource,563,Open Source,563
+603,24778,563,287,linked-data,24778,Linked Data,24778,7,opensource,563,Open Source,563
+604,56555,563,656,javascript-libraries,56555,JavaScript Libraries,56555,7,opensource,563,Open Source,563
+605,383411,563,573,big-data-analytics,383411,Big Data Analytics,383411,7,opensource,563,Open Source,563
+606,563,563,7,opensource,563,Open Source,563,7,opensource,563,Open Source,563
+607,10209,563,2,web,10209,Web Technology,10209,7,opensource,563,Open Source,563
+608,18060,21506,1067,hadoop,18060,Hadoop,18060,1283,database-development,21506,Database Development,21506
+609,55324,21506,566,data-mining,55324,Data Mining,55324,1283,database-development,21506,Database Development,21506
+610,10494,21506,1297,datamanagement,10494,Data Management,10494,1283,database-development,21506,Database Development,21506
+611,48471,21506,32,computer-programming,48471,Computer programming,48471,1283,database-development,21506,Database Development,21506
+612,7463,21506,4172,sqlserver,7463,SQL Server,7463,1283,database-development,21506,Database Development,21506
+613,1245,21506,1063,databasepro,1245,Database Professionals,1245,1283,database-development,21506,Database Development,21506
+614,102811,21506,572,data-science,102811,Data Science,102811,1283,database-development,21506,Database Development,21506
+615,18062,21506,433,big-data,18062,Big Data,18062,1283,database-development,21506,Database Development,21506
+616,10538,21506,432,businessintell,10538,Business Intelligence,10538,1283,database-development,21506,Database Development,21506
+617,15167,21506,100,cloud-computing,15167,Cloud Computing,15167,1283,database-development,21506,Database Development,21506
+618,30928,21506,438,data-analytics,30928,Data Analytics,30928,1283,database-development,21506,Database Development,21506
+619,37381,21506,563,data-visualization,37381,Data Visualization,37381,1283,database-development,21506,Database Development,21506
+620,383411,21506,573,big-data-analytics,383411,Big Data Analytics,383411,1283,database-development,21506,Database Development,21506
+621,21506,21506,1283,database-development,21506,Database Development,21506,1283,database-development,21506,Database Development,21506
+622,18060,24778,1067,hadoop,18060,Hadoop,18060,287,linked-data,24778,Linked Data,24778
+623,38458,24778,565,predictive-analytics,38458,Predictive Analytics,38458,287,linked-data,24778,Linked Data,24778
+624,55324,24778,566,data-mining,55324,Data Mining,55324,287,linked-data,24778,Linked Data,24778
+625,102811,24778,572,data-science,102811,Data Science,102811,287,linked-data,24778,Linked Data,24778
+626,60043,24778,1043,open-data,60043,Open Data,60043,287,linked-data,24778,Linked Data,24778
+627,18062,24778,433,big-data,18062,Big Data,18062,287,linked-data,24778,Linked Data,24778
+628,10538,24778,432,businessintell,10538,Business Intelligence,10538,287,linked-data,24778,Linked Data,24778
+629,15167,24778,100,cloud-computing,15167,Cloud Computing,15167,287,linked-data,24778,Linked Data,24778
+630,30928,24778,438,data-analytics,30928,Data Analytics,30928,287,linked-data,24778,Linked Data,24778
+631,117260,24778,4942,spatial-data,117260,Spatial Data,117260,287,linked-data,24778,Linked Data,24778
+632,29971,24778,1070,machine-learning,29971,Machine Learning,29971,287,linked-data,24778,Linked Data,24778
+633,37381,24778,563,data-visualization,37381,Data Visualization,37381,287,linked-data,24778,Linked Data,24778
+634,24778,24778,287,linked-data,24778,Linked Data,24778,287,linked-data,24778,Linked Data,24778
+635,383411,24778,573,big-data-analytics,383411,Big Data Analytics,383411,287,linked-data,24778,Linked Data,24778
+636,563,24778,7,opensource,563,Open Source,563,287,linked-data,24778,Linked Data,24778
+637,133666,122939,3931,product-management-in-agile,133666,Product management in agile,133666,904,agile-coaching,122939,Agile Coaching,122939
+638,21549,122939,83,agile-project-management,21549,Agile Project Management,21549,904,agile-coaching,122939,Agile Coaching,122939
+639,48471,122939,32,computer-programming,48471,Computer programming,48471,904,agile-coaching,122939,Agile Coaching,122939
+640,438282,122939,3369,agile-transformation,438282,Agile Transformation,438282,904,agile-coaching,122939,Agile Coaching,122939
+641,10043,122939,205,scrum,10043,Scrum,10043,904,agile-coaching,122939,Agile Coaching,122939
+642,438272,122939,3646,agile-leadership,438272,Agile Leadership,438272,904,agile-coaching,122939,Agile Coaching,122939
+643,122939,122939,904,agile-coaching,122939,Agile Coaching,122939,904,agile-coaching,122939,Agile Coaching,122939
+644,867522,122939,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,904,agile-coaching,122939,Agile Coaching,122939
+645,38660,122939,121,lean-startup,38660,Lean Startup,38660,904,agile-coaching,122939,Agile Coaching,122939
+646,118991,122939,3190,lean-project-management,118991,Lean Project Management,118991,904,agile-coaching,122939,Agile Coaching,122939
+647,37339,122939,404,kanban,37339,Kanban,37339,904,agile-coaching,122939,Agile Coaching,122939
+648,5938,122939,401,xp,5938,Extreme Programming,5938,904,agile-coaching,122939,Agile Coaching,122939
+649,133666,133666,3931,product-management-in-agile,133666,Product management in agile,133666,3931,product-management-in-agile,133666,Product management in agile,133666
+650,21549,133666,83,agile-project-management,21549,Agile Project Management,21549,3931,product-management-in-agile,133666,Product management in agile,133666
+651,48471,133666,32,computer-programming,48471,Computer programming,48471,3931,product-management-in-agile,133666,Product management in agile,133666
+652,438282,133666,3369,agile-transformation,438282,Agile Transformation,438282,3931,product-management-in-agile,133666,Product management in agile,133666
+653,10043,133666,205,scrum,10043,Scrum,10043,3931,product-management-in-agile,133666,Product management in agile,133666
+654,438272,133666,3646,agile-leadership,438272,Agile Leadership,438272,3931,product-management-in-agile,133666,Product management in agile,133666
+655,122939,133666,904,agile-coaching,122939,Agile Coaching,122939,3931,product-management-in-agile,133666,Product management in agile,133666
+656,867522,133666,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,3931,product-management-in-agile,133666,Product management in agile,133666
+657,38660,133666,121,lean-startup,38660,Lean Startup,38660,3931,product-management-in-agile,133666,Product management in agile,133666
+658,118991,133666,3190,lean-project-management,118991,Lean Project Management,118991,3931,product-management-in-agile,133666,Product management in agile,133666
+659,37339,133666,404,kanban,37339,Kanban,37339,3931,product-management-in-agile,133666,Product management in agile,133666
+660,5938,133666,401,xp,5938,Extreme Programming,5938,3931,product-management-in-agile,133666,Product management in agile,133666
+661,133666,438282,3931,product-management-in-agile,133666,Product management in agile,133666,3369,agile-transformation,438282,Agile Transformation,438282
+662,21549,438282,83,agile-project-management,21549,Agile Project Management,21549,3369,agile-transformation,438282,Agile Transformation,438282
+663,48471,438282,32,computer-programming,48471,Computer programming,48471,3369,agile-transformation,438282,Agile Transformation,438282
+664,438282,438282,3369,agile-transformation,438282,Agile Transformation,438282,3369,agile-transformation,438282,Agile Transformation,438282
+665,10043,438282,205,scrum,10043,Scrum,10043,3369,agile-transformation,438282,Agile Transformation,438282
+666,438272,438282,3646,agile-leadership,438272,Agile Leadership,438272,3369,agile-transformation,438282,Agile Transformation,438282
+667,122939,438282,904,agile-coaching,122939,Agile Coaching,122939,3369,agile-transformation,438282,Agile Transformation,438282
+668,867522,438282,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,3369,agile-transformation,438282,Agile Transformation,438282
+669,38660,438282,121,lean-startup,38660,Lean Startup,38660,3369,agile-transformation,438282,Agile Transformation,438282
+670,118991,438282,3190,lean-project-management,118991,Lean Project Management,118991,3369,agile-transformation,438282,Agile Transformation,438282
+671,37339,438282,404,kanban,37339,Kanban,37339,3369,agile-transformation,438282,Agile Transformation,438282
+672,5938,438282,401,xp,5938,Extreme Programming,5938,3369,agile-transformation,438282,Agile Transformation,438282
+673,133666,21549,3931,product-management-in-agile,133666,Product management in agile,133666,83,agile-project-management,21549,Agile Project Management,21549
+674,21549,21549,83,agile-project-management,21549,Agile Project Management,21549,83,agile-project-management,21549,Agile Project Management,21549
+675,48471,21549,32,computer-programming,48471,Computer programming,48471,83,agile-project-management,21549,Agile Project Management,21549
+676,438282,21549,3369,agile-transformation,438282,Agile Transformation,438282,83,agile-project-management,21549,Agile Project Management,21549
+677,10043,21549,205,scrum,10043,Scrum,10043,83,agile-project-management,21549,Agile Project Management,21549
+678,438272,21549,3646,agile-leadership,438272,Agile Leadership,438272,83,agile-project-management,21549,Agile Project Management,21549
+679,122939,21549,904,agile-coaching,122939,Agile Coaching,122939,83,agile-project-management,21549,Agile Project Management,21549
+680,867522,21549,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,83,agile-project-management,21549,Agile Project Management,21549
+681,38660,21549,121,lean-startup,38660,Lean Startup,38660,83,agile-project-management,21549,Agile Project Management,21549
+682,118991,21549,3190,lean-project-management,118991,Lean Project Management,118991,83,agile-project-management,21549,Agile Project Management,21549
+683,37339,21549,404,kanban,37339,Kanban,37339,83,agile-project-management,21549,Agile Project Management,21549
+684,5938,21549,401,xp,5938,Extreme Programming,5938,83,agile-project-management,21549,Agile Project Management,21549
+685,133666,10043,3931,product-management-in-agile,133666,Product management in agile,133666,205,scrum,10043,Scrum,10043
+686,21549,10043,83,agile-project-management,21549,Agile Project Management,21549,205,scrum,10043,Scrum,10043
+687,48471,10043,32,computer-programming,48471,Computer programming,48471,205,scrum,10043,Scrum,10043
+688,438282,10043,3369,agile-transformation,438282,Agile Transformation,438282,205,scrum,10043,Scrum,10043
+689,10043,10043,205,scrum,10043,Scrum,10043,205,scrum,10043,Scrum,10043
+690,438272,10043,3646,agile-leadership,438272,Agile Leadership,438272,205,scrum,10043,Scrum,10043
+691,122939,10043,904,agile-coaching,122939,Agile Coaching,122939,205,scrum,10043,Scrum,10043
+692,867522,10043,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,205,scrum,10043,Scrum,10043
+693,38660,10043,121,lean-startup,38660,Lean Startup,38660,205,scrum,10043,Scrum,10043
+694,118991,10043,3190,lean-project-management,118991,Lean Project Management,118991,205,scrum,10043,Scrum,10043
+695,37339,10043,404,kanban,37339,Kanban,37339,205,scrum,10043,Scrum,10043
+696,5938,10043,401,xp,5938,Extreme Programming,5938,205,scrum,10043,Scrum,10043
+697,133666,867522,3931,product-management-in-agile,133666,Product management in agile,133666,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+698,21549,867522,83,agile-project-management,21549,Agile Project Management,21549,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+699,48471,867522,32,computer-programming,48471,Computer programming,48471,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+700,438282,867522,3369,agile-transformation,438282,Agile Transformation,438282,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+701,10043,867522,205,scrum,10043,Scrum,10043,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+702,438272,867522,3646,agile-leadership,438272,Agile Leadership,438272,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+703,122939,867522,904,agile-coaching,122939,Agile Coaching,122939,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+704,867522,867522,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+705,38660,867522,121,lean-startup,38660,Lean Startup,38660,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+706,118991,867522,3190,lean-project-management,118991,Lean Project Management,118991,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+707,37339,867522,404,kanban,37339,Kanban,37339,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+708,5938,867522,401,xp,5938,Extreme Programming,5938,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522
+709,133666,118991,3931,product-management-in-agile,133666,Product management in agile,133666,3190,lean-project-management,118991,Lean Project Management,118991
+710,21549,118991,83,agile-project-management,21549,Agile Project Management,21549,3190,lean-project-management,118991,Lean Project Management,118991
+711,48471,118991,32,computer-programming,48471,Computer programming,48471,3190,lean-project-management,118991,Lean Project Management,118991
+712,438282,118991,3369,agile-transformation,438282,Agile Transformation,438282,3190,lean-project-management,118991,Lean Project Management,118991
+713,10043,118991,205,scrum,10043,Scrum,10043,3190,lean-project-management,118991,Lean Project Management,118991
+714,438272,118991,3646,agile-leadership,438272,Agile Leadership,438272,3190,lean-project-management,118991,Lean Project Management,118991
+715,122939,118991,904,agile-coaching,122939,Agile Coaching,122939,3190,lean-project-management,118991,Lean Project Management,118991
+716,867522,118991,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,3190,lean-project-management,118991,Lean Project Management,118991
+717,38660,118991,121,lean-startup,38660,Lean Startup,38660,3190,lean-project-management,118991,Lean Project Management,118991
+718,118991,118991,3190,lean-project-management,118991,Lean Project Management,118991,3190,lean-project-management,118991,Lean Project Management,118991
+719,37339,118991,404,kanban,37339,Kanban,37339,3190,lean-project-management,118991,Lean Project Management,118991
+720,5938,118991,401,xp,5938,Extreme Programming,5938,3190,lean-project-management,118991,Lean Project Management,118991
+721,133666,38660,3931,product-management-in-agile,133666,Product management in agile,133666,121,lean-startup,38660,Lean Startup,38660
+722,21549,38660,83,agile-project-management,21549,Agile Project Management,21549,121,lean-startup,38660,Lean Startup,38660
+723,48471,38660,32,computer-programming,48471,Computer programming,48471,121,lean-startup,38660,Lean Startup,38660
+724,438282,38660,3369,agile-transformation,438282,Agile Transformation,438282,121,lean-startup,38660,Lean Startup,38660
+725,10043,38660,205,scrum,10043,Scrum,10043,121,lean-startup,38660,Lean Startup,38660
+726,438272,38660,3646,agile-leadership,438272,Agile Leadership,438272,121,lean-startup,38660,Lean Startup,38660
+727,122939,38660,904,agile-coaching,122939,Agile Coaching,122939,121,lean-startup,38660,Lean Startup,38660
+728,867522,38660,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,121,lean-startup,38660,Lean Startup,38660
+729,38660,38660,121,lean-startup,38660,Lean Startup,38660,121,lean-startup,38660,Lean Startup,38660
+730,118991,38660,3190,lean-project-management,118991,Lean Project Management,118991,121,lean-startup,38660,Lean Startup,38660
+731,37339,38660,404,kanban,37339,Kanban,37339,121,lean-startup,38660,Lean Startup,38660
+732,5938,38660,401,xp,5938,Extreme Programming,5938,121,lean-startup,38660,Lean Startup,38660
+733,133666,5938,3931,product-management-in-agile,133666,Product management in agile,133666,401,xp,5938,Extreme Programming,5938
+734,21549,5938,83,agile-project-management,21549,Agile Project Management,21549,401,xp,5938,Extreme Programming,5938
+735,48471,5938,32,computer-programming,48471,Computer programming,48471,401,xp,5938,Extreme Programming,5938
+736,438282,5938,3369,agile-transformation,438282,Agile Transformation,438282,401,xp,5938,Extreme Programming,5938
+737,10043,5938,205,scrum,10043,Scrum,10043,401,xp,5938,Extreme Programming,5938
+738,438272,5938,3646,agile-leadership,438272,Agile Leadership,438272,401,xp,5938,Extreme Programming,5938
+739,122939,5938,904,agile-coaching,122939,Agile Coaching,122939,401,xp,5938,Extreme Programming,5938
+740,867522,5938,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,401,xp,5938,Extreme Programming,5938
+741,38660,5938,121,lean-startup,38660,Lean Startup,38660,401,xp,5938,Extreme Programming,5938
+742,118991,5938,3190,lean-project-management,118991,Lean Project Management,118991,401,xp,5938,Extreme Programming,5938
+743,37339,5938,404,kanban,37339,Kanban,37339,401,xp,5938,Extreme Programming,5938
+744,5938,5938,401,xp,5938,Extreme Programming,5938,401,xp,5938,Extreme Programming,5938
+745,133666,438272,3931,product-management-in-agile,133666,Product management in agile,133666,3646,agile-leadership,438272,Agile Leadership,438272
+746,21549,438272,83,agile-project-management,21549,Agile Project Management,21549,3646,agile-leadership,438272,Agile Leadership,438272
+747,48471,438272,32,computer-programming,48471,Computer programming,48471,3646,agile-leadership,438272,Agile Leadership,438272
+748,438282,438272,3369,agile-transformation,438282,Agile Transformation,438282,3646,agile-leadership,438272,Agile Leadership,438272
+749,10043,438272,205,scrum,10043,Scrum,10043,3646,agile-leadership,438272,Agile Leadership,438272
+750,438272,438272,3646,agile-leadership,438272,Agile Leadership,438272,3646,agile-leadership,438272,Agile Leadership,438272
+751,122939,438272,904,agile-coaching,122939,Agile Coaching,122939,3646,agile-leadership,438272,Agile Leadership,438272
+752,867522,438272,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,3646,agile-leadership,438272,Agile Leadership,438272
+753,38660,438272,121,lean-startup,38660,Lean Startup,38660,3646,agile-leadership,438272,Agile Leadership,438272
+754,118991,438272,3190,lean-project-management,118991,Lean Project Management,118991,3646,agile-leadership,438272,Agile Leadership,438272
+755,37339,438272,404,kanban,37339,Kanban,37339,3646,agile-leadership,438272,Agile Leadership,438272
+756,5938,438272,401,xp,5938,Extreme Programming,5938,3646,agile-leadership,438272,Agile Leadership,438272
+757,133666,37339,3931,product-management-in-agile,133666,Product management in agile,133666,404,kanban,37339,Kanban,37339
+758,21549,37339,83,agile-project-management,21549,Agile Project Management,21549,404,kanban,37339,Kanban,37339
+759,48471,37339,32,computer-programming,48471,Computer programming,48471,404,kanban,37339,Kanban,37339
+760,438282,37339,3369,agile-transformation,438282,Agile Transformation,438282,404,kanban,37339,Kanban,37339
+761,10043,37339,205,scrum,10043,Scrum,10043,404,kanban,37339,Kanban,37339
+762,438272,37339,3646,agile-leadership,438272,Agile Leadership,438272,404,kanban,37339,Kanban,37339
+763,122939,37339,904,agile-coaching,122939,Agile Coaching,122939,404,kanban,37339,Kanban,37339
+764,867522,37339,3371,explore-agile-scrum-xp-lean-kanban,867522,Explore: Agile Scrum XP Lean Kanban,867522,404,kanban,37339,Kanban,37339
+765,38660,37339,121,lean-startup,38660,Lean Startup,38660,404,kanban,37339,Kanban,37339
+766,118991,37339,3190,lean-project-management,118991,Lean Project Management,118991,404,kanban,37339,Kanban,37339
+767,37339,37339,404,kanban,37339,Kanban,37339,404,kanban,37339,Kanban,37339
+768,5938,37339,401,xp,5938,Extreme Programming,5938,404,kanban,37339,Kanban,37339
+769,35062,62946,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+770,172426,62946,2562,software-development-technologies,172426,Software Development Technologies,172426,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+771,842232,62946,4743,software-development-process,842232,Software Development Process,842232,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+772,16325,62946,602,software-engineering,16325,Software Engineering,16325,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+773,3833,62946,10,softwaredev,3833,Software Development,3833,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+774,88244,62946,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+775,62946,62946,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+776,91146,62946,4741,tech-talks,91146,Tech Talks,91146,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946
+777,35062,16325,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,602,software-engineering,16325,Software Engineering,16325
+778,172426,16325,2562,software-development-technologies,172426,Software Development Technologies,172426,602,software-engineering,16325,Software Engineering,16325
+779,842232,16325,4743,software-development-process,842232,Software Development Process,842232,602,software-engineering,16325,Software Engineering,16325
+780,16325,16325,602,software-engineering,16325,Software Engineering,16325,602,software-engineering,16325,Software Engineering,16325
+781,3833,16325,10,softwaredev,3833,Software Development,3833,602,software-engineering,16325,Software Engineering,16325
+782,88244,16325,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,602,software-engineering,16325,Software Engineering,16325
+783,62946,16325,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,602,software-engineering,16325,Software Engineering,16325
+784,91146,16325,4741,tech-talks,91146,Tech Talks,91146,602,software-engineering,16325,Software Engineering,16325
+785,35062,91146,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,4741,tech-talks,91146,Tech Talks,91146
+786,15225,91146,5366,computer,15225,Computers,15225,4741,tech-talks,91146,Tech Talks,91146
+787,172426,91146,2562,software-development-technologies,172426,Software Development Technologies,172426,4741,tech-talks,91146,Tech Talks,91146
+788,15568,91146,1378,information-technology,15568,Information Technology,15568,4741,tech-talks,91146,Tech Talks,91146
+789,842232,91146,4743,software-development-process,842232,Software Development Process,842232,4741,tech-talks,91146,Tech Talks,91146
+790,10579,91146,29,technology,10579,Technology,10579,4741,tech-talks,91146,Tech Talks,91146
+791,22239,91146,778,information-technology-in-business,22239,Information Technology in Business,22239,4741,tech-talks,91146,Tech Talks,91146
+792,62480,91146,5374,high-tech-professional,62480,High-Tech Professional,62480,4741,tech-talks,91146,Tech Talks,91146
+793,16325,91146,602,software-engineering,16325,Software Engineering,16325,4741,tech-talks,91146,Tech Talks,91146
+794,3833,91146,10,softwaredev,3833,Software Development,3833,4741,tech-talks,91146,Tech Talks,91146
+795,88244,91146,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,4741,tech-talks,91146,Tech Talks,91146
+796,22203,91146,582,technology-professionals,22203,Technology Professionals,22203,4741,tech-talks,91146,Tech Talks,91146
+797,15167,91146,100,cloud-computing,15167,Cloud Computing,15167,4741,tech-talks,91146,Tech Talks,91146
+798,32688,91146,5371,computer-training,32688,Computer Training,32688,4741,tech-talks,91146,Tech Talks,91146
+799,77687,91146,710,high-performance-computing,77687,High Performance Computing,77687,4741,tech-talks,91146,Tech Talks,91146
+800,21751,91146,1924,computer-science,21751,Computer Science,21751,4741,tech-talks,91146,Tech Talks,91146
+801,62946,91146,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,4741,tech-talks,91146,Tech Talks,91146
+802,91146,91146,4741,tech-talks,91146,Tech Talks,91146,4741,tech-talks,91146,Tech Talks,91146
+803,50927,91146,5372,computing,50927,Computing,50927,4741,tech-talks,91146,Tech Talks,91146
+804,52794,91146,5373,science-technology,52794,Science & Technology,52794,4741,tech-talks,91146,Tech Talks,91146
+805,35062,88244,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+806,172426,88244,2562,software-development-technologies,172426,Software Development Technologies,172426,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+807,842232,88244,4743,software-development-process,842232,Software Development Process,842232,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+808,16325,88244,602,software-engineering,16325,Software Engineering,16325,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+809,3833,88244,10,softwaredev,3833,Software Development,3833,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+810,88244,88244,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+811,62946,88244,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+812,91146,88244,4741,tech-talks,91146,Tech Talks,91146,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244
+813,35062,842232,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,4743,software-development-process,842232,Software Development Process,842232
+814,172426,842232,2562,software-development-technologies,172426,Software Development Technologies,172426,4743,software-development-process,842232,Software Development Process,842232
+815,842232,842232,4743,software-development-process,842232,Software Development Process,842232,4743,software-development-process,842232,Software Development Process,842232
+816,16325,842232,602,software-engineering,16325,Software Engineering,16325,4743,software-development-process,842232,Software Development Process,842232
+817,3833,842232,10,softwaredev,3833,Software Development,3833,4743,software-development-process,842232,Software Development Process,842232
+818,88244,842232,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,4743,software-development-process,842232,Software Development Process,842232
+819,62946,842232,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,4743,software-development-process,842232,Software Development Process,842232
+820,91146,842232,4741,tech-talks,91146,Tech Talks,91146,4743,software-development-process,842232,Software Development Process,842232
+821,35062,35062,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+822,172426,35062,2562,software-development-technologies,172426,Software Development Technologies,172426,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+823,842232,35062,4743,software-development-process,842232,Software Development Process,842232,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+824,16325,35062,602,software-engineering,16325,Software Engineering,16325,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+825,3833,35062,10,softwaredev,3833,Software Development,3833,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+826,88244,35062,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+827,62946,35062,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+828,91146,35062,4741,tech-talks,91146,Tech Talks,91146,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062
+829,35062,172426,2837,best-practices-in-it-web-solutions-design-and-dev,35062,Best Practices in IT/Web Solutions Design and Dev,35062,2562,software-development-technologies,172426,Software Development Technologies,172426
+830,172426,172426,2562,software-development-technologies,172426,Software Development Technologies,172426,2562,software-development-technologies,172426,Software Development Technologies,172426
+831,842232,172426,4743,software-development-process,842232,Software Development Process,842232,2562,software-development-technologies,172426,Software Development Technologies,172426
+832,16325,172426,602,software-engineering,16325,Software Engineering,16325,2562,software-development-technologies,172426,Software Development Technologies,172426
+833,3833,172426,10,softwaredev,3833,Software Development,3833,2562,software-development-technologies,172426,Software Development Technologies,172426
+834,88244,172426,4740,social-networking-for-software-developers,88244,Social Networking for Software Developers,88244,2562,software-development-technologies,172426,Software Development Technologies,172426
+835,62946,172426,598,new-product-development-software-tech,62946,New Product Development: Software & Tech,62946,2562,software-development-technologies,172426,Software Development Technologies,172426
+836,91146,172426,4741,tech-talks,91146,Tech Talks,91146,2562,software-development-technologies,172426,Software Development Technologies,172426
+837,48471,15582,32,computer-programming,48471,Computer programming,48471,3,web-development,15582,Web Development,15582
+838,15582,15582,3,web-development,15582,Web Development,15582,3,web-development,15582,Web Development,15582
+839,659,15582,8,webdesign,659,Web Design,659,3,web-development,15582,Web Development,15582
+840,85951,15582,4,javascript-frameworks,85951,JavaScript Frameworks,85951,3,web-development,15582,Web Development,15582
+841,3833,15582,10,softwaredev,3833,Software Development,3833,3,web-development,15582,Web Development,15582
+842,78565,15582,68,html5,78565,HTML5,78565,3,web-development,15582,Web Development,15582
+843,921432,15582,2328,meteor,921432,Meteor,921432,3,web-development,15582,Web Development,15582
+844,16137,15582,263,jquery,16137,JQuery,16137,3,web-development,15582,Web Development,15582
+845,9886,15582,24,ria,9886,Rich Internet Applications,9886,3,web-development,15582,Web Development,15582
+846,9696,15582,1,newtech,9696,New Technology,9696,3,web-development,15582,Web Development,15582
+847,405512,15582,2320,backbone-js,405512,Backbone.js,405512,3,web-development,15582,Web Development,15582
+848,7029,15582,0,javascript,7029,JavaScript,7029,3,web-development,15582,Web Development,15582
+849,56555,15582,656,javascript-libraries,56555,JavaScript Libraries,56555,3,web-development,15582,Web Development,15582
+850,563,15582,7,opensource,563,Open Source,563,3,web-development,15582,Web Development,15582
+851,10209,15582,2,web,10209,Web Technology,10209,3,web-development,15582,Web Development,15582
+852,48471,659,32,computer-programming,48471,Computer programming,48471,8,webdesign,659,Web Design,659
+853,15582,659,3,web-development,15582,Web Development,15582,8,webdesign,659,Web Design,659
+854,659,659,8,webdesign,659,Web Design,659,8,webdesign,659,Web Design,659
+855,85951,659,4,javascript-frameworks,85951,JavaScript Frameworks,85951,8,webdesign,659,Web Design,659
+856,3833,659,10,softwaredev,3833,Software Development,3833,8,webdesign,659,Web Design,659
+857,78565,659,68,html5,78565,HTML5,78565,8,webdesign,659,Web Design,659
+858,921432,659,2328,meteor,921432,Meteor,921432,8,webdesign,659,Web Design,659
+859,16137,659,263,jquery,16137,JQuery,16137,8,webdesign,659,Web Design,659
+860,9886,659,24,ria,9886,Rich Internet Applications,9886,8,webdesign,659,Web Design,659
+861,9696,659,1,newtech,9696,New Technology,9696,8,webdesign,659,Web Design,659
+862,405512,659,2320,backbone-js,405512,Backbone.js,405512,8,webdesign,659,Web Design,659
+863,7029,659,0,javascript,7029,JavaScript,7029,8,webdesign,659,Web Design,659
+864,56555,659,656,javascript-libraries,56555,JavaScript Libraries,56555,8,webdesign,659,Web Design,659
+865,563,659,7,opensource,563,Open Source,563,8,webdesign,659,Web Design,659
+866,10209,659,2,web,10209,Web Technology,10209,8,webdesign,659,Web Design,659
+867,48471,78565,32,computer-programming,48471,Computer programming,48471,68,html5,78565,HTML5,78565
+868,15582,78565,3,web-development,15582,Web Development,15582,68,html5,78565,HTML5,78565
+869,659,78565,8,webdesign,659,Web Design,659,68,html5,78565,HTML5,78565
+870,85951,78565,4,javascript-frameworks,85951,JavaScript Frameworks,85951,68,html5,78565,HTML5,78565
+871,3833,78565,10,softwaredev,3833,Software Development,3833,68,html5,78565,HTML5,78565
+872,78565,78565,68,html5,78565,HTML5,78565,68,html5,78565,HTML5,78565
+873,921432,78565,2328,meteor,921432,Meteor,921432,68,html5,78565,HTML5,78565
+874,16137,78565,263,jquery,16137,JQuery,16137,68,html5,78565,HTML5,78565
+875,9886,78565,24,ria,9886,Rich Internet Applications,9886,68,html5,78565,HTML5,78565
+876,9696,78565,1,newtech,9696,New Technology,9696,68,html5,78565,HTML5,78565
+877,405512,78565,2320,backbone-js,405512,Backbone.js,405512,68,html5,78565,HTML5,78565
+878,7029,78565,0,javascript,7029,JavaScript,7029,68,html5,78565,HTML5,78565
+879,56555,78565,656,javascript-libraries,56555,JavaScript Libraries,56555,68,html5,78565,HTML5,78565
+880,563,78565,7,opensource,563,Open Source,563,68,html5,78565,HTML5,78565
+881,10209,78565,2,web,10209,Web Technology,10209,68,html5,78565,HTML5,78565
+882,48471,921432,32,computer-programming,48471,Computer programming,48471,2328,meteor,921432,Meteor,921432
+883,15582,921432,3,web-development,15582,Web Development,15582,2328,meteor,921432,Meteor,921432
+884,659,921432,8,webdesign,659,Web Design,659,2328,meteor,921432,Meteor,921432
+885,85951,921432,4,javascript-frameworks,85951,JavaScript Frameworks,85951,2328,meteor,921432,Meteor,921432
+886,3833,921432,10,softwaredev,3833,Software Development,3833,2328,meteor,921432,Meteor,921432
+887,78565,921432,68,html5,78565,HTML5,78565,2328,meteor,921432,Meteor,921432
+888,921432,921432,2328,meteor,921432,Meteor,921432,2328,meteor,921432,Meteor,921432
+889,16137,921432,263,jquery,16137,JQuery,16137,2328,meteor,921432,Meteor,921432
+890,9886,921432,24,ria,9886,Rich Internet Applications,9886,2328,meteor,921432,Meteor,921432
+891,9696,921432,1,newtech,9696,New Technology,9696,2328,meteor,921432,Meteor,921432
+892,405512,921432,2320,backbone-js,405512,Backbone.js,405512,2328,meteor,921432,Meteor,921432
+893,7029,921432,0,javascript,7029,JavaScript,7029,2328,meteor,921432,Meteor,921432
+894,56555,921432,656,javascript-libraries,56555,JavaScript Libraries,56555,2328,meteor,921432,Meteor,921432
+895,563,921432,7,opensource,563,Open Source,563,2328,meteor,921432,Meteor,921432
+896,10209,921432,2,web,10209,Web Technology,10209,2328,meteor,921432,Meteor,921432
+897,48471,16137,32,computer-programming,48471,Computer programming,48471,263,jquery,16137,JQuery,16137
+898,15582,16137,3,web-development,15582,Web Development,15582,263,jquery,16137,JQuery,16137
+899,659,16137,8,webdesign,659,Web Design,659,263,jquery,16137,JQuery,16137
+900,85951,16137,4,javascript-frameworks,85951,JavaScript Frameworks,85951,263,jquery,16137,JQuery,16137
+901,3833,16137,10,softwaredev,3833,Software Development,3833,263,jquery,16137,JQuery,16137
+902,78565,16137,68,html5,78565,HTML5,78565,263,jquery,16137,JQuery,16137
+903,921432,16137,2328,meteor,921432,Meteor,921432,263,jquery,16137,JQuery,16137
+904,16137,16137,263,jquery,16137,JQuery,16137,263,jquery,16137,JQuery,16137
+905,9886,16137,24,ria,9886,Rich Internet Applications,9886,263,jquery,16137,JQuery,16137
+906,9696,16137,1,newtech,9696,New Technology,9696,263,jquery,16137,JQuery,16137
+907,405512,16137,2320,backbone-js,405512,Backbone.js,405512,263,jquery,16137,JQuery,16137
+908,7029,16137,0,javascript,7029,JavaScript,7029,263,jquery,16137,JQuery,16137
+909,56555,16137,656,javascript-libraries,56555,JavaScript Libraries,56555,263,jquery,16137,JQuery,16137
+910,563,16137,7,opensource,563,Open Source,563,263,jquery,16137,JQuery,16137
+911,10209,16137,2,web,10209,Web Technology,10209,263,jquery,16137,JQuery,16137
+912,48471,9886,32,computer-programming,48471,Computer programming,48471,24,ria,9886,Rich Internet Applications,9886
+913,15582,9886,3,web-development,15582,Web Development,15582,24,ria,9886,Rich Internet Applications,9886
+914,659,9886,8,webdesign,659,Web Design,659,24,ria,9886,Rich Internet Applications,9886
+915,85951,9886,4,javascript-frameworks,85951,JavaScript Frameworks,85951,24,ria,9886,Rich Internet Applications,9886
+916,3833,9886,10,softwaredev,3833,Software Development,3833,24,ria,9886,Rich Internet Applications,9886
+917,78565,9886,68,html5,78565,HTML5,78565,24,ria,9886,Rich Internet Applications,9886
+918,921432,9886,2328,meteor,921432,Meteor,921432,24,ria,9886,Rich Internet Applications,9886
+919,16137,9886,263,jquery,16137,JQuery,16137,24,ria,9886,Rich Internet Applications,9886
+920,9886,9886,24,ria,9886,Rich Internet Applications,9886,24,ria,9886,Rich Internet Applications,9886
+921,9696,9886,1,newtech,9696,New Technology,9696,24,ria,9886,Rich Internet Applications,9886
+922,405512,9886,2320,backbone-js,405512,Backbone.js,405512,24,ria,9886,Rich Internet Applications,9886
+923,7029,9886,0,javascript,7029,JavaScript,7029,24,ria,9886,Rich Internet Applications,9886
+924,56555,9886,656,javascript-libraries,56555,JavaScript Libraries,56555,24,ria,9886,Rich Internet Applications,9886
+925,563,9886,7,opensource,563,Open Source,563,24,ria,9886,Rich Internet Applications,9886
+926,10209,9886,2,web,10209,Web Technology,10209,24,ria,9886,Rich Internet Applications,9886
+927,48471,85951,32,computer-programming,48471,Computer programming,48471,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+928,15582,85951,3,web-development,15582,Web Development,15582,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+929,659,85951,8,webdesign,659,Web Design,659,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+930,85951,85951,4,javascript-frameworks,85951,JavaScript Frameworks,85951,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+931,3833,85951,10,softwaredev,3833,Software Development,3833,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+932,78565,85951,68,html5,78565,HTML5,78565,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+933,921432,85951,2328,meteor,921432,Meteor,921432,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+934,16137,85951,263,jquery,16137,JQuery,16137,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+935,9886,85951,24,ria,9886,Rich Internet Applications,9886,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+936,9696,85951,1,newtech,9696,New Technology,9696,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+937,405512,85951,2320,backbone-js,405512,Backbone.js,405512,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+938,7029,85951,0,javascript,7029,JavaScript,7029,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+939,56555,85951,656,javascript-libraries,56555,JavaScript Libraries,56555,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+940,563,85951,7,opensource,563,Open Source,563,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+941,10209,85951,2,web,10209,Web Technology,10209,4,javascript-frameworks,85951,JavaScript Frameworks,85951
+942,48471,9696,32,computer-programming,48471,Computer programming,48471,1,newtech,9696,New Technology,9696
+943,15582,9696,3,web-development,15582,Web Development,15582,1,newtech,9696,New Technology,9696
+944,659,9696,8,webdesign,659,Web Design,659,1,newtech,9696,New Technology,9696
+945,85951,9696,4,javascript-frameworks,85951,JavaScript Frameworks,85951,1,newtech,9696,New Technology,9696
+946,3833,9696,10,softwaredev,3833,Software Development,3833,1,newtech,9696,New Technology,9696
+947,78565,9696,68,html5,78565,HTML5,78565,1,newtech,9696,New Technology,9696
+948,921432,9696,2328,meteor,921432,Meteor,921432,1,newtech,9696,New Technology,9696
+949,16137,9696,263,jquery,16137,JQuery,16137,1,newtech,9696,New Technology,9696
+950,9886,9696,24,ria,9886,Rich Internet Applications,9886,1,newtech,9696,New Technology,9696
+951,9696,9696,1,newtech,9696,New Technology,9696,1,newtech,9696,New Technology,9696
+952,405512,9696,2320,backbone-js,405512,Backbone.js,405512,1,newtech,9696,New Technology,9696
+953,7029,9696,0,javascript,7029,JavaScript,7029,1,newtech,9696,New Technology,9696
+954,56555,9696,656,javascript-libraries,56555,JavaScript Libraries,56555,1,newtech,9696,New Technology,9696
+955,563,9696,7,opensource,563,Open Source,563,1,newtech,9696,New Technology,9696
+956,10209,9696,2,web,10209,Web Technology,10209,1,newtech,9696,New Technology,9696
+957,48471,405512,32,computer-programming,48471,Computer programming,48471,2320,backbone-js,405512,Backbone.js,405512
+958,15582,405512,3,web-development,15582,Web Development,15582,2320,backbone-js,405512,Backbone.js,405512
+959,659,405512,8,webdesign,659,Web Design,659,2320,backbone-js,405512,Backbone.js,405512
+960,85951,405512,4,javascript-frameworks,85951,JavaScript Frameworks,85951,2320,backbone-js,405512,Backbone.js,405512
+961,3833,405512,10,softwaredev,3833,Software Development,3833,2320,backbone-js,405512,Backbone.js,405512
+962,78565,405512,68,html5,78565,HTML5,78565,2320,backbone-js,405512,Backbone.js,405512
+963,921432,405512,2328,meteor,921432,Meteor,921432,2320,backbone-js,405512,Backbone.js,405512
+964,16137,405512,263,jquery,16137,JQuery,16137,2320,backbone-js,405512,Backbone.js,405512
+965,9886,405512,24,ria,9886,Rich Internet Applications,9886,2320,backbone-js,405512,Backbone.js,405512
+966,9696,405512,1,newtech,9696,New Technology,9696,2320,backbone-js,405512,Backbone.js,405512
+967,405512,405512,2320,backbone-js,405512,Backbone.js,405512,2320,backbone-js,405512,Backbone.js,405512
+968,7029,405512,0,javascript,7029,JavaScript,7029,2320,backbone-js,405512,Backbone.js,405512
+969,56555,405512,656,javascript-libraries,56555,JavaScript Libraries,56555,2320,backbone-js,405512,Backbone.js,405512
+970,563,405512,7,opensource,563,Open Source,563,2320,backbone-js,405512,Backbone.js,405512
+971,10209,405512,2,web,10209,Web Technology,10209,2320,backbone-js,405512,Backbone.js,405512
+972,48471,7029,32,computer-programming,48471,Computer programming,48471,0,javascript,7029,JavaScript,7029
+973,15582,7029,3,web-development,15582,Web Development,15582,0,javascript,7029,JavaScript,7029
+974,659,7029,8,webdesign,659,Web Design,659,0,javascript,7029,JavaScript,7029
+975,85951,7029,4,javascript-frameworks,85951,JavaScript Frameworks,85951,0,javascript,7029,JavaScript,7029
+976,3833,7029,10,softwaredev,3833,Software Development,3833,0,javascript,7029,JavaScript,7029
+977,78565,7029,68,html5,78565,HTML5,78565,0,javascript,7029,JavaScript,7029
+978,921432,7029,2328,meteor,921432,Meteor,921432,0,javascript,7029,JavaScript,7029
+979,16137,7029,263,jquery,16137,JQuery,16137,0,javascript,7029,JavaScript,7029
+980,9886,7029,24,ria,9886,Rich Internet Applications,9886,0,javascript,7029,JavaScript,7029
+981,9696,7029,1,newtech,9696,New Technology,9696,0,javascript,7029,JavaScript,7029
+982,405512,7029,2320,backbone-js,405512,Backbone.js,405512,0,javascript,7029,JavaScript,7029
+983,7029,7029,0,javascript,7029,JavaScript,7029,0,javascript,7029,JavaScript,7029
+984,56555,7029,656,javascript-libraries,56555,JavaScript Libraries,56555,0,javascript,7029,JavaScript,7029
+985,563,7029,7,opensource,563,Open Source,563,0,javascript,7029,JavaScript,7029
+986,10209,7029,2,web,10209,Web Technology,10209,0,javascript,7029,JavaScript,7029
+987,48471,10209,32,computer-programming,48471,Computer programming,48471,2,web,10209,Web Technology,10209
+988,15582,10209,3,web-development,15582,Web Development,15582,2,web,10209,Web Technology,10209
+989,659,10209,8,webdesign,659,Web Design,659,2,web,10209,Web Technology,10209
+990,85951,10209,4,javascript-frameworks,85951,JavaScript Frameworks,85951,2,web,10209,Web Technology,10209
+991,3833,10209,10,softwaredev,3833,Software Development,3833,2,web,10209,Web Technology,10209
+992,78565,10209,68,html5,78565,HTML5,78565,2,web,10209,Web Technology,10209
+993,921432,10209,2328,meteor,921432,Meteor,921432,2,web,10209,Web Technology,10209
+994,16137,10209,263,jquery,16137,JQuery,16137,2,web,10209,Web Technology,10209
+995,9886,10209,24,ria,9886,Rich Internet Applications,9886,2,web,10209,Web Technology,10209
+996,9696,10209,1,newtech,9696,New Technology,9696,2,web,10209,Web Technology,10209
+997,405512,10209,2320,backbone-js,405512,Backbone.js,405512,2,web,10209,Web Technology,10209
+998,7029,10209,0,javascript,7029,JavaScript,7029,2,web,10209,Web Technology,10209
+999,56555,10209,656,javascript-libraries,56555,JavaScript Libraries,56555,2,web,10209,Web Technology,10209
+1000,563,10209,7,opensource,563,Open Source,563,2,web,10209,Web Technology,10209
+1001,10209,10209,2,web,10209,Web Technology,10209,2,web,10209,Web Technology,10209
+1002,48471,56555,32,computer-programming,48471,Computer programming,48471,656,javascript-libraries,56555,JavaScript Libraries,56555
+1003,15582,56555,3,web-development,15582,Web Development,15582,656,javascript-libraries,56555,JavaScript Libraries,56555
+1004,659,56555,8,webdesign,659,Web Design,659,656,javascript-libraries,56555,JavaScript Libraries,56555
+1005,85951,56555,4,javascript-frameworks,85951,JavaScript Frameworks,85951,656,javascript-libraries,56555,JavaScript Libraries,56555
+1006,3833,56555,10,softwaredev,3833,Software Development,3833,656,javascript-libraries,56555,JavaScript Libraries,56555
+1007,78565,56555,68,html5,78565,HTML5,78565,656,javascript-libraries,56555,JavaScript Libraries,56555
+1008,921432,56555,2328,meteor,921432,Meteor,921432,656,javascript-libraries,56555,JavaScript Libraries,56555
+1009,16137,56555,263,jquery,16137,JQuery,16137,656,javascript-libraries,56555,JavaScript Libraries,56555
+1010,9886,56555,24,ria,9886,Rich Internet Applications,9886,656,javascript-libraries,56555,JavaScript Libraries,56555
+1011,9696,56555,1,newtech,9696,New Technology,9696,656,javascript-libraries,56555,JavaScript Libraries,56555
+1012,405512,56555,2320,backbone-js,405512,Backbone.js,405512,656,javascript-libraries,56555,JavaScript Libraries,56555
+1013,7029,56555,0,javascript,7029,JavaScript,7029,656,javascript-libraries,56555,JavaScript Libraries,56555
+1014,56555,56555,656,javascript-libraries,56555,JavaScript Libraries,56555,656,javascript-libraries,56555,JavaScript Libraries,56555
+1015,563,56555,7,opensource,563,Open Source,563,656,javascript-libraries,56555,JavaScript Libraries,56555
+1016,10209,56555,2,web,10209,Web Technology,10209,656,javascript-libraries,56555,JavaScript Libraries,56555
+1017,15225,15568,5366,computer,15225,Computers,15225,1378,information-technology,15568,Information Technology,15568
+1018,15568,15568,1378,information-technology,15568,Information Technology,15568,1378,information-technology,15568,Information Technology,15568
+1019,10579,15568,29,technology,10579,Technology,10579,1378,information-technology,15568,Information Technology,15568
+1020,22239,15568,778,information-technology-in-business,22239,Information Technology in Business,22239,1378,information-technology,15568,Information Technology,15568
+1021,62480,15568,5374,high-tech-professional,62480,High-Tech Professional,62480,1378,information-technology,15568,Information Technology,15568
+1022,22203,15568,582,technology-professionals,22203,Technology Professionals,22203,1378,information-technology,15568,Information Technology,15568
+1023,15167,15568,100,cloud-computing,15167,Cloud Computing,15167,1378,information-technology,15568,Information Technology,15568
+1024,32688,15568,5371,computer-training,32688,Computer Training,32688,1378,information-technology,15568,Information Technology,15568
+1025,77687,15568,710,high-performance-computing,77687,High Performance Computing,77687,1378,information-technology,15568,Information Technology,15568
+1026,21751,15568,1924,computer-science,21751,Computer Science,21751,1378,information-technology,15568,Information Technology,15568
+1027,91146,15568,4741,tech-talks,91146,Tech Talks,91146,1378,information-technology,15568,Information Technology,15568
+1028,50927,15568,5372,computing,50927,Computing,50927,1378,information-technology,15568,Information Technology,15568
+1029,52794,15568,5373,science-technology,52794,Science & Technology,52794,1378,information-technology,15568,Information Technology,15568
+1030,15225,62480,5366,computer,15225,Computers,15225,5374,high-tech-professional,62480,High-Tech Professional,62480
+1031,15568,62480,1378,information-technology,15568,Information Technology,15568,5374,high-tech-professional,62480,High-Tech Professional,62480
+1032,10579,62480,29,technology,10579,Technology,10579,5374,high-tech-professional,62480,High-Tech Professional,62480
+1033,22239,62480,778,information-technology-in-business,22239,Information Technology in Business,22239,5374,high-tech-professional,62480,High-Tech Professional,62480
+1034,62480,62480,5374,high-tech-professional,62480,High-Tech Professional,62480,5374,high-tech-professional,62480,High-Tech Professional,62480
+1035,22203,62480,582,technology-professionals,22203,Technology Professionals,22203,5374,high-tech-professional,62480,High-Tech Professional,62480
+1036,15167,62480,100,cloud-computing,15167,Cloud Computing,15167,5374,high-tech-professional,62480,High-Tech Professional,62480
+1037,32688,62480,5371,computer-training,32688,Computer Training,32688,5374,high-tech-professional,62480,High-Tech Professional,62480
+1038,77687,62480,710,high-performance-computing,77687,High Performance Computing,77687,5374,high-tech-professional,62480,High-Tech Professional,62480
+1039,21751,62480,1924,computer-science,21751,Computer Science,21751,5374,high-tech-professional,62480,High-Tech Professional,62480
+1040,91146,62480,4741,tech-talks,91146,Tech Talks,91146,5374,high-tech-professional,62480,High-Tech Professional,62480
+1041,50927,62480,5372,computing,50927,Computing,50927,5374,high-tech-professional,62480,High-Tech Professional,62480
+1042,52794,62480,5373,science-technology,52794,Science & Technology,52794,5374,high-tech-professional,62480,High-Tech Professional,62480
+1043,15225,22203,5366,computer,15225,Computers,15225,582,technology-professionals,22203,Technology Professionals,22203
+1044,15568,22203,1378,information-technology,15568,Information Technology,15568,582,technology-professionals,22203,Technology Professionals,22203
+1045,10579,22203,29,technology,10579,Technology,10579,582,technology-professionals,22203,Technology Professionals,22203
+1046,22239,22203,778,information-technology-in-business,22239,Information Technology in Business,22239,582,technology-professionals,22203,Technology Professionals,22203
+1047,62480,22203,5374,high-tech-professional,62480,High-Tech Professional,62480,582,technology-professionals,22203,Technology Professionals,22203
+1048,22203,22203,582,technology-professionals,22203,Technology Professionals,22203,582,technology-professionals,22203,Technology Professionals,22203
+1049,15167,22203,100,cloud-computing,15167,Cloud Computing,15167,582,technology-professionals,22203,Technology Professionals,22203
+1050,32688,22203,5371,computer-training,32688,Computer Training,32688,582,technology-professionals,22203,Technology Professionals,22203
+1051,77687,22203,710,high-performance-computing,77687,High Performance Computing,77687,582,technology-professionals,22203,Technology Professionals,22203
+1052,21751,22203,1924,computer-science,21751,Computer Science,21751,582,technology-professionals,22203,Technology Professionals,22203
+1053,91146,22203,4741,tech-talks,91146,Tech Talks,91146,582,technology-professionals,22203,Technology Professionals,22203
+1054,50927,22203,5372,computing,50927,Computing,50927,582,technology-professionals,22203,Technology Professionals,22203
+1055,52794,22203,5373,science-technology,52794,Science & Technology,52794,582,technology-professionals,22203,Technology Professionals,22203
+1056,15225,32688,5366,computer,15225,Computers,15225,5371,computer-training,32688,Computer Training,32688
+1057,15568,32688,1378,information-technology,15568,Information Technology,15568,5371,computer-training,32688,Computer Training,32688
+1058,10579,32688,29,technology,10579,Technology,10579,5371,computer-training,32688,Computer Training,32688
+1059,22239,32688,778,information-technology-in-business,22239,Information Technology in Business,22239,5371,computer-training,32688,Computer Training,32688
+1060,62480,32688,5374,high-tech-professional,62480,High-Tech Professional,62480,5371,computer-training,32688,Computer Training,32688
+1061,22203,32688,582,technology-professionals,22203,Technology Professionals,22203,5371,computer-training,32688,Computer Training,32688
+1062,15167,32688,100,cloud-computing,15167,Cloud Computing,15167,5371,computer-training,32688,Computer Training,32688
+1063,32688,32688,5371,computer-training,32688,Computer Training,32688,5371,computer-training,32688,Computer Training,32688
+1064,77687,32688,710,high-performance-computing,77687,High Performance Computing,77687,5371,computer-training,32688,Computer Training,32688
+1065,21751,32688,1924,computer-science,21751,Computer Science,21751,5371,computer-training,32688,Computer Training,32688
+1066,91146,32688,4741,tech-talks,91146,Tech Talks,91146,5371,computer-training,32688,Computer Training,32688
+1067,50927,32688,5372,computing,50927,Computing,50927,5371,computer-training,32688,Computer Training,32688
+1068,52794,32688,5373,science-technology,52794,Science & Technology,52794,5371,computer-training,32688,Computer Training,32688
+1069,15225,50927,5366,computer,15225,Computers,15225,5372,computing,50927,Computing,50927
+1070,15568,50927,1378,information-technology,15568,Information Technology,15568,5372,computing,50927,Computing,50927
+1071,10579,50927,29,technology,10579,Technology,10579,5372,computing,50927,Computing,50927
+1072,22239,50927,778,information-technology-in-business,22239,Information Technology in Business,22239,5372,computing,50927,Computing,50927
+1073,62480,50927,5374,high-tech-professional,62480,High-Tech Professional,62480,5372,computing,50927,Computing,50927
+1074,22203,50927,582,technology-professionals,22203,Technology Professionals,22203,5372,computing,50927,Computing,50927
+1075,15167,50927,100,cloud-computing,15167,Cloud Computing,15167,5372,computing,50927,Computing,50927
+1076,32688,50927,5371,computer-training,32688,Computer Training,32688,5372,computing,50927,Computing,50927
+1077,77687,50927,710,high-performance-computing,77687,High Performance Computing,77687,5372,computing,50927,Computing,50927
+1078,21751,50927,1924,computer-science,21751,Computer Science,21751,5372,computing,50927,Computing,50927
+1079,91146,50927,4741,tech-talks,91146,Tech Talks,91146,5372,computing,50927,Computing,50927
+1080,50927,50927,5372,computing,50927,Computing,50927,5372,computing,50927,Computing,50927
+1081,52794,50927,5373,science-technology,52794,Science & Technology,52794,5372,computing,50927,Computing,50927
+1082,15225,10579,5366,computer,15225,Computers,15225,29,technology,10579,Technology,10579
+1083,15568,10579,1378,information-technology,15568,Information Technology,15568,29,technology,10579,Technology,10579
+1084,10579,10579,29,technology,10579,Technology,10579,29,technology,10579,Technology,10579
+1085,22239,10579,778,information-technology-in-business,22239,Information Technology in Business,22239,29,technology,10579,Technology,10579
+1086,62480,10579,5374,high-tech-professional,62480,High-Tech Professional,62480,29,technology,10579,Technology,10579
+1087,22203,10579,582,technology-professionals,22203,Technology Professionals,22203,29,technology,10579,Technology,10579
+1088,15167,10579,100,cloud-computing,15167,Cloud Computing,15167,29,technology,10579,Technology,10579
+1089,32688,10579,5371,computer-training,32688,Computer Training,32688,29,technology,10579,Technology,10579
+1090,77687,10579,710,high-performance-computing,77687,High Performance Computing,77687,29,technology,10579,Technology,10579
+1091,21751,10579,1924,computer-science,21751,Computer Science,21751,29,technology,10579,Technology,10579
+1092,91146,10579,4741,tech-talks,91146,Tech Talks,91146,29,technology,10579,Technology,10579
+1093,50927,10579,5372,computing,50927,Computing,50927,29,technology,10579,Technology,10579
+1094,52794,10579,5373,science-technology,52794,Science & Technology,52794,29,technology,10579,Technology,10579
+1095,15225,52794,5366,computer,15225,Computers,15225,5373,science-technology,52794,Science & Technology,52794
+1096,15568,52794,1378,information-technology,15568,Information Technology,15568,5373,science-technology,52794,Science & Technology,52794
+1097,10579,52794,29,technology,10579,Technology,10579,5373,science-technology,52794,Science & Technology,52794
+1098,22239,52794,778,information-technology-in-business,22239,Information Technology in Business,22239,5373,science-technology,52794,Science & Technology,52794
+1099,62480,52794,5374,high-tech-professional,62480,High-Tech Professional,62480,5373,science-technology,52794,Science & Technology,52794
+1100,22203,52794,582,technology-professionals,22203,Technology Professionals,22203,5373,science-technology,52794,Science & Technology,52794
+1101,15167,52794,100,cloud-computing,15167,Cloud Computing,15167,5373,science-technology,52794,Science & Technology,52794
+1102,32688,52794,5371,computer-training,32688,Computer Training,32688,5373,science-technology,52794,Science & Technology,52794
+1103,77687,52794,710,high-performance-computing,77687,High Performance Computing,77687,5373,science-technology,52794,Science & Technology,52794
+1104,21751,52794,1924,computer-science,21751,Computer Science,21751,5373,science-technology,52794,Science & Technology,52794
+1105,91146,52794,4741,tech-talks,91146,Tech Talks,91146,5373,science-technology,52794,Science & Technology,52794
+1106,50927,52794,5372,computing,50927,Computing,50927,5373,science-technology,52794,Science & Technology,52794
+1107,52794,52794,5373,science-technology,52794,Science & Technology,52794,5373,science-technology,52794,Science & Technology,52794
+1108,15225,15225,5366,computer,15225,Computers,15225,5366,computer,15225,Computers,15225
+1109,15568,15225,1378,information-technology,15568,Information Technology,15568,5366,computer,15225,Computers,15225
+1110,10579,15225,29,technology,10579,Technology,10579,5366,computer,15225,Computers,15225
+1111,22239,15225,778,information-technology-in-business,22239,Information Technology in Business,22239,5366,computer,15225,Computers,15225
+1112,62480,15225,5374,high-tech-professional,62480,High-Tech Professional,62480,5366,computer,15225,Computers,15225
+1113,22203,15225,582,technology-professionals,22203,Technology Professionals,22203,5366,computer,15225,Computers,15225
+1114,15167,15225,100,cloud-computing,15167,Cloud Computing,15167,5366,computer,15225,Computers,15225
+1115,32688,15225,5371,computer-training,32688,Computer Training,32688,5366,computer,15225,Computers,15225
+1116,77687,15225,710,high-performance-computing,77687,High Performance Computing,77687,5366,computer,15225,Computers,15225
+1117,21751,15225,1924,computer-science,21751,Computer Science,21751,5366,computer,15225,Computers,15225
+1118,91146,15225,4741,tech-talks,91146,Tech Talks,91146,5366,computer,15225,Computers,15225
+1119,50927,15225,5372,computing,50927,Computing,50927,5366,computer,15225,Computers,15225
+1120,52794,15225,5373,science-technology,52794,Science & Technology,52794,5366,computer,15225,Computers,15225
+1121,15225,77687,5366,computer,15225,Computers,15225,710,high-performance-computing,77687,High Performance Computing,77687
+1122,15568,77687,1378,information-technology,15568,Information Technology,15568,710,high-performance-computing,77687,High Performance Computing,77687
+1123,10579,77687,29,technology,10579,Technology,10579,710,high-performance-computing,77687,High Performance Computing,77687
+1124,22239,77687,778,information-technology-in-business,22239,Information Technology in Business,22239,710,high-performance-computing,77687,High Performance Computing,77687
+1125,62480,77687,5374,high-tech-professional,62480,High-Tech Professional,62480,710,high-performance-computing,77687,High Performance Computing,77687
+1126,22203,77687,582,technology-professionals,22203,Technology Professionals,22203,710,high-performance-computing,77687,High Performance Computing,77687
+1127,15167,77687,100,cloud-computing,15167,Cloud Computing,15167,710,high-performance-computing,77687,High Performance Computing,77687
+1128,32688,77687,5371,computer-training,32688,Computer Training,32688,710,high-performance-computing,77687,High Performance Computing,77687
+1129,77687,77687,710,high-performance-computing,77687,High Performance Computing,77687,710,high-performance-computing,77687,High Performance Computing,77687
+1130,21751,77687,1924,computer-science,21751,Computer Science,21751,710,high-performance-computing,77687,High Performance Computing,77687
+1131,91146,77687,4741,tech-talks,91146,Tech Talks,91146,710,high-performance-computing,77687,High Performance Computing,77687
+1132,50927,77687,5372,computing,50927,Computing,50927,710,high-performance-computing,77687,High Performance Computing,77687
+1133,52794,77687,5373,science-technology,52794,Science & Technology,52794,710,high-performance-computing,77687,High Performance Computing,77687
+1134,15225,22239,5366,computer,15225,Computers,15225,778,information-technology-in-business,22239,Information Technology in Business,22239
+1135,15568,22239,1378,information-technology,15568,Information Technology,15568,778,information-technology-in-business,22239,Information Technology in Business,22239
+1136,10579,22239,29,technology,10579,Technology,10579,778,information-technology-in-business,22239,Information Technology in Business,22239
+1137,22239,22239,778,information-technology-in-business,22239,Information Technology in Business,22239,778,information-technology-in-business,22239,Information Technology in Business,22239
+1138,62480,22239,5374,high-tech-professional,62480,High-Tech Professional,62480,778,information-technology-in-business,22239,Information Technology in Business,22239
+1139,22203,22239,582,technology-professionals,22203,Technology Professionals,22203,778,information-technology-in-business,22239,Information Technology in Business,22239
+1140,15167,22239,100,cloud-computing,15167,Cloud Computing,15167,778,information-technology-in-business,22239,Information Technology in Business,22239
+1141,32688,22239,5371,computer-training,32688,Computer Training,32688,778,information-technology-in-business,22239,Information Technology in Business,22239
+1142,77687,22239,710,high-performance-computing,77687,High Performance Computing,77687,778,information-technology-in-business,22239,Information Technology in Business,22239
+1143,21751,22239,1924,computer-science,21751,Computer Science,21751,778,information-technology-in-business,22239,Information Technology in Business,22239
+1144,91146,22239,4741,tech-talks,91146,Tech Talks,91146,778,information-technology-in-business,22239,Information Technology in Business,22239
+1145,50927,22239,5372,computing,50927,Computing,50927,778,information-technology-in-business,22239,Information Technology in Business,22239
+1146,52794,22239,5373,science-technology,52794,Science & Technology,52794,778,information-technology-in-business,22239,Information Technology in Business,22239
+1147,15225,21751,5366,computer,15225,Computers,15225,1924,computer-science,21751,Computer Science,21751
+1148,15568,21751,1378,information-technology,15568,Information Technology,15568,1924,computer-science,21751,Computer Science,21751
+1149,10579,21751,29,technology,10579,Technology,10579,1924,computer-science,21751,Computer Science,21751
+1150,22239,21751,778,information-technology-in-business,22239,Information Technology in Business,22239,1924,computer-science,21751,Computer Science,21751
+1151,62480,21751,5374,high-tech-professional,62480,High-Tech Professional,62480,1924,computer-science,21751,Computer Science,21751
+1152,22203,21751,582,technology-professionals,22203,Technology Professionals,22203,1924,computer-science,21751,Computer Science,21751
+1153,15167,21751,100,cloud-computing,15167,Cloud Computing,15167,1924,computer-science,21751,Computer Science,21751
+1154,32688,21751,5371,computer-training,32688,Computer Training,32688,1924,computer-science,21751,Computer Science,21751
+1155,77687,21751,710,high-performance-computing,77687,High Performance Computing,77687,1924,computer-science,21751,Computer Science,21751
+1156,21751,21751,1924,computer-science,21751,Computer Science,21751,1924,computer-science,21751,Computer Science,21751
+1157,91146,21751,4741,tech-talks,91146,Tech Talks,91146,1924,computer-science,21751,Computer Science,21751
+1158,50927,21751,5372,computing,50927,Computing,50927,1924,computer-science,21751,Computer Science,21751
+1159,52794,21751,5373,science-technology,52794,Science & Technology,52794,1924,computer-science,21751,Computer Science,21751
