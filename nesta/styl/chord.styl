@@ -10,6 +10,10 @@ h1
 	margin-top 50px
 	
 	.vis__chord
+		&__title
+			font-size 14px
+			text-anchor middle
+			
 		&__labels
 			&__label
 				font-size 8px
@@ -22,11 +26,17 @@ h1
 					text-anchor end
 					
 				&.selected
-					fill #1f77b4
+					fill #000
 					font-weight bold
 					
 				&.highlighted
 					fill #1f77b4
+					
+				&.old
+					fill #d62728
+						
+				&.new
+					fill #2ca02c
 					
 				&.blured
 					fill #ccc
@@ -42,10 +52,11 @@ h1
 					stroke #1f77b4
 					opacity 1
 					
-				&.old
-					stroke #ff0000
-					opacity 1
-					
-				&.new
-					stroke #00ff00
-					opacity 1
+					&.old
+						stroke #d62728
+						
+					&.new
+						stroke #2ca02c
+						
+	.vis__legend
+		font-size 12px

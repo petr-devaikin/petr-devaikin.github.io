@@ -1,9 +1,9 @@
 function Datareader(base) {
 	if (base === undefined) base = '../data/';
 
-	this.readData = function(dataSet, callback) {
+	this.readData = function(dataSet, callback, params) {
 		if (readers[dataSet] !== undefined)
-			readers[dataSet](callback);
+			readers[dataSet](callback, params);
 	}
 
 	var readers = {};
@@ -140,7 +140,6 @@ function Datareader(base) {
 	// Groups topics
 	readers[Datareader.DATASETS.GroupsTopic] = function(callback, old) {
 		var filename = base + Datareader.DATASETS.GroupsTopic + (old ? '_2013' : '_2013_2014_2015_2016') + '.csv';
-		console.log(filename);
 		d3.csv(
 			filename,
 			function(line, i) {

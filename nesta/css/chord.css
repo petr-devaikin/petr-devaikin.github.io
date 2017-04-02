@@ -9,6 +9,10 @@ h1 {
 .vis--chord {
   margin-top: 50px;
 }
+.vis--chord .vis__chord__title {
+  font-size: 14px;
+  text-anchor: middle;
+}
 .vis--chord .vis__chord__labels__label {
   font-size: 8px;
   text-anchor: start;
@@ -20,11 +24,17 @@ h1 {
   text-anchor: end;
 }
 .vis--chord .vis__chord__labels__label.selected {
-  fill: #1f77b4;
+  fill: #000;
   font-weight: bold;
 }
 .vis--chord .vis__chord__labels__label.highlighted {
   fill: #1f77b4;
+}
+.vis--chord .vis__chord__labels__label.old {
+  fill: #d62728;
+}
+.vis--chord .vis__chord__labels__label.new {
+  fill: #2ca02c;
 }
 .vis--chord .vis__chord__labels__label.blured {
   fill: #ccc;
@@ -39,11 +49,12 @@ h1 {
   stroke: #1f77b4;
   opacity: 1;
 }
-.vis--chord .vis__chord__ribbons__line.old {
-  stroke: #f00;
-  opacity: 1;
+.vis--chord .vis__chord__ribbons__line.selected.old {
+  stroke: #d62728;
 }
-.vis--chord .vis__chord__ribbons__line.new {
-  stroke: #0f0;
-  opacity: 1;
+.vis--chord .vis__chord__ribbons__line.selected.new {
+  stroke: #2ca02c;
+}
+.vis--chord .vis__legend {
+  font-size: 12px;
 }

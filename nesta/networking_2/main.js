@@ -15,7 +15,9 @@ datareader.readData(Datareader.DATASETS.GroupsTopic, function(nodes, links) {
 				nodes.push(n);
 		});
 		var graph = new Chord(svg, nodes, oldLinks, links, {
-			margin: 150
+			margin: 150,
+			title1: '2013',
+			title2: '2013 – 2016',
 		});
 		graph.draw();
 	}, true);
