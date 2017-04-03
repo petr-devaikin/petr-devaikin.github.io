@@ -236,6 +236,105 @@ function Datareader(base) {
 			}
 		);
 	}
+
+	// Industry
+	readers[Datareader.DATASETS.IndustryBusiness] = function(callback) {
+		d3.csv(
+			base + Datareader.DATASETS.IndustryBusiness,
+			function(line) {
+				return {
+					lad: line.lad_name,
+					year: line.year,
+					sector: line.industry.split('_')[0],
+					industry: line.industry.split('_').slice(1).join(' '),
+					business: line.business_n,
+					decileSalary: line.decile_salary,
+					decileGVA: line.decile_gva,
+					decileUniqueness: line.decile_uniq
+				}
+			},
+			function(rawData) {
+				var years = [];
+				var lads = [];
+				var sectors = {};
+
+				rawData.forEach(function(d) {
+					if (sectors[d.sector] === undefined) sectors[d.sector] = {
+						combined: {},
+						industries: {},
+					};
+					if (years.indexOf(parseInt(d.year)) == -1) years.push(parseInt(d.year));
+					if (lads.indexOf(d.lad) == -1) lads.push(d.lad);
+
+					if (sectors[d.sector].combined[parseInt(d.year)] === undefined)
+						sectors[d.sector].combined[parseInt(d.year)] = 0;
+
+					sectors[d.sector].combined[parseInt(d.year)] += parseFloat(d.business);
+
+					if (sectors[d.sector].industries[d.industry] === undefined)
+						sectors[d.sector].industries[d.industry] = {};
+
+					sectors[d.sector].industries[d.industry][parseInt(d.year)] = {
+						business: parseFloat(d.business),
+						decileSalary: parseFloat(d.decileSalary),
+						decileGVA: parseFloat(d.decileGVA),
+						decileUniqueness : parseFloat(d.decileUniqueness),
+					};
+				});
+
+				callback(years, lads, sectors);
+			}
+		);
+	}
+
+	readers[Datareader.DATASETS.IndustryEmployment] = function(callback) {
+		d3.csv(
+			base + Datareader.DATASETS.IndustryEmployment,
+			function(line) {
+				return {
+					lad: line.lad_name,
+					year: line.year,
+					sector: line.industry.split('_')[0],
+					industry: line.industry.split('_').slice(1).join(' '),
+					employment: line.employment,
+					decileSalary: line.decile_salary,
+					decileGVA: line.decile_gva,
+					decileUniqueness: line.decile_uniq
+				}
+			},
+			function(rawData) {
+				var years = [];
+				var lads = [];
+				var sectors = {};
+
+				rawData.forEach(function(d) {
+					if (sectors[d.sector] === undefined) sectors[d.sector] = {
+						combined: {},
+						industries: {},
+					};
+					if (years.indexOf(parseInt(d.year)) == -1) years.push(parseInt(d.year));
+					if (lads.indexOf(d.lad) == -1) lads.push(d.lad);
+
+					if (sectors[d.sector].combined[parseInt(d.year)] === undefined)
+						sectors[d.sector].combined[parseInt(d.year)] = 0;
+
+					sectors[d.sector].combined[parseInt(d.year)] += parseFloat(d.employment);
+
+					if (sectors[d.sector].industries[d.industry] === undefined)
+						sectors[d.sector].industries[d.industry] = {};
+
+					sectors[d.sector].industries[d.industry][parseInt(d.year)] = {
+						employment: parseFloat(d.employment),
+						decileSalary: parseFloat(d.decileSalary),
+						decileGVA: parseFloat(d.decileGVA),
+						decileUniqueness : parseFloat(d.decileUniqueness),
+					};
+				});
+
+				callback(years, lads, sectors);
+			}
+		);
+	}
 }
 
 Datareader.DATASETS = {
@@ -247,4 +346,6 @@ Datareader.DATASETS = {
 	GroupsTopic: 'wales_groups_topic_ids',
 	EngineeringTechLad: 'engineering_tech_lad.csv',
 	Attendants: 'attendants_in_other_cities.csv',
+	IndustryBusiness: '19_3_2017_lad_idbr_merged.csv',
+	IndustryEmployment: '19_3_2017_lad_bres_merged.csv',
 }

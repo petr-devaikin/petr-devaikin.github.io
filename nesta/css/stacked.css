@@ -1,0 +1,36 @@
+.vis--stacked {
+  position: relative;
+}
+.vis--stacked .vis__hints__hint {
+  pointer-events: none;
+}
+.vis--stacked .vis__hints__hint text {
+  font-size: 10px;
+  text-anchor: middle;
+  alignment-baseline: after-edge;
+}
+.vis--stacked .vis__graph__stripe {
+  cursor: pointer;
+}
+.legend {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  width: 200px;
+  padding: 10px;
+  background: #eee;
+  font-size: 12px;
+}
+.legend h1 {
+  margin: 0;
+  font-size: 14px;
+}
+.legend .sector {
+  border-left: 15px solid #fff;
+  padding-left: 5px;
+  cursor: pointer;
+  margin: 5px 0;
+}
+.legend label {
+  display: block;
+}
