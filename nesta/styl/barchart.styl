@@ -1,0 +1,49 @@
+.vis--barchart
+	position relative
+	
+	.vis__hints
+		&__hint
+			pointer-events none
+			
+			rect
+				fill #fff
+				opacity .8
+				stroke grey
+				
+			text
+				font-size 10px
+				alignment-baseline before-edge
+				fill #000
+				
+			&__sum
+				font-weight bold
+				
+	.vis__axis
+		&__label
+			text-anchor middle
+			font-size 12px
+			fill #000
+				
+
+.legend
+	position fixed
+	right 10px
+	top 10px
+	width 200px
+	padding 10px
+	background #eee
+	
+	font-size 12px
+	
+	h1
+		margin 0
+		font-size 14px
+		
+	.sector
+		border-left 15px solid white
+		padding-left 5px
+		cursor pointer
+		margin 5px 0
+		
+	label
+		display block

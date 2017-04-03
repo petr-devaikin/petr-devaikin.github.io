@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="../css/barchart.css">
+		<link rel="stylesheet" type="text/css" href="main.css">
+		<title>In what industries does Wales have a comparative advantage?</title>
+	</head>
+	<body>
+		<h1>In what industries does Wales have a comparative advantage??</h1>
+		<div class="legend">
+			<h1>Show</h1>
+			<label>
+				<input class="y-filter" type="radio" name="y" value="business" checked="checked" title="Number of businesses" />
+				Number of businesses
+			</label>
+			<label>
+				<input class="y-filter" type="radio" name="y" value="employment" title="Number of employees" />
+				Number of employees
+			</label>
+			<br/>
+			<h1>over (?)</h1>
+			<label>
+				<input class="x-filter" type="radio" name="x" value="decileSalary" checked="checked" title="Salary, top % (?)" />
+				Salary
+			</label>
+			<label>
+				<input class="x-filter" type="radio" name="x" value="decileGVA" title="GVA, top % (?)" />
+				GVA
+			</label>
+			<label>
+				<input class="x-filter" type="radio" name="x" value="decileUniqueness" title="Uniqueness (?), top % (?)" />
+				Uniqueness
+			</label>
+			<br/>
+			<h1>Years</h1>
+			<div class="legend__years"></div>
+			<br/>
+			<h1>Sectors</h1>
+		</div>
+		<script src="../js/d3.js" charset="utf-8"></script>
+		<script src="../js/helpers.js"></script>
+		<script src="../js/datareader.js"></script>
+		<script src="../js/barchart.js"></script>
+		<script src="main.js"></script>
+	</body>
+</html>
