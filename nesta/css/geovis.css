@@ -11,7 +11,7 @@
   fill: #eee;
 }
 .vis--geovis .vis__map__border {
-  stroke: #999;
+  stroke: #000;
   stroke-width: 2;
   fill: none;
 }
@@ -27,9 +27,13 @@
   text-anchor: start;
   alignment-baseline: before-edge;
 }
-.vis--geovis .vis__hint text.vis__hint__city {
+.vis--geovis .vis__hint__city {
   font-weight: bold;
   font-size: 14px;
+}
+.vis--geovis .vis__hint__employment,
+.vis--geovis .vis__hint__business {
+  font-size: 12px;
 }
 .vis--geovis .vis__hint__topic {
   font-size: 12px;
