@@ -1,0 +1,37 @@
+.filter {
+  position: fixed;
+  right: 5px;
+  top: 5px;
+  width: 200px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #eee;
+}
+.filter__group {
+  font-size: 12px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.filter__group h1 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.filter__group__option {
+  display: block;
+  padding: 0;
+}
+.filter__group__bubble-sample {
+  position: relative;
+  float: left;
+  text-align: center;
+}
+.filter__group__bubble-sample span {
+  display: block;
+}
+.filter__group__bubble-sample__bubble {
+  display: inline-block;
+  border-radius: 50%;
+  background: #1f77b4;
+  opacity: 0.9;
+}

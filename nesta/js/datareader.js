@@ -523,6 +523,61 @@ function Datareader(base) {
 				callback(lads, sectors, subsectors, dataEmployment);
 			});
 	}
+
+	// Contextual metadata
+	readers[Datareader.DATASETS.Contextual] = function(callback) {
+		var lads = {};
+		var sectors = [];
+		var subsectors = [];
+
+		var propsToIgnore = ['lad_name', 'year'];
+
+		d3.csv(
+			base + Datareader.DATASETS.Contextual,
+			function(line, i) {
+				if (lads[line.lad_code] === undefined)
+					lads[line.lad_code] = {
+						code: line.lad_code,
+						name: line.lad_name,
+						isWelsh: line.is_wales_x == 'True'
+					};
+
+				return {
+					lad: lads[line.lad_code],
+					year: parseInt(line.year),
+					inactive: parseFloat(line['% of economically inactive who want a job']),
+					nvq: {
+						1: parseFloat(line['% with NVQ1+ - aged 16-64']),
+						2: parseFloat(line['% with NVQ2+ - aged 16-64']),
+						3: parseFloat(line['% with NVQ3+ - aged 16-64']),
+						4: parseFloat(line['% with NVQ4+ - aged 16-64']),
+					},
+					economic_activity_rate: parseFloat(line['Economic activity rate - aged 16-64']),
+					employment_rate: parseFloat(line['Employment rate - aged 16-64']),
+					salary: {
+						median: line['salary_median'] != '' ? parseInt(line['salary_median']) : 0,
+						percentiles: {
+							10: parseInt(line['salary_10_percentile']),
+							20: parseInt(line['salary_10_percentile']),
+							25: parseInt(line['salary_10_percentile']),
+							30: parseInt(line['salary_10_percentile']),
+							40: parseInt(line['salary_10_percentile']),
+							60: parseInt(line['salary_10_percentile']),
+							70: parseInt(line['salary_10_percentile']),
+							75: parseInt(line['salary_10_percentile']),
+							80: parseInt(line['salary_10_percentile']),
+							90: parseInt(line['salary_10_percentile']),
+						}
+					},
+					p70_to_p20: parseFloat(line['p70_to_p20']),
+					complexity_norm: parseFloat(line['complexity_norm'])
+				};
+			},
+			function(data) {
+				callback(lads, data);
+			}
+		);
+	};
 }
 
 Datareader.DATASETS = {
@@ -540,4 +595,5 @@ Datareader.DATASETS = {
 	LadsEmploymentBusiness: 'lads_employment_business',
 	LadsEmployment: '19_3_2017_lq_employment_bres_2009_15.csv',
 	LadsBusiness: '19_3_2017_lq_business_count_idbr_2010_15.csv',
+	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
 }

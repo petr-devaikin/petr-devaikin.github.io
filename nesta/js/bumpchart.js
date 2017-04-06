@@ -302,28 +302,28 @@ function Bumpchart(svg, xValues, data, p) {
 				.text(function(d) { return Math.round(d); });
 			
 
-				// zoom behaviour
-				
-				zoom = d3.zoom()
-					.scaleExtent([1, 1])
-					.translateExtent([[0, 0], [svg.node().clientWidth, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
-					.on('zoom', zoomed);
+			// zoom behaviour
+			
+			zoom = d3.zoom()
+				.scaleExtent([1, 1])
+				.translateExtent([[0, 0], [svg.node().clientWidth, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
+				.on('zoom', zoomed);
 
-				
+			
 
-				function zoomed() {
-					var transform = d3.zoomTransform(this);
-					console.log(transform);
-					var shift = -transform.y / params.positionHeight;
-					yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
+			function zoomed() {
+				var transform = d3.zoomTransform(this);
+				console.log(transform);
+				var shift = -transform.y / params.positionHeight;
+				yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
 
-					drawAxes();
-					drawData();
-				}
+				drawAxes();
+				drawData();
+			}
 
-				var t = d3.zoomIdentity.translate(0, 0).scale(1);
-				svg.call(zoom.transform, t);
-				svg.call(zoom);
+			var t = d3.zoomIdentity.translate(0, 0).scale(1);
+			svg.call(zoom.transform, t);
+			svg.call(zoom);
 		}
 		if (params.showLegend)
 			drawLegend();

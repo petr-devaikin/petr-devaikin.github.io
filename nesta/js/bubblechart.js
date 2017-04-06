@@ -12,11 +12,14 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		showBottomAxis: true,
 		leftLabel: '',
 		bottomLabel: '',
+		rLabel: '',
 		useLogXScale: false,
 		useLogYScale: false,
 		categories: [],
 		maxCircleArea: 200,
 		sampleCount: 7,
+		addHintContent: undefined,
+		updateHintContent: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -81,12 +84,17 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 				.classed('vis__hints__hint', true)
 				.attr('visibility', 'hidden');
 			hint.append('rect').classed('vis__hints__hint__bg', true);
-			hint.append('text').classed('vis__hints__hint__name', true);
-			hint.append('text').classed('vis__hints__hint__category', true).attr('dy', 15);
-			hint.append('text').classed('vis__hints__hint__value--all', true).attr('dy', 40);
-			hint.append('text').classed('vis__hints__hint__value', true).attr('dy', 55);
-			hint.append('text').classed('vis__hints__hint__number--all', true).attr('dy', 70);
-			hint.append('text').classed('vis__hints__hint__number', true).attr('dy', 85);
+
+			if (params.addHintContent === undefined) { // <--------------- FIX THIS
+				hint.append('text').classed('vis__hints__hint__name', true);
+				hint.append('text').classed('vis__hints__hint__category', true).attr('dy', 15);
+				hint.append('text').classed('vis__hints__hint__value--all', true).attr('dy', 40);
+				hint.append('text').classed('vis__hints__hint__value', true).attr('dy', 55);
+				hint.append('text').classed('vis__hints__hint__number--all', true).attr('dy', 70);
+				hint.append('text').classed('vis__hints__hint__number', true).attr('dy', 85);
+			}
+			else
+				params.addHintContent(hint);
 		}
 		addHint();
 
@@ -95,18 +103,22 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 			hint.select('.vis__hints__hint__bg').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
 
-			hint.select('.vis__hints__hint__category').text('Category: ' + d.category);
-			hint.select('.vis__hints__hint__name').text('Project [!]: ' + d.name);
-			hint.select('.vis__hints__hint__value').text('Value per project in Wales: ' + Math.round(d.r) + ' [UNITS?]');
-			hint.select('.vis__hints__hint__value--all').text(
-				'Value per project in [UK?]: {0} [UNITS?]'.format( 
-					Math.round((d.value.welsh + d.value.nonWelsh) / (d.projects.welsh + d.projects.nonWelsh))
-				)
-			);
-			hint.select('.vis__hints__hint__number').text(
-				'Number of projects in Wales: {0} ({1}%)'.format(d.projects.welsh, Math.round(d.y * 100))
-			);
-			hint.select('.vis__hints__hint__number--all').text('Number of projects in [UK?]: ' + (d.projects.nonWelsh + d.projects.welsh));
+			if (params.updateHintContent === undefined) { // <---------------- FIX THIS
+				hint.select('.vis__hints__hint__category').text('Category: ' + d.category);
+				hint.select('.vis__hints__hint__name').text('Project [!]: ' + d.name);
+				hint.select('.vis__hints__hint__value').text('Value per project in Wales: ' + Math.round(d.r) + ' [UNITS?]');
+				hint.select('.vis__hints__hint__value--all').text(
+					'Value per project in [UK?]: {0} [UNITS?]'.format( 
+						Math.round((d.value.welsh + d.value.nonWelsh) / (d.projects.welsh + d.projects.nonWelsh))
+					)
+				);
+				hint.select('.vis__hints__hint__number').text(
+					'Number of projects in Wales: {0} ({1}%)'.format(d.projects.welsh, Math.round(d.y * 100))
+				);
+				hint.select('.vis__hints__hint__number--all').text('Number of projects in [UK?]: ' + (d.projects.nonWelsh + d.projects.welsh));
+			}
+			else
+				params.updateHintContent(hint, d);
 
 			var bbox = hint.node().getBBox();
 
@@ -236,10 +248,11 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 			var legendSamples = [];
 			for (var i = 0; i < params.sampleCount; i++)
 				legendSamples.push({
-					min: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * i,
-					max: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * (i + 1),
-					avg: rValues[0] + (rValues[1] - rValues[0]) / params.sampleCount * (i + .5)
+					min: rValues[1] / params.sampleCount * i,
+					max: rValues[1] / params.sampleCount * (i + 1),
+					avg: rValues[1] / params.sampleCount * (i + .5)
 				});
+			console.log(legendSamples);
 			legend.selectAll('.m-legend__size').data(legendSamples).enter().append('div')
 				.classed('m-legend__size', true)
 				.text(function(d) {
@@ -252,6 +265,21 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 					.style('left', function(d) { return (30 / 2 - rScale(d.avg)) + 'px'; });
 		}
 		if (params.showLegend) drawLegend();
+
+
+		/*
+		function drawKey() {
+			var keyWidth = 200;
+			var keyHeight = 100;
+			var key = svg.append('g')
+				.classed('vis__key', true)
+				.attr('transform', 'translate({0},{1})'.format(params.graphWidth + params.leftMargin + params.rightMargin + 20, 10));
+			key.append('rect').attr('width', keyWidth).attr('height', keyHeight);
+
+			key.append('text').classed('vis__key__title', true).attr('dx', 5).attr('dy', 5).text(params.rLabel);
+		}
+		if (params.showKey) drawKey();
+		*/
 	}
 }
 
