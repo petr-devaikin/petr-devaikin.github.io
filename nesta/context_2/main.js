@@ -16,6 +16,7 @@ datareader.readData(Datareader.DATASETS.Contextual, function(lads, data) {
 	var years = d3.extent(data, function(d) { return d.year; });
 
 	data.forEach(function(d) {
+		d.id = d.lad.code;
 		d.x = d.complexity_norm;
 		d.y = d.salary.median;
 		d.r = d.employment_rate;
@@ -67,7 +68,7 @@ datareader.readData(Datareader.DATASETS.Contextual, function(lads, data) {
 		function(year) {
 			selectedData = data.filter(function(d) { return d.year == year; });
 			console.log(year);
-			//bubblechart.redraw(data);
+			bubblechart.redraw(selectedData);
 		}
 	);
 

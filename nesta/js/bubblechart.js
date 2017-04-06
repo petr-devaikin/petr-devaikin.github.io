@@ -20,14 +20,22 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		sampleCount: 7,
 		addHintContent: undefined,
 		updateHintContent: undefined,
+		transitionDuration: 500,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
+	var graphAreaBg,
+		graphAreaActive,
+		hintsArea;
+
+	var xScale,
+		yScale,
+		rScale;
+
+	var hint;
 
 	this.draw = function() {
-		data.sort(function(a, b) { return b.r - a.r; });
-
 		svg.attr('class', 'vis vis--bubblechart');
 
 		/*function addClipRect() {
@@ -53,91 +61,32 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 			.classed('vis__graph', true)
 			.attr('clip-path', 'url(#graph-clip)');
 
-		var graphAreaBg = graphArea.append('g')
+		graphAreaBg = graphArea.append('g')
 			.classed('vis__graph__bg', true);
-		var graphAreaActive = graphArea.append('g')
+		graphAreaActive = graphArea.append('g')
 			.classed('vis__graph__active', true);
 
-		var hintsArea = svg.append('g')
+		hintsArea = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__hints', true);
 
-		var xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
+		xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([xValues[0], xValues[1]])
 			.range([30, params.graphWidth]);
 
-		var yScale = (params.useLogYScale ? d3.scaleLog() : d3.scaleLinear())
+		yScale = (params.useLogYScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([yValues[1], yValues[0]])
 			.range([0, params.graphHeight]);
 
 		var rSampleValues = [];
 		for (var i = 0; i < params.sampleCount; i++)
 			rSampleValues.push(Math.sqrt(params.maxCircleArea / params.sampleCount * (i + 0.5)));
-		var rScale = d3.scaleQuantize()
+		rScale = d3.scaleQuantize()
 			.domain([0, rValues[1]])
 			.range(rSampleValues);
 
 		
-		var hint;
-		function addHint() {
-			hint = hintsArea.append('g')
-				.classed('vis__hints__hint', true)
-				.attr('visibility', 'hidden');
-			hint.append('rect').classed('vis__hints__hint__bg', true);
-
-			if (params.addHintContent === undefined) { // <--------------- FIX THIS
-				hint.append('text').classed('vis__hints__hint__name', true);
-				hint.append('text').classed('vis__hints__hint__category', true).attr('dy', 15);
-				hint.append('text').classed('vis__hints__hint__value--all', true).attr('dy', 40);
-				hint.append('text').classed('vis__hints__hint__value', true).attr('dy', 55);
-				hint.append('text').classed('vis__hints__hint__number--all', true).attr('dy', 70);
-				hint.append('text').classed('vis__hints__hint__number', true).attr('dy', 85);
-			}
-			else
-				params.addHintContent(hint);
-		}
 		addHint();
-
-		function showHint(d) {
-			d3.select(this).classed('hovered', true);
-
-			hint.select('.vis__hints__hint__bg').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
-
-			if (params.updateHintContent === undefined) { // <---------------- FIX THIS
-				hint.select('.vis__hints__hint__category').text('Category: ' + d.category);
-				hint.select('.vis__hints__hint__name').text('Project [!]: ' + d.name);
-				hint.select('.vis__hints__hint__value').text('Value per project in Wales: ' + Math.round(d.r) + ' [UNITS?]');
-				hint.select('.vis__hints__hint__value--all').text(
-					'Value per project in [UK?]: {0} [UNITS?]'.format( 
-						Math.round((d.value.welsh + d.value.nonWelsh) / (d.projects.welsh + d.projects.nonWelsh))
-					)
-				);
-				hint.select('.vis__hints__hint__number').text(
-					'Number of projects in Wales: {0} ({1}%)'.format(d.projects.welsh, Math.round(d.y * 100))
-				);
-				hint.select('.vis__hints__hint__number--all').text('Number of projects in [UK?]: ' + (d.projects.nonWelsh + d.projects.welsh));
-			}
-			else
-				params.updateHintContent(hint, d);
-
-			var bbox = hint.node().getBBox();
-
-			hint.select('.vis__hints__hint__bg')
-				.attr('x', -5)
-				.attr('y', -5)
-				.attr('width', bbox.width + 10)
-				.attr('height', bbox.height + 10);
-
-			hint
-				.attr('transform', 'translate({0},{1})'.format(xScale(d.x) - bbox.width / 2, yScale(d.y) + rScale(d.r) + 10))
-				.attr('visibility', 'visible');
-		}
-
-		function hideHint(d) {
-			d3.select(this).classed('hovered', false);
-			hint.attr('visibility', 'hidden');
-		}
-
 
 		function drawAxes() {
 			bottomAxis.call(d3.axisBottom(xScale).ticks(20, ",.1s"));
@@ -159,25 +108,7 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 
 		function drawData() {
-			graphAreaBg.selectAll('.vis__graph__item').data(data).enter().append('circle')
-				.classed('vis__graph__item', true)
-				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
-				.attr('cx', 0)
-				.attr('cy', 0)
-				.attr('r', function(d) { return rScale(d.r); })
-				.on('mouseover', showHint)
-				.on('mouseout', hideHint)
-				.classed('selected', true);
-
-			graphAreaActive.selectAll('.vis__graph__item').data(data).enter().append('circle')
-				.classed('vis__graph__item', true)
-				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
-				.attr('cx', 0)
-				.attr('cy', 0)
-				.attr('r', function(d) { return rScale(d.r); })
-				.on('mouseover', showHint)
-				.on('mouseout', hideHint)
-				.classed('selected', true);
+			redraw(data);
 		}
 		drawData();
 
@@ -265,21 +196,109 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 					.style('left', function(d) { return (30 / 2 - rScale(d.avg)) + 'px'; });
 		}
 		if (params.showLegend) drawLegend();
-
-
-		/*
-		function drawKey() {
-			var keyWidth = 200;
-			var keyHeight = 100;
-			var key = svg.append('g')
-				.classed('vis__key', true)
-				.attr('transform', 'translate({0},{1})'.format(params.graphWidth + params.leftMargin + params.rightMargin + 20, 10));
-			key.append('rect').attr('width', keyWidth).attr('height', keyHeight);
-
-			key.append('text').classed('vis__key__title', true).attr('dx', 5).attr('dy', 5).text(params.rLabel);
-		}
-		if (params.showKey) drawKey();
-		*/
 	}
+
+	// HINT
+
+	function addHint() {
+		hint = hintsArea.append('g')
+			.classed('vis__hints__hint', true)
+			.attr('visibility', 'hidden');
+		hint.append('rect').classed('vis__hints__hint__bg', true);
+
+		if (params.addHintContent === undefined) { // <--------------- FIX THIS
+			hint.append('text').classed('vis__hints__hint__name', true);
+			hint.append('text').classed('vis__hints__hint__category', true).attr('dy', 15);
+			hint.append('text').classed('vis__hints__hint__value--all', true).attr('dy', 40);
+			hint.append('text').classed('vis__hints__hint__value', true).attr('dy', 55);
+			hint.append('text').classed('vis__hints__hint__number--all', true).attr('dy', 70);
+			hint.append('text').classed('vis__hints__hint__number', true).attr('dy', 85);
+		}
+		else
+			params.addHintContent(hint);
+	}
+
+	function showHint(d) {
+		d3.select(this).classed('hovered', true);
+
+		hint.select('.vis__hints__hint__bg').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
+
+		if (params.updateHintContent === undefined) { // <---------------- FIX THIS
+			hint.select('.vis__hints__hint__category').text('Category: ' + d.category);
+			hint.select('.vis__hints__hint__name').text('Project [!]: ' + d.name);
+			hint.select('.vis__hints__hint__value').text('Value per project in Wales: ' + Math.round(d.r) + ' [UNITS?]');
+			hint.select('.vis__hints__hint__value--all').text(
+				'Value per project in [UK?]: {0} [UNITS?]'.format( 
+					Math.round((d.value.welsh + d.value.nonWelsh) / (d.projects.welsh + d.projects.nonWelsh))
+				)
+			);
+			hint.select('.vis__hints__hint__number').text(
+				'Number of projects in Wales: {0} ({1}%)'.format(d.projects.welsh, Math.round(d.y * 100))
+			);
+			hint.select('.vis__hints__hint__number--all').text('Number of projects in [UK?]: ' + (d.projects.nonWelsh + d.projects.welsh));
+		}
+		else
+			params.updateHintContent(hint, d);
+
+		var bbox = hint.node().getBBox();
+
+		hint.select('.vis__hints__hint__bg')
+			.attr('x', -5)
+			.attr('y', -5)
+			.attr('width', bbox.width + 10)
+			.attr('height', bbox.height + 10);
+
+		hint
+			.attr('transform', 'translate({0},{1})'.format(xScale(d.x) - bbox.width / 2, yScale(d.y) + rScale(d.r) + 10))
+			.attr('visibility', 'visible');
+	}
+
+	function hideHint(d) {
+		d3.select(this).classed('hovered', false);
+		hint.attr('visibility', 'hidden');
+	}
+
+
+	// REDRAW 
+
+	function redraw(data) {
+		var t = d3.transition()
+		    .duration(params.transitionDuration)
+		    .ease(d3.easeLinear);
+
+		data.sort(function(a, b) { return b.r - a.r; });
+
+		function setBubble(selection) {
+			selection
+				.attr('transform', function(d) { return 'translate({0},{1})'.format(xScale(d.x), yScale(d.y)); })
+				.attr('r', function(d) { return rScale(d.r); });
+		}
+
+		var bgBubbles = graphAreaBg.selectAll('.vis__graph__item').data(data, function(d, i) { return d.id === undefined ? i : d.id; });
+		var activeBubbles = graphAreaActive.selectAll('.vis__graph__item').data(data, function(d, i) { return d.id === undefined ? i : d.id; });
+
+		bgBubbles.transition(t).call(setBubble);
+		activeBubbles.transition(t).call(setBubble);
+
+
+		var newBgBubbles = bgBubbles.enter().append('circle');
+		newBgBubbles
+			.classed('vis__graph__item', true)
+			.on('mouseover', showHint)
+			.on('mouseout', hideHint)
+			.classed('selected', true);
+
+		var newActiveBubbles = activeBubbles.enter().append('circle');
+		newActiveBubbles
+			.classed('vis__graph__item', true)
+			.on('mouseover', showHint)
+			.on('mouseout', hideHint)
+			.classed('selected', true);
+
+		newBgBubbles.call(setBubble);
+		newActiveBubbles.call(setBubble);
+	}
+
+	this.redraw = redraw;
 }
 
