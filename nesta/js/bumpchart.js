@@ -165,6 +165,7 @@ function Bumpchart(svg, xValues, data, p) {
 
 	// draw
 	this.draw = function() {
+		svg.html('');
 		svg.attr('class', 'vis vis--bumpchart');
 
 		function addClipRect() {

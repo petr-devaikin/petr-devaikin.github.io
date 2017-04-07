@@ -33,7 +33,7 @@ function Filter(container) {
 		var select = group.append('select');
 		var select2 = $(select.node()).select2({
 			data: values.map(function(d) { return { id: d.value, text: d.label }; }),
-			allowClear: placeholder != '',
+			allowClear: placeholder != '' && placeholder !== undefined,
 			placeholder: placeholder
 		}).change(function() {
 			var value = $(select.node()).val();

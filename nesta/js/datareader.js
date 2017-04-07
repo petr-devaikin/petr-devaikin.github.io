@@ -603,6 +603,46 @@ function Datareader(base) {
 			}
 		);
 	};
+
+	// Topic activity
+	readers[Datareader.DATASETS.TopicActivity] = function(callback) {
+		var lads = [];
+		var disciplines = [];
+		var topics = {};
+		var years = [];
+		var propsToIgnore = ['topic', 'variable', 'year', 'Wales', 'discipline'];
+
+		d3.csv(
+			base + Datareader.DATASETS.TopicActivity,
+			function(line, i) {
+				if (i == 0)
+					Object.keys(line).forEach(function(prop) {
+						if (propsToIgnore.indexOf(prop) == -1)
+							lads.push(prop);
+					});
+
+				if (years.indexOf(line.year) == -1) years.push(line.year);
+				if (disciplines.indexOf(line.discipline) == -1) disciplines.push(line.discipline);
+				if (topics[line.topic] === undefined) topics[line.topic] = { name: line.topic, discipline: line.discipline };
+
+				var ladValues = {};
+				lads.forEach(function(l) { return ladValues[l] = line[l]; });
+
+				return {
+					topic: line.topic,
+					discipline: line.discipline,
+					variable: line.variable,
+					year: line.year,
+					value: parseInt(line.Wales),
+					ladValues: ladValues
+				}
+			},
+			function(rawData) {
+				topics = Object.keys(topics).map(function(d) { return topics[d]; });
+				callback(lads, disciplines, topics, years, rawData);
+			}
+		);
+	};
 }
 
 Datareader.DATASETS = {
@@ -622,4 +662,5 @@ Datareader.DATASETS = {
 	LadsBusiness: '19_3_2017_lq_business_count_idbr_2010_15.csv',
 	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
 	Opportunities: 'opportunity_network.csv',
+	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',
 }
