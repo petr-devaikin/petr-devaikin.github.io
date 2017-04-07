@@ -17,7 +17,7 @@ datareader.readData(Datareader.DATASETS.EngineeringTechLad, function(lads, topic
 		})
 
 		var heatmap = new Heatmap(svg, lads, topics, data, {
-			minValue: 1,
+			minValue: 0,
 			maxValue: maxValue,
 			leftMargin: 250,
 			rotateYAxisTips: false,

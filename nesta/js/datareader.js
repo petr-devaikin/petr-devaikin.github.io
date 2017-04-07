@@ -578,6 +578,31 @@ function Datareader(base) {
 			}
 		);
 	};
+
+	// Opportunity
+	readers[Datareader.DATASETS.Opportunities] = function(callback) {
+		var organisations = [];
+
+		d3.csv(
+			base + Datareader.DATASETS.Opportunities,
+			function(line, i) {
+				if (organisations.indexOf(line.organisation_x) == -1) organisations.push(line.organisation_x);
+				if (organisations.indexOf(line.organisation_y) == -1) organisations.push(line.organisation_y);
+				if (parseInt(line.collab_n) > 0)
+					return {
+						x: line.organisation_x,
+						y: line.organisation_y,
+						value: parseInt(line.collab_n),
+						color: line.similarity_color_rgba,
+					}
+				else
+					return undefined;
+			},
+			function(data) {
+				callback(organisations, data);
+			}
+		);
+	};
 }
 
 Datareader.DATASETS = {
@@ -596,4 +621,5 @@ Datareader.DATASETS = {
 	LadsEmployment: '19_3_2017_lq_employment_bres_2009_15.csv',
 	LadsBusiness: '19_3_2017_lq_business_count_idbr_2010_15.csv',
 	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
+	Opportunities: 'opportunity_network.csv',
 }

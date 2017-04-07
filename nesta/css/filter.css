@@ -35,3 +35,14 @@
   background: #1f77b4;
   opacity: 0.9;
 }
+.filter__group__color-sample {
+  position: relative;
+  float: left;
+  border-top: 15px solid #fff;
+}
+.filter__group__color-sample__tick {
+  font-size: 10px;
+}
+.filter__group__color-sample__tick--center {
+  text-align: center;
+}

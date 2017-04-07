@@ -59,4 +59,43 @@ function Filter(container) {
 			.style('width', function(d) { return Math.round(2 * scale(d)) + 'px'; })
 			.style('height', function(d) { return Math.round(2 * scale(d)) + 'px'; });
 	}
+
+	this.addColorScale = function(title, maxValue, minColor, maxColor, stepNumber, type) {
+		var group = initGroup(title);
+
+		var stepWidth = Math.floor(FILTER_WIDTH / stepNumber);
+		var step = (maxValue + 1) / stepNumber;
+		var steps = d3.range(stepNumber).map(function(d) {
+			return {
+				min: step * d,
+				max: step * (d + 1)
+			};
+		});
+
+		if (type == 'discrete') {
+			var colorSteps = d3.range(stepNumber).map(function(d) {
+				return d3.interpolateRgb(minColor, maxColor)(d / (stepNumber - 1));
+			});
+
+			var colorScale = d3.scaleQuantize()
+				.domain([0, maxValue])
+				.range(colorSteps);
+
+			var samples = group.selectAll('.filter__group__color-sample').data(steps).enter()
+				.append('div')
+					.classed('filter__group__color-sample', true)
+					.style('width', stepWidth + 'px')
+					.style('border-top-color', function(d) { return colorScale(d.min); });
+
+			if (step == 1)
+				samples.append('div')
+					.attr('class', 'filter__group__color-sample__tick filter__group__color-sample__tick--center')
+					.text(function(d) { return d.min; });
+			else {
+				samples.append('span')
+					.attr('class', 'filter__group__color-sample__tick')
+					.text(function(d) { return d.min; });
+			}
+		}
+	}
 }

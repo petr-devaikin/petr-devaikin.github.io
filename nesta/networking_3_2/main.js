@@ -60,7 +60,7 @@ datareader.readData(Datareader.DATASETS.Lads, function(lads) {
 			highlightedValues: welshCities,
 			sorting: true,
 			logarythmicValueScale: true,
-			legendText: 'Number of attendants of ... (?) in 201(?)',
+			legendText: 'Number of attendants of ... (?) in 201(?) (wrong scale!)',
 			leftAxisLabel: 'From',
 			topAxisLabel: 'To',
 		});

@@ -6,8 +6,10 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		cellHeight: 10,
 		minValue: 0,
 		maxValue: 1,
-		minColor: '#ffeda0',
-		maxColor: '#f03b20',
+		minColor: '#fef0d9',
+		maxColor: '#990000',
+		colorPalette5: ['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'],
+		colorPalette7: ['#fef0d9', '#fdd49e', '#fdbb84', '#fc8d59', '#ef6548', '#d7301f', '#990000'],
 		logarythmicValueScale: false,
 		rotateYAxisTips: true,
 		showLegend: true,
@@ -49,7 +51,7 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		colorScale = d3.scaleQuantize()
 			.domain([params.minValue, params.maxValue])
 			.range(colorSteps);
-		}
+	}
 
 	var graphWidth = xValues.length * params.cellWidth,
 		graphHeight = yValues.length * params.cellHeight;
@@ -401,6 +403,32 @@ function Heatmap(svg, xValues, yValues, data, p) {
 		}
 
 		function drawData() {
+			//background
+
+			var bg = graphArea.append('g').classed('vis__graph__bg', true);
+			bg.append('rect')
+				.attr('width', graphWidth)
+				.attr('height', graphHeight)
+				.attr('fill', params.minColor);
+			var xLines = d3.range(xValues.length - 1);
+			var yLines = d3.range(yValues.length - 1);
+			bg.selectAll('.vis__graph__bg__line--hor').data(yLines).enter()
+				.append('line')
+					.attr('x1', 0)
+					.attr('y1', function(d) { return (d + 1) * params.cellHeight - 0.5; })
+					.attr('x2', graphWidth)
+					.attr('y2', function(d) { return (d + 1) * params.cellHeight - 0.5; })
+					.attr('stroke', '#fff');
+			bg.selectAll('.vis__graph__bg__line--vert').data(xLines).enter()
+				.append('line')
+					.attr('x1', function(d) { return (d + 1) * params.cellWidth - 0.5; })
+					.attr('y1', 0)
+					.attr('x2', function(d) { return (d + 1) * params.cellWidth - 0.5; })
+					.attr('y2', graphHeight)
+					.attr('stroke', '#fff');
+
+			// cells
+
 			var cells = graphArea.selectAll('.vis__graph__cell').data(data)
 				.enter().append('g')
 					.classed('vis__graph__cell', true)
@@ -408,23 +436,24 @@ function Heatmap(svg, xValues, yValues, data, p) {
 						return 'translate({0},{1})'.format(xScale(d.x) - params.cellWidth / 2, yScale(d.y) - params.cellHeight / 2);
 					});
 
-
+			/*
 			cells.append('rect')
 				.classed('vis__graph__cell__bg', true)
 				.attr('x', 0)
 				.attr('y', 0)
 				.attr('width', params.cellWidth)
 				.attr('height', params.cellHeight);
+			*/
 
 			cells.append('rect')
 				.classed('vis__graph__cell__value', true)
-				.attr('x', 1)
-				.attr('y', 1)
-				.attr('width', params.cellWidth - 2)
-				.attr('height', params.cellHeight - 2)
+				.attr('x', 0.5)
+				.attr('y', 0.5)
+				.attr('width', params.cellWidth - 1)
+				.attr('height', params.cellHeight - 1)
 				.attr('fill', function(d) { return colorScale(d.value); });
 
-			cells
+			cells.filter(function(d) { return d.value > 0; })
 				.on('mouseover', showHint)
 				.on('mouseout', hideHint);
 
