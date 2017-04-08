@@ -2,8 +2,12 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 	var params = {
 		legendSampleSize: 40,
 		colors: ['#e8e8e8', '#e4acac', '#c85a5a', '#b0d5df', '#ad9ea5', '#985356', '#64acbe', '#627f8c', '#574249'],
+		colorsSymetry: ['#eb0c81', '#f496a4', '#f07621', '#cb9bc5', '#e8e8e8', '#cde18c', '#5b509f', '#9ac8d5', '#0d8943'],
 		areasToZoom: ['Wales'],
 		areasToVisualise: ['Wales'],
+		labelX: '',
+		labelY: '',
+		valueSymmetry: false,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -15,13 +19,29 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 		f.isWelsh = f.area == 'Wales';
 	});
 
-	var maxX, maxY;
+	var rangeX, rangeY;
 
 	function processData(data) {
-		maxX = d3.max(data, function(d) { return d.x; });
-		maxY = d3.max(data, function(d) { return d.y; });
-		console.log(data);
-		console.log(maxX, maxY);
+		rangeX = d3.extent(data, function(d) { return d.x; });
+		rangeY = d3.extent(data, function(d) { return d.y; });
+
+		if (params.valueSymmetry) {
+			if (rangeX[0] !== undefined) {
+				var absX = Math.max(Math.abs(rangeX[0]), Math.abs(rangeX[1]));
+				rangeX = [-absX, absX];
+			}
+			else
+				rangeX = [undefined, undefined];
+
+			if (rangeY[0] !== undefined) {
+				var absY = Math.max(Math.abs(rangeY[0]), Math.abs(rangeY[1]));
+				rangeY = [-absY, absY];
+			}
+			else
+				rangeY = [undefined, undefined];
+		}
+
+		console.log(rangeX, rangeY);
 
 		subunits.features.forEach(function(f) {
 			f.values = data.find(function(d) { return d.lad == f.name; });
@@ -45,7 +65,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 
 		colorScale = d3.scaleOrdinal()
 			.domain(d3.range(9))
-			.range(params.colors);
+			.range(params.valueSymmetry ? params.colorsSymetry : params.colors);
 
 		function draw() {
 			map = svg.append('g').classed('vis__map', true);
@@ -143,7 +163,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 				.attr('width', 50 + legendSize)
 				.attr('height', 50 + legendSize);
 
-			legend.selectAll('vis__legend__sample').data(params.colors).enter().append('rect')
+			legend.selectAll('vis__legend__sample').data(params.valueSymmetry ? params.colorsSymetry : params.colors).enter().append('rect')
 				.classed('vis__legend__sample', true)
 				.attr('width', params.legendSampleSize)
 				.attr('height', params.legendSampleSize)
@@ -154,28 +174,28 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 					return 'translate({0},{1})'.format(40 + params.legendSampleSize * col, 20 + params.legendSampleSize * row);
 				});
 
-			legend.append('text').text('low')
+			legend.append('text').text(params.valueSymmetry ? '-' : 'low')
 				.attr('text-anchor', 'middle')
 				.attr('transform', 'translate({0},{1})'.format(40 + 0.5 * params.legendSampleSize, 30 + 3 * params.legendSampleSize));
-			legend.append('text').text('high')
+			legend.append('text').text(params.valueSymmetry ? '+' : 'high')
 				.attr('text-anchor', 'middle')
 				.attr('transform', 'translate({0},{1})'.format(40 + 2.5 * params.legendSampleSize, 30 + 3 * params.legendSampleSize));
-			legend.append('text').text('Business number')
+			legend.append('text').text(params.labelX)
 				.attr('text-anchor', 'middle')
-				.style('font-size', '14px')
+				.style('font-size', '12px')
 				.attr('font-weight', 'bold')
 				.attr('transform', 'translate({0},{1})'.format(40 + 1.5 * params.legendSampleSize, 45 + 3 * params.legendSampleSize));
 
 
-			legend.append('text').text('low')
+			legend.append('text').text(params.valueSymmetry ? '-' : 'low')
 				.attr('text-anchor', 'middle')
 				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 20 + 2.5 * params.legendSampleSize, -90));
-			legend.append('text').text('high')
+			legend.append('text').text(params.valueSymmetry ? '+' : 'high')
 				.attr('text-anchor', 'middle')
 				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 20 + 0.5 * params.legendSampleSize, -90));
-			legend.append('text').text('Employment')
+			legend.append('text').text(params.labelY)
 				.attr('text-anchor', 'middle')
-				.style('font-size', '14px')
+				.style('font-size', '12px')
 				.attr('font-weight', 'bold')
 				.attr('transform', 'translate({0},{1}) rotate({2})'.format(20, 20 + 1.5 * params.legendSampleSize, -90));
 		}
@@ -214,14 +234,14 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 		hint.select('.vis__hint__city').text(d.name);
 
 		if (d.values !== undefined) {
-			hint.select('.vis__hint__business').text('Business number LQ: ' + 
+			hint.select('.vis__hint__business').text(params.labelX + ': ' + 
 				(d.values.x !== undefined ? d.values.x.abbrNum(3) : 'no data'));
-			hint.select('.vis__hint__employment').text('Employees number LQ: ' + 
+			hint.select('.vis__hint__employment').text(params.labelY + ': ' + 
 				(d.values.y !== undefined ? d.values.y.abbrNum(3) : 'no data'));
 		}
 		else {
-			hint.select('.vis__hint__business').text('Business number: no data');
-			hint.select('.vis__hint__employment').text('Employees number: no data');
+			hint.select('.vis__hint__business').text(params.labelX + ': no data');
+			hint.select('.vis__hint__employment').text(params.labelY + ': no data');
 		}
 
 		var hintBBox = hint.node().getBBox();
@@ -251,10 +271,17 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 		map.selectAll(".vis__map__lad")
 			.filter(function(d) { return params.areasToVisualise.indexOf(d.area) != -1 && d.values !== undefined; })
 			.attr('fill', function(d) {
-				var col = maxX !== undefined && maxX != 0 ? Math.floor(d.values.x / maxX * 3) : 0;
+				var col = params.valueSymmetry ? 1 : 0;
+				var row = params.valueSymmetry ? 1 : 0;
+
+				if (rangeX[0] !== undefined && rangeX[1] != rangeX[0])
+					col = Math.floor((d.values.x - rangeX[0]) / (rangeX[1] - rangeX[0]) * 3);
 				if (col > 2) col = 2;
-				var row = maxY !== undefined && maxY != 0 ? Math.floor(d.values.y / maxY * 3) : 0;
+
+				if (rangeY[0] !== undefined && rangeY[1] != rangeY[0])
+					row = Math.floor((d.values.y - rangeY[0]) / (rangeY[1] - rangeY[0]) * 3);
 				if (row > 2) row = 2;
+
 				return colorScale(col + 3 * row);
 			})
 	}
