@@ -11,14 +11,14 @@ datareader.readData(Datareader.DATASETS.Contextual, function(lads, data) {
 	data = data.filter(function(d) { return d.lad.isWelsh; });
 
 	var xValues = d3.extent(data, function(d) { return d.complexity_norm; });
-	var yValues = d3.extent(data, function(d) { return d.salary.median; });
+	var yValues = d3.extent(data, function(d) { return d.salary_median; });
 	var rValues = [0, 100];//d3.extent(data, function(d) { return d.employment_rate; });
 	var years = d3.extent(data, function(d) { return d.year; });
 
 	data.forEach(function(d) {
 		d.id = d.lad.code;
 		d.x = d.complexity_norm;
-		d.y = d.salary.median;
+		d.y = d.salary_median;
 		d.r = d.employment_rate;
 	});
 
@@ -47,7 +47,7 @@ datareader.readData(Datareader.DATASETS.Contextual, function(lads, data) {
 		updateHintContent: function(hint, d) {
 			hint.select('.vis__hint__lad').text(d.lad.name);
 			hint.select('.vis__hint__complexity').text('Complexity: ' + d.complexity_norm.abbrNum(2));
-			hint.select('.vis__hint__salary').text('Median salary: £' + d.salary.median.separate());
+			hint.select('.vis__hint__salary').text('Median salary: £' + d.salary_median.separate());
 			hint.select('.vis__hint__employment').text('Employment: ' + d.employment_rate + '%');
 		}
 	});

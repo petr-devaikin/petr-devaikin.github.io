@@ -2,6 +2,8 @@
   position: fixed;
   right: 5px;
   top: 5px;
+  bottom: 5px;
+  overflow: auto;
   width: 200px;
   padding: 10px;
   background: #fff;

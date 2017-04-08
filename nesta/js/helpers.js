@@ -70,3 +70,7 @@ if (typeof jQuery !== 'undefined' && jQuery !== null) {
 	    };
 	})(jQuery);
 }
+
+function parseFloat2(v) {
+	return v == '' ? 0 : parseFloat(v);
+}

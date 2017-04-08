@@ -16,6 +16,7 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 		useLogXScale: false,
 		useLogYScale: false,
 		categories: [],
+		selectedCategory: undefined,
 		maxCircleArea: 200,
 		sampleCount: 7,
 		addHintContent: undefined,
@@ -36,6 +37,7 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 	var hint;
 
 	this.draw = function() {
+		svg.html('');
 		svg.attr('class', 'vis vis--bubblechart');
 
 		/*function addClipRect() {
@@ -70,6 +72,7 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
 			.classed('vis__hints', true);
 
+		console.log(xValues);
 		xScale = (params.useLogXScale ? d3.scaleLog() : d3.scaleLinear())
 			.domain([xValues[0], xValues[1]])
 			.range([30, params.graphWidth]);
@@ -109,11 +112,15 @@ function Bubblechart(svg, xValues, yValues, rValues, data, p) {
 
 		function drawData() {
 			redraw(data);
+
+			if (params.selectedCategory !== undefined)
+				selectCategory(params.selectedCategory);
 		}
 		drawData();
 
 
 		function selectCategory(categoryName) {
+			console.log(categoryName);
 			graphArea.selectAll('.vis__graph__item')
 				.classed('selected', function(d) {
 					return d.category == categoryName || categoryName == 'all';

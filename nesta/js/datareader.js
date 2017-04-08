@@ -496,32 +496,30 @@ function Datareader(base) {
 				return {
 					lad: lads[line.lad_code],
 					year: parseInt(line.year),
-					inactive: parseFloat(line['% of economically inactive who want a job']),
-					nvq: {
-						1: parseFloat(line['% with NVQ1+ - aged 16-64']),
-						2: parseFloat(line['% with NVQ2+ - aged 16-64']),
-						3: parseFloat(line['% with NVQ3+ - aged 16-64']),
-						4: parseFloat(line['% with NVQ4+ - aged 16-64']),
-					},
-					economic_activity_rate: parseFloat(line['Economic activity rate - aged 16-64']),
-					employment_rate: parseFloat(line['Employment rate - aged 16-64']),
-					salary: {
-						median: line['salary_median'] != '' ? parseInt(line['salary_median']) : 0,
-						percentiles: {
-							10: parseInt(line['salary_10_percentile']),
-							20: parseInt(line['salary_10_percentile']),
-							25: parseInt(line['salary_10_percentile']),
-							30: parseInt(line['salary_10_percentile']),
-							40: parseInt(line['salary_10_percentile']),
-							60: parseInt(line['salary_10_percentile']),
-							70: parseInt(line['salary_10_percentile']),
-							75: parseInt(line['salary_10_percentile']),
-							80: parseInt(line['salary_10_percentile']),
-							90: parseInt(line['salary_10_percentile']),
-						}
-					},
-					p70_to_p20: parseFloat(line['p70_to_p20']),
-					complexity_norm: parseFloat(line['complexity_norm'])
+					inactive: parseFloat2(line['% of economically inactive who want a job']),
+
+					nvq1: parseFloat2(line['% with NVQ1+ - aged 16-64']),
+					nvq2: parseFloat2(line['% with NVQ2+ - aged 16-64']),
+					nvq3: parseFloat2(line['% with NVQ3+ - aged 16-64']),
+					nvq4: parseFloat2(line['% with NVQ4+ - aged 16-64']),
+
+					economic_activity_rate: parseFloat2(line['Economic activity rate - aged 16-64']),
+					employment_rate: parseFloat2(line['Employment rate - aged 16-64']),
+
+					salary_median: parseFloat2(line['salary_median']),
+					salary_10: parseFloat2(line['salary_10_percentile']),
+					salary_20: parseFloat2(line['salary_20_percentile']),
+					salary_25: parseFloat2(line['salary_25_percentile']),
+					salary_30: parseFloat2(line['salary_30_percentile']),
+					salary_40: parseFloat2(line['salary_40_percentile']),
+					salary_60: parseFloat2(line['salary_60_percentile']),
+					salary_70: parseFloat2(line['salary_70_percentile']),
+					salary_75: parseFloat2(line['salary_75_percentile']),
+					salary_80: parseFloat2(line['salary_80_percentile']),
+					salary_90: parseFloat2(line['salary_90_percentile']),
+
+					p70_to_p20: parseFloat2(line['p70_to_p20']),
+					complexity_norm: parseFloat2(line['complexity_norm'])
 				};
 			},
 			function(data) {
