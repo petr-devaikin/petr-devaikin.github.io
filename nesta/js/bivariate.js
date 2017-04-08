@@ -1,7 +1,6 @@
 function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 	var params = {
 		legendSampleSize: 40,
-		legendText: '2010 - 2015 (?)',
 		colors: ['#e8e8e8', '#e4acac', '#c85a5a', '#b0d5df', '#ad9ea5', '#985356', '#64acbe', '#627f8c', '#574249'],
 		areasToZoom: ['Wales'],
 		areasToVisualise: ['Wales'],
@@ -142,12 +141,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 			legend.append('rect')
 				.classed('vis__legend__bg', true)
 				.attr('width', 50 + legendSize)
-				.attr('height', 75 + legendSize);
-
-			legend.append('text') // <-- FIX
-				.attr('transform', 'translate({0},{1})'.format(40, 20))
-				.style('font-size', '14px')
-				.text(params.legendText);
+				.attr('height', 50 + legendSize);
 
 			legend.selectAll('vis__legend__sample').data(params.colors).enter().append('rect')
 				.classed('vis__legend__sample', true)
@@ -157,33 +151,33 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 				.attr('transform', function(d, i) {
 					var row = 2 - Math.floor(i / 3);
 					var col = i % 3;
-					return 'translate({0},{1})'.format(40 + params.legendSampleSize * col, 40 + params.legendSampleSize * row);
+					return 'translate({0},{1})'.format(40 + params.legendSampleSize * col, 20 + params.legendSampleSize * row);
 				});
 
 			legend.append('text').text('low')
 				.attr('text-anchor', 'middle')
-				.attr('transform', 'translate({0},{1})'.format(40 + 0.5 * params.legendSampleSize, 50 + 3 * params.legendSampleSize));
+				.attr('transform', 'translate({0},{1})'.format(40 + 0.5 * params.legendSampleSize, 30 + 3 * params.legendSampleSize));
 			legend.append('text').text('high')
 				.attr('text-anchor', 'middle')
-				.attr('transform', 'translate({0},{1})'.format(40 + 2.5 * params.legendSampleSize, 50 + 3 * params.legendSampleSize));
+				.attr('transform', 'translate({0},{1})'.format(40 + 2.5 * params.legendSampleSize, 30 + 3 * params.legendSampleSize));
 			legend.append('text').text('Business number')
 				.attr('text-anchor', 'middle')
 				.style('font-size', '14px')
 				.attr('font-weight', 'bold')
-				.attr('transform', 'translate({0},{1})'.format(40 + 1.5 * params.legendSampleSize, 65 + 3 * params.legendSampleSize));
+				.attr('transform', 'translate({0},{1})'.format(40 + 1.5 * params.legendSampleSize, 45 + 3 * params.legendSampleSize));
 
 
 			legend.append('text').text('low')
 				.attr('text-anchor', 'middle')
-				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 40 + 2.5 * params.legendSampleSize, -90));
+				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 20 + 2.5 * params.legendSampleSize, -90));
 			legend.append('text').text('high')
 				.attr('text-anchor', 'middle')
-				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 40 + 0.5 * params.legendSampleSize, -90));
+				.attr('transform', 'translate({0},{1}) rotate({2})'.format(35, 20 + 0.5 * params.legendSampleSize, -90));
 			legend.append('text').text('Employment')
 				.attr('text-anchor', 'middle')
 				.style('font-size', '14px')
 				.attr('font-weight', 'bold')
-				.attr('transform', 'translate({0},{1}) rotate({2})'.format(20, 40 + 1.5 * params.legendSampleSize, -90));
+				.attr('transform', 'translate({0},{1}) rotate({2})'.format(20, 20 + 1.5 * params.legendSampleSize, -90));
 		}
 		drawKey();
 
