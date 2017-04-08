@@ -32,14 +32,26 @@ function Filter(container) {
 		var group = initGroup(title);
 		var select = group.append('select');
 		var select2 = $(select.node()).select2({
-			data: values.map(function(d) { return { id: d.value, text: d.label }; }),
+			data: values,
 			allowClear: placeholder != '' && placeholder !== undefined,
 			placeholder: placeholder
-		}).change(function() {
+		}).change(function(e, mute) {
 			var value = $(select.node()).val();
-			callback(value);
+			if (!mute)
+				callback(value);
 		});
-		return select2;
+		return {
+			update: function(newValues) {
+				select2.select2('destroy').empty().select2({
+					data: newValues,
+					allowClear: placeholder != '' && placeholder !== undefined,
+					placeholder: placeholder
+				});
+			},
+			setValue: function(value) {
+				$(select.node()).val(value).trigger('change', true);
+			}
+		}
 	}
 
 	this.addBubbleKey = function(title, maxValue, maxRadius, stepNumber) {

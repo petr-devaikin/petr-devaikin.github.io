@@ -366,53 +366,11 @@ function Datareader(base) {
 	}
 
 	// LAD Employment and Business
-	readers[Datareader.DATASETS.LadsEmployment] = function(callback) {
+	readers[Datareader.DATASETS.LadsEmploymentBusiness] = function(callback) {
 		var lads = [];
 		var sectors = [];
 		var subsectors = [];
-
-		var propsToIgnore = ['lad_name', 'year'];
-
-		d3.csv(
-			base + Datareader.DATASETS.LadsBusinessEmployment,
-			function(line, i) {
-				if (i == 0) {
-					var res = {
-						lad: line.lad_name,
-						value: parseFloat(line.year),
-						subsectors: [],
-					}
-					Object.keys(line).forEach(function(prop) {
-						if (propsToIgnore.indexOf(prop) == -1) {
-							var sector = prop.split('_')[0];
-							var subsector = prop.split('_').slice(1).join(' ');
-							
-							if (sectors.indexOf(sectors) == -1) sectors.push(sector);
-							subsectors.push({
-								name: subsector,
-								sector: sector,
-								id: prop,
-							});
-							res.subsectors.push({
-								subsector_id: prop,
-								sector: sector,
-								subsector: subsector,
-								value: parseFloat(line[prop])
-							})
-						}
-					});
-				}
-				return res;
-			},
-			function(rawData) {
-				callback(lads, sectors, subsectors, rawData);
-			}
-		);
-	}
-
-	readers[Datareader.DATASETS.LadsEmploymentBusiness] = function(callback) {
-		var sectors = [];
-		var subsectors = [];
+		var years = [];
 
 		var propsToIgnore = ['lad_name', 'year'];
 
@@ -423,9 +381,8 @@ function Datareader(base) {
 				function(line, i) {
 					var res = {
 						lad: line.lad_name,
-						employment: parseFloat(line.year),
-						business: undefined,
-						subsectors: [],
+						year: parseInt(line.year),
+						subsectors: {},
 					}
 					if (i == 0) {
 						Object.keys(line).forEach(function(prop) {
@@ -442,14 +399,15 @@ function Datareader(base) {
 							}
 						});
 					}
+
+					if (years.indexOf(parseInt(line.year)) == -1) years.push(parseInt(line.year));
+					if (lads.indexOf(line.lad_name) == -1) lads.push(line.lad_name);
+
 					subsectors.forEach(function(sub) {
-						res.subsectors.push({
-							subsector_id: sub.id,
-							sector: sub.sector,
-							subsector: sub.name,
+						res.subsectors[sub.id] = {
 							employment: parseFloat(line[sub.id]),
 							business: undefined
-						});
+						};
 					});
 					return res;
 				})
@@ -459,68 +417,61 @@ function Datareader(base) {
 				function(line, i) {
 					var res = {
 						lad: line.lad_name,
-						business: parseFloat(line.year),
-						subsectors: [],
+						year: parseInt(line.year),
+						subsectors: {},
 					}
-					subsectors.forEach(function(sub) {
-						res.subsectors.push({
-							subsector_id: sub.id,
-							business: parseFloat(line[sub.id])
+					if (i == 0) {
+						Object.keys(line).forEach(function(prop) {
+							if (propsToIgnore.indexOf(prop) == -1) {
+								var sector = prop.split('_')[0];
+								var subsector = prop.split('_').slice(1).join(' ');
+								
+								if (sectors.indexOf(sector) == -1) sectors.push(sector);
+								subsectors.push({
+									name: subsector,
+									sector: sector,
+									id: prop,
+								});
+							}
 						});
+					}
+
+					if (years.indexOf(parseInt(line.year)) == -1) years.push(parseInt(line.year));
+					if (lads.indexOf(line.lad_name) == -1) lads.push(line.lad_name);
+
+					subsectors.forEach(function(sub) {
+						res.subsectors[sub.id] = {
+							business: parseFloat(line[sub.id]),
+							employment: undefined
+						};
 					});
 					return res;
 				})
 			.await(function(error) {
 				var args = arguments;
 
-				var errorLads = [];
-				var errorSubsectors = [];
-
 				// merge
 				var dataEmployment = args[1];
 				var dataBusiness = args[2];
-				dataBusiness.forEach(function(line) {
-					var record = dataEmployment.find(function(d) {
-						return d.lad == line.lad;
+				dataBusiness.forEach(function(businessRecord) {
+					var employmentRecord = dataEmployment.find(function(d) {
+						return d.lad == businessRecord.lad && d.year == businessRecord.year;
 					});
-					if (record === undefined) {
-						if (errorLads.indexOf(line.lad) == -1) errorLads.push(line.lad);
-						return;
+					if (employmentRecord === undefined)
+						dataEmployment.push(businessRecord);
+					else {
+						Object.keys(businessRecord.subsectors).forEach(function(subId) {
+							if (employmentRecord.subsectors[subId] === undefined)
+								employmentRecord.subsectors[subId] = businessRecord.subsectors[subId];
+							else
+								employmentRecord.subsectors[subId].business = businessRecord.subsectors[subId].business;
+						});
 					}
-					record.business = line.business;
-
-					subsectors.forEach(function(sub) {
-						var subsectorEmployment = record.subsectors.find(function(d) {
-							return d.id == sub.id;
-						});
-
-						var subsectorBusiness = line.subsectors.find(function(d) {
-							return d.id == sub.id;
-						});
-
-						if (subsectorEmployment === undefined || subsectorBusiness === undefined) {
-							if (errorSubsectors.indexOf(sub.id) == -1) errorSubsectors.push(sub.id);
-							return;
-						}
-						subsectorEmployment.business = subsectorBusiness.business;
-					});
 				});
 
-				errorLads = errorLads.concat(
-					dataEmployment
-						.filter(function(d) { return d.business === undefined; })
-						.map(function(d) { return d.lad; })
-				);
+				years.sort();
 
-				dataEmployment = dataEmployment.filter(function(d) { return d.business !== undefined; });
-				var lads = dataEmployment.map(function(d) { return d.lad; });
-
-				if (errorLads.length)
-					console.error('Merge error. {0} LADs. {1}...'.format(errorLads.length, errorLads.slice(0,10).join(', ')));
-				if (errorSubsectors.length)
-					console.error('Merge error. {0} Subsectors. {1}...'.format(errorSubsectors.length, errorSubsectors.slice(0,10).join(', ')));
-
-				callback(lads, sectors, subsectors, dataEmployment);
+				callback(lads, years, sectors, subsectors, dataEmployment);
 			});
 	}
 
@@ -658,8 +609,8 @@ Datareader.DATASETS = {
 	IndustryEmployment: '19_3_2017_lad_bres_merged.csv',
 	IndustryBusinessEmployment: '19_3_2017_wales_industry_advantage_2010_15.csv',
 	LadsEmploymentBusiness: 'lads_employment_business',
-	LadsEmployment: '19_3_2017_lq_employment_bres_2009_15.csv',
-	LadsBusiness: '19_3_2017_lq_business_count_idbr_2010_15.csv',
+	LadsEmployment: '5_4_2017_lq_employment_bres_2009_15.csv',
+	LadsBusiness: '5_4_2017_lq_business_count_idbr_2010_15.csv',
 	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
 	Opportunities: 'opportunity_network.csv',
 	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',

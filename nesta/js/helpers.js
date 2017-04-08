@@ -55,3 +55,18 @@ if (!Number.prototype.abbrNum) {
 		return number;
 	}
 }
+
+if (typeof jQuery !== 'undefined' && jQuery !== null) {
+	(function ($) {
+	    $.fn.refreshDataSelect2 = function (data) {
+	        this.select2('data', data);
+
+	        // Update options
+	        var $select = $(this[1]);
+	        var options = data.map(function(item) {
+	            return '<option value="' + item.id + '">' + item.text + '</option>';
+	        });
+	        $select.html(options.join('')).change();
+	    };
+	})(jQuery);
+}

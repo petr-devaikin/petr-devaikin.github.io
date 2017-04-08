@@ -3,46 +3,55 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 		legendSampleSize: 40,
 		legendText: '2010 - 2015 (?)',
 		colors: ['#e8e8e8', '#e4acac', '#c85a5a', '#b0d5df', '#ad9ea5', '#985356', '#64acbe', '#627f8c', '#574249'],
+		areasToZoom: ['Wales'],
+		areasToVisualise: ['Wales'],
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
 
+	var subunits = topojson.feature(ladsMap, ladsMap.objects.lads);
+	subunits.features.forEach(function(f) {
+		f.name = f.properties.lad16nm;
+		f.area = ladsAreas[f.name];
+		f.isWelsh = f.area == 'Wales';
+	});
+
+	var maxX, maxY;
+
+	function processData(data) {
+		maxX = d3.max(data, function(d) { return d.x; });
+		maxY = d3.max(data, function(d) { return d.y; });
+		console.log(data);
+		console.log(maxX, maxY);
+
+		subunits.features.forEach(function(f) {
+			f.values = data.find(function(d) { return d.lad == f.name; });
+			if (params.areasToVisualise.indexOf(f.area) != -1 && f.values === undefined)
+				console.log('Cannot find data for ' + f.name);
+		});
+	}
+
+	var map;
+
 	this.draw = function() {
 		svg.html('').classed('vis--geovis', true);
 
-		function isWelsh(lad) {
-			return ladsAreas[lad] == 'Wales';
-		}
-		function isLadInAreaToZoom(lad) {
-			return ladsAreas[lad] == 'England' || ladsAreas[lad] == 'Wales';
-		}
-		function findValues(lad) {
-			return data.find(function(d) { return d.lad == lad; })
+		function isLadInAreaToZoom(name) {
+			return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
 		}
 
-		var colorSteps = [];
-		for (var i = 0; i < params.legendSteps; i++)
-			colorSteps.push(d3.interpolateRgb(params.minColor, params.maxColor)(i / (params.legendSteps - 1)));
+		function isWelsh(name) {
+			return ladsAreas[name] == 'Wales';
+		}
 
 		colorScale = d3.scaleOrdinal()
 			.domain(d3.range(9))
 			.range(params.colors);
 
 		function draw() {
-			var map = svg.append('g').classed('vis__map', true);
-
-			// calculate max values
-			var maxBusiness = 0;
-			var maxEmployment = 0;
-			data.forEach(function(d) {
-				maxBusiness = Math.max(maxBusiness, d.business);
-				if (d.employment < 20) // !!!!!!!!!!!!----------------------- hot fix
-					maxEmployment = Math.max(maxEmployment, d.employment);
-			});
-			console.log(maxBusiness, maxEmployment);
+			map = svg.append('g').classed('vis__map', true);
 
 			// calculate initial zoom
-
 			var meshToZoom = topojson.mesh(
 				ladsMap,
 				ladsMap.objects.lads,
@@ -52,9 +61,8 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 
 					if (a !== b &&
 						((isLadInAreaToZoom(a.properties.lad16nm) && !isLadInAreaToZoom(b.properties.lad16nm)) ||
-						 (!isLadInAreaToZoom(a.properties.lad16nm) && isLadInAreaToZoom(b.properties.lad16nm)))
-						)
-						return true;
+						(!isLadInAreaToZoom(a.properties.lad16nm) && isLadInAreaToZoom(b.properties.lad16nm))))
+							return true;
 
 					return false;
 				}
@@ -67,27 +75,21 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 
 		    var path = d3.geoPath(projection);
 
-			var subunits = topojson.feature(ladsMap, ladsMap.objects.lads);
-
-		    map.selectAll(".vis__map__lad")
+		    var newMapLads = map.selectAll(".vis__map__lad")
 				.data(subunits.features)
 				.enter().append("path")
 			    	.classed('vis__map__lad', true)
-					.classed('vis__map__lad--welsh', function(d) { return isWelsh(d.properties.lad16nm); })
+					.classed('vis__map__lad--welsh', function(d) { return d.isWelsh; })
 					.attr("d", path)
-					.attr('fill', function(d) {
-						var values = findValues(d.properties.lad16nm);
-						if (values === undefined) {
-							console.log('Cannot find data for ' + d.properties.lad16nm);
-							return '#000';
-						}
+					.attr('fill', '#f8f8f8');
 
-						var col = Math.floor(values.business / maxBusiness * 3);
-						var row = Math.floor(values.employment / maxEmployment * 3);
-						return colorScale(col + 3 * row);
-					})
-					.on('mouseover', showHint)
-					.on('mouseout', hideHint);
+			redraw(data); // add colors
+
+			newMapLads.filter(function(d) { return params.areasToVisualise.indexOf(d.area) != -1; })
+				.on('mouseover', showHint)
+				.on('mouseout', hideHint);
+
+			// Welsh border
 
 			map.append('path')
 				.classed('vis__map__border', true)
@@ -134,7 +136,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 		function drawKey() {
 			var legend = svg.append('g')
 				.classed('vis__legend', true)
-				.attr('transform', 'translate({0},{1})'.format(width - 200, 10));
+				.attr('transform', 'translate({0},{1})'.format(width - 450, 10));
 
 			var legendSize = 3 * params.legendSampleSize;
 			legend.append('rect')
@@ -207,44 +209,62 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 				.attr('dy', 32);
 		}
 		addHint();
-
-		function showHint(d) {
-			var hint = d3.select('.vis__hint');
-
-			var ladName = d.properties.lad16nm;
-			var values = findValues(ladName);
-
-			hint.select('rect').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
-
-			hint.select('.vis__hint__city').text(ladName);
-
-			if (values !== undefined) {
-				hint.select('.vis__hint__business').text('Business number lq(?): ' + values.business.abbrNum(3));
-				hint.select('.vis__hint__employment').text('Employees number lq(?): ' + values.employment.abbrNum(3));
-			}
-			else {
-				hint.select('.vis__hint__business').text('Business number: no data');
-				hint.select('.vis__hint__employment').text('Employees number: no data');
-			}
-
-			var hintBBox = hint.node().getBBox();
-			hint.select('rect')
-				.attr('x', -5)
-				.attr('y', -5)
-				.attr('width', hintBBox.width + 10)
-				.attr('height', hintBBox.height + 10);
-
-			var bbox = this.getBBox();
-
-			svg.select('.vis__hint')
-				.attr('transform', 'translate({0},{1})'.format(bbox.x + (bbox.width - hintBBox.width) / 2, bbox.y + bbox.height + 10))
-				.attr('visibility', 'visible');
-		}
-
-		function hideHint() {
-			svg.select('.vis__hint')
-				.attr('visibility', 'hidden');
-		}
 	}
+
+	// hints
+	function showHint(d) {
+		var hint = d3.select('.vis__hint');
+
+		hint.select('rect').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
+
+		hint.select('.vis__hint__city').text(d.name);
+
+		if (d.values !== undefined) {
+			hint.select('.vis__hint__business').text('Business number LQ: ' + 
+				(d.values.x !== undefined ? d.values.x.abbrNum(3) : 'no data'));
+			hint.select('.vis__hint__employment').text('Employees number LQ: ' + 
+				(d.values.y !== undefined ? d.values.y.abbrNum(3) : 'no data'));
+		}
+		else {
+			hint.select('.vis__hint__business').text('Business number: no data');
+			hint.select('.vis__hint__employment').text('Employees number: no data');
+		}
+
+		var hintBBox = hint.node().getBBox();
+		hint.select('rect')
+			.attr('x', -5)
+			.attr('y', -5)
+			.attr('width', hintBBox.width + 10)
+			.attr('height', hintBBox.height + 10);
+
+		var bbox = this.getBBox();
+
+		svg.select('.vis__hint')
+			.attr('transform', 'translate({0},{1})'.format(bbox.x + (bbox.width - hintBBox.width) / 2, bbox.y + bbox.height + 10))
+			.attr('visibility', 'visible');
+	}
+
+	function hideHint() {
+		svg.select('.vis__hint')
+			.attr('visibility', 'hidden');
+	}
+
+	// redraw
+
+	function redraw(newData) {
+		processData(newData);
+
+		map.selectAll(".vis__map__lad")
+			.filter(function(d) { return params.areasToVisualise.indexOf(d.area) != -1 && d.values !== undefined; })
+			.attr('fill', function(d) {
+				var col = maxX !== undefined && maxX != 0 ? Math.floor(d.values.x / maxX * 3) : 0;
+				if (col > 2) col = 2;
+				var row = maxY !== undefined && maxY != 0 ? Math.floor(d.values.y / maxY * 3) : 0;
+				if (row > 2) row = 2;
+				return colorScale(col + 3 * row);
+			})
+	}
+
+	this.redraw = redraw;
 }
 

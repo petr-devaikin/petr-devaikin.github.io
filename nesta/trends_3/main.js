@@ -12,7 +12,7 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 
 	var selectedVariable = 'count',
 		selectedLad = 'all',
-		selectedDiscipline = '',
+		selectedDiscipline = 'all',
 		selectedTopic = '';
 
 	var bumpchart;
@@ -22,8 +22,7 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 		function calculateRank(data) {
 			years.forEach(function(y) {
 				var currentData = data.filter(function(d) {
-					return d.year == y && d.variable == selectedVariable &&
-						(selectedDiscipline != '' ? d.discipline == selectedDiscipline : true);
+					return d.year == y;
 				});
 
 				currentData.sort(function(a, b) {
@@ -40,7 +39,7 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 		function filterData() {
 			return data.filter(function(d) {
 				return d.variable == selectedVariable &&
-					(selectedDiscipline != '' ? d.discipline == selectedDiscipline : true);
+					(selectedDiscipline != 'all' ? d.discipline == selectedDiscipline : true);
 			});
 		}
 
@@ -66,6 +65,7 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 			leftMargin: 200,
 			rightMargin: 150,
 			bottomMargim: 150,
+			onItemSelect: onItemSelect,
 		});
 		bumpchart.draw();
 	}
@@ -85,7 +85,7 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 
 	filter.addSelectSearchSection(
 		'Local Authority District',
-		[{ value: 'all', label: 'All' }].concat(lads.map(function(l) { return { value: l, label: l }; })),
+		[{ id: 'all', text: 'All' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
 		'',
 		function(v) {
 			selectedLad = v;
@@ -94,21 +94,36 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 
 	filter.addSelectSearchSection(
 		'Discipline',
-		[{ value: 'all', label: 'All' }].concat(disciplines.map(function(l) { return { value: l, label: l }; })),
+		[{ id: 'all', text: 'All' }].concat(disciplines.map(function(l) { return { id: l, text: l }; })),
 		'',
 		function(v) {
 			selectedDiscipline = v;
+
+			bumpchart.select();
+
+			updateSelectTopics();
+
 			drawChart();
 		});
 
-	/*
-	filter.addSelectSearchSection(
+	function updateSelectTopics() {
+		var filteredTopics = topics.filter(function(d) {
+			return selectedDiscipline == 'all' || d.discipline == selectedDiscipline;
+		});
+		var newData = [{ id: '', text: '' }].concat(filteredTopics.map(function(l) { return { id: l.name, text: l.name }; }));
+		topicCallbacks.update(newData);
+	}
+	
+	var topicCallbacks = filter.addSelectSearchSection(
 		'Topic',
-		[{ value: '', label: '' }].concat(topics.map(function(l) { return { value: l.name, label: l.name }; })),
+		[{ id: '', text: '' }].concat(topics.map(function(l) { return { id: l.name, text: l.name }; })),
 		'Search for topic',
 		function(v) {
 			selectedTopic = v;
 			bumpchart.select(lines.find(function(l) { return l.name == v; }));
 		});
-	*/
+
+	function onItemSelect(item) {
+		topicCallbacks.setValue(item.name);
+	}
 });

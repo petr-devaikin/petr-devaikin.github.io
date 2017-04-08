@@ -1,6 +1,9 @@
 .vis--bumpchart .vis__axis {
   font-size: 10px;
 }
+.vis--bumpchart .vis__axis .tick {
+  cursor: pointer;
+}
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
 }

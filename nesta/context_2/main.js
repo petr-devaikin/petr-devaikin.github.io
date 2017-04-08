@@ -72,8 +72,8 @@ datareader.readData(Datareader.DATASETS.Contextual, function(lads, data) {
 		}
 	);
 
-	var ladOptions = [{ value: '', label: '' }]
-		.concat(Object.keys(lads).map(function(d) { return { value: d, label: lads[d].name }; }));
+	var ladOptions = [{ id: '', text: '' }]
+		.concat(Object.keys(lads).map(function(d) { return { id: d, text: lads[d].name }; }));
 	var ladSelect = filter.addSelectSearchSection(
 		'Local Authority District',
 		ladOptions,

@@ -6,6 +6,7 @@
   padding: 10px;
   background: #fff;
   border: 1px solid #eee;
+  z-index: 100;
 }
 .filter__group {
   font-size: 12px;
@@ -16,6 +17,9 @@
   margin: 0 0 5px;
   font-size: 14px;
   text-transform: uppercase;
+}
+.filter__group select {
+  width: 200px;
 }
 .filter__group__option {
   display: block;
