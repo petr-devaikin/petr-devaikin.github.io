@@ -5,93 +5,122 @@ var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
+var datareader = new Datareader();
 
-function getFilterValues() {
-	return {
-		source: d3.select('.m-filters__source').node().value,
+datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, data) {
+	var selectedVariable = 'attendants',
+		selectedLad = 'Cardiff',
+		selectedTopic = '';
+
+	var bumpchart;
+	var lines;
+
+
+	function calculateRank(data) {
+		years.forEach(function(y) {
+			var currentData = data.filter(function(d) {
+				return d.year == y;
+			});
+
+			currentData.sort(function(a, b) {
+				return b[selectedVariable] - a[selectedVariable];
+			});
+
+			currentData.forEach(function(d, i) { d.position = i + 1; });
+		});
 	}
-}	
 
-function setupFilters() {
-	var filters = d3.select('.m-filters');
-	filters.selectAll('input,select').on('change', function() {
-		loadData();
-	});
-}
-setupFilters();
+	function filterData() {
+		return data.filter(function(d) {
+			return d.lad == selectedLad;
+		});
+	}
 
-var xValues = [],
-	xValuesMap = {};
+	function getTopics() {
+		var fData = filterData();
+		var topics = {
+			'': '',
+		};
+		fData.map(function(d) { topics[d.topic] = { id: d.topic, text: d.topic }; });
+		return Object.keys(topics).map(function(d) { return topics[d]; }).sort(function(a, b) { return a < b ? -1 : 1});
+	}
 
-function loadData() {
-	xValues = [];
-	d3.csv(
-		getFilterValues().source,
-		function(d, i) {
-			var propsToIgnore = ['', 'Meetup Tag'];
+	function groupLines(data) {
+		var lines = {};
+		data.forEach(function(d) {
+			if (lines[d.topic] === undefined)
+				lines[d.topic] = {
+					name: d.topic,
+					values: []
+				}
 
-			if (i == 0) {
-				Object.keys(d).forEach(function(prop, j) {
-					if (propsToIgnore.indexOf(prop) == -1) {
-						var name = prop.split('_').pop();
-						xValues.push(name);
-						xValuesMap[name] = prop;
-					}
-				});
-				xValues.sort();
-			}
-
-			var res = {
-				name: d['Meetup Tag'],
-				values: []
-			}
-			xValues.forEach(function(x, j) {
-				var prop = xValuesMap[x];
-				if (d[prop] !== undefined && d[prop] != '')
-					res.values[j] = {
-						value: parseFloat(d[prop])
-					};
+			lines[d.topic].values.push({
+				year: d.year,
+				position: d.position,
+				value: selectedVariable == 'comparative_adv' ? d[selectedVariable].abbrNum(2) : d[selectedVariable].separate(),
 			});
-			return res;
-		},
-		function(lines) {
-			// calculate the positions
-			xValues.forEach(function(x, i) {
-				lines.sort(function(a, b) {
-					if (a.values[i] !== undefined && b.values[i] !== undefined) {
-						return b.values[i].value - a.values[i].value;
-					}
-					else if (a.values[i] !== undefined)
-						return -1;
-					else if (b.values[i] !== undefined)
-						return 1;
-					else
-						return 0;
-				});
-				lines.forEach(function(d, j) {
-					if (d.values[i] !== undefined)
-						d.values[i].position = j + 1;
-				})
-			});
+		});
+		Object.keys(lines).forEach(function(d) { lines[d].values.sort(function(a, b) { return a.year - b.year; }) }); // sort values by year
+		return Object.keys(lines).map(function(d) { return lines[d]; });
+	}
 
-			svg.html('');
-			var bumpchart = new Bumpchart(svg, xValues, lines, {
-				leftMargin: 150,
-				rightMargin: 150,
-				bottomMargim: 150,
-			});
-			bumpchart.draw();
+	function drawChart() {
+		var fData = filterData();
+		calculateRank(fData);
+		lines = groupLines(fData);
+		
+		bumpchart = new Bumpchart(svg, years, lines, {
+			leftMargin: 200,
+			rightMargin: 150,
+			bottomMargim: 150,
+			onItemSelect: onItemSelect,
+		});
+		bumpchart.draw();
+	}
+	drawChart();
 
-			var searchboxData = lines.map(function(l) { return l.name; });
-			searchboxData.sort();
-			searchboxData.unshift('');
-			$("#searchbox").select2({
-				data: searchboxData
-			}).change(function() {
-				var selectedTopic = $('#searchbox').val();
-				bumpchart.select(lines.find(function(l) { return l.name == selectedTopic; }));
-			});
+
+	// Filter
+	var filter = new Filter(d3.select('.filter'));
+	filter.addRadioSection(
+		'Rank by',
+		[
+			{ value: 'attendants', label: 'Number of attendants', checked: true },
+			{ value: 'events', label: 'Number of events' },
+			{ value: 'comparative_adv', label: 'Comparative advantage (LQ) [?]' }
+		],
+		function(v) {
+			selectedVariable = v;
+			drawChart();
 		}
 	);
-}
-loadData();
+
+	filter.addSelectSearchSection(
+		'Local Authority District',
+		lads.map(function(l) { return { id: l, text: l }; }),
+		'',
+		function(v) {
+			selectedLad = v;
+			bumpchart.select();
+			topicCallbacks.update(getTopics());
+			drawChart();
+		},
+		selectedLad
+	);
+
+	console.log(getTopics());
+	
+	var topicCallbacks = filter.addSelectSearchSection(
+		'Topic',
+		getTopics(),
+		'Search for topic',
+		function(v) {
+			selectedTopic = v;
+			bumpchart.select(lines.find(function(l) { return l.name == v; })); // FIX search by id/name, not by object
+		}
+	);
+
+	function onItemSelect(item) {
+		topicCallbacks.setValue(item.name);
+	}
+});

@@ -1,0 +1,129 @@
+year,LAD,comparative_adv,num_attendants,num_events,Topics
+2012,Cardiff,0,0,0,IT_operations
+2013,Cardiff,2.5236088184464958,210,25,IT_operations
+2014,Cardiff,1.9083571972837967,382,35,IT_operations
+2015,Cardiff,2.0074276821177106,658,74,IT_operations
+2012,Swansea,0,0,0,IT_operations
+2013,Swansea,0,0,0,IT_operations
+2014,Swansea,2.5455761808188533,273,30,IT_operations
+2015,Swansea,1.9299035622572456,330,15,IT_operations
+2012,Cardiff,0,0,0,Project Management
+2013,Cardiff,1.7797661107438956,78,6,Project Management
+2014,Cardiff,1.1169422580290491,88,5,Project Management
+2015,Cardiff,2.6217034004044804,371,13,Project Management
+2012,Cardiff,0,0,0,Data Science
+2013,Cardiff,1.528283752563684,194,21,Data Science
+2014,Cardiff,1.055186603922578,202,22,Data Science
+2015,Cardiff,1.9989017199798127,619,92,Data Science
+2012,Swansea,0,0,0,Data Science
+2013,Swansea,0,0,0,Data Science
+2014,Swansea,0.3315003291041162,34,23,Data Science
+2015,Swansea,0.05571228291839004,9,3,Data Science
+2012,Carmarthenshire,0,0,0,Coding - Wearables - IoT - Hardware
+2013,Carmarthenshire,0,0,0,Coding - Wearables - IoT - Hardware
+2014,Carmarthenshire,0,0,0,Coding - Wearables - IoT - Hardware
+2015,Carmarthenshire,0.2040311479734844,25,16,Coding - Wearables - IoT - Hardware
+2012,Cardiff,0,0,0,Coding - Wearables - IoT - Hardware
+2013,Cardiff,0.10440379083158137,16,4,Coding - Wearables - IoT - Hardware
+2014,Cardiff,0.16499023785390785,41,5,Coding - Wearables - IoT - Hardware
+2015,Cardiff,0.1242411705289793,48,6,Coding - Wearables - IoT - Hardware
+2012,Cardiff,0,0,0,"Website Development (PHP, Drupal)"
+2013,Cardiff,0,0,0,"Website Development (PHP, Drupal)"
+2014,Cardiff,0.8784533648564142,122,2,"Website Development (PHP, Drupal)"
+2015,Cardiff,0,0,0,"Website Development (PHP, Drupal)"
+2012,Pembrokeshire,0,0,0,e-Commerce
+2013,Pembrokeshire,0,0,0,e-Commerce
+2014,Pembrokeshire,0,0,0,e-Commerce
+2015,Pembrokeshire,2.6856848416249233,21,5,e-Commerce
+2012,Pembrokeshire,0,0,0,"Website Development (ruby, java)"
+2013,Pembrokeshire,0,0,0,"Website Development (ruby, java)"
+2014,Pembrokeshire,0,0,0,"Website Development (ruby, java)"
+2015,Pembrokeshire,0.09633530730655636,21,5,"Website Development (ruby, java)"
+2012,Cardiff,0.03585252875253686,14,2,"Website Development (ruby, java)"
+2013,Cardiff,0.3349964421443048,185,12,"Website Development (ruby, java)"
+2014,Cardiff,0.6869418337313226,536,19,"Website Development (ruby, java)"
+2015,Cardiff,0.4440082964808935,453,29,"Website Development (ruby, java)"
+2012,Swansea,0,0,0,"Website Development (ruby, java)"
+2013,Swansea,0,0,0,"Website Development (ruby, java)"
+2014,Swansea,0.5908527700352896,247,8,"Website Development (ruby, java)"
+2015,Swansea,0.9601109792816322,511,18,"Website Development (ruby, java)"
+2012,Gwynedd,0,0,0,"Website Development (ruby, java)"
+2013,Gwynedd,0,0,0,"Website Development (ruby, java)"
+2014,Gwynedd,0,0,0,"Website Development (ruby, java)"
+2015,Gwynedd,0.17497473462961266,46,2,"Website Development (ruby, java)"
+2012,Cardiff,0,0,0,Databases
+2013,Cardiff,1.6048393357280557,210,25,Databases
+2014,Cardiff,1.1752611967949405,215,26,Databases
+2015,Cardiff,2.108886887389159,484,60,Databases
+2012,Swansea,0,0,0,Databases
+2013,Swansea,0,0,0,Databases
+2014,Swansea,0.34689816444919264,34,23,Databases
+2015,Swansea,0.07517234305776861,9,3,Databases
+2012,Carmarthenshire,0,0,0,Mobile development
+2013,Carmarthenshire,0,0,0,Mobile development
+2014,Carmarthenshire,0,0,0,Mobile development
+2015,Carmarthenshire,0.20606377050655852,25,16,Mobile development
+2012,Cardiff,0,0,0,Mobile development
+2013,Cardiff,0,0,0,Mobile development
+2014,Cardiff,0.07326998740759888,19,2,Mobile development
+2015,Cardiff,0.27709923791020835,106,12,Mobile development
+2012,Gwynedd,0,0,0,Mobile development
+2013,Gwynedd,0,0,0,Mobile development
+2014,Gwynedd,0,0,0,Mobile development
+2015,Gwynedd,0.466672195764786,46,2,Mobile development
+2012,Cardiff,0.26205596318436924,14,2,Design (UI/UX)
+2013,Cardiff,1.1890993497335438,169,8,Design (UI/UX)
+2014,Cardiff,2.6476048960645864,523,15,Design (UI/UX)
+2015,Cardiff,0.9184986867117141,325,12,Design (UI/UX)
+2012,Swansea,0,0,0,Design (UI/UX)
+2013,Swansea,0,0,0,Design (UI/UX)
+2014,Swansea,2.258273482497674,239,7,Design (UI/UX)
+2015,Swansea,2.6383462622381297,487,16,Design (UI/UX)
+2012,Gwynedd,0,0,0,Design (UI/UX)
+2013,Gwynedd,0,0,0,Design (UI/UX)
+2014,Gwynedd,0,0,0,Design (UI/UX)
+2015,Gwynedd,0.5045191310660143,46,2,Design (UI/UX)
+2012,Pembrokeshire,0,0,0,Entrepreneurship
+2013,Pembrokeshire,0,0,0,Entrepreneurship
+2014,Pembrokeshire,0,0,0,Entrepreneurship
+2015,Pembrokeshire,0.1413010749058923,21,5,Entrepreneurship
+2012,Cardiff,0,0,0,Entrepreneurship
+2013,Cardiff,0.2157944787468004,78,6,Entrepreneurship
+2014,Cardiff,0.19708464825602512,88,5,Entrepreneurship
+2015,Cardiff,0.4514217808838809,314,18,Entrepreneurship
+2012,Cardiff,0,0,0,Programming
+2013,Cardiff,1.2835172540335598,162,7,Programming
+2014,Cardiff,1.5301111386231103,382,11,Programming
+2015,Cardiff,0.499863710947297,195,10,Programming
+2012,Gwynedd,0,0,0,Programming
+2013,Gwynedd,0,0,0,Programming
+2014,Gwynedd,0,0,0,Programming
+2015,Gwynedd,0.4576141638289896,46,2,Programming
+2012,Cardiff,0,0,0,Healthcare - AI
+2013,Cardiff,0,0,0,Healthcare - AI
+2014,Cardiff,0,0,0,Healthcare - AI
+2015,Cardiff,0.09337405608280797,6,2,Healthcare - AI
+2012,Cardiff,0.16480949840166587,14,2,Front-end development
+2013,Cardiff,0.049691294816883766,7,1,Front-end development
+2014,Cardiff,0.07381565579746494,15,1,Front-end development
+2015,Cardiff,0.0914384531104782,30,4,Front-end development
+2012,Swansea,0,0,0,Front-end development
+2013,Swansea,0,0,0,Front-end development
+2014,Swansea,0.0734808815208646,8,1,Front-end development
+2015,Swansea,0.14022534272404996,24,2,Front-end development
+2012,Gwynedd,0,0,0,Front-end development
+2013,Gwynedd,0,0,0,Front-end development
+2014,Gwynedd,0,0,0,Front-end development
+2015,Gwynedd,0.5441142200288007,46,2,Front-end development
+2012,Pembrokeshire,0,0,0,Digital Marketing
+2013,Pembrokeshire,0,0,0,Digital Marketing
+2014,Pembrokeshire,0,0,0,Digital Marketing
+2015,Pembrokeshire,0.2483444869419469,21,5,Digital Marketing
+2012,Cardiff,0,0,0,Digital Marketing
+2013,Cardiff,0,0,0,Digital Marketing
+2014,Cardiff,0.4571427059874008,122,2,Digital Marketing
+2015,Cardiff,0,0,0,Digital Marketing
+2012,Pembrokeshire,0,0,0,Wordpress
+2013,Pembrokeshire,0,0,0,Wordpress
+2014,Pembrokeshire,0,0,0,Wordpress
+2015,Pembrokeshire,3.4404676162509635,21,5,Wordpress

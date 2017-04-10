@@ -4,7 +4,7 @@
 		<title>What are the hot trends in Welsh tech networking?</title>
 		<meta charset=“utf-8”>
 		<link rel="stylesheet" type="text/css" href="../css/bumpchart.css">
-		<link rel="stylesheet" type="text/css" href="../css/filter.css">
+		<link rel="stylesheet" type="text/css" href="main.css">
 
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
@@ -12,13 +12,22 @@
 	</head>
 	<body>
 		<h3>What are the hot trends in Welsh tech networking?</h3>
-		<div class="filter">
+		<div class="m-filters">
+			<label>
+				Source:
+				<select class="m-filters__source">
+					<option value="wales_tags_eigenvector_centrality.csv">eigenvector_centrality</option>
+					<option value="wales_tags_betweenness_centrality.csv">betweenness_centrality</option>
+				</select>
+				<hr/>
+				Search<br/>
+				<select id="searchbox">
+				</select>
+			</label>
 		</div>
 
 		<script src="../js/d3.js" charset="utf-8"></script>
 		<script src="../js/helpers.js"></script>
-		<script src="../js/filter.js"></script>
-		<script src="../js/datareader.js"></script>
 		<script src="../js/bumpchart.js"></script>
 		<script src="main.js"></script>
 	</body>

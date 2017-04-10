@@ -28,18 +28,22 @@ function Filter(container) {
 			});
 	}
 
-	this.addSelectSearchSection = function(title, values, placeholder, callback) {
+	this.addSelectSearchSection = function(title, values, placeholder, callback, selectedValue) {
 		var group = initGroup(title);
 		var select = group.append('select');
 		var select2 = $(select.node()).select2({
 			data: values,
 			allowClear: placeholder != '' && placeholder !== undefined,
 			placeholder: placeholder
-		}).change(function(e, mute) {
+		}).change(function(e, mute) { // mute callback if event triggered from "outside"
 			var value = $(select.node()).val();
 			if (!mute)
 				callback(value);
 		});
+
+		if (selectedValue !== undefined)
+			select2.val(selectedValue).trigger('change', true);
+
 		return {
 			update: function(newValues) {
 				select2.select2('destroy').empty().select2({
