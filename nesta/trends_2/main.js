@@ -14,7 +14,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 	var bumpchart;
 	var lines;
-
+	var maxChange = 0;
 
 	function calculateRank(data) {
 		years.forEach(function(y) {
@@ -28,6 +28,15 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 			currentData.forEach(function(d, i) { d.position = i + 1; });
 		});
+	}
+
+	function calculateMaxChange() {
+		maxChange = 0;
+		lines.forEach(function(l) {
+			for (var i = 1; i < l.values.length; i++)
+				maxChange = Math.max(maxChange, Math.abs(l.values[i].position - l.values[i - 1].position));
+		});
+		return maxChange;
 	}
 
 	function filterData() {
@@ -68,17 +77,18 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		var fData = filterData();
 		calculateRank(fData);
 		lines = groupLines(fData);
+		calculateMaxChange();
+		scaleCallbacks.update(maxChange);
 		
 		bumpchart = new Bumpchart(svg, years, lines, {
 			leftMargin: 200,
 			rightMargin: 150,
 			bottomMargim: 150,
 			onItemSelect: onItemSelect,
+			legendSteps: 5,
 		});
 		bumpchart.draw();
 	}
-	drawChart();
-
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
@@ -121,4 +131,9 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	function onItemSelect(item) {
 		topicCallbacks.setValue(item.name);
 	}
+
+	var scaleCallbacks = filter.addDiscreteDoubleColorScale('Ranking change', maxChange, 5);
+
+
+	drawChart();
 });

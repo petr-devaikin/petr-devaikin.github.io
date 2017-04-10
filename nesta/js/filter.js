@@ -76,7 +76,7 @@ function Filter(container) {
 			.style('height', function(d) { return Math.round(2 * scale(d)) + 'px'; });
 	}
 
-	this.addColorScale = function(title, maxValue, minColor, maxColor, stepNumber, type) {
+	this.addDiscreteColorScale = function(title, maxValue, minColor, maxColor, stepNumber) {
 		var group = initGroup(title);
 
 		var stepWidth = Math.floor(FILTER_WIDTH / stepNumber);
@@ -88,29 +88,63 @@ function Filter(container) {
 			};
 		});
 
-		if (type == 'discrete') {
-			var colorSteps = d3.range(stepNumber).map(function(d) {
-				return d3.interpolateRgb(minColor, maxColor)(d / (stepNumber - 1));
+		var colorSteps = d3.range(stepNumber).map(function(d) {
+			return d3.interpolateRgb(minColor, maxColor)(d / (stepNumber - 1));
+		});
+
+		var colorScale = d3.scaleQuantize()
+			.domain([0, maxValue])
+			.range(colorSteps);
+
+		var samples = group.selectAll('.filter__group__color-sample').data(steps).enter()
+			.append('div')
+				.classed('filter__group__color-sample', true)
+				.style('width', stepWidth + 'px')
+				.style('border-top-color', function(d) { return colorScale(d.min); });
+
+		if (step == 1)
+			samples.append('div')
+				.attr('class', 'filter__group__color-sample__tick filter__group__color-sample__tick--center')
+				.text(function(d) { return d.min; });
+		else {
+			samples.append('span')
+				.attr('class', 'filter__group__color-sample__tick')
+				.text(function(d) { return d.min; });
+		}
+	}
+
+	this.addDiscreteDoubleColorScale = function(title, maxValue, stepNumber) {
+		var group = initGroup(title);
+
+		var palette = ColorPalette.discreteDouble(maxValue, stepNumber);
+		var stepWidth = Math.floor(FILTER_WIDTH / palette.steps.length);
+
+		var samples = group.selectAll('.filter__group__color-sample').data(palette.steps).enter()
+			.append('div')
+				.classed('filter__group__color-sample', true)
+				.style('width', stepWidth + 'px')
+				.style('border-top-color', function(d) { return palette.scale((d.min + d.max) / 2); });
+
+		samples.append('div')
+			.attr('class', 'filter__group__color-sample__tick filter__group__color-sample__tick--center')
+			.text(function(d) {
+				if (d.min == d.max)
+					return d.min;
+				else
+					return '{0} – {1}'.format(d.min, d.max);
 			});
 
-			var colorScale = d3.scaleQuantize()
-				.domain([0, maxValue])
-				.range(colorSteps);
-
-			var samples = group.selectAll('.filter__group__color-sample').data(steps).enter()
-				.append('div')
-					.classed('filter__group__color-sample', true)
-					.style('width', stepWidth + 'px')
-					.style('border-top-color', function(d) { return colorScale(d.min); });
-
-			if (step == 1)
-				samples.append('div')
-					.attr('class', 'filter__group__color-sample__tick filter__group__color-sample__tick--center')
-					.text(function(d) { return d.min; });
-			else {
-				samples.append('span')
-					.attr('class', 'filter__group__color-sample__tick')
-					.text(function(d) { return d.min; });
+		return {
+			update: function(maxValue) {
+				var newPalette = ColorPalette.discreteDouble(maxValue, stepNumber);
+				group.selectAll('.filter__group__color-sample').data(newPalette.steps)
+					.select('.filter__group__color-sample__tick')
+						.text(function(d) {
+							if (d.min == d.max)
+								return d.min;
+							else
+								return '{0} – {1}'.format(d.min, d.max);
+						});
 			}
 		}
 	}

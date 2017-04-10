@@ -8,16 +8,13 @@ function Bumpchart(svg, xValues, data, p) {
 		zeroColor: '#bbb',
 		maxColor: '#1a9850',
 		rotateYAxisTips: true,
-		showLegend: true,
-		legendSteps: 3,
-		legendSampleWidth: 20,
-		legendRoundTo: 0,
 		showLeftAxis: true,
 		showRightAxis: true,
 		showBottomAxis: true,
 		showPositions: 20,
 		positionHeight: 15,
-		onItemSelect: undefined
+		onItemSelect: undefined,
+		legendSteps: 5,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -248,19 +245,9 @@ function Bumpchart(svg, xValues, data, p) {
 			d.change = d.values[Object.keys(d.values)[0]].position - d.values[d.values.length - 1].position;
 			maxChange = Math.max(maxChange, Math.abs(d.change));
 		});
-		
-		// color scale
-		var colorSteps = [];
-		for (var i = 0; i < params.legendSteps + 1; i++) {
-			colorSteps.push(d3.interpolateRgb(params.minColor, params.zeroColor)(i / (params.legendSteps)));
-		}
-		for (var i = 1; i < params.legendSteps + 1; i++) {
-			colorSteps.push(d3.interpolateRgb(params.zeroColor, params.maxColor)(i / (params.legendSteps)));
-		}
+	
 
-		colorScale = d3.scaleQuantize()
-			.domain([-maxChange, maxChange])
-			.range(colorSteps);
+		colorScale = ColorPalette.discreteDouble(maxChange, params.legendSteps).scale;
 
 
 		function drawData() {
@@ -292,71 +279,30 @@ function Bumpchart(svg, xValues, data, p) {
 		}
 
 
-		function drawLegend() {
-			var legend = svg.append('g')
-				.classed('vis__legend', true)
-				.attr('transform', 'translate({0},{1})'.format(params.graphWidth + params.leftMargin + params.rightMargin + 50, params.topMargin));
+		// zoom behaviour
+		var maxYPosition =
+			data.length > params.showPositions ? 
+			(data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight :
+			svg.node().clientHeight;
+		zoom = d3.zoom()
+			.scaleExtent([1, 1])
+			.translateExtent([[0, 0], [svg.node().clientWidth, maxYPosition]])
+			.on('zoom', zoomed);
 
-			var legendWidth = (2 * params.legendSteps + 1) * params.legendSampleWidth;
-			legend.append('rect')
-				.classed('vis__legend__bg', true)
-				.attr('width', 20 + legendWidth)
-				.attr('height', params.legendSampleWidth + 50);
 
-			legend.append('text') // <-- FIX
-				.attr('transform', 'translate({0},{1})'.format(10, 20))
-				.text('Change in ranking');
-
-			var steps = [];
-			for (var i = -params.legendSteps; i <= params.legendSteps; i++)
-				steps.push(maxChange / (params.legendSteps + 0.5) * i);
-
-			legend.selectAll('vis__legend__sample').data(steps).enter().append('rect')
-				.classed('vis__legend__sample', true)
-				.attr('fill', function(d) { return colorScale(d); })
-				.attr('width', 20)
-				.attr('height', 20)
-				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format(10 + i * 20, 30);
-				});
-
-			legend.selectAll('vis__legend__tips').data(steps).enter().append('text')
-				.classed('vis__legend__tips', true)
-				.attr('transform', function(d, i) {
-					return 'translate({0},{1})'.format((i + 0.5) * 20 + 10, 30 + 20);
-				})
-				.attr('text-anchor', 'middle')
-				.attr('alignment-baseline', 'before-edge')
-				.text(function(d) { return Math.round(d); });
+		function zoomed() {
+			var transform = d3.zoomTransform(this);
 			
+			var shift = -transform.y / params.positionHeight;
+			yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
 
-			// zoom behaviour
-			var maxYPosition =
-				data.length > params.showPositions ? 
-				(data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight :
-				svg.node().clientHeight;
-			zoom = d3.zoom()
-				.scaleExtent([1, 1])
-				.translateExtent([[0, 0], [svg.node().clientWidth, maxYPosition]])
-				.on('zoom', zoomed);
-
-
-			function zoomed() {
-				var transform = d3.zoomTransform(this);
-				
-				var shift = -transform.y / params.positionHeight;
-				yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
-
-				drawAxes();
-				drawData();
-			}
-
-			var t = d3.zoomIdentity.translate(0, 0).scale(1);
-			svg.call(zoom.transform, t);
-			svg.call(zoom);
+			drawAxes();
+			drawData();
 		}
-		if (params.showLegend)
-			drawLegend();
+
+		var t = d3.zoomIdentity.translate(0, 0).scale(1);
+		svg.call(zoom.transform, t);
+		svg.call(zoom);
 	}
 
 	function selectItem(item, fromOutside) {

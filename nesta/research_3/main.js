@@ -28,5 +28,5 @@ datareader.readData(Datareader.DATASETS.Opportunities, function(organisations, d
 	heatmap.draw();
 
 	var filter = new Filter(d3.select('.filter'));
-	filter.addColorScale('Collaboration number', maxValue, '#eff3ff', '#08519c', 5, 'discrete');
+	filter.addDiscreteColorScale('Collaboration number', maxValue, '#eff3ff', '#08519c', 5, 'discrete');
 });

@@ -18,48 +18,62 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 	var bumpchart;
 	var lines;
 
+	var maxChange = 0;
+
+	function calculateRank(data) {
+		years.forEach(function(y) {
+			var currentData = data.filter(function(d) {
+				return d.year == y;
+			});
+
+			currentData.sort(function(a, b) {
+				if (selectedLad == 'all')
+					return b.value - a.value;
+				else
+					return b.ladValues[selectedLad] - a.ladValues[selectedLad];
+			});
+
+			currentData.forEach(function(d, i) { d.position = i + 1; });
+		});
+	}
+
+	function calculateMaxChange() {
+		maxChange = 0;
+		lines.forEach(function(l) {
+			for (var i = 1; i < l.values.length; i++)
+				maxChange = Math.max(maxChange, Math.abs(l.values[i].position - l.values[i - 1].position));
+		});
+		return maxChange;
+	}
+
+	function filterData() {
+		return data.filter(function(d) {
+			return d.variable == selectedVariable &&
+				(selectedDiscipline != 'all' ? d.discipline == selectedDiscipline : true);
+		});
+	}
+
+	function groupLines(data) {
+		var lines = {};
+		data.forEach(function(d) {
+			if (lines[d.topic] === undefined)
+				lines[d.topic] = {
+					name: d.topic,
+					values: []
+				}
+
+			lines[d.topic].values.push({ position: d.position });
+		});
+		return Object.keys(lines).map(function(d) { return lines[d]; });
+	}
+
 	function drawChart() {
-		function calculateRank(data) {
-			years.forEach(function(y) {
-				var currentData = data.filter(function(d) {
-					return d.year == y;
-				});
-
-				currentData.sort(function(a, b) {
-					if (selectedLad == 'all')
-						return b.value - a.value;
-					else
-						return b.ladValues[selectedLad] - a.ladValues[selectedLad];
-				});
-
-				currentData.forEach(function(d, i) { d.position = i + 1; });
-			});
-		}
-
-		function filterData() {
-			return data.filter(function(d) {
-				return d.variable == selectedVariable &&
-					(selectedDiscipline != 'all' ? d.discipline == selectedDiscipline : true);
-			});
-		}
-
-		function groupLines(data) {
-			var lines = {};
-			data.forEach(function(d) {
-				if (lines[d.topic] === undefined)
-					lines[d.topic] = {
-						name: d.topic,
-						values: []
-					}
-
-				lines[d.topic].values.push({ position: d.position });
-			});
-			return Object.keys(lines).map(function(d) { return lines[d]; });
-		}
 
 		var fData = filterData();
 		calculateRank(fData);
 		lines = groupLines(fData);
+		calculateMaxChange();
+		scaleCallbacks.update(maxChange);
 		
 		bumpchart = new Bumpchart(svg, years, lines, {
 			leftMargin: 200,
@@ -69,7 +83,6 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 		});
 		bumpchart.draw();
 	}
-	drawChart();
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
@@ -126,4 +139,9 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 	function onItemSelect(item) {
 		topicCallbacks.setValue(item.name);
 	}
+
+	var scaleCallbacks = filter.addDiscreteDoubleColorScale('Ranking change', maxChange, 5);
+
+
+	drawChart();
 });
