@@ -46,11 +46,30 @@
 				font-size 10px
 
 
-	.vis__legend
+	.vis__overview
 		&__bg
-			stroke #444
-			stroke-width 1
 			fill #fff
-
-		text
-			font-size 10px
+			stroke #ccc
+			
+		&__line
+			fill none
+			stroke-width 1
+			
+			&.blured
+				opacity .1
+				
+			&.selected
+				stroke-width 2
+			
+		&__viewport
+			fill rgba(255, 255, 255, 0)
+			stroke #000
+			stroke-width 2
+			cursor grab
+			cursor -moz-grab
+			cursor -webkit-grab
+			
+		&__title
+			font-size 12px
+			fill #000
+			text-anchor middle

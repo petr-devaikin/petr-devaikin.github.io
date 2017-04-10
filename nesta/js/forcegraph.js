@@ -249,20 +249,16 @@ function Forcegraph(svg, nodes, links, p) {
 				});
 		}
 
-		function equalToEventTarget() {
-		    return this == d3.event.target;
-		}
-
 		svg.on("click", function() {
-	    	console.log('reset selection');
+			console.log('reset selection');
 
-	        selectedNode = undefined;
-	        selectedNeighbors = [];
+			selectedNode = undefined;
+			selectedNeighbors = [];
 
-	        node.classed('selected', false);
-	        link.classed('selected', false);
+			node.classed('selected', false);
+			link.classed('selected', false);
 
-	        nodeOut();
+			nodeOut();
 		});
 	}
 

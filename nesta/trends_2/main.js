@@ -1,5 +1,5 @@
-var width = 1100,
-	height = 900;
+var width = 1050,
+	height = 350;
 
 var svg = d3.select("body").append("svg")
 	.attr("width", width)
@@ -33,8 +33,10 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	function calculateMaxChange() {
 		maxChange = 0;
 		lines.forEach(function(l) {
-			for (var i = 1; i < l.values.length; i++)
-				maxChange = Math.max(maxChange, Math.abs(l.values[i].position - l.values[i - 1].position));
+			var firstValueIndex = Object.keys(l.values)[0];
+			var lastValueIndex = l.values.length - 1;
+			l.change = l.values[firstValueIndex].position - l.values[lastValueIndex].position;
+			maxChange = Math.max(maxChange, Math.abs(l.change));
 		});
 		return maxChange;
 	}
@@ -82,7 +84,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		
 		bumpchart = new Bumpchart(svg, years, lines, {
 			leftMargin: 200,
-			rightMargin: 150,
+			rightMargin: 200,
 			bottomMargim: 150,
 			onItemSelect: onItemSelect,
 			legendSteps: 5,
@@ -129,7 +131,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	);
 
 	function onItemSelect(item) {
-		topicCallbacks.setValue(item.name);
+		topicCallbacks.setValue(item === undefined ? '' : item.name);
 	}
 
 	var scaleCallbacks = filter.addDiscreteDoubleColorScale('Ranking change', maxChange, 5);
