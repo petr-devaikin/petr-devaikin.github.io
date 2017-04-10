@@ -17,6 +17,7 @@ function Bumpchart(svg, xValues, data, p) {
 		legendSteps: 5,
 		overviewWidth: 100,
 		maxOverviewPositionHeight: 5,
+		showOverview: true,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -269,7 +270,8 @@ function Bumpchart(svg, xValues, data, p) {
 			var shift = -transform.y / params.positionHeight;
 			yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
 
-			updateOverviewViewport(transform);
+			if (params.showOverview)
+				updateOverviewViewport(transform);
 
 			drawAxes();
 			drawData();
@@ -383,7 +385,8 @@ function Bumpchart(svg, xValues, data, p) {
 
 	// draw
 	this.draw = function() {
-		drawOverview();
+		if (params.showOverview)
+			drawOverview();
 
 		// FIX! wrong place
 		var t = d3.zoomIdentity.translate(0, 0);

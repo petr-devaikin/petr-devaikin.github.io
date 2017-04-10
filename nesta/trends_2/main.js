@@ -103,6 +103,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 			bottomMargim: 150,
 			onItemSelect: onItemSelect,
 			legendSteps: 5,
+			showOverview: false,
 		});
 		bumpchart.draw();
 	}
