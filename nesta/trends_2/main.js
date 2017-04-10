@@ -17,17 +17,32 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	var maxChange = 0;
 
 	function calculateRank(data) {
-		years.forEach(function(y) {
-			var currentData = data.filter(function(d) {
-				return d.year == y;
-			});
+		for (var i = years.length - 1; i >= 0; i--) {
+			y = years[i];
+
+			var currentData = data.filter(function(d) { return d.year == y; });
+			var nextYearData;
+			if (i < years.length - 1)
+				nextYearData = data.filter(function(d) { return d.year == years[i + 1]; });
 
 			currentData.sort(function(a, b) {
-				return b[selectedVariable] - a[selectedVariable];
+				var aValue, bValue;
+				aValue = a[selectedVariable];
+				bValue = b[selectedVariable];
+
+				if (aValue == bValue && i < years.length - 1) { // copy ranking from the next year
+					//if (y == 2013) console.log(a, b);
+					var aNextPosition = nextYearData.find(function(d) { return d.topic == a.topic; });
+					var bNextPosition = nextYearData.find(function(d) { return d.topic == b.topic; });
+					//if (y == 2013) console.log(aNextPosition, bNextPosition);
+					return aNextPosition.position - bNextPosition.position;
+				}
+				else
+					return bValue - aValue;
 			});
 
 			currentData.forEach(function(d, i) { d.position = i + 1; });
-		});
+		}
 	}
 
 	function calculateMaxChange() {

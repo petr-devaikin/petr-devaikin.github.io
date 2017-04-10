@@ -21,20 +21,38 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 	var maxChange = 0;
 
 	function calculateRank(data) {
-		years.forEach(function(y) {
-			var currentData = data.filter(function(d) {
-				return d.year == y;
-			});
+		for (var i = years.length - 1; i >= 0; i--) {
+			y = years[i];
+
+			var currentData = data.filter(function(d) { return d.year == y; });
+			var nextYearData;
+			if (i < years.length - 1)
+				nextYearData = data.filter(function(d) { return d.year == years[i + 1]; });
 
 			currentData.sort(function(a, b) {
-				if (selectedLad == 'all')
+				var aValue, bValue;
+				if (selectedLad == 'all') {
+					aValue = a.value;
+					bValue = b.value;
 					return b.value - a.value;
+				}
+				else {
+					aValue = a.ladValues[selectedLad];
+					bValue = b.ladValues[selectedLad];
+				}
+
+				if (aValue == bValue && i < years.length - 1) { // copy ranking from the next year
+					var aNextPosition = nextYearData.find(function(d) { return d.topic == a.topic });
+					var bNextPosition = nextYearData.find(function(d) { return d.topic == b.topic });
+					//console.log(aNextPosition, bNextPosition);
+					return aNextPosition.position - bNextPosition.position;
+				}
 				else
-					return b.ladValues[selectedLad] - a.ladValues[selectedLad];
+					return bValue - aValue;
 			});
 
 			currentData.forEach(function(d, i) { d.position = i + 1; });
-		});
+		}
 	}
 
 	function calculateMaxChange() {
@@ -64,7 +82,11 @@ datareader.readData(Datareader.DATASETS.TopicActivity, function(lads, discipline
 					values: []
 				}
 
-			lines[d.topic].values.push({ position: d.position });
+			lines[d.topic].values.push({
+				position: d.position,
+				year: d.year,
+				value: selectedLad == 'all' ? d.value : d.ladValues[selectedLad]
+			});
 		});
 		return Object.keys(lines).map(function(d) { return lines[d]; });
 	}
