@@ -116,11 +116,11 @@ function Bumpchart(svg, xValues, data, p) {
 				
 				var isVisible = isPositionVisible(d.position);
 				if ((i == 0 && !isVisible) || (i < 0 && line.values.indexOf(d) == 0)) // on the left axis or the first appearance
-					return '{0} - {1}'.format(leftNames[d.position].name, d.value);
+					return '{0} - {1}'.format(leftNames[d.position].name, d.position);
 				if ((i == xValues.length - 1 && !isVisible) || (i == line.values.length -1 && i < xValues.length - 1)) // right axis or the last appearance
-					return '{0} - {1}'.format(d.value, rightNames[d.position].name);
+					return '{0} - {1}'.format(d.position, rightNames[d.position].name);
 				else
-					return d.value;
+					return d.position;
 			});
 			hints.attr('transform', function(d, i) {
 				if (d === undefined)
@@ -142,7 +142,7 @@ function Bumpchart(svg, xValues, data, p) {
 			hints.attr('visibility', function(d, i) {
 				if (d === undefined)
 					return 'hidden';
-				return 'visible';
+
 				if ((i == 0 || i == xValues.length - 1) && isPositionVisible(d.position))
 					return 'hidden';
 				else
@@ -366,7 +366,7 @@ function Bumpchart(svg, xValues, data, p) {
 			});
 
 		overviewViewport.call(drag);
-		overviewViewport.on('click', function() {
+		overviewArea.on('click', function() {
 			d3.event.stopPropagation();
 		})
 	}
