@@ -285,13 +285,12 @@ function Bumpchart(svg, xValues, data, p) {
 
 	function drawData() {
 		function positionLines(selection) {
-			selection.selectAll('polyline').attr('points', function(line) {
-				var res = '';
-				line.values.forEach(function(x, i) {
-					res += ' ' + xScale(i) + ' ' + yScale(x.position);
-				});
-				return res;
-			});
+			var line = d3.line()
+				.x(function(d, i) { return xScale(i); })
+				.y(function(d) { return yScale(d.position); })
+				.curve(d3.curveMonotoneX);
+
+			selection.selectAll('path').attr('d', line);
 		}
 
 		var lines = graphArea.selectAll('.vis__graph__line').data(data)
@@ -306,11 +305,13 @@ function Bumpchart(svg, xValues, data, p) {
 				selectItem(d);
 			});
 
-		newLines.append('polyline')
-			.classed('vis__graph__line__bg', true);
-		newLines.append('polyline')
+		newLines.append('path')
+			.classed('vis__graph__line__bg', true)
+			.datum(function(d) { return d.values; });
+		newLines.append('path')
 			.classed('vis__graph__line__line', true)
-			.attr('stroke', function(d) { return colorScale(d.change); });
+			.attr('stroke', function(d) { return colorScale(d.change); })
+			.datum(function(d) { return d.values; });
 		newLines.call(positionLines);
 	}
 
@@ -332,16 +333,18 @@ function Bumpchart(svg, xValues, data, p) {
 		var overviewXScale = d3.scaleLinear().domain([0, xValues.length - 1]).range([0, params.overviewWidth]);
 		var overviewYScale = d3.scaleLinear().domain([0.5, linesNumber + 0.5]).range([0, overviewHeight]);
 
-		overviewArea.selectAll('.vis__overview__line').data(data).enter().append('polyline')
-			.classed('vis__overview__line', true)
-			.attr('points', function(line) {
-				var res = '';
-				line.values.forEach(function(x, i) {
-					res += ' ' + overviewXScale(i) + ' ' + overviewYScale(x.position);
-				});
-				return res;
-			})
-			.attr('stroke', function(d) { return colorScale(d.change); });
+		var line = d3.line()
+			.x(function(d, i) { return overviewXScale(i); })
+			.y(function(d) { return overviewYScale(d.position); })
+			.curve(d3.curveMonotoneX);
+
+		var overviewLines = overviewArea.selectAll('.vis__overview__line').data(data).enter().append('g')
+			.classed('vis__overview__line', true);
+
+		overviewLines.append('path')
+			.attr('stroke', function(d) { return colorScale(d.change); })
+			.datum(function(d) { return d.values; })
+			.attr('d', line);
 
 		overviewViewport = overviewArea.append('rect')
 			.classed('vis__overview__viewport', true)
