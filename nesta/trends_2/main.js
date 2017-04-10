@@ -107,8 +107,6 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		},
 		selectedLad
 	);
-
-	console.log(getTopics());
 	
 	var topicCallbacks = filter.addSelectSearchSection(
 		'Topic',

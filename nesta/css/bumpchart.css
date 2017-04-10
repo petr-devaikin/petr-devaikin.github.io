@@ -11,6 +11,9 @@
   font-weight: bold;
   font-size: 12px;
 }
+.vis--bumpchart .vis__graph__line {
+  cursor: pointer;
+}
 .vis--bumpchart .vis__graph__line__line {
   fill: none;
   stroke-width: 2;

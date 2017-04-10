@@ -5,7 +5,7 @@ function Bumpchart(svg, xValues, data, p) {
 		topMargin: 20,
 		graphWidth: 500,
 		minColor: '#d73027',
-		zeroColor: '#ccc',
+		zeroColor: '#bbb',
 		maxColor: '#1a9850',
 		rotateYAxisTips: true,
 		showLegend: true,
@@ -71,6 +71,9 @@ function Bumpchart(svg, xValues, data, p) {
 				.on('mouseover', function(d, i) { showHints(names[d]); })
 				.on('mouseout', function(d, i) { hideHints(); })
 				.on('click', function(d) { selectItem(names[d]); })
+				.attr('visibility', function(d) {
+					return names[d] !== undefined ? 'visible' : 'hidden';
+				})
 				.select('text')
 					.attr('fill', function(d, i) {
 						if (names[d] !== undefined) 
@@ -277,7 +280,8 @@ function Bumpchart(svg, xValues, data, p) {
 			var newLines = points.enter().append('g')
 				.classed('vis__graph__line', true)
 				.on('mouseover', showHints)
-				.on('mouseout', hideHints);
+				.on('mouseout', hideHints)
+				.on('click', function(d) { selectItem(d); });
 
 			newLines.append('polyline')
 				.classed('vis__graph__line__bg', true);
@@ -327,16 +331,19 @@ function Bumpchart(svg, xValues, data, p) {
 			
 
 			// zoom behaviour
-			
+			var maxYPosition =
+				data.length > params.showPositions ? 
+				(data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight :
+				svg.node().clientHeight;
 			zoom = d3.zoom()
 				.scaleExtent([1, 1])
-				.translateExtent([[0, 0], [svg.node().clientWidth, (data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight]])
+				.translateExtent([[0, 0], [svg.node().clientWidth, maxYPosition]])
 				.on('zoom', zoomed);
 
 
 			function zoomed() {
 				var transform = d3.zoomTransform(this);
-				//console.log(transform);
+				
 				var shift = -transform.y / params.positionHeight;
 				yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
 
@@ -368,13 +375,22 @@ function Bumpchart(svg, xValues, data, p) {
 		if (item !== undefined) {
 			var lastValue = item.values[item.values.length - 1];
 			var t = d3.zoomTransform(svg.node());
-			var shift = graphHeight / 2 - yScale(lastValue.position);
-			//if (t.y - shift < 0) shift = -t.y;
 
-			svg.transition()
-				.duration(500)
-				.ease(d3.easeLinear)
-				.call(zoom.transform, t.translate(0, shift));
+			if (data.length > params.showPositions) {
+				var shift;
+				if (lastValue.position <= params.showPositions / 2)
+					shift = - t.y;
+				else if (lastValue.position >= data.length - params.showPositions / 2) {
+					shift = - params.positionHeight * data.length + graphHeight - t.y;
+				}
+				else
+					shift = graphHeight / 2 - yScale(lastValue.position);
+
+				svg.transition()
+					.duration(500)
+					.ease(d3.easeLinear)
+					.call(zoom.transform, t.translate(0, shift));
+			}
 		}
 	}
 
