@@ -1,0 +1,93 @@
+.vis--arc
+	.vis__graph
+		&__items
+			&__item
+				cursor pointer
+				font-size 12px
+				fill #333
+				opacity 1
+				text-anchor middle
+				alignment-baseline central
+					
+				&.blured
+					opacity .3
+				
+				&.hovered
+					opacity 1
+					fill red
+			
+		&__values
+			&__points
+				&__point
+					cursor pointer
+					circle
+						stroke none
+						fill rgb(31, 119, 180)
+						opacity .6
+					text
+						font-size 12px
+						fill #000
+						alignment-baseline central
+						visibility hidden
+							
+					&.blured
+						circle
+							opacity .1
+					
+					&.hovered
+						circle
+							opacity .8
+							fill red
+						text
+							visibility visible
+							
+						
+			&--left
+				.vis__graph__values__points__point
+					text
+						text-anchor start
+						
+				.vis__graph__values__arcs__arc
+					text
+						text-anchor end
+						
+			&--right
+				.vis__graph__values__points__point
+					text
+						text-anchor end
+						
+				.vis__graph__values__arcs__arc
+					text
+						text-anchor start
+					
+			&__arcs
+				&__arc
+					&__bg
+						fill none
+						stroke rgba(255, 255, 255, 0);
+						
+					&__line
+						fill none
+						stroke #888
+						opacity .5
+						
+					text
+						font-size 12px
+						fill #000
+						alignment-baseline central
+						visibility hidden
+					
+					&.blured
+						pointer-events none
+						
+						.vis__graph__values__arcs__arc__line
+							opacity .03
+						
+					&.hovered
+						.vis__graph__values__arcs__arc__line
+							opacity .6
+							stroke red
+							
+						text
+							visibility visible
+						

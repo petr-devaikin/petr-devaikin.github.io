@@ -624,6 +624,77 @@ function Datareader(base) {
 			}
 		);
 	};
+
+	// Meetup attendance
+	readers[Datareader.DATASETS.MeetupAttendance] = function(callback) {
+		var groups = {},
+			years = [],
+			links = [];
+
+		d3.queue()
+			.defer(
+				d3.csv,
+				base + 'groups_attendants_events.csv',
+				function(line, i) {
+					return {
+						name: line.group_name,
+						year: parseInt(line.event_date),
+						events: parseInt(line.number_of_events),
+						attendants: parseInt(line.number_of_attendants)
+					};
+				})
+			.defer(
+				d3.csv,
+				base + 'attendant_cooccurrence_in_groups.csv',
+				function(line, i) {
+					return {
+						group1: line.group1,
+						group2: line.group2,
+						year: parseInt(line.year),
+						value: parseFloat(line.normalised_attendant_cooccurrence),
+					}
+				})
+			.await(function(error) {
+				var args = arguments;
+
+				var dataAttendance = args[1];
+				var dataCooccurrence = args[2];
+
+				dataAttendance.forEach(function(d) {
+					if (years.indexOf(d.year) == -1) years.push(d.year);
+
+					if (groups[d.name] === undefined)
+						groups[d.name] = {
+							name: d.name,
+							values: {}
+						}
+
+					groups[d.name].values[d.year] = {
+						events: d.events,
+						attendants: d.attendants,
+					}
+				});
+
+				dataCooccurrence.forEach(function(d) {
+					if (d.group1 == d.group2) return;
+					var reversedLink = links.find(function(l) {
+						return l.source == d.group2 && l.target == d.group1 && l.year == d.year;
+					});
+					if (reversedLink !== undefined) return;
+
+					links.push({
+						year: d.year,
+						source: d.group1,
+						target: d.group2,
+						value: d.value,
+					});
+				});
+
+				years.sort();
+				groups = Object.keys(groups).map(function(d) { return groups[d]; });
+				callback(years, groups, links);
+			});
+	}
 }
 
 Datareader.DATASETS = {
@@ -645,4 +716,5 @@ Datareader.DATASETS = {
 	Opportunities: 'opportunity_network.csv',
 	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',
 	HotTrends: 'hot_trends.csv',
+	MeetupAttendance: 'meetup_attendance'
 }
