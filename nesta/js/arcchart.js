@@ -6,6 +6,7 @@ function Arcchart(svg, p) {
 		itemHeight: 20,
 		pointMaxRadius: 20,
 		arcMaxThickness: 5,
+		transitionDuration: 500,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -23,6 +24,7 @@ function Arcchart(svg, p) {
 		rScale,
 		arcScale;
 
+	var transition;
 
 	function init() {
 		svg.html('');
@@ -60,6 +62,11 @@ function Arcchart(svg, p) {
 		yScale = d3.scaleOrdinal();
 		rScale = d3.scaleSqrt().range([0, params.pointMaxRadius]);
 		arcScale = d3.scaleLinear().range([0, params.arcMaxThickness]);
+
+		// Transition
+		transition = d3.transition()
+		    .duration(params.transitionDuration)
+		    .ease(d3.easeLinear);
 	}
 	init();
 
@@ -85,8 +92,8 @@ function Arcchart(svg, p) {
 		rScale.domain([0, maxValue]);
 
 		var maxArcThickness = Math.max(
-			d3.max(leftConnections, function(d) { return d.value; }),
-			d3.max(rightConnections, function(d) { return d.value; })
+			leftConnections.length ? d3.max(leftConnections, function(d) { return d.value; }) : 0,
+			rightConnections.length ? d3.max(rightConnections, function(d) { return d.value; }) : 0
 		);
 
 		arcScale.domain([0, maxArcThickness]);
@@ -105,10 +112,10 @@ function Arcchart(svg, p) {
 			.text(function(d) { return d.name; })
 			.on('mouseover', hoverItem)
 			.on('mouseout', outItem)
-			.on('click', selectItem);
+			.on('click', function(d) { d3.event.stopPropagation(); selectItem(d.id); });
 		items.exit().remove();
 
-		items.call(positionItems);
+		items.transition(transition).call(positionItems);
 		newItems.call(positionItems);
 
 		// move left and right parts
@@ -138,13 +145,19 @@ function Arcchart(svg, p) {
 				.classed('vis__graph__values__points__point', true)
 				.on('mouseover', hoverItem)
 				.on('mouseout', outItem)
-				.on('click', selectItem);
+				.on('click', function(d) { d3.event.stopPropagation(); selectItem(d.id); });
 			newPoints.append('circle');
 			newPoints.append('text');
-			points.exit().remove();
+			points.exit()
+				.transition(transition)
+				.style('opacity', 0)
+				.remove();
 
-			points.call(updatePoints);
-			newPoints.call(updatePoints);
+			points.transition(transition).call(updatePoints);
+			newPoints.call(updatePoints)
+				.style('opacity', 0)
+				.transition(transition)
+				.style('opacity', 1);
 		}
 		bindPoints(leftPointsArea, leftValues);
 		bindPoints(rightPointsArea, rightValues);
@@ -189,14 +202,23 @@ function Arcchart(svg, p) {
 			newArcs.append('path').classed('vis__graph__values__arcs__arc__bg', true);
 			newArcs.append('path').classed('vis__graph__values__arcs__arc__line', true);
 			newArcs.append('text');
-			arcs.exit().remove();
+			arcs.exit()
+				.transition(transition)
+				.style('opacity', 0)
+				.remove();
 
-			arcs.call(updateArcs);
-			newArcs.call(updateArcs);
+			arcs.transition(transition).call(updateArcs);
+			newArcs.call(updateArcs)
+				.style('opacity', 0)
+				.transition(transition)
+				.style('opacity', 1);
 		}
 
 		bindArcs(leftArcsArea, leftConnections);
 		bindArcs(rightArcsArea, rightConnections);
+
+		// save selection
+		selectItem(selectedItemId);
 	}
 
 	// Interaction
@@ -220,10 +242,8 @@ function Arcchart(svg, p) {
 			.classed('hovered', false);
 	}
 
-	function selectItem(d) {
-		d3.event.stopPropagation();
-
-		selectedItemId = d === undefined ? undefined : d.id;
+	function selectItem(itemId) {
+		selectedItemId = itemId;
 		itemsArea.selectAll('.vis__graph__items__item')
 			.classed('blured', function(dd) {
 				return selectedItemId !== undefined && dd.id != selectedItemId;

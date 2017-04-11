@@ -113,7 +113,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	);
 
 	filter.addRadioSection(
-		'Bubble ares [!]',
+		'Bubble area [!]',
 		[
 			{ label: 'Number of events', value: 'events', checked: true },
 			{ label: 'Number of attendants', value: 'attendants' },
