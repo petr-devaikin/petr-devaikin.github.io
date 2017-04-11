@@ -13,6 +13,10 @@
   opacity: 1;
   fill: #f00;
 }
+.vis--arc .vis__graph__values__label {
+  fill: #000;
+  font-size: 14px;
+}
 .vis--arc .vis__graph__values__points__point {
   cursor: pointer;
 }
@@ -43,11 +47,17 @@
 .vis--arc .vis__graph__values--left .vis__graph__values__arcs__arc text {
   text-anchor: end;
 }
+.vis--arc .vis__graph__values--left .vis__graph__values__label {
+  text-anchor: middle;
+}
 .vis--arc .vis__graph__values--right .vis__graph__values__points__point text {
   text-anchor: end;
 }
 .vis--arc .vis__graph__values--right .vis__graph__values__arcs__arc text {
   text-anchor: start;
+}
+.vis--arc .vis__graph__values--right .vis__graph__values__label {
+  text-anchor: middle;
 }
 .vis--arc .vis__graph__values__arcs__arc__bg {
   fill: none;

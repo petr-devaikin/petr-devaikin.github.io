@@ -72,7 +72,9 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			leftValues,
 			rightValues,
 			leftLinks,
-			rightLinks
+			rightLinks,
+			year1,
+			year2
 		);
 	}
 	draw();

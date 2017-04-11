@@ -57,6 +57,13 @@ function Arcchart(svg, p) {
 		rightPointsArea = rightPartArea.append('g')
 			.classed('vis__graph__values__points', true);
 
+		// Labels
+
+		leftPartArea.append('text').classed('vis__graph__values__label', true)
+			.attr('transform', 'translate({0},{1})'.format(0, -20));
+		rightPartArea.append('text').classed('vis__graph__values__label', true)
+			.attr('transform', 'translate({0},{1})'.format(0, -20));
+
 		// Scale
 
 		yScale = d3.scaleOrdinal();
@@ -70,7 +77,7 @@ function Arcchart(svg, p) {
 	}
 	init();
 
-	this.draw = function(items, leftValues, rightValues, leftConnections, rightConnections) {
+	this.draw = function(items, leftValues, rightValues, leftConnections, rightConnections, leftLabel, rightLabel) {
 		// prepare data
 		leftConnections.forEach(function(d) { d.isLeft = true; });
 		rightConnections.forEach(function(d) { d.isLeft = false; });
@@ -97,6 +104,10 @@ function Arcchart(svg, p) {
 		);
 
 		arcScale.domain([0, maxArcThickness]);
+
+		// update labels
+		leftPartArea.select('.vis__graph__values__label').text(leftLabel);
+		rightPartArea.select('.vis__graph__values__label').text(rightLabel);
 
 		// draw items
 		function positionItems(selection) {
