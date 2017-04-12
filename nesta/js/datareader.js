@@ -695,6 +695,80 @@ function Datareader(base) {
 				callback(years, groups, links);
 			});
 	}
+
+	// Meetup network
+	readers[Datareader.DATASETS.MeetupAttendance] = function(callback) {
+		d3.queue()
+			.defer(
+				d3.csv,
+				base + 'networks.csv',
+				function(line, i) {
+					if (line.year != '2015') return undefined; // FIX!
+					return {
+						year: parseInt(line.year),
+						source: line.Source,
+						target: line.Target
+					};
+				})
+			.defer(
+				d3.csv,
+				base + 'tags_topics_colourmap.csv'
+				)
+			.defer(
+				d3.csv,
+				base + 'welsh_rca.csv',
+				function(line, i) {
+					return {
+						year: parseInt(line.year),
+						lad: line.LAD,
+						comparative_adv: parseFloat(line.comparative_adv),
+						topic: line.Topics,
+					}
+				})
+			.await(function(error) {
+				var args = arguments;
+
+				var dataNetwork = args[1];
+				var dataTagTopic = args[2];
+				var dataWelshRCA = args[3];
+
+				var tags = {};
+				var topics = [];
+				var years = [];
+				var lads = [];
+				var network = {};
+
+				dataTagTopic.forEach(function(d) {
+					if (topics.indexOf(d.topic_name) == -1) topics.push(d.topic_name);
+
+					tags[d.tag_name] = {
+						name: d.tag_name,
+						topic: d.topic_name
+					}
+				});
+
+				dataWelshRCA.forEach(function(d) {
+					if (years.indexOf(d.year) == -1) years.push(d.year);
+					if (lads.indexOf(d.lad) == -1) lads.push(d.lad);
+				});
+
+				dataWelshRCA = dataWelshRCA.filter(function(d) { return d.comparative_adv > 0; });
+
+				dataNetwork.forEach(function(d) {
+					if (d.source == d.target) return;
+					if (network[d.year] === undefined) network[d.year] = [];
+					
+					if (network[d.year].find(function(dd) { return dd.source == d.target && dd.target == d.source; } ) === undefined)
+						network[d.year].push({
+							source: d.source,
+							target: d.target,
+							year: d.year
+						});
+				});
+
+				callback(years, lads, topics, tags, network);
+			});
+	}
 }
 
 Datareader.DATASETS = {
@@ -716,5 +790,6 @@ Datareader.DATASETS = {
 	Opportunities: 'opportunity_network.csv',
 	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',
 	HotTrends: 'hot_trends.csv',
-	MeetupAttendance: 'meetup_attendance'
+	MeetupAttendance: 'meetup_attendance',
+	MeetupNetwork: 'meetup_network',
 }

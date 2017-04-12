@@ -16,9 +16,7 @@
   cursor: pointer;
 }
 .vis--forcegraph .vis__graph__nodes__node circle {
-  fill: #fff;
-  stroke-width: 1;
-  stroke: #bbb;
+  stroke: none;
 }
 .vis--forcegraph .vis__graph__nodes__node.blured {
   opacity: 0.3;

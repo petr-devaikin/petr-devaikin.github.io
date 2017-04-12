@@ -1,8 +1,9 @@
-function Forcegraph(svg, nodes, links, p) {
+function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var params = {
 		margin: 50,
 		forceMaxDistance: 100,
-		numberOfLabelsToShow: 10,
+		minRadius: 1,
+		maxRadius: 5,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -10,64 +11,81 @@ function Forcegraph(svg, nodes, links, p) {
 	var width = svg.node().getBoundingClientRect().width;
 	var height = svg.node().getBoundingClientRect().height;
 
-	var nodeConnections = {}
-
-	links.forEach(function(link) {
-		if (nodeConnections[link.source] === undefined) nodeConnections[link.source] = 0;
-		if (nodeConnections[link.target] === undefined) nodeConnections[link.target] = 0;
-		nodeConnections[link.source]++;
-		nodeConnections[link.target]++;
-	});
-
-	nodes.sort(function(a, b) {
-		return nodeConnections[b.id] - nodeConnections[a.id];
-	});
-
 	var selectedNode;
 	var selectedNeighbors = [];
 
-	this.draw = function() {
-		svg.html('');
-		svg.classed('vis--force', true);
+	var graph,
+		linkArea,
+		nodeArea,
+		hint;
 
-		var loader = svg.append('text')
+	var loader;
+
+	var simulation;
+
+	var rScale,
+		colorScale;
+
+	var nodes,
+		links;
+
+	var zoom;
+
+	function init() {
+		svg.html('');
+		svg.classed('vis--forcegraph', true);
+
+		// Loader
+		loader = svg.append('text')
 			.classed('vis__loader', true)
 			.attr('transform', 'translate({0},{1})'.format(width / 2, height / 2))
-			.text('Loading 0%');
+			.text('Building network 0%');
 
-		var graph = svg.append('g').classed('vis__graph', true);
-		var titles = svg.append('g').classed('vis__titles', true).attr('visibility', 'hidden');
+		// graph
+		graph = svg.append('g').classed('vis__graph', true);
 
-		var simulation = d3.forceSimulation()
+		linkArea = graph.append("g").attr("class", "vis__graph__links");
+		nodeArea = graph.append("g").attr("class", "vis__graph__nodes"); 
+
+		hint = svg.append('g').classed('vis__hint', true);
+
+		// scales
+		rScale = d3.scaleSqrt().domain([0, 1]).range([params.minRadius, params.maxRadius]);
+		colorScale = d3.scaleOrdinal()
+			.domain(categories)
+			.range(categories.map(function(d, i) { return d3.interpolateRainbow(i / categories.length); }));
+
+		// simulation
+		simulation = d3.forceSimulation()
 			.force("link", d3.forceLink().id(function(d) { return d.id; }))
 			.force("charge", d3.forceManyBody().distanceMax(params.forceMaxDistance))
 			.force("center", d3.forceCenter(0, 0));
+	}
+	init();
 
-		var link = graph.append("g")
-			.attr("class", "vis__graph__links")
-			.selectAll("line")
-			.data(links)
-				.enter().append("line")
-				.attr('visibility', 'hidden')
-				.attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+	this.draw = function() {
+		links = linkArea.selectAll("line").data(linkData).enter().append("line")
+			.attr('visibility', 'hidden')
+			.attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
-		var node = graph.append("g")
-			.attr("class", "vis__graph__nodes")
-			.selectAll("vis__graph__nodes__node")
-			.data(nodes)
-			.enter().append('g')
-				.classed('vis__graph__nodes__node', true)
-				.attr('visibility', 'hidden');
+		nodes = nodeArea.selectAll("vis__graph__nodes__node").data(nodeData).enter().append('g')
+			.classed('vis__graph__nodes__node', true)
+			.attr('visibility', 'hidden');
 
-		node.append("circle")
-			.attr("r", 5)
-			.on('mouseover', nodeHover)
-			.on('mouseout', nodeOut)
-			.on('click', selectNode);
+		nodes.append("circle")
+			.attr("r", function(d) { return rScale(d.value); })
+			.attr('fill', function(d) {
+				if (d.category === undefined)
+					return '#000';
+				else
+					return colorScale(d.category);
+			});
+			//.on('mouseover', nodeHover)
+			//.on('mouseout', nodeOut)
+			//.on('click', selectNode);
 
-		var labels = titles.selectAll('.vis__titles__label').data(nodes).enter().append('g')
-			.classed('vis__titles__label', true)
-			.classed('default', function(d, i) { return i < params.numberOfLabelsToShow; })
+		/*var labels = titles.selectAll('.vis__titles__label').data(nodes).enter().append('g')
+			.classed('vis__titles__label', true);
 
 		labels.each(function(d, i) {
 			var rect = d3.select(this).append('rect');
@@ -80,7 +98,7 @@ function Forcegraph(svg, nodes, links, p) {
 				.attr('y', bbox.y - 2)
 				.attr('width', bbox.width + 4)
 				.attr('height', bbox.height + 4);
-		});
+		});*/
 
 		function selectNode(d) {
 			d3.event.stopPropagation();
@@ -105,8 +123,8 @@ function Forcegraph(svg, nodes, links, p) {
 				.classed('blured', function(n) { return selectedNeighbors.indexOf(n.id) == -1; })
 				.classed('selected', function(n) { return selectedNeighbors.indexOf(n.id) != -1; });
 
-			labels
-				.classed('selected', function(n) { return selectedNeighbors.indexOf(n.id) != -1; });
+			//labels
+			//	.classed('selected', function(n) { return selectedNeighbors.indexOf(n.id) != -1; });
 
 			nodeHover(d);
 		}
@@ -130,13 +148,13 @@ function Forcegraph(svg, nodes, links, p) {
 				.classed('blured', function(n) { return highlightedNodes.indexOf(n) == -1; })
 				.classed('highlighted', function(n) { return highlightedNodes.indexOf(n) != -1; });*/
 
-			labels
+			/*labels
 				.style('visibility', function(dd, i) {
 					if (dd == d || dd == selectedNode)
 						return 'visible';
 					else
 						return 'hidden';
-				});
+				});*/
 		}
 
 		function nodeOut() {
@@ -157,6 +175,7 @@ function Forcegraph(svg, nodes, links, p) {
 						return d.source.id == selectedNode.id || d.target.id == selectedNode.id;
 				});
 
+			/*
 			labels
 				.style('visibility', function(dd, i) {
 					if ((d3.select(this).classed('default') && selectedNode === undefined) || dd == selectedNode)
@@ -164,32 +183,39 @@ function Forcegraph(svg, nodes, links, p) {
 					else
 						return 'hidden';
 				});
+			*/
 		}
 
       	simulation
-			.nodes(nodes)
+			.nodes(nodeData)
 			.on("tick", tick)
 			.on("end", drawGraph);
 
 		simulation.force("link")
-			.links(links);
+			.links(linkData);
 
 		function tick() {
-			loader.text('Loading ' + Math.round(100 - simulation.alpha() * 100) + '%');
+			loader.text('Building network ' + Math.round(100 - simulation.alpha() * 100) + '%');
 		}
 
 		function drawGraph() {
-			loader.attr('visibility', 'hidden');
-			link.attr('visibility', 'visible');
-			node.attr('visibility', 'visible');
-			titles.attr('visibility', 'visible');
+			// set zoom
+			var scale0 = 1;
+			var t = d3.zoomIdentity.translate(0, 0).scale(scale0);
 
-			titles.selectAll('.default').style('visibility', 'visible');
+			zoom = d3.zoom()
+				.scaleExtent([0.5 * scale0, 3 * scale0])
+				.on("zoom", zoomed);
+
+			// prepare
+			loader.attr('visibility', 'hidden');
+			links.attr('visibility', 'visible');
+			nodes.attr('visibility', 'visible');
 
 			// calculate auto zoom
 			var bbox = { x: Infinity, y: Infinity, width: 0, height: 0 }
 
-			nodes.forEach(function(n) {
+			nodeData.forEach(function(n) {
 				bbox.x = Math.min(bbox.x, n.x);
 				bbox.y = Math.min(bbox.y, n.y);
 				bbox.width = Math.max(bbox.width, n.x);
@@ -214,39 +240,32 @@ function Forcegraph(svg, nodes, links, p) {
 
 			zoom.translateBy(svg, dx, dy);
 			zoom.scaleBy(svg, z);
+			zoom(svg);
 		}
 
-
-		var scale0 = 1;
-		var t = d3.zoomIdentity.translate(0, 0).scale(scale0);
-
-		var zoom = d3.zoom()
-			.scaleExtent([0.5 * scale0, 3 * scale0])
-			.on("zoom", zoomed);
-
-		svg.call(zoom.transform, t);
-		svg.call(zoom);
 
 		function zoomed() {
 			var transform = d3.event.transform;
 
-			link
+			links
 				.attr("x1", function(d, i) { return transform.apply([d.source.x, d.source.y])[0]; })
 				.attr("y1", function(d) { return transform.apply([d.source.x, d.source.y])[1]; })
 				.attr("x2", function(d) { return transform.apply([d.target.x, d.target.y])[0]; })
 				.attr("y2", function(d) { return transform.apply([d.target.x, d.target.y])[1]; });
 
-			node
+			nodes
 				.attr('transform', function(d) {
 					var coords = transform.apply([d.x, d.y]);
 					return 'translate({0},{1})'.format(coords[0], coords[1]);
 				});
 
+			/*
 			labels
 				.attr('transform', function(d) {
 					var coords = transform.apply([d.x, d.y]);
 					return 'translate({0},{1})'.format(coords[0], coords[1]);
 				});
+				*/
 		}
 
 		svg.on("click", function() {
