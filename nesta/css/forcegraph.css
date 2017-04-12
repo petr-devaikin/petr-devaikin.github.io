@@ -4,7 +4,7 @@
   top: 0;
 }
 .vis--forcegraph .vis__graph__links line {
-  stroke: rgba(50,50,50,0.05);
+  stroke: rgba(50,50,50,0.03);
 }
 .vis--forcegraph .vis__graph__links line.blured {
   opacity: 0.5;
@@ -27,17 +27,15 @@
 .vis--forcegraph .vis__graph__nodes__node.selected circle {
   stroke: #f00;
 }
-.vis--forcegraph .vis__titles__label {
+.vis--forcegraph .vis__hint {
   pointer-events: none;
-  visibility: hidden;
 }
-.vis--forcegraph .vis__titles__label rect {
+.vis--forcegraph .vis__hint rect {
   stroke: none;
   fill: rgba(255,255,255,0.8);
 }
-.vis--forcegraph .vis__titles__label text {
-  text-anchor: middle;
-  alignment-baseline: middle;
+.vis--forcegraph .vis__hint text {
+  text-anchor: start;
   font-size: 12px;
 }
 .vis--forcegraph .vis__loader {
