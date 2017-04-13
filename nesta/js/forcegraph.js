@@ -2,7 +2,10 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var params = {
 		margin: 50,
 		forceMaxDistance: 100,
-		maxRadius: 5,
+		maxRadius: 7,
+		buttonSize: 40,
+		addHint: undefined,
+		showHint: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -16,6 +19,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var graph,
 		linkArea,
 		nodeArea,
+		controlsArea,
 		hint;
 
 	var loader;
@@ -23,14 +27,18 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var simulation;
 
 	var rScale,
-		colorScale,
-		opacityScale;
+		colorScale;
+		//opacityScale;
 
 	var nodes,
 		links;
 
 	var zoom,
-		transform;
+		initTransform;
+
+	var zoomInButton,
+		zoomOutButton,
+		zoomInitButton;
 
 	function init() {
 		svg.html('');
@@ -46,12 +54,35 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		graph = svg.append('g').classed('vis__graph', true);
 
 		linkArea = graph.append("g").attr("class", "vis__graph__links");
-		nodeArea = graph.append("g").attr("class", "vis__graph__nodes"); 
+		nodeArea = graph.append("g").attr("class", "vis__graph__nodes");
+
+		// controls
+
+		controlsArea = svg.append('g').attr('class', 'vis__controls')
+			.attr('transform', 'translate({0},{1})'.format(10, height - params.buttonSize - 10))
+			.attr('visibility', 'hidden');
+		function addButton(text, i) {
+			var button = controlsArea.append('g')
+				.classed('vis__controls__button', true)
+				.attr('transform', 'translate({0},{1})'.format((params.buttonSize + 10) * i, 0));
+			button.append('rect').classed('vis__controls__button__bg', true)
+				.attr('width', params.buttonSize)
+				.attr('height', params.buttonSize);
+			button.append('text')
+				.attr('transform', 'translate({0},{1})'.format(params.buttonSize / 2, params.buttonSize / 2))
+				.text(text);
+			return button;
+		}
+
+		zoomInButton = addButton('+', 0);
+		zoomOutButton = addButton('-', 1);
+		zoomInitButton = addButton('Auto', 2);
 
 		// hint
 		hint = svg.append('g').classed('vis__hint', true);
-		hint.append('rect').classed('vis__hint__bg', true);
-		hint.append('text');
+
+		if (params.addHint !== undefined)
+			params.addHint(hint);
 
 		// scales
 		var maxRadius = d3.max(nodeData, function(d) { return d.value; });
@@ -59,7 +90,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		colorScale = d3.scaleOrdinal()
 			.domain(categories)
 			.range(categories.map(function(d, i) { return d3.interpolateRainbow(i / categories.length); }));
-		opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
+		//opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
 
 		// simulation
 		simulation = d3.forceSimulation()
@@ -70,15 +101,17 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	init();
 
 	function updateNodes() {
-		nodes.select(".vis__graph__nodes__node__circle")
-			.attr("r", function(d) { return rScale(d.value); })
-			.attr('fill', function(d) {
-				if (d.category === undefined)
-					return '#666';
-				else
-					return colorScale(d.category);
-			})
-			.classed('muted', function(d) { return d.muted; });
+		nodes
+			.classed('muted', function(d) { return d.muted; })
+				.select(".vis__graph__nodes__node__circle")
+				.attr("r", function(d) { return rScale(d.value); })
+				.attr('fill', function(d) {
+					var color = colorScale(d.category);
+					if (d.opacity === undefined || d.muted)
+						return color;
+					else
+						return d3.interpolate('#fff', color)(d.opacity);
+				});
 	}
 
 	function updateLinks() {
@@ -121,8 +154,14 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		function drawGraph() {
 			// prepare
 			loader.attr('visibility', 'hidden');
-			links.attr('visibility', 'visible');
+			links
+				.attr("x1", function(d) { return d.source.x; })
+				.attr("y1", function(d) { return d.source.y; })
+				.attr("x2", function(d) { return d.target.x; })
+				.attr("y2", function(d) { return d.target.y; })
+				.attr('visibility', 'visible');
 			nodes.attr('visibility', 'visible');
+			controlsArea.attr('visibility', 'visible');
 
 			// calculate auto zoom
 			var bbox = { x: Infinity, y: Infinity, width: 0, height: 0 }
@@ -152,6 +191,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 			// set zoom
 			var scale0 = z;
+
+			initTransform = d3.zoomIdentity.translate(dx, dy).scale(scale0);
 			transform = d3.zoomIdentity.translate(dx, dy).scale(scale0);
 
 			zoom = d3.zoom()
@@ -166,11 +207,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		function zoomed() {
 			transform = d3.event.transform;
 
-			links
-				.attr("x1", function(d, i) { return transform.apply([d.source.x, d.source.y])[0]; })
-				.attr("y1", function(d) { return transform.apply([d.source.x, d.source.y])[1]; })
-				.attr("x2", function(d) { return transform.apply([d.target.x, d.target.y])[0]; })
-				.attr("y2", function(d) { return transform.apply([d.target.x, d.target.y])[1]; });
+			linkArea.attr('transform', 'translate({0},{1}) scale({2})'.format(transform.x, transform.y, transform.k));
 
 			nodes
 				.attr('transform', function(d) {
@@ -181,14 +218,15 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	}
 
 	this.repaint = function(values) {
-		var maxValue = d3.max(Object.keys(values).map(function(d) { return values[d]; }));
+		if (values !== undefined)
+			var maxValue = d3.max(Object.keys(values).map(function(d) { return values[d]; }));
 
 		nodeData.forEach(function(d) {
 			if (values === undefined) {
 				d.opacity = 1;
 				d.muted = false;
 			}
-			else if (d.id !== undefined && values[d.id] !== undefined) {
+			else if (values[d.id] !== undefined) {
 				d.opacity = values[d.id] / maxValue;
 				d.muted = false;
 			}
@@ -210,7 +248,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		if (selectedNode !== undefined) {
 			nodeData.forEach(function(dd) { dd.selected = false; });
 			linkData.forEach(function(dd) {
-				if (dd.target == d || dd.source == d) {
+				if ((dd.target == d || dd.source == d) && !dd.target.muted && !dd.source.muted) {
 					dd.selected = true;
 					dd.target.selected = true;
 					dd.source.selected = true;
@@ -239,11 +277,16 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	}
 
 	function nodeHover(d) {
+		var transform = d3.zoomTransform(svg.node());
+
 		var nodePosition = transform.apply([d.x, d.y]);
-		hint.select('text').text(d.name);
+
 		var rect = hint.select('rect')
-			.attr('x', 0).attr('y', 0)
-			.attr('width', 0).attr('height', 0);
+				.attr('x', 0).attr('y', 0)
+				.attr('width', 0).attr('height', 0);
+
+		if (params.showHint !== undefined)
+			params.showHint(hint, d);
 
 		var hintBBox = hint.node().getBBox();
 
@@ -252,7 +295,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 		hint.attr('transform', 'translate({0},{1})'.format(
 			nodePosition[0] - hintBBox.width / 2,
-			nodePosition[1] - rScale(d.value) - 2
+			nodePosition[1] - rScale(d.value) - hintBBox.height
 		));
 
 		hint.attr('visibility', 'visible');
@@ -268,5 +311,23 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		selectNode();
 
 		nodeOut();
+	});
+
+	// buttons
+
+	zoomInButton.on('click', function() {
+		event.stopPropagation();
+		zoom.scaleBy(svg, 1.1);
+	});
+
+	zoomOutButton.on('click', function() {
+		event.stopPropagation();
+		zoom.scaleBy(svg, .9);
+	});
+
+	zoomInitButton.on('click', function() {
+		event.stopPropagation();
+		transform = initTransform;
+		svg.call(zoom.transform, transform);
 	});
 };

@@ -698,14 +698,19 @@ function Datareader(base) {
 
 	// Meetup network
 	readers[Datareader.DATASETS.MeetupNetwork] = function(callback) {
+		var network = {};
 		d3.queue()
 			.defer(
 				d3.csv,
 				base + 'new_network_with_reduced_edges2.csv',
 				function(line, i) {
-					//if (line.year != '2015') return undefined;
+					if (line.Source == line.Target) return undefined;
+					if (network[line.Target] !== undefined && network[line.Target][line.Source] !== undefined) return undefined;
+
+					if (network[line.Source] === undefined) network[line.Source] = {};
+					network[line.Source][line.Target] = 1;
+
 					return {
-						//year: parseInt(line.year),
 						source: line.Source,
 						target: line.Target
 					};
@@ -739,13 +744,12 @@ function Datareader(base) {
 				var dataTagTopic = args[2];
 				var dataWelshRCA = args[3];
 
-				var tagNames = {},
-					tagIds = {};
+				var tagNames = {};
+					//tagIds = {};
 				var topics = {};
 				var broadTopics = [];
 				var years = [];
 				var lads = [];
-				var network = []; // {}
 
 				dataTagTopic.forEach(function(d, i) {
 					if (broadTopics.indexOf(d.broad_topic) == -1) broadTopics.push(d.broad_topic);
@@ -756,13 +760,12 @@ function Datareader(base) {
 					};
 
 					var tag = {
-						id: i,
+						id: d.tag,
 						name: d.tag,
 						topic: topics[d.topic],
 						count: d.tag_count
 					}
 
-					tagIds[i] = tag;
 					tagNames[d.tag] = tag;
 				});
 
@@ -773,22 +776,7 @@ function Datareader(base) {
 
 				dataWelshRCA = dataWelshRCA.filter(function(d) { return d.comparative_adv > 0; });
 
-				dataNetwork.forEach(function(d) {
-					if (d.source == d.target) return;
-					//if (network[d.year] === undefined) network[d.year] = [];
-
-					var targetId = tagNames[d.target].id,
-						sourceId = tagNames[d.source].id;
-
-					if (network.find(function(dd) { return dd.source == targetId && dd.target == sourceId; }) === undefined)
-						network.push({
-							source: sourceId,
-							target: targetId,
-							//year: d.year
-						});
-				});
-
-				callback(years, lads, tagIds, topics, broadTopics, network, dataWelshRCA);
+				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataWelshRCA);
 			});
 	}
 }

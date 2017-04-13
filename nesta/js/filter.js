@@ -58,6 +58,46 @@ function Filter(container) {
 		}
 	}
 
+	this.addSelectSearchSampleSection = function(title, values, placeholder, callback, selectedValue) {
+		function formatState (state) {
+			if (!state.color) { return state.text; }
+			var $state = $(
+				'<span style="padding-left: 3px; border-left: 15px solid white; border-left-color: ' + state.color + '"> ' + state.text + '</span>'
+			);
+			return $state;
+		};
+
+		var group = initGroup(title);
+		var select = group.append('select');
+		var select2 = $(select.node()).select2({
+			data: values,
+			allowClear: placeholder != '' && placeholder !== undefined,
+			placeholder: placeholder,
+			templateResult: formatState,
+			templateSelection: formatState
+		}).change(function(e, mute) { // mute callback if event triggered from "outside"
+			var value = $(select.node()).val();
+			if (!mute)
+				callback(value);
+		});
+
+		if (selectedValue !== undefined)
+			select2.val(selectedValue).trigger('change', true);
+
+		return {
+			update: function(newValues) {
+				select2.select2('destroy').empty().select2({
+					data: newValues,
+					allowClear: placeholder != '' && placeholder !== undefined,
+					placeholder: placeholder
+				});
+			},
+			setValue: function(value) {
+				$(select.node()).val(value).trigger('change', true);
+			}
+		}
+	}
+
 	this.addBubbleKey = function(title, maxValue, maxRadius, stepNumber) {
 		var group = initGroup(title);
 
