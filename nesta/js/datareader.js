@@ -701,19 +701,26 @@ function Datareader(base) {
 		d3.queue()
 			.defer(
 				d3.csv,
-				base + 'networks.csv',
+				base + 'new_network_with_reduced_edges2.csv',
 				function(line, i) {
-					if (line.year != '2015') return undefined; // FIX!
+					//if (line.year != '2015') return undefined;
 					return {
-						year: parseInt(line.year),
+						//year: parseInt(line.year),
 						source: line.Source,
 						target: line.Target
 					};
 				})
 			.defer(
 				d3.csv,
-				base + 'tags_topics_colourmap.csv'
-				)
+				base + 'tags_count_topics_and_broad_topics.csv',
+				function(line) {
+					return {
+						tag: line.tag_name,
+						topic: line.topic_name,
+						broad_topic: line.broad_topics,
+						tag_count: parseInt(line.tag_count),
+					}
+				})
 			.defer(
 				d3.csv,
 				base + 'welsh_rca.csv',
@@ -733,17 +740,24 @@ function Datareader(base) {
 				var dataWelshRCA = args[3];
 
 				var tags = {};
-				var topics = [];
+				var topics = {};
+				var broadTopics = [];
 				var years = [];
 				var lads = [];
-				var network = {};
+				var network = []; // {}
 
 				dataTagTopic.forEach(function(d) {
-					if (topics.indexOf(d.topic_name) == -1) topics.push(d.topic_name);
+					if (broadTopics.indexOf(d.broad_topic) == -1) broadTopics.push(d.broad_topic);
 
-					tags[d.tag_name] = {
-						name: d.tag_name,
-						topic: d.topic_name
+					if (topics[d.topic] === undefined) topics[d.topic] = {
+						name: d.topic,
+						broad: d.broad_topic
+					};
+
+					tags[d.tag] = {
+						name: d.tag,
+						topic: topics[d.topic],
+						count: d.tag_count
 					}
 				});
 
@@ -756,17 +770,17 @@ function Datareader(base) {
 
 				dataNetwork.forEach(function(d) {
 					if (d.source == d.target) return;
-					if (network[d.year] === undefined) network[d.year] = [];
-					
-					if (network[d.year].find(function(dd) { return dd.source == d.target && dd.target == d.source; } ) === undefined)
-						network[d.year].push({
+					//if (network[d.year] === undefined) network[d.year] = [];
+
+					if (network.find(function(dd) { return dd.source == d.target && dd.target == d.source; } ) === undefined)
+						network.push({
 							source: d.source,
 							target: d.target,
-							year: d.year
+							//year: d.year
 						});
 				});
 
-				callback(years, lads, topics, tags, network);
+				callback(years, lads, tags, topics, broadTopics, network, dataWelshRCA);
 			});
 	}
 }

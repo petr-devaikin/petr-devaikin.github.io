@@ -5,14 +5,18 @@
 	
 	.vis__graph
 		&__links
-			line
-				stroke rgba(50, 50, 50, .03)
+			&__link
+				stroke rgb(50, 50, 50)
+				opacity 0.02
 			
 				&.blured
-					opacity .5
+					opacity 0.004
 					
 				&.selected
-					stroke red
+					opacity .2
+					
+				&.muted
+					opacity 0.004
 		
 		&__nodes
 			&__node
@@ -22,18 +26,17 @@
 					stroke none
 				
 				&.blured
-					opacity .3
-				
-				&.selected
-					opacity 1
-					circle
-						stroke red
+					opacity .15
+					
+				&.muted
+					opacity .15
+					
 						
 	.vis__hint
 		pointer-events none
 		
 		rect
-			stroke none
+			stroke #aaa
 			fill rgba(255, 255, 255, .8)
 		
 		text

@@ -1,4 +1,4 @@
-h1 {
+h1.title {
   position: absolute;
   left: 10px;
   top: 10px;
@@ -7,11 +7,21 @@ h1 {
   z-index: 100;
 }
 
-h2 {
+h2.subtitle {
   position: absolute;
   left: 10px;
   top: 40px;
   margin: 0;
   font-size: 14px;
+  z-index: 100;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -147px;
+  margin-top: -10px;
+  font-size: 18px;
   z-index: 100;
 }

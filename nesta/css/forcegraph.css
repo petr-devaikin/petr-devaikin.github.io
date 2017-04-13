@@ -3,14 +3,18 @@
   left: 0;
   top: 0;
 }
-.vis--forcegraph .vis__graph__links line {
-  stroke: rgba(50,50,50,0.03);
+.vis--forcegraph .vis__graph__links__link {
+  stroke: #323232;
+  opacity: 0.02;
 }
-.vis--forcegraph .vis__graph__links line.blured {
-  opacity: 0.5;
+.vis--forcegraph .vis__graph__links__link.blured {
+  opacity: 0.004;
 }
-.vis--forcegraph .vis__graph__links line.selected {
-  stroke: #f00;
+.vis--forcegraph .vis__graph__links__link.selected {
+  opacity: 0.2;
+}
+.vis--forcegraph .vis__graph__links__link.muted {
+  opacity: 0.004;
 }
 .vis--forcegraph .vis__graph__nodes__node {
   cursor: pointer;
@@ -19,19 +23,16 @@
   stroke: none;
 }
 .vis--forcegraph .vis__graph__nodes__node.blured {
-  opacity: 0.3;
+  opacity: 0.15;
 }
-.vis--forcegraph .vis__graph__nodes__node.selected {
-  opacity: 1;
-}
-.vis--forcegraph .vis__graph__nodes__node.selected circle {
-  stroke: #f00;
+.vis--forcegraph .vis__graph__nodes__node.muted {
+  opacity: 0.15;
 }
 .vis--forcegraph .vis__hint {
   pointer-events: none;
 }
 .vis--forcegraph .vis__hint rect {
-  stroke: none;
+  stroke: #aaa;
   fill: rgba(255,255,255,0.8);
 }
 .vis--forcegraph .vis__hint text {
