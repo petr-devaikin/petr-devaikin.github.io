@@ -17,6 +17,8 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 		graphWidth: 1000
 	});
 
+	console.log(groups);
+
 	function draw() {
 		if (sortBy == 'name')
 			groups.sort(function(a, b) {

@@ -10,26 +10,34 @@
 				opacity 0.02
 			
 				&.blured
-					opacity 0.004
+					opacity 0.01
 					
 				&.selected
 					opacity .2
 					
 				&.muted
-					opacity 0.004
+					opacity 0.01
 		
 		&__nodes
 			&__node
 				cursor pointer
 				
-				circle
+				&__bg
+					fill rgba(255, 255, 255, 0)
+					stroke 0
+				
+				&__circle
 					stroke none
 				
 				&.blured
-					opacity .15
+					.vis__graph__nodes__node__circle
+						opacity .2
+						fill #ccc
 					
 				&.muted
-					opacity .15
+					.vis__graph__nodes__node__circle
+						opacity .2
+						fill #ccc
 					
 						
 	.vis__hint

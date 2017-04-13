@@ -9,7 +9,7 @@ var datareader = new Datareader();
 
 console.log('Data loading');
 
-datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, lads, tags, topics, broadTopics, network, dataWelshRCA) {
+datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, dataWelshRCA) {
 	console.log('Data loaded');
 	d3.select('.loading').remove();
 
@@ -22,23 +22,21 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, lads, 
 	var filteredNetwork = network;//[selectedYear];
 	var nodes = {};
 	var links = [];
+
+	function addNode(nodeId) {
+		if (nodes[nodeId] === undefined) {
+			nodes[nodeId] = {
+				id: nodeId,
+				name: '{0}, {1}. #{2}'.format(tags[nodeId].topic.broad, tags[nodeId].topic.name, tags[nodeId].name),
+				value: tags[nodeId] !== undefined ? tags[nodeId].count : 0,
+				category: tags[nodeId] !== undefined ? tags[nodeId].topic.broad : undefined,
+			};
+		}
+	}
+
 	filteredNetwork.forEach(function(d) {
-		if (nodes[d.source] === undefined) {
-			nodes[d.source] = {
-				id: d.source,
-				name: d.source,
-				value: tags[d.source] !== undefined ? tags[d.source].count : 0,
-				category: tags[d.source] !== undefined ? tags[d.source].topic.broad : undefined,
-			};
-		}
-		if (nodes[d.target] === undefined) {
-			nodes[d.target] = {
-				id: d.target,
-				name: d.target,
-				value: tags[d.target] !== undefined ? tags[d.target].count : 0,
-				category: tags[d.target] !== undefined ? tags[d.target].topic.broad : undefined,
-			};
-		}
+		addNode(d.source);
+		addNode(d.target);
 		links.push({
 			source: nodes[d.source],
 			target: nodes[d.target],
@@ -52,6 +50,30 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, lads, 
 	});
 	graph.draw();
 
+	function repaint() {
+		if (selectedLad !== '') {
+			var topicValues = {};
+
+			dataWelshRCA.forEach(function(d) {
+				if (d.year == selectedYear && d.lad == selectedLad) {
+					topicValues[d.topic] = d.comparative_adv;
+				}
+			});
+
+			var tagValues = {};
+			Object.keys(tags).forEach(function(tagId) {
+				if (topicValues[tags[tagId].topic.name] !== undefined)
+					tagValues[tagId] = topicValues[tags[tagId].topic.name];
+			});
+
+			console.log(tagValues);
+
+			graph.repaint(tagValues);
+		}
+		else
+			graph.repaint();
+	}
+
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
 
@@ -61,14 +83,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, lads, 
 		'',
 		function(v) {
 			selectedLad = v;
-
-			var values = {};
-			dataWelshRCA.forEach(function(d) {
-				if (d.year == selectedYear && d.lad == selectedLad)
-					values[d.topic] = d.comparative_adv;
-			});
-
-			graph.repaint(values);
+			repaint();
 		}
 	);
 

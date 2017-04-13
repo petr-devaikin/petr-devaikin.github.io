@@ -23,7 +23,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var simulation;
 
 	var rScale,
-		colorScale;
+		colorScale,
+		opacityScale;
 
 	var nodes,
 		links;
@@ -58,6 +59,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		colorScale = d3.scaleOrdinal()
 			.domain(categories)
 			.range(categories.map(function(d, i) { return d3.interpolateRainbow(i / categories.length); }));
+		opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
 
 		// simulation
 		simulation = d3.forceSimulation()
@@ -68,7 +70,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	init();
 
 	function updateNodes() {
-		nodes.select("circle")
+		nodes.select(".vis__graph__nodes__node__circle")
 			.attr("r", function(d) { return rScale(d.value); })
 			.attr('fill', function(d) {
 				if (d.category === undefined)
@@ -99,7 +101,9 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			.on('mouseout', nodeOut)
 			.on('click', function(d) { d3.event.stopPropagation(); selectNode(d); });
 
-		nodes.append('circle');
+		nodes.append('circle').classed('vis__graph__nodes__node__bg', true)
+			.attr('r', 4);
+		nodes.append('circle').classed('vis__graph__nodes__node__circle', true);
 		updateNodes();
 
       	simulation
@@ -177,11 +181,21 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	}
 
 	this.repaint = function(values) {
+		var maxValue = d3.max(Object.keys(values).map(function(d) { return values[d]; }));
+
 		nodeData.forEach(function(d) {
-			if (d.category !== undefined && values[d.category] !== undefined)
-				d.value = values[d.category];
-			else
-				d.value = 0;
+			if (values === undefined) {
+				d.opacity = 1;
+				d.muted = false;
+			}
+			else if (d.id !== undefined && values[d.id] !== undefined) {
+				d.opacity = values[d.id] / maxValue;
+				d.muted = false;
+			}
+			else {
+				d.opacity = 0;
+				d.muted = true;
+			}
 		});
 
 		updateNodes();
@@ -226,7 +240,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 	function nodeHover(d) {
 		var nodePosition = transform.apply([d.x, d.y]);
-		hint.select('text').text('{0} – {1}'.format(d.category === undefined ? 'No topic' : d.category, d.name));
+		hint.select('text').text(d.name);
 		var rect = hint.select('rect')
 			.attr('x', 0).attr('y', 0)
 			.attr('width', 0).attr('height', 0);

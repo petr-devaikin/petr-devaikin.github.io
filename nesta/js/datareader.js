@@ -697,7 +697,7 @@ function Datareader(base) {
 	}
 
 	// Meetup network
-	readers[Datareader.DATASETS.MeetupAttendance] = function(callback) {
+	readers[Datareader.DATASETS.MeetupNetwork] = function(callback) {
 		d3.queue()
 			.defer(
 				d3.csv,
@@ -739,14 +739,15 @@ function Datareader(base) {
 				var dataTagTopic = args[2];
 				var dataWelshRCA = args[3];
 
-				var tags = {};
+				var tagNames = {},
+					tagIds = {};
 				var topics = {};
 				var broadTopics = [];
 				var years = [];
 				var lads = [];
 				var network = []; // {}
 
-				dataTagTopic.forEach(function(d) {
+				dataTagTopic.forEach(function(d, i) {
 					if (broadTopics.indexOf(d.broad_topic) == -1) broadTopics.push(d.broad_topic);
 
 					if (topics[d.topic] === undefined) topics[d.topic] = {
@@ -754,11 +755,15 @@ function Datareader(base) {
 						broad: d.broad_topic
 					};
 
-					tags[d.tag] = {
+					var tag = {
+						id: i,
 						name: d.tag,
 						topic: topics[d.topic],
 						count: d.tag_count
 					}
+
+					tagIds[i] = tag;
+					tagNames[d.tag] = tag;
 				});
 
 				dataWelshRCA.forEach(function(d) {
@@ -772,15 +777,18 @@ function Datareader(base) {
 					if (d.source == d.target) return;
 					//if (network[d.year] === undefined) network[d.year] = [];
 
-					if (network.find(function(dd) { return dd.source == d.target && dd.target == d.source; } ) === undefined)
+					var targetId = tagNames[d.target].id,
+						sourceId = tagNames[d.source].id;
+
+					if (network.find(function(dd) { return dd.source == targetId && dd.target == sourceId; }) === undefined)
 						network.push({
-							source: d.source,
-							target: d.target,
+							source: sourceId,
+							target: targetId,
 							//year: d.year
 						});
 				});
 
-				callback(years, lads, tags, topics, broadTopics, network, dataWelshRCA);
+				callback(years, lads, tagIds, topics, broadTopics, network, dataWelshRCA);
 			});
 	}
 }
