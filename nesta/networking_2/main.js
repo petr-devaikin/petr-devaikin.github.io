@@ -127,4 +127,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			draw();
 		}
 	);
+
+	d3.select('.filter').append('h4').text('Key [!]');
+	d3.select('.filter').append('div').text('[line] - normalised number of attendants');
 });
