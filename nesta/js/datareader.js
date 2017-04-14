@@ -779,6 +779,60 @@ function Datareader(base) {
 				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataWelshRCA);
 			});
 	}
+
+	// Movement
+	readers[Datareader.DATASETS.Movement] = function(callback) {
+		var propsToIgnore = ['member_registered_location', 'Topic'];
+
+		d3.queue()
+			.defer(
+				d3.csv,
+				base + 'outward_movement_people_probs.csv'
+			)
+			.defer(
+				d3.csv,
+				base + 'inward_movement_people_probs.csv'
+			)
+			.await(function(error) {
+				var args = arguments;
+
+				var outwardData = args[1];
+				var inwardData = args[2];
+
+				var outward = [];
+				var inward = [];
+
+				var topics = [];
+
+				outwardData.forEach(function(line) {
+					Object.keys(line).forEach(function(prop) {
+						if (topics.indexOf(line.Topic) == -1) topics.push(line.Topic);
+						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0)
+							outward.push({
+								from: line.member_registered_location,
+								to: prop,
+								topic: line.Topic,
+								value: parseFloat(line[prop])
+							});
+					});
+				})
+
+				inwardData.forEach(function(line) {
+					Object.keys(line).forEach(function(prop) {
+						if (topics.indexOf(line.Topic) == -1) topics.push(line.Topic);
+						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0)
+							inward.push({
+								from: line.member_registered_location,
+								to: prop,
+								topic: line.Topic,
+								value: parseFloat(line[prop])
+							});
+					});
+				})
+
+				callback(topics, inward, outward);
+			});
+	}
 }
 
 Datareader.DATASETS = {
@@ -802,4 +856,5 @@ Datareader.DATASETS = {
 	HotTrends: 'hot_trends.csv',
 	MeetupAttendance: 'meetup_attendance',
 	MeetupNetwork: 'meetup_network',
+	Movement: 'movement',
 }

@@ -94,11 +94,11 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 
 		    var path = d3.geoPath(projection);
 
-		    var newMapLads = map.selectAll(".vis__map__lad")
+		    var newMapLads = map.selectAll(".vis__map__lads__lad")
 				.data(subunits.features)
 				.enter().append("path")
-			    	.classed('vis__map__lad', true)
-					.classed('vis__map__lad--welsh', function(d) { return d.isWelsh; })
+			    	.classed('vis__map__lads__lad', true)
+					.classed('vis__map__lads__lad--welsh', function(d) { return d.isWelsh; })
 					.attr("d", path)
 					.attr('fill', '#f8f8f8');
 
@@ -130,7 +130,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 					.translate([transform.x, transform.y])
 					.scale(transform.k);
 
-				map.selectAll(".vis__map__lad").attr("d", path);
+				map.selectAll(".vis__map__lads__lad").attr("d", path);
 				map.selectAll(".vis__map__border").attr("d", path);
 			}
 
@@ -268,7 +268,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 	function redraw(newData) {
 		processData(newData);
 
-		map.selectAll(".vis__map__lad")
+		map.selectAll(".vis__map__lads__lad")
 			.filter(function(d) { return params.areasToVisualise.indexOf(d.area) != -1 && d.values !== undefined; })
 			.attr('fill', function(d) {
 				var col = params.valueSymmetry ? 1 : 0;

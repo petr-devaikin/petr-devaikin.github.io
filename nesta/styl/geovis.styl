@@ -4,7 +4,7 @@
 	top 0
 	
 	.vis__map
-		&__lad
+		&__lads__lad
 			stroke-width 1
 			stroke #fff
 			//fill #eee
@@ -15,11 +15,37 @@
 					
 			&.no-data
 				fill #eee
+				
+			&.hovered
+				fill #ffeda0
+				
+			&.selected
+				fill #feb24c
 			
 		&__border
 			stroke #000
 			stroke-width 2
 			fill none
+			
+		&__connections
+			&__line
+				cursor pointer
+				
+				&__bg
+					stroke rgba(255, 255, 255, 0);
+					stroke-width 5
+					fill none
+					
+				&__line
+					stroke-width 1
+					fill none
+					
+				&.blured
+					opacity .1
+					pointer-events none
+					
+					.vis__map__connections__line__line
+						stroke #444
 			
 	.vis__hint
 		pointer-events none
@@ -46,7 +72,7 @@
 			&.selected
 				font-weight bold
 				fill rgb(200, 0, 0)
-			
+
 	.vis__legend
 		&__bg
 			stroke #444

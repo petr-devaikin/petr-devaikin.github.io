@@ -82,11 +82,11 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 
 				var subunits = topojson.feature(lads, lads.objects.lads);
 
-			    map.selectAll(".vis__map__lad")
+			    map.selectAll(".vis__map__lads__lad")
 					.data(subunits.features)
 					.enter().append("path")
-				    	.classed('vis__map__lad', true)
-						.classed('vis__map__lad--welsh', function(d) { return gbLads[d.properties.lad16nm] == 'Wales'; })
+				    	.classed('vis__map__lads__lad', true)
+						.classed('vis__map__lads__lad--welsh', function(d) { return gbLads[d.properties.lad16nm] == 'Wales'; })
 						.attr("d", path)
 						.on('mouseover', showHint)
 						.on('mouseout', hideHint);
@@ -111,7 +111,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 						.translate([transform.x, transform.y])
 						.scale(transform.k);
 
-					map.selectAll(".vis__map__lad").attr("d", path);
+					map.selectAll(".vis__map__lads__lad").attr("d", path);
 					map.selectAll(".vis__map__border").attr("d", path);
 				}
 
