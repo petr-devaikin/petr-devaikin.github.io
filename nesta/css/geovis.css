@@ -15,18 +15,15 @@
   fill: #eee;
 }
 .vis--geovis .vis__map__lads__lad.hovered {
-  fill: #ffeda0;
+  fill: #fecc5c;
 }
 .vis--geovis .vis__map__lads__lad.selected {
-  fill: #feb24c;
+  fill: #fd8d3c;
 }
 .vis--geovis .vis__map__border {
   stroke: #000;
   stroke-width: 2;
   fill: none;
-}
-.vis--geovis .vis__map__connections__line {
-  cursor: pointer;
 }
 .vis--geovis .vis__map__connections__line__bg {
   stroke: rgba(255,255,255,0);
@@ -37,12 +34,21 @@
   stroke-width: 1;
   fill: none;
 }
+.vis--geovis .vis__map__connections__line.highlighted .vis__map__connections__line__line {
+  stroke: #f00;
+  opacity: 1;
+}
 .vis--geovis .vis__map__connections__line.blured {
-  opacity: 0.1;
-  pointer-events: none;
+  visibility: hidden;
 }
 .vis--geovis .vis__map__connections__line.blured .vis__map__connections__line__line {
   stroke: #444;
+}
+.vis--geovis .vis__map--left .vis__map__lads__lad.highlighted {
+  fill: #a5a8ff;
+}
+.vis--geovis .vis__map--right .vis__map__lads__lad.highlighted {
+  fill: #7fc97e;
 }
 .vis--geovis .vis__divider {
   stroke: #eee;
@@ -73,6 +79,18 @@
 .vis--geovis .vis__hint__topic.selected {
   font-weight: bold;
   fill: #c80000;
+}
+.vis--geovis .vis__map__hints {
+  pointer-events: none;
+}
+.vis--geovis .vis__map__hints text {
+  text-anchor: middle;
+  alignment-baseline: central;
+  font-size: 12px;
+}
+.vis--geovis .vis__map__hints rect {
+  stroke: #999;
+  fill: rgba(255,255,255,0.7);
 }
 .vis--geovis .vis__legend__bg {
   stroke: #444;

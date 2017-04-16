@@ -1,6 +1,7 @@
 function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
+		minOpacity: .1,
 		maxOpacity: 1,
 	}
 
@@ -24,15 +25,9 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		ladsAreaRight,
 		connectionsAreaLeft,
 		connectionsAreaRight,
-		hintAreaLeft,
-		hintAreaRight;
+		hintArea;
 
 	var zoom;
-
-	var hintLadHover,
-		hintLadSelected,
-		hintConnectionFrom,
-		hintConnectionTo;
 
 	function init() {
 		svg.html('').classed('vis--geovis', true);
@@ -98,14 +93,13 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		path = d3.geoPath(projection);
 
 		// scale
-		var maxValue = d3.max(data, function(d) { return d.value; });
-		vScale = d3.scaleSqrt().domain([0, maxValue]).range([0, params.maxOpacity]);
+		
 
 		// areas
 
-		mapLeft = svg.append('g').classed('vis__map', true)
+		mapLeft = svg.append('g').classed('vis__map', true).classed('vis__map--left', true)
 			.attr('clip-path', 'url(#map-clip)');
-		mapRight = svg.append('g').classed('vis__map', true)
+		mapRight = svg.append('g').classed('vis__map', true).classed('vis__map--right', true)
 			.attr('clip-path', 'url(#map-clip)')
 			.attr('transform', 'translate({0},{1})'.format(width/2, 0));
 
@@ -122,55 +116,42 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		ladsAreaRight = mapRight.append('g').classed('vis__map__lads', true);
 		connectionsAreaLeft = mapLeft.append('g').classed('vis__map__connections', true);
 		connectionsAreaRight = mapRight.append('g').classed('vis__map__connections', true);
-		hintAreaLeft = mapLeft.append('g').classed('vis__map__hints', true);
-		hintAreaRight = mapRight.append('g').classed('vis__map__hints', true);
+		hintArea = svg.append('g').classed('vis__map__hints', true);
 
 
 		// hint
-		/*
-		hint = map.append('g').classed('vis__map__hint', true);
-		hint.append('rect').classed('vis__map__hint__bg', true);
-		hint.append('text').classed('vis__map__hint__name', true);
-		hint.append('text').classed('vis__map__hint__name', true);
-		hint.append('text').classed('vis__map__hint__name', true);
-		*/
+		function addHint(area, cl) {
+			var hint = area.append('g').classed(cl, true).attr('visibility', 'hidden');
+			hint.append('rect');
+			hint.append('text');
+		}
 
-		// process data
-		data.forEach(function(d) {
-			var landFrom = landHash[d.from];
-			var landTo = landHash[d.to];
-
-			if (landFrom === undefined) console.log('Cannot find LAD ' + d.from);
-			if (landTo === undefined) console.log('Cannot find LAD ' + d.to);
-
-			if (landFrom !== undefined && landTo !== undefined) {
-				d.landFrom = landHash[d.from];
-				d.landTo = landHash[d.to];
-			}
-		});
-
-		data = data.filter(function(d) { return d.landFrom != undefined; });
+		addHint(hintArea, 'vis__map__hints__lad');
+		addHint(hintArea, 'vis__map__hints__connection');
 	}
 	init();
 
-	function updateConnections(connectionsArea) {
-		data.forEach(function(d) {
+
+	function updateConnections(connectionSelection) {
+		function setPath(d) {
+			var distance = Math.sqrt(
+				(d.fromCentroid[0] - d.toCentroid[0]) * (d.fromCentroid[0] - d.toCentroid[0]) +
+				(d.fromCentroid[1] - d.toCentroid[1]) * (d.fromCentroid[1] - d.toCentroid[1])
+			);
+			var dirFlag = d.fromCentroid[0] < d.toCentroid[0] ? 1 : 0;
+			res = '';
+			res += 'M{0} {1} '.format(d.fromCentroid[0], d.fromCentroid[1]);
+			res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
+			return res;
+		}
+
+		connectionSelection.each(function(d) {
 			d.fromCentroid = path.centroid(d.landFrom);
 			d.toCentroid = path.centroid(d.landTo);
 		});
 
-		connectionsArea.selectAll('.vis__map__connections__line').selectAll('path')
-			.attr('d', function(d) {
-				var distance = Math.sqrt(
-					(d.fromCentroid[0] - d.toCentroid[0]) * (d.fromCentroid[0] - d.toCentroid[0]) +
-					(d.fromCentroid[1] - d.toCentroid[1]) * (d.fromCentroid[1] - d.toCentroid[1])
-				);
-				var dirFlag = d.fromCentroid[0] < d.toCentroid[0] ? 1 : 0;
-				res = '';
-				res += 'M{0} {1} '.format(d.fromCentroid[0], d.fromCentroid[1]);
-				res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
-				return res;
-			});
+		connectionSelection.select('.vis__map__connections__line__bg').attr('d', setPath);
+		connectionSelection.select('.vis__map__connections__line__line').attr('d', setPath);
 	}
 
 	this.draw = function() {
@@ -187,7 +168,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 					.style('cursor', 'pointer');
 
 			newMapLads
-				.on('mouseover', overLad)
+				.on('mousemove', overLad)
 				.on('mouseout', outLad)
 				.on('click', selectLad);
 		}
@@ -202,51 +183,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			.attr('d', path);
 		*/
 
-		// draw connections
-		function addConnections(connectionsArea, data, isFrom) {
-			var connections = connectionsArea.selectAll('.vis__connections__line').data(data).enter()
-				.append('g')
-				.classed('vis__map__connections__line', true)
-				.on('mouseover', function(d) {
-					if (d.category == 'outward') {
-						overLad(landHash[d.from]);
-						// show hint to
-					}
-					else {
-						overLad(landHash[d.to]);
-						// show hint from
-					}
-				})
-				.on('mouseout', function(d) {
-					if (d.category == 'outward')
-						outLad(landHash[d.from]);
-					else
-						outLad(landHash[d.to]);
-				})
-				.on('click', function(d) {
-					if (d.category == 'outward')
-						selectLad(landHash[d.from]);
-					else
-						selectLad(landHash[d.to]);
-				});
-
-			connections.append('path')
-				.classed('vis__map__connections__line__bg', true);
-
-			connections.append('path')
-				.classed('vis__map__connections__line__line', true)
-				.attr('stroke', function(d) {
-					return params.categoryColors[d.category];
-				})
-				.attr('opacity', function(d) {
-					return vScale(d.value);
-				});
-
-			updateConnections(connectionsArea);
-		}
-
-		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.category == 'outward'; }));
-		addConnections(connectionsAreaRight, data.filter(function(d) { return d.category == 'inward'; }));
+		drawConnections(data);
 
 		// zoom behaviour
 
@@ -260,7 +197,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
 			d3.select(this).selectAll('.vis__map__border').attr("d", path);
 
-			updateConnections(d3.select(this).select('.vis__map__connections'));
+			d3.select(this).selectAll('.vis__map__connections__line').call(updateConnections);
 
 			if (d3.event.sourceEvent instanceof MouseEvent) {
 				if (this == mapLeft.node())
@@ -275,7 +212,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			translate0 = projection.translate();
 
 	    zoom = d3.zoom()
-			.scaleExtent([0.5 * scale0, 3 * scale0])
+			.scaleExtent([0.5 * scale0, 8 * scale0])
 			.on("zoom", zoomed);
 
 		var t = d3.zoomIdentity
@@ -288,22 +225,105 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		mapRight.call(zoom);
 	}
 
+	function drawConnections(data) {
+		// process data
+		data.forEach(function(d) {
+			var landFrom = landHash[d.from];
+			var landTo = landHash[d.to];
+
+			if (landFrom === undefined) console.log('Cannot find LAD ' + d.from);
+			if (landTo === undefined) console.log('Cannot find LAD ' + d.to);
+
+			if (landFrom !== undefined && landTo !== undefined) {
+				d.landFrom = landHash[d.from];
+				d.landTo = landHash[d.to];
+			}
+		});
+
+		data = data.filter(function(d) { return d.landFrom != undefined; });
+
+		var maxValue = d3.max(data, function(d) { return d.value; });
+		vScale = d3.scaleSqrt().domain([0, maxValue]).range([params.minOpacity, params.maxOpacity]);
+
+		// draw connections
+		function addConnections(connectionsArea, data) {
+			var connections = connectionsArea.selectAll('.vis__map__connections__line').data(data);
+
+			connections.exit().remove();
+
+			var newConnections = connections.enter().append('g')
+				.classed('vis__map__connections__line', true)
+				.on('mousemove', overConnection)
+				.on('mouseout', outConnection);
+
+			newConnections.append('path')
+				.classed('vis__map__connections__line__bg', true);
+
+			newConnections.append('path')
+				.classed('vis__map__connections__line__line', true)
+				.attr('stroke', function(d) {
+					return params.categoryColors[d.category];
+				})
+				.attr('opacity', function(d) {
+					return vScale(d.value);
+				});
+
+			connections.call(updateConnections);
+			newConnections.call(updateConnections);
+		}
+
+		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.category == 'outward'; }));
+		addConnections(connectionsAreaRight, data.filter(function(d) { return d.category == 'inward'; }));
+	}
+
+	this.redraw = drawConnections;
+
 	// interaction
+	function updateHint(hint, pos, text) {
+		hint.attr('transform', 'translate({0},{1})'.format(pos[0], pos[1]));
+		var rect = hint.select('rect');
+		
+		hint.select('text').text(text);
+
+		rect.attr('width', 0).attr('height', 0);
+		var bbox = hint.node().getBBox();
+		rect.attr('x', bbox.x - 2).attr('y', bbox.y - 2)
+			.attr('width', bbox.width + 4).attr('height', bbox.height + 4);
+
+		hint.attr('visibility', 'visible');
+	}
+
 	function overLad(d) {
 		d.hovered = true;
-		ladsAreaLeft.selectAll('.vis__map__lads__lad')
-			.classed('hovered', function(d) { return d.hovered; });
-		ladsAreaRight.selectAll('.vis__map__lads__lad')
-			.classed('hovered', function(d) { return d.hovered; });
+		d3.select(this).classed('hovered', true);
 
 		// show lad hint
-		// if lad selected show hint for connection
+		var pos = [d3.event.clientX, d3.event.clientY];
+		pos[1] -= 10;
+
+		updateHint(hintArea.select('.vis__map__hints__lad'), pos, d.name);
 	}
 
 	function outLad(d) {
 		d.hovered = false;
-		ladsAreaLeft.selectAll('.vis__map__lads__lad.hovered').classed('hovered', false);
-		ladsAreaRight.selectAll('.vis__map__lads__lad.hovered').classed('hovered', false);
+		d3.select(this).classed('hovered', false);
+		hintArea.select('.vis__map__hints__lad').attr('visibility', 'hidden');
+	}
+
+	function overConnection(d) {
+		d3.select(this).classed('highlighted', true);
+
+		var bbox = this.getBBox();
+		var pos = [d3.event.clientX, d3.event.clientY - 10];
+		var text = 'From {0} to {1}: {2}'.format(d.landFrom.name, d.landTo.name, d.value.abbrNum(2));
+			
+		updateHint(hintArea.select('.vis__map__hints__connection'), pos, text);
+	}
+
+	function outConnection() {
+		d3.select(this).classed('highlighted', false);
+
+		hintArea.select('.vis__map__hints__connection').attr('visibility', 'hidden');
 	}
 
 	var selectedLad = undefined;
@@ -322,25 +342,48 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		selectedLad = d;
 
-		ladsAreaLeft.selectAll('.vis__map__lads__lad')
-			.classed('selected', function(d) { return d.selected; });
-		ladsAreaRight.selectAll('.vis__map__lads__lad')
-			.classed('selected', function(d) { return d.selected; });
+		ladsAreaLeft.selectAll('.vis__map__lads__lad').each(function(d) {
+			d.toHighlighted = false;
+			d.fromHighlighted = false;
+		})
 
 		connectionsAreaLeft.selectAll('.vis__map__connections__line')
 			.classed('blured', function(dd) {
-				if (selectedLad === undefined)
+				if (selectedLad === undefined) {
 					return false;
-				else
-					return dd.landFrom != d && dd.landTo != d;
+				}
+				else {
+					if (dd.landFrom == d) {
+						dd.landTo.toHighlighted = true;
+						return false;
+					}
+					else
+						return true;
+				}
 			});
 		connectionsAreaRight.selectAll('.vis__map__connections__line')
 			.classed('blured', function(dd) {
-				if (selectedLad === undefined)
+				if (selectedLad === undefined) {
+					dd.landTo.fromHighlighted = false;
+					dd.landFrom.fromHighlighted = false;
 					return false;
-				else
-					return dd.landFrom != d && dd.landTo != d;
+				}
+				else {
+					if (dd.landTo == d) {
+						dd.landFrom.fromHighlighted = true;
+						return false;
+					}
+					else
+						return true;
+				}
 			});
+
+		ladsAreaLeft.selectAll('.vis__map__lads__lad')
+			.classed('selected', function(d) { return d.selected; })
+			.classed('highlighted', function(d) { return d.toHighlighted; });
+		ladsAreaRight.selectAll('.vis__map__lads__lad')
+			.classed('selected', function(d) { return d.selected; })
+			.classed('highlighted', function(d) { return d.fromHighlighted; });
 	}
 
 	svg.on("click", function() {

@@ -807,7 +807,7 @@ function Datareader(base) {
 				outwardData.forEach(function(line) {
 					Object.keys(line).forEach(function(prop) {
 						if (topics.indexOf(line.Topic) == -1) topics.push(line.Topic);
-						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0)
+						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0 && line.member_registered_location != prop)
 							outward.push({
 								from: line.member_registered_location,
 								to: prop,
@@ -820,7 +820,7 @@ function Datareader(base) {
 				inwardData.forEach(function(line) {
 					Object.keys(line).forEach(function(prop) {
 						if (topics.indexOf(line.Topic) == -1) topics.push(line.Topic);
-						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0)
+						if (propsToIgnore.indexOf(prop) == -1 && parseFloat(line[prop]) != 0 && line.member_registered_location != prop)
 							inward.push({
 								from: line.member_registered_location,
 								to: prop,

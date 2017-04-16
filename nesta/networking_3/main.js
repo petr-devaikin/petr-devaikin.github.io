@@ -17,7 +17,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			inwardData.forEach(function(d) { return d.category = 'inward'; });
 			outwardData.forEach(function(d) { return d.category = 'outward'; });
 			var data = inwardData.concat(outwardData);
-			var filteredData = data.filter(function(d) {return d.topic == selectedTopic && d.from != d.to; });
+			var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
 
 			console.log(filteredData.length);
 
@@ -30,6 +30,11 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 
 			geovis.draw();
 
+			function redraw() {
+				var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
+				geovis.redraw(filteredData);
+			}
+
 			// Filter
 			var filter = new Filter(d3.select('.filter'));
 
@@ -39,8 +44,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 				'',
 				function(v) {
 					selectedTopic = v;
-					console.log(v);
-					//redrawMap();
+					redraw();
 				});
 		});
 	});
