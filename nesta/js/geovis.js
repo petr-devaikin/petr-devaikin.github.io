@@ -40,6 +40,13 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		width = svg.node().getBoundingClientRect().width;
 		height = svg.node().getBoundingClientRect().height;
 
+		// clipping area
+		
+		svg.append('defs').append('clipPath').attr('id', 'map-clip')
+			.append('rect')
+				.attr('x', 0).attr('y', 0)
+				.attr('width', width / 2).attr('height', height);
+
 		// process geo data
 		ladLands = topojson.feature(ladsMap, ladsMap.objects.lads);
 		ladLands.features.forEach(function(f) {
@@ -96,9 +103,20 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		// areas
 
-		mapLeft = svg.append('g').classed('vis__map', true);
+		mapLeft = svg.append('g').classed('vis__map', true)
+			.attr('clip-path', 'url(#map-clip)');
 		mapRight = svg.append('g').classed('vis__map', true)
+			.attr('clip-path', 'url(#map-clip)')
 			.attr('transform', 'translate({0},{1})'.format(width/2, 0));
+
+		mapLeft.append('rect').classed('vis__map__bg', true)
+			.attr('width', width / 2).attr('height', height);
+		mapRight.append('rect').classed('vis__map__bg', true)
+			.attr('width', width / 2).attr('height', height);
+
+		svg.append('line').classed('vis__divider', true)
+			.attr('x1', width / 2).attr('y1', 0)
+			.attr('x2', width / 2).attr('y2', height);
 
 		ladsAreaLeft = mapLeft.append('g').classed('vis__map__lads', true);
 		ladsAreaRight = mapRight.append('g').classed('vis__map__lads', true);
@@ -106,6 +124,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		connectionsAreaRight = mapRight.append('g').classed('vis__map__connections', true);
 		hintAreaLeft = mapLeft.append('g').classed('vis__map__hints', true);
 		hintAreaRight = mapRight.append('g').classed('vis__map__hints', true);
+
 
 		// hint
 		/*
@@ -231,19 +250,24 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		// zoom behaviour
 
-		function zoomed() {
+		function zoomed(mute) {
 			var transform = d3.event.transform;
 
 			projection
 				.translate([transform.x, transform.y])
 				.scale(transform.k);
 
-			mapLeft.selectAll('.vis__map__lads__lad').attr("d", path);
-			mapLeft.selectAll('.vis__map__border').attr("d", path);
-			mapRight.selectAll('.vis__map__lads__lad').attr("d", path);
-			mapRight.selectAll('.vis__map__border').attr("d", path);
-			updateConnections(connectionsAreaLeft);
-			updateConnections(connectionsAreaRight);
+			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
+			d3.select(this).selectAll('.vis__map__border').attr("d", path);
+
+			updateConnections(d3.select(this).select('.vis__map__connections'));
+
+			if (d3.event.sourceEvent instanceof MouseEvent) {
+				if (this == mapLeft.node())
+					mapRight.call(zoom.transform, transform);
+				else if (this == mapRight.node())
+					mapLeft.call(zoom.transform, transform);
+			}
 		}
 
 
@@ -258,8 +282,10 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			.translate(translate0[0], translate0[1])
 			.scale(scale0);
 
-		svg.call(zoom.transform, t);
-		svg.call(zoom);
+		mapLeft.call(zoom.transform, t);
+		mapLeft.call(zoom);
+		mapRight.call(zoom.transform, t);
+		mapRight.call(zoom);
 	}
 
 	// interaction

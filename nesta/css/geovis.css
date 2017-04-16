@@ -3,6 +3,10 @@
   left: 0;
   top: 0;
 }
+.vis--geovis .vis__map__bg {
+  stroke: none;
+  fill: #fff;
+}
 .vis--geovis .vis__map__lads__lad {
   stroke-width: 1;
   stroke: #fff;
@@ -39,6 +43,9 @@
 }
 .vis--geovis .vis__map__connections__line.blured .vis__map__connections__line__line {
   stroke: #444;
+}
+.vis--geovis .vis__divider {
+  stroke: #eee;
 }
 .vis--geovis .vis__hint {
   pointer-events: none;
