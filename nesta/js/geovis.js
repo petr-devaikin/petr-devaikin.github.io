@@ -5,6 +5,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		maxOpacity: 1,
 		buttonSize: 40,
 		selectLadCallback: undefined,
+		margin: 30
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -74,7 +75,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		// calculate initial zoom
 		function isLadInAreaToZoom(name) {
-			return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
+			return data.find(function(d) { return d.from == name || d.to == name }) !== undefined;
+			//return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
 		}
 
 		var meshToZoom = topojson.mesh(
@@ -95,8 +97,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		// projection
 		projection = d3.geoAlbers()
 			.rotate([0, 0])
-			.parallels([55, 60])
-			.fitSize([width / 2, height], meshToZoom);
+			//.parallels([55, 60])
+			.fitExtent([[params.margin, params.margin], [width / 2 - params.margin, height - params.margin]], meshToZoom);
 
 		path = d3.geoPath(projection);
 
