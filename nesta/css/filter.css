@@ -59,14 +59,15 @@
 }
 .filter__group__samples__sample {
   vertical-align: middle;
-  padding-bottom: 4px;
+  width: 30px;
 }
 .filter__group__samples__desc {
   vertical-align: middle;
   padding-left: 5px;
 }
-.filter__group__hint {
-  margin: 5px 0;
+.filter__group__samples__desc--hint {
   font-style: italic;
   color: #888;
+  padding-top: 4px;
+  padding-left: 0;
 }

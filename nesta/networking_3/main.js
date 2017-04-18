@@ -70,14 +70,13 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 					selectLad(v);
 				});
 
-			filter.addArrowKey(
+			filter.addKeyTable(
 				'Connections',
 				[
-					{ thickness: 2, color: 'blue', description: 'Owtward movement [?]' },
-					{ thickness: 2, color: 'green', description: 'Inward movement [?]' },
-				],
-				'Line opacity shows the probability of a user who registred in one LAD to attend an event in another area [?]'
-				);
+					{ type: 'arrow', color: 'blue', desc: 'Owtward movement [?]' },
+					{ type: 'arrow', color: 'green', desc: 'Inward movement [?]' },
+					{ type: 'desc', text: 'Line opacity shows the probability of a user who registred in one LAD to attend an event in another area [?]' },
+				]);
 		});
 	});
 });

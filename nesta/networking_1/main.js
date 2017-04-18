@@ -61,6 +61,9 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			hint.select('.vis__hint__group').text('Topic: ' + d.fullCategory);
 			hint.select('.vis__hint__count').text('Count [?]: ' + d.value);
 			hint.select('.vis__hint__lq').text(selectedLad != 'all' ? 'LQ [?] in ' + selectedLad + ': ' + d.opacity.abbrNum(2) : '');
+		},
+		selectNodeCallback: function(nodeId) {
+			tagFieldCallbacks.setValue(nodeId);
 		}
 	});
 	graph.draw();
@@ -97,6 +100,16 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
+	
+	filter.addRadioSection(
+		'Year',
+		years.map(function(d, i) { return { label: d, value: d, checked: d == selectedYear }; }),
+		function(v) {
+			selectedYear = v;
+			if (selectedLad != 'all')
+				repaint();
+		}
+	);
 
 	filter.addSelectSearchSection(
 		'Local Authority District',
@@ -104,17 +117,11 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		'',
 		function(v) {
 			selectedLad = v;
+			graph.select();
+			tagFieldCallbacks.update(getTagList());
 			repaint();
 		}
 	);
-
-	function formatState (state) {
-		if (!state.id) { return state.text; }
-		var $state = $(
-			'<span><img src="vendor/images/flags/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
-		);
-		return $state;
-	};
 
 	var colorScale = d3.scaleOrdinal()
 			.domain(broadTopics)
@@ -132,19 +139,60 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		'',
 		function(v) {
 			selectedBroadTopic = v;
+			graph.select();
+			tagFieldCallbacks.update(getTagList());
 			repaint();
 		}
 	);
 
-	filter.addRadioSection(
-		'Year',
-		years.map(function(d, i) { return { label: d, value: d, checked: d == selectedYear }; }),
+	function getTagList() {
+		var filteredNodes = nodes.filter(function(d) {
+			return selectedBroadTopic == 'all' || d.category == selectedBroadTopic;
+		})
+
+		if (selectedLad != 'all') {
+			var topicValues = {};
+
+			dataWelshRCA.forEach(function(d) {
+				if (d.year == selectedYear && d.lad == selectedLad) {
+					topicValues[d.topic] = d.comparative_adv;
+				}
+			});
+
+			filteredNodes = filteredNodes.filter(function(d) {
+				return (topicValues[tags[d.id].topic.name] !== undefined && topicValues[tags[d.id].topic.name] > 0);
+			});
+		}
+
+		filteredNodes = filteredNodes.map(function(d) { return { id: d.id, text: d.name }; });
+
+		filteredNodes.sort(function(a, b) {
+			if (a.text == b.text) return 0;
+			else if (b.text < a.text) return 1;
+			else return -1;
+		});
+
+		return [{ id: '', text: '' }].concat(filteredNodes);
+	}
+
+	var tagFieldCallbacks = filter.addSelectSearchSection(
+		'Tag',
+		getTagList(),
+		'Search for tag',
 		function(v) {
-			selectedYear = v;
-			if (selectedLad != 'all')
-				repaint();
+			selectedTag = v;
+			graph.select(v);
 		}
 	);
+			
+	filter.addKeyTable(
+		'Network',
+		[
+			{ type: 'circle', fill: 'rgb(110, 64, 170)', stroke: '#777', r: 3, desc: 'Tag' },
+			{ type: 'line', color: '#ccc', desc: 'Co-occurrence of tags in meetup groups [?]' },
+			{ type: 'desc', text: 'Circle size shows a number of times the tag has been used, color – a tag topic, opacity – LQ in the selected LAD [?]' },
+			{ type: 'desc', text: 'Line thickness shows a number of times 2 tags have been used in the same meetup group [?]' }
+		]);
 
 	// filter by topics
 });

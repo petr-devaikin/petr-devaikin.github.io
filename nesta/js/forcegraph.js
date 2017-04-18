@@ -6,6 +6,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		buttonSize: 40,
 		addHint: undefined,
 		showHint: undefined,
+		selectNodeCallback: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -241,6 +242,13 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		updateLinks();
 	}
 
+	this.select = function(nodeId) {
+		if (nodeId === undefined || nodeId == '')
+			selectNode();
+		else
+			selectNode(nodeData.find(function(d) { return d.id == nodeId; }));
+	}
+
 	// Interaction
 
 	function selectNode(d) {
@@ -275,6 +283,9 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 				.classed('blured', false)
 				.classed('selected', false);
 		}
+
+		if (params.selectNodeCallback !== undefined)
+			params.selectNodeCallback(d !== undefined ? d.id : '');
 	}
 
 	function nodeHover(d) {

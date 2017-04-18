@@ -190,34 +190,59 @@ function Filter(container) {
 		}
 	}
 
-	this.addArrowKey = function(title, lines, hint) {
+	this.addKeyTable = function(title, samples) {
 		var group = initGroup(title);
 
 		var table = group.append('table').classed('filter__group__samples', true);
-		lines.forEach(function(line) {
+		samples.forEach(function(s) {
 			var tr = table.append('tr');
 			var sample = tr.append('td').classed('filter__group__samples__sample', true);
 			var desc = tr.append('td').classed('filter__group__samples__desc', true);
 
-			var cy = 2;
-			var svg = sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', 5);
-			svg.append('line')
-				.attr('x1', 1).attr('y1', cy)
-				.attr('x2', SAMPLE_WIDTH - 1).attr('y2', cy)
-				.attr('stroke-width', 1).attr('stroke', line.color);
-			svg.append('ellipse')
-				.attr('cx', 2).attr('cy', cy)
-				.attr('rx', 1).attr('ry', 2)
-				.attr('stroke', 'none').attr('fill', line.color);
-			svg.append('path')
-				.attr('d', 'M {0} {1} l 5 2 l -5 2'.format(SAMPLE_WIDTH - 6, cy - 2))
-				.attr('stroke', line.color).attr('fill', line.color);
+			if (s.type == 'arrow') {
+				var cy = 2;
+				var svg = sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', 5);
+				svg.append('line')
+					.attr('x1', 1).attr('y1', cy)
+					.attr('x2', SAMPLE_WIDTH - 1).attr('y2', cy)
+					.attr('stroke-width', 1).attr('stroke', s.color);
+				svg.append('ellipse')
+					.attr('cx', 2).attr('cy', cy)
+					.attr('rx', 1).attr('ry', 2)
+					.attr('stroke', 'none').attr('fill', s.color);
+				svg.append('path')
+					.attr('d', 'M {0} {1} l 5 2 l -5 2'.format(SAMPLE_WIDTH - 6, cy - 2))
+					.attr('stroke', s.color).attr('fill', s.color);
 
-			desc.text(line.description);
+				desc.text(s.desc);
+			}
+			if (s.type == 'line') {
+				var cy = 2;
+				var svg = sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', 5);
+				svg.append('line')
+					.attr('x1', 1).attr('y1', cy)
+					.attr('x2', SAMPLE_WIDTH - 1).attr('y2', cy)
+					.attr('stroke-width', 1).attr('stroke', s.color);
+
+				desc.text(s.desc);
+			}
+			else if (s.type == 'circle') {
+				var cy = s.r + 1;
+				var cx = SAMPLE_WIDTH / 2;
+				var svg = sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', 2 * cy);
+				svg.append('circle')
+					.attr('cx', cx).attr('cy', cy)
+					.attr('r', s.r)
+					.attr('fill', s.fill).attr('stroke', s.stroke);
+
+				desc.text(s.desc);
+			}
+			else if (s.type == 'desc') {
+				sample.remove();
+				desc.attr('colspan', 2);
+				desc.classed('filter__group__samples__desc--hint', true);
+				desc.text(s.text);
+			}
 		});
-
-		if (hint !== undefined) {
-			group.append('p').classed('filter__group__hint', true).text(hint);
-		}
 	}
 }
