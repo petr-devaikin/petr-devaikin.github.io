@@ -62,7 +62,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		showHint: function(hint, d) {
 			hint.select('.vis__hint__tag').text('#' + d.name);
 			hint.select('.vis__hint__group').text('Topic: ' + d.fullCategory);
-			hint.select('.vis__hint__count').text('Count [?]: ' + d.value);
+			hint.select('.vis__hint__count').text('Used {0} time{1}'.format(d.value, d.value != 1 ? 's' : ''));
 			hint.select('.vis__hint__lq').text(selectedLad != 'all' ? 'LQ [?] in ' + selectedLad + ': ' + d.opacity.abbrNum(2) : '');
 		},
 		selectNodeCallback: function(nodeId) {
