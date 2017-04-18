@@ -46,6 +46,9 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		});
 	});
 	nodes = Object.keys(nodes).map(function(d) { return nodes[d]; });
+	nodes.sort(function(a, b) {
+		return b.value - a.value;
+	})
 
 
 	var graph = new Forcegraph(svg, nodes, links, broadTopics, {

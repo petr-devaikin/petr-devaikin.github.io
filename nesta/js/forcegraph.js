@@ -272,7 +272,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 			nodes
 				.classed('blured', function(dd) { return !dd.selected; })
-				.classed('selected', function(dd) { return dd.selected; });
+				.classed('selected', function(dd) { return dd == d; });
 		}
 		else {
 			links
