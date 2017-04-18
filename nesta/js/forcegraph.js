@@ -7,6 +7,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		addHint: undefined,
 		showHint: undefined,
 		selectNodeCallback: undefined,
+		transitionDuration: 750,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -40,6 +41,10 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var zoomInButton,
 		zoomOutButton,
 		zoomInitButton;
+
+	var transition = d3.transition()
+		.duration(params.transitionDuration)
+		.ease(d3.easeLinear);
 
 	function init() {
 		svg.html('');
@@ -330,19 +335,19 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	zoomInButton
 		.on('click', function() {
 			event.stopPropagation();
-			zoom.scaleBy(svg, 1.1);
+			zoom.scaleBy(svg.transition(transition), 1.1);
 		});
 
 	zoomOutButton
 		.on('click', function() {
 			event.stopPropagation();
-			zoom.scaleBy(svg, .9);
+			zoom.scaleBy(svg.transition(transition), .9);
 		});
 
 	zoomInitButton
 		.on('click', function() {
 			event.stopPropagation();
 			transform = initTransform;
-			svg.call(zoom.transform, transform);
+			svg.transition(transition).call(zoom.transform, transform);
 		});
 };
