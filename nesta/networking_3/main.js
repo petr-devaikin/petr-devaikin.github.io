@@ -28,6 +28,9 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 					'inward': 'green',
 					'outward': 'blue',
 				},
+				labelLeft: 'People registred in Wales attending an event in other areas [?]',
+				labelRight: 'People registred out of Wales attending an event in Wales [?]',
+				buttonSize: 30,
 				selectLadCallback: function(ladName) {
 					ladCallbacks.setValue(ladName);
 				}

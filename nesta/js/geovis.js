@@ -2,10 +2,12 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
 		minOpacity: .1,
-		maxOpacity: 1,
+		maxOpacity: .8,
 		buttonSize: 40,
 		selectLadCallback: undefined,
-		margin: 30
+		margin: 60,
+		labelLeft: '',
+		labelRight: ''
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -108,7 +110,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			.attr('clip-path', 'url(#map-clip)');
 		mapRight = svg.append('g').classed('vis__map', true).classed('vis__map--right', true)
 			.attr('clip-path', 'url(#map-clip)')
-			.attr('transform', 'translate({0},{1})'.format(width/2, 0));
+			.attr('transform', 'translate({0},{1})'.format(width / 2, 0));
 
 		mapLeft.append('rect').classed('vis__map__bg', true)
 			.attr('width', width / 2).attr('height', height);
@@ -123,8 +125,15 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		ladsAreaRight = mapRight.append('g').classed('vis__map__lads', true);
 		connectionsAreaLeft = mapLeft.append('g').classed('vis__map__connections', true);
 		connectionsAreaRight = mapRight.append('g').classed('vis__map__connections', true);
-		hintArea = svg.append('g').classed('vis__map__hints', true);
 
+		mapLeft.append('text').classed('vis__map__label', true)
+			.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10))
+			.text(params.labelLeft);
+		mapRight.append('text').classed('vis__map__label', true)
+			.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10))
+			.text(params.labelRight);
+
+		hintArea = svg.append('g').classed('vis__map__hints', true);
 
 		// controls
 
@@ -169,6 +178,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.translate([transform.x, transform.y])
 				.scale(transform.k);
 
+			console.log(projection.center());
+
 			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
 			d3.select(this).selectAll('.vis__map__border').attr("d", path);
 
@@ -211,7 +222,12 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			var dirFlag = d.fromCentroid[0] < d.toCentroid[0] ? 1 : 0;
 			res = '';
 			res += 'M{0} {1} '.format(d.fromCentroid[0], d.fromCentroid[1]);
-			res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
+			//res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
+			res += 'C {0} {1} {2} {3} {4} {5}'.format(
+				d.fromCentroid[0], d.fromCentroid[1] - distance / 2 - 5 * d.value / 100,
+				d.toCentroid[0], d.toCentroid[1] - distance / 2 - 5 * d.value / 100,
+				d.toCentroid[0], d.toCentroid[1]
+			);
 			return res;
 		}
 
@@ -223,6 +239,17 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		connectionSelection.select('.vis__map__connections__line__bg').attr('d', setPath);
 		connectionSelection.select('.vis__map__connections__line__line')
 			.attr('d', setPath)
+			.attr('opacity', function(d) { return vScale(d.value); });
+
+		connectionSelection.select('.vis__map__connections__line__point--start')
+			.attr('transform', function(d) {
+				return 'translate({0},{1})'.format(d.fromCentroid[0], d.fromCentroid[1]);
+			})
+			.attr('opacity', function(d) { return vScale(d.value); });
+		connectionSelection.select('.vis__map__connections__line__point--end')
+			.attr('transform', function(d) {
+				return 'translate({0},{1})'.format(d.toCentroid[0], d.toCentroid[1]);
+			})
 			.attr('opacity', function(d) { return vScale(d.value); });
 	}
 
@@ -289,14 +316,21 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.on('mousemove', overConnection)
 				.on('mouseout', outConnection);
 
+			newConnections.append('ellipse').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--start')
+				.attr('rx', 1).attr('ry', .5)
+				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
+			newConnections.append('path').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--end')
+				.attr('d', function(d) {
+					return 'M -2 -4 L 0 0 L 2 -4';
+				})
+				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
+
 			newConnections.append('path')
 				.classed('vis__map__connections__line__bg', true);
 
 			newConnections.append('path')
 				.classed('vis__map__connections__line__line', true)
-				.attr('stroke', function(d) {
-					return params.categoryColors[d.category];
-				});
+				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
 
 			connections.call(updateConnections);
 			newConnections.call(updateConnections);

@@ -7,6 +7,21 @@
 		&__bg
 			stroke none
 			fill #fff
+			
+		&__label
+			pointer-events none
+			text-anchor middle
+			font-size 12px
+			fill #00
+						
+		&--left
+			.vis__map__lads__lad
+				&.highlighted
+					fill #a5a8ff		
+		&--right
+			.vis__map__lads__lad
+				&.highlighted
+					fill #7fc97e
 
 		&__lads__lad
 			stroke-width 1
@@ -20,7 +35,7 @@
 			&.no-data
 				fill #eee
 				
-			&.hovered
+			&.hovered, &.highlighted.hovered
 				fill #fecc5c
 				
 			&.selected
@@ -33,6 +48,10 @@
 			
 		&__connections
 			&__line
+				&__point
+					fill none
+					pointer-events none
+				
 				&__bg
 					stroke rgba(255, 255, 255, 0);
 					stroke-width 5
@@ -43,7 +62,7 @@
 					fill none
 					
 				&.highlighted
-					.vis__map__connections__line__line
+					.vis__map__connections__line__line, .vis__map__connections__line__point
 						stroke red
 						opacity 1
 					
@@ -52,15 +71,6 @@
 					
 					.vis__map__connections__line__line
 						stroke #444
-						
-		&--left
-			.vis__map__lads__lad
-				&.highlighted
-					fill #a5a8ff		
-		&--right
-			.vis__map__lads__lad
-				&.highlighted
-					fill #7fc97e
 						
 	.vis__divider
 		stroke #999
