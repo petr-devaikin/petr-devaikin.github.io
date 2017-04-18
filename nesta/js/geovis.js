@@ -5,9 +5,10 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		maxOpacity: .8,
 		buttonSize: 40,
 		selectLadCallback: undefined,
-		margin: 60,
+		margin: 50,
 		labelLeft: '',
-		labelRight: ''
+		labelRight: '',
+		transitionDuration: 750,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -39,6 +40,37 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	var zoomInButton,
 		zoomOutButton,
 		zoomInitButton;
+
+	var transition;
+
+	function calculateAutoZoom(data) {
+		function isLadInAreaToZoom(name) {
+			return data.find(function(d) { return d.from == name || d.to == name }) !== undefined;
+			//return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
+		}
+
+		var meshToZoom = topojson.mesh(
+			ladsMap,
+			ladsMap.objects.lads,
+			function(a, b) {
+				if (a === b && isLadInAreaToZoom(a.properties.lad16nm)) return true;
+
+				if (a !== b &&
+					((isLadInAreaToZoom(a.properties.lad16nm) && !isLadInAreaToZoom(b.properties.lad16nm)) ||
+					(!isLadInAreaToZoom(a.properties.lad16nm) && isLadInAreaToZoom(b.properties.lad16nm))))
+						return true;
+
+				return false;
+			}
+		);
+
+		var p = d3.geoAlbers().rotate([0, 0])
+			.fitExtent([[params.margin, 2 * params.margin], [width / 2 - params.margin, height - params.margin]], meshToZoom);
+
+		initTransform = d3.zoomIdentity
+			.translate(p.translate()[0], p.translate()[1])
+			.scale(p.scale());
+	}
 
 	function init() {
 		svg.html('').classed('vis--geovis', true);
@@ -75,34 +107,14 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				(isWelsh(b.properties.lad16nm) && !isWelsh(a.properties.lad16nm))); }
 		)
 
-		// calculate initial zoom
-		function isLadInAreaToZoom(name) {
-			return data.find(function(d) { return d.from == name || d.to == name }) !== undefined;
-			//return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
-		}
-
-		var meshToZoom = topojson.mesh(
-			ladsMap,
-			ladsMap.objects.lads,
-			function(a, b) {
-				if (a === b && isLadInAreaToZoom(a.properties.lad16nm)) return true;
-
-				if (a !== b &&
-					((isLadInAreaToZoom(a.properties.lad16nm) && !isLadInAreaToZoom(b.properties.lad16nm)) ||
-					(!isLadInAreaToZoom(a.properties.lad16nm) && isLadInAreaToZoom(b.properties.lad16nm))))
-						return true;
-
-				return false;
-			}
-		);
 
 		// projection
-		projection = d3.geoAlbers()
-			.rotate([0, 0])
-			//.parallels([55, 60])
-			.fitExtent([[params.margin, params.margin], [width / 2 - params.margin, height - params.margin]], meshToZoom);
+		projection = d3.geoAlbers().rotate([0, 0]);
 
 		path = d3.geoPath(projection);
+
+		// calculate initial zoom
+		calculateAutoZoom(data);
 
 		// areas
 
@@ -178,8 +190,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.translate([transform.x, transform.y])
 				.scale(transform.k);
 
-			console.log(projection.center());
-
 			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
 			d3.select(this).selectAll('.vis__map__border').attr("d", path);
 
@@ -193,22 +203,19 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			}
 		}
 
-
-		var scale0 = projection.scale(),
-			translate0 = projection.translate();
-
 	    zoom = d3.zoom()
-			.scaleExtent([0.5 * scale0, 8 * scale0])
+			.scaleExtent([0.5 * initTransform.k, 8 * initTransform.k])
 			.on("zoom", zoomed);
-
-		initTransform = d3.zoomIdentity
-			.translate(translate0[0], translate0[1])
-			.scale(scale0);
 
 		mapLeft.call(zoom.transform, initTransform);
 		mapLeft.call(zoom).on('dblclick.zoom', null);
 		mapRight.call(zoom.transform, initTransform);
 		mapRight.call(zoom).on('dblclick.zoom', null);
+
+		// transition
+		transition = d3.transition()
+		    .duration(params.transitionDuration)
+		    .ease(d3.easeLinear);
 	}
 	init();
 
@@ -286,6 +293,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	}
 
 	function drawConnections(data) {
+		calculateAutoZoom(data);
+
 		// process data
 		data.forEach(function(d) {
 			var landFrom = landHash[d.from];
@@ -482,8 +491,12 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 	zoomInitButton.on('click', function() {
 		event.stopPropagation();
-		mapLeft.call(zoom.transform, initTransform);
-		mapRight.call(zoom.transform, initTransform);
+		mapLeft
+			.transition(transition)
+			.call(zoom.transform, initTransform);
+		mapRight
+			.transition(transition)
+			.call(zoom.transform, initTransform);
 	});
 }
 
