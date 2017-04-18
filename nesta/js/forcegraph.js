@@ -61,6 +61,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		controlsArea = svg.append('g').attr('class', 'vis__controls')
 			.attr('transform', 'translate({0},{1})'.format(10, height - params.buttonSize - 10))
 			.attr('visibility', 'hidden');
+
 		function addButton(text, i) {
 			var button = controlsArea.append('g')
 				.classed('vis__controls__button', true)
@@ -200,7 +201,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 				.on("zoom", zoomed);
 
 			svg.call(zoom.transform, transform);
-			svg.call(zoom);
+			svg.call(zoom).on('dblclick.zoom', null);
 		}
 
 
@@ -315,19 +316,22 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 	// buttons
 
-	zoomInButton.on('click', function() {
-		event.stopPropagation();
-		zoom.scaleBy(svg, 1.1);
-	});
+	zoomInButton
+		.on('click', function() {
+			event.stopPropagation();
+			zoom.scaleBy(svg, 1.1);
+		});
 
-	zoomOutButton.on('click', function() {
-		event.stopPropagation();
-		zoom.scaleBy(svg, .9);
-	});
+	zoomOutButton
+		.on('click', function() {
+			event.stopPropagation();
+			zoom.scaleBy(svg, .9);
+		});
 
-	zoomInitButton.on('click', function() {
-		event.stopPropagation();
-		transform = initTransform;
-		svg.call(zoom.transform, transform);
-	});
+	zoomInitButton
+		.on('click', function() {
+			event.stopPropagation();
+			transform = initTransform;
+			svg.call(zoom.transform, transform);
+		});
 };

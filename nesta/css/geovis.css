@@ -51,7 +51,7 @@
   fill: #7fc97e;
 }
 .vis--geovis .vis__divider {
-  stroke: #eee;
+  stroke: #999;
 }
 .vis--geovis .vis__hint {
   pointer-events: none;
@@ -79,6 +79,19 @@
 .vis--geovis .vis__hint__topic.selected {
   font-weight: bold;
   fill: #c80000;
+}
+.vis--geovis .vis__controls__button {
+  cursor: pointer;
+}
+.vis--geovis .vis__controls__button__bg {
+  stroke: #ddd;
+  fill: #eee;
+}
+.vis--geovis .vis__controls__button text {
+  text-anchor: middle;
+  alignment-baseline: central;
+  font-size: 12px;
+  fill: #000;
 }
 .vis--geovis .vis__map__hints {
   pointer-events: none;

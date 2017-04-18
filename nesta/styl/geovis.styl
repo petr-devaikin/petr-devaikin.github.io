@@ -63,7 +63,7 @@
 					fill #7fc97e
 						
 	.vis__divider
-		stroke #eee
+		stroke #999
 			
 	.vis__hint
 		pointer-events none
@@ -90,6 +90,19 @@
 			&.selected
 				font-weight bold
 				fill rgb(200, 0, 0)
+
+	.vis__controls
+		&__button
+			cursor pointer
+			&__bg
+				stroke #ddd
+				fill #eee
+				
+			text
+				text-anchor middle
+				alignment-baseline central
+				font-size 12px
+				fill #000
 				
 	.vis__map__hints
 		pointer-events none

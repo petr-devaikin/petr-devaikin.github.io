@@ -3,6 +3,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
 		minOpacity: .1,
 		maxOpacity: 1,
+		buttonSize: 40,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -25,9 +26,15 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		ladsAreaRight,
 		connectionsAreaLeft,
 		connectionsAreaRight,
-		hintArea;
+		hintArea,
+		controlsArea;
 
-	var zoom;
+	var zoom,
+		initTransform;
+
+	var zoomInButton,
+		zoomOutButton,
+		zoomInitButton;
 
 	function init() {
 		svg.html('').classed('vis--geovis', true);
@@ -92,9 +99,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		path = d3.geoPath(projection);
 
-		// scale
-		
-
 		// areas
 
 		mapLeft = svg.append('g').classed('vis__map', true).classed('vis__map--left', true)
@@ -119,6 +123,29 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		hintArea = svg.append('g').classed('vis__map__hints', true);
 
 
+		// controls
+
+		controlsArea = svg.append('g').attr('class', 'vis__controls')
+			.attr('transform', 'translate({0},{1})'.format(10, height - params.buttonSize - 10));
+			
+		function addButton(text, i) {
+			var button = controlsArea.append('g')
+				.classed('vis__controls__button', true)
+				.attr('transform', 'translate({0},{1})'.format((params.buttonSize + 10) * i, 0));
+			button.append('rect').classed('vis__controls__button__bg', true)
+				.attr('width', params.buttonSize)
+				.attr('height', params.buttonSize);
+			button.append('text')
+				.attr('transform', 'translate({0},{1})'.format(params.buttonSize / 2, params.buttonSize / 2))
+				.text(text);
+			return button;
+		}
+
+		zoomInButton = addButton('+', 0);
+		zoomOutButton = addButton('-', 1);
+		zoomInitButton = addButton('Auto', 2);
+
+
 		// hint
 		function addHint(area, cl) {
 			var hint = area.append('g').classed(cl, true).attr('visibility', 'hidden');
@@ -128,6 +155,46 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		addHint(hintArea, 'vis__map__hints__lad');
 		addHint(hintArea, 'vis__map__hints__connection');
+
+		
+		// zoom behaviour
+
+		function zoomed() {
+			var transform = d3.event.transform;
+
+			projection
+				.translate([transform.x, transform.y])
+				.scale(transform.k);
+
+			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
+			d3.select(this).selectAll('.vis__map__border').attr("d", path);
+
+			d3.select(this).selectAll('.vis__map__connections__line').call(updateConnections);
+
+			if (d3.event.sourceEvent instanceof MouseEvent) {
+				if (this == mapLeft.node())
+					mapRight.call(zoom.transform, transform);
+				else if (this == mapRight.node())
+					mapLeft.call(zoom.transform, transform);
+			}
+		}
+
+
+		var scale0 = projection.scale(),
+			translate0 = projection.translate();
+
+	    zoom = d3.zoom()
+			.scaleExtent([0.5 * scale0, 8 * scale0])
+			.on("zoom", zoomed);
+
+		initTransform = d3.zoomIdentity
+			.translate(translate0[0], translate0[1])
+			.scale(scale0);
+
+		mapLeft.call(zoom.transform, initTransform);
+		mapLeft.call(zoom).on('dblclick.zoom', null);
+		mapRight.call(zoom.transform, initTransform);
+		mapRight.call(zoom).on('dblclick.zoom', null);
 	}
 	init();
 
@@ -184,45 +251,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		*/
 
 		drawConnections(data);
-
-		// zoom behaviour
-
-		function zoomed(mute) {
-			var transform = d3.event.transform;
-
-			projection
-				.translate([transform.x, transform.y])
-				.scale(transform.k);
-
-			d3.select(this).selectAll('.vis__map__lads__lad').attr("d", path);
-			d3.select(this).selectAll('.vis__map__border').attr("d", path);
-
-			d3.select(this).selectAll('.vis__map__connections__line').call(updateConnections);
-
-			if (d3.event.sourceEvent instanceof MouseEvent) {
-				if (this == mapLeft.node())
-					mapRight.call(zoom.transform, transform);
-				else if (this == mapRight.node())
-					mapLeft.call(zoom.transform, transform);
-			}
-		}
-
-
-		var scale0 = projection.scale(),
-			translate0 = projection.translate();
-
-	    zoom = d3.zoom()
-			.scaleExtent([0.5 * scale0, 8 * scale0])
-			.on("zoom", zoomed);
-
-		var t = d3.zoomIdentity
-			.translate(translate0[0], translate0[1])
-			.scale(scale0);
-
-		mapLeft.call(zoom.transform, t);
-		mapLeft.call(zoom);
-		mapRight.call(zoom.transform, t);
-		mapRight.call(zoom);
 	}
 
 	function drawConnections(data) {
@@ -389,6 +417,27 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	svg.on("click", function() {
 		console.log('reset selection');
 		selectLad();
+	});
+
+
+	// buttons
+
+	zoomInButton.on('click', function() {
+		event.stopPropagation();
+		zoom.scaleBy(mapLeft, 1.1);
+		zoom.scaleBy(mapRight, 1.1);
+	});
+
+	zoomOutButton.on('click', function() {
+		event.stopPropagation();
+		zoom.scaleBy(mapLeft, .9);
+		zoom.scaleBy(mapRight, .9);
+	});
+
+	zoomInitButton.on('click', function() {
+		event.stopPropagation();
+		mapLeft.call(zoom.transform, initTransform);
+		mapRight.call(zoom.transform, initTransform);
 	});
 }
 

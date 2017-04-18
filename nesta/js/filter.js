@@ -1,5 +1,6 @@
 function Filter(container) {
 	var FILTER_WIDTH = 200;
+	var SAMPLE_WIDTH = 30;
 
 	container.classed('filter', true);
 
@@ -186,6 +187,28 @@ function Filter(container) {
 								return '{0} – {1}'.format(d.min, d.max);
 						});
 			}
+		}
+	}
+
+	this.addLineKey = function(title, lines, hint) {
+		var group = initGroup(title);
+
+		var table = group.append('table').classed('filter__group__samples', true);
+		lines.forEach(function(line) {
+			var tr = table.append('tr');
+			var sample = tr.append('td').classed('filter__group__samples__sample', true);
+			var desc = tr.append('td').classed('filter__group__samples__desc', true);
+
+			sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', line.thickness)
+				.append('line')
+					.attr('x1', 0).attr('y1', (line.thickness - 1) / 2)
+					.attr('x2', SAMPLE_WIDTH).attr('y2', (line.thickness - 1) / 2)
+					.attr('stroke-width', line.thickness).attr('stroke', line.color);
+			desc.text(line.description);
+		});
+
+		if (hint !== undefined) {
+			group.append('p').classed('filter__group__hint', true).text(hint);
 		}
 	}
 }

@@ -46,6 +46,15 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 					selectedTopic = v;
 					redraw();
 				});
+
+			filter.addLineKey(
+				'Connections',
+				[
+					{ thickness: 2, color: 'blue', description: 'Owtward movement [?]' },
+					{ thickness: 2, color: 'green', description: 'Inward movement [?]' },
+				],
+				'Line opacity shows the probability of a user who registred in one LAD to attend an event in another area [?]'
+				);
 		});
 	});
 });
