@@ -4,6 +4,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		minOpacity: .1,
 		maxOpacity: 1,
 		buttonSize: 40,
+		selectLadCallback: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -156,7 +157,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		addHint(hintArea, 'vis__map__hints__lad');
 		addHint(hintArea, 'vis__map__hints__connection');
 
-		
+
 		// zoom behaviour
 
 		function zoomed() {
@@ -218,7 +219,9 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		});
 
 		connectionSelection.select('.vis__map__connections__line__bg').attr('d', setPath);
-		connectionSelection.select('.vis__map__connections__line__line').attr('d', setPath);
+		connectionSelection.select('.vis__map__connections__line__line')
+			.attr('d', setPath)
+			.attr('opacity', function(d) { return vScale(d.value); });
 	}
 
 	this.draw = function() {
@@ -237,7 +240,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			newMapLads
 				.on('mousemove', overLad)
 				.on('mouseout', outLad)
-				.on('click', selectLad);
+				.on('click', function(d) { d3.event.stopPropagation(); selectLad(d); });
 		}
 		addLads(ladsAreaLeft);
 		addLads(ladsAreaRight);
@@ -270,7 +273,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		data = data.filter(function(d) { return d.landFrom != undefined; });
 
-		var maxValue = d3.max(data, function(d) { return d.value; });
+		var maxValue = 100;//d3.max(data, function(d) { return d.value; });
 		vScale = d3.scaleSqrt().domain([0, maxValue]).range([params.minOpacity, params.maxOpacity]);
 
 		// draw connections
@@ -291,9 +294,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.classed('vis__map__connections__line__line', true)
 				.attr('stroke', function(d) {
 					return params.categoryColors[d.category];
-				})
-				.attr('opacity', function(d) {
-					return vScale(d.value);
 				});
 
 			connections.call(updateConnections);
@@ -302,9 +302,17 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.category == 'outward'; }));
 		addConnections(connectionsAreaRight, data.filter(function(d) { return d.category == 'inward'; }));
+
+		if (selectedLad !== undefined)
+			selectLad(selectedLad);
 	}
 
 	this.redraw = drawConnections;
+
+	this.select = function(ladName) {
+		var lad = ladLands.features.find(function(d) { return d.name == ladName; });
+		selectLad(lad);
+	}
 
 	// interaction
 	function updateHint(hint, pos, text) {
@@ -343,7 +351,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		var bbox = this.getBBox();
 		var pos = [d3.event.clientX, d3.event.clientY - 10];
-		var text = 'From {0} to {1}: {2}'.format(d.landFrom.name, d.landTo.name, d.value.abbrNum(2));
+		var text = 'From {0} to {1}: {2}%'.format(d.landFrom.name, d.landTo.name, d.value.abbrNum(2));
 			
 		updateHint(hintArea.select('.vis__map__hints__connection'), pos, text);
 	}
@@ -362,7 +370,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		}
 
 		if (d !== undefined) {
-			d3.event.stopPropagation();
 			d.selected = true;
 
 			// show lad hint
@@ -412,6 +419,9 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		ladsAreaRight.selectAll('.vis__map__lads__lad')
 			.classed('selected', function(d) { return d.selected; })
 			.classed('highlighted', function(d) { return d.fromHighlighted; });
+
+		if (params.selectLadCallback !== undefined)
+			params.selectLadCallback(selectedLad !== undefined ? selectedLad.name : '');
 	}
 
 	svg.on("click", function() {

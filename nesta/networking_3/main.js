@@ -19,12 +19,17 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			var data = inwardData.concat(outwardData);
 			var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
 
-			console.log(filteredData.length);
+			var ladNamesFromMap = topojson.feature(lads, lads.objects.lads).features.map(function(d) { return d.properties.lad16nm; });
+			ladNamesFromMap.sort();
+			ladNamesFromMap = ladNamesFromMap.map(function(d) { return { id: d, text: d }; });
 
 			var geovis = new Geovis(svg, lads, ladAreas, filteredData, {
 				categoryColors: {
 					'inward': 'green',
 					'outward': 'blue',
+				},
+				selectLadCallback: function(ladName) {
+					ladCallbacks.setValue(ladName);
 				}
 			});
 
@@ -33,6 +38,10 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			function redraw() {
 				var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
 				geovis.redraw(filteredData);
+			}
+
+			function selectLad(lad) {
+				geovis.select(lad);
 			}
 
 			// Filter
@@ -45,6 +54,14 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 				function(v) {
 					selectedTopic = v;
 					redraw();
+				});
+
+			var ladCallbacks = filter.addSelectSearchSection(
+				'Local Authority District',
+				[{ id: '', text: '' }].concat(ladNamesFromMap),
+				'Search for LAD',
+				function(v) {
+					selectLad(v);
 				});
 
 			filter.addLineKey(
