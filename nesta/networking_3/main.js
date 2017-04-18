@@ -13,6 +13,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 	datareader.readData(Datareader.DATASETS.Lads, function(ladAreas) {
 		datareader.readData(Datareader.DATASETS.Movement, function(topics, inwardData, outwardData) {
 			var selectedTopic = topics[0];
+			topics.sort();
 
 			inwardData.forEach(function(d) { return d.category = 'inward'; });
 			outwardData.forEach(function(d) { return d.category = 'outward'; });
@@ -57,7 +58,9 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 				function(v) {
 					selectedTopic = v;
 					redraw();
-				});
+				},
+				selectedTopic
+			);
 
 			var ladCallbacks = filter.addSelectSearchSection(
 				'Local Authority District',
