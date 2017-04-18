@@ -43,9 +43,14 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 	var transition;
 
+	var selectedLad = undefined;
+
 	function calculateAutoZoom(data) {
 		function isLadInAreaToZoom(name) {
-			return data.find(function(d) { return d.from == name || d.to == name }) !== undefined;
+			if (selectedLad === undefined)
+				return data.find(function(d) { return d.from == name || d.to == name }) !== undefined;
+			else
+				return landHash[name] == selectedLad || landHash[name].toHighlighted || landHash[name].fromHighlighted;
 			//return params.areasToZoom.indexOf(ladsAreas[name]) != -1;
 		}
 
@@ -231,9 +236,9 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 			res += 'M{0} {1} '.format(d.fromCentroid[0], d.fromCentroid[1]);
 			//res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
 			res += 'C {0} {1} {2} {3} {4} {5}'.format(
-				d.fromCentroid[0], d.fromCentroid[1] - distance / 2 - 5 * d.value / 100,
-				d.toCentroid[0], d.toCentroid[1] - distance / 2 - 5 * d.value / 100,
-				d.toCentroid[0], d.toCentroid[1]
+				d.fromCentroid[0], d.fromCentroid[1] - distance / 2 - 15 * d.value / 100,
+				d.toCentroid[0], d.toCentroid[1] - distance / 2 - 15 * d.value / 100 - 5,
+				d.toCentroid[0], d.toCentroid[1] - 5
 			);
 			return res;
 		}
@@ -292,8 +297,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		drawConnections(data);
 	}
 
-	function drawConnections(data) {
-		calculateAutoZoom(data);
+	function drawConnections(newData) {
+		data = newData;
 
 		// process data
 		data.forEach(function(d) {
@@ -314,6 +319,9 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		var maxValue = 100;//d3.max(data, function(d) { return d.value; });
 		vScale = d3.scaleSqrt().domain([0, maxValue]).range([params.minOpacity, params.maxOpacity]);
 
+		// update auto zoom
+		calculateAutoZoom(data);
+
 		// draw connections
 		function addConnections(connectionsArea, data) {
 			var connections = connectionsArea.selectAll('.vis__map__connections__line').data(data);
@@ -330,9 +338,10 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
 			newConnections.append('path').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--end')
 				.attr('d', function(d) {
-					return 'M -2 -4 L 0 0 L 2 -4';
+					return 'M -2 -5 L 0 0 L 2 -5';
 				})
-				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
+				.attr('stroke', function(d) { return params.categoryColors[d.category]; })
+				.attr('fill', function(d) { return params.categoryColors[d.category]; });
 
 			newConnections.append('path')
 				.classed('vis__map__connections__line__bg', true);
@@ -407,8 +416,6 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		hintArea.select('.vis__map__hints__connection').attr('visibility', 'hidden');
 	}
 
-	var selectedLad = undefined;
-
 	function selectLad(d) {
 		if (selectedLad !== undefined) {
 			selectedLad.selected = false;
@@ -422,7 +429,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		selectedLad = d;
 
-		ladsAreaLeft.selectAll('.vis__map__lads__lad').each(function(d) {
+		ladLands.features.forEach(function(d) {
 			d.toHighlighted = false;
 			d.fromHighlighted = false;
 		})
@@ -435,6 +442,10 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				else {
 					if (dd.landFrom == d) {
 						dd.landTo.toHighlighted = true;
+						return false;
+					}
+					else if (dd.landTo == d) {
+						dd.landFrom.toHighlighted = true;
 						return false;
 					}
 					else
@@ -453,6 +464,10 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 						dd.landFrom.fromHighlighted = true;
 						return false;
 					}
+					else if (dd.landFrom == d) {
+						dd.landTo.fromHighlighted = true;
+						return false;
+					}
 					else
 						return true;
 				}
@@ -467,6 +482,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		if (params.selectLadCallback !== undefined)
 			params.selectLadCallback(selectedLad !== undefined ? selectedLad.name : '');
+
+		calculateAutoZoom(data);
 	}
 
 	svg.on("click", function() {

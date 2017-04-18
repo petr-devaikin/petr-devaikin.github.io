@@ -39,7 +39,6 @@
   fill: none;
 }
 .vis--geovis .vis__map__connections__line__point {
-  fill: none;
   pointer-events: none;
 }
 .vis--geovis .vis__map__connections__line__bg {
