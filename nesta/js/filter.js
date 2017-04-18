@@ -190,7 +190,7 @@ function Filter(container) {
 		}
 	}
 
-	this.addLineKey = function(title, lines, hint) {
+	this.addArrowKey = function(title, lines, hint) {
 		var group = initGroup(title);
 
 		var table = group.append('table').classed('filter__group__samples', true);
@@ -199,11 +199,20 @@ function Filter(container) {
 			var sample = tr.append('td').classed('filter__group__samples__sample', true);
 			var desc = tr.append('td').classed('filter__group__samples__desc', true);
 
-			sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', line.thickness)
-				.append('line')
-					.attr('x1', 0).attr('y1', (line.thickness - 1) / 2)
-					.attr('x2', SAMPLE_WIDTH).attr('y2', (line.thickness - 1) / 2)
-					.attr('stroke-width', line.thickness).attr('stroke', line.color);
+			var cy = 2;
+			var svg = sample.append('svg').attr('width', SAMPLE_WIDTH).attr('height', 5);
+			svg.append('line')
+				.attr('x1', 1).attr('y1', cy)
+				.attr('x2', SAMPLE_WIDTH - 1).attr('y2', cy)
+				.attr('stroke-width', 1).attr('stroke', line.color);
+			svg.append('ellipse')
+				.attr('cx', 2).attr('cy', cy)
+				.attr('rx', 1).attr('ry', 2)
+				.attr('stroke', 'none').attr('fill', line.color);
+			svg.append('path')
+				.attr('d', 'M {0} {1} l 5 2 l -5 2'.format(SAMPLE_WIDTH - 6, cy - 2))
+				.attr('stroke', line.color).attr('fill', line.color);
+
 			desc.text(line.description);
 		});
 

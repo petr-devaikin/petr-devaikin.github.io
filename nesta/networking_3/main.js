@@ -67,7 +67,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 					selectLad(v);
 				});
 
-			filter.addLineKey(
+			filter.addArrowKey(
 				'Connections',
 				[
 					{ thickness: 2, color: 'blue', description: 'Owtward movement [?]' },
