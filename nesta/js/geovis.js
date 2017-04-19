@@ -221,6 +221,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 		}
 
 	    zoom = d3.zoom()
+	    	.extent([[0, 0], [width / 2, height]])
 			.scaleExtent([0.5 * initTransform.k, 8 * initTransform.k])
 			.on("zoom", zoomed);
 
@@ -343,7 +344,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 			var newConnections = connections.enter().append('g')
 				.classed('vis__map__connections__line', true)
 				.on('mousemove', overConnection)
-				.on('mouseout', outConnection);
+				.on('mouseout', outConnection)
+				.on('click', function() { d3.event.stopPropagation(); });
 
 			newConnections.append('ellipse').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--start')
 				.attr('rx', 1).attr('ry', .5)
@@ -508,14 +510,14 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 
 	zoomInButton.on('click', function() {
 		event.stopPropagation();
-		zoom.scaleBy(mapLeft, 1.1);
-		zoom.scaleBy(mapRight, 1.1);
+		zoom.scaleBy(mapLeft.transition(transition), 1.1);
+		zoom.scaleBy(mapRight.transition(transition), 1.1);
 	});
 
 	zoomOutButton.on('click', function() {
 		event.stopPropagation();
-		zoom.scaleBy(mapLeft, .9);
-		zoom.scaleBy(mapRight, .9);
+		zoom.scaleBy(mapLeft.transition(transition), .9);
+		zoom.scaleBy(mapRight.transition(transition), .9);
 	});
 
 	zoomInitButton.on('click', function() {
