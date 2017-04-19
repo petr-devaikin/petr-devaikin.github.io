@@ -9,7 +9,7 @@ var svg = d3.select("body").append("svg")
 var datareader = new Datareader();
 
 
-datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
+datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 	datareader.readData(Datareader.DATASETS.Lads, function(ladAreas) {
 		datareader.readData(Datareader.DATASETS.Movement, function(topics, inwardData, outwardData) {
 			var selectedTopic = topics[0];
@@ -20,11 +20,11 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 			var data = inwardData.concat(outwardData);
 			var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
 
-			var ladNamesFromMap = topojson.feature(lads, lads.objects.lads).features.map(function(d) { return d.properties.lad16nm; });
+			var ladNamesFromMap = Object.keys(ladAreas);
 			ladNamesFromMap.sort();
 			ladNamesFromMap = ladNamesFromMap.map(function(d) { return { id: d, text: d }; });
 
-			var geovis = new Geovis(svg, lads, ladAreas, filteredData, {
+			var geovis = new Geovis(svg, ladsGB, ladsNI, ladAreas, filteredData, {
 				categoryColors: {
 					'inward': 'green',
 					'outward': 'blue',

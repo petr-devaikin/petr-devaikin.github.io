@@ -1,4 +1,4 @@
-function Geovis(svg, ladsMap, ladsAreas, data, p) {
+function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
 		minOpacity: .1,
@@ -55,8 +55,8 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 		}
 
 		var meshToZoom = topojson.mesh(
-			ladsMap,
-			ladsMap.objects.lads,
+			ladsMapGB,
+			ladsMapGB.objects.lads,
 			function(a, b) {
 				if (a === b && isLadInAreaToZoom(a.properties.lad16nm)) return true;
 
@@ -91,15 +91,26 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				.attr('width', width / 2).attr('height', height);
 
 		// process geo data
-		ladLands = topojson.feature(ladsMap, ladsMap.objects.lads);
-		ladLands.features.forEach(function(f) {
+		ladLands = topojson.feature(ladsMapGB, ladsMapGB.objects.lads).features;
+		ladLands.forEach(function(f) {
 			f.name = f.properties.lad16nm;
 			f.area = ladsAreas[f.name];
 			f.isWelsh = f.area == 'Wales';
 			landHash[f.name] = f;
 		});
 
+		var ladLandsNI = topojson.feature(ladsMapNI, ladsMapNI.objects.lgd).features;
+		ladLandsNI.forEach(function(f) {
+			f.name = f.properties.LGDNAME;
+			f.area = 'Northern Ireland';
+			f.isWelsh = false;
+			landHash[f.name] = f;
+		});
+
+		ladLands = ladLands.concat(ladLandsNI);
+
 		// welsh border
+		/*
 		function isWelsh(name) {
 			return ladsAreas[name] == 'Wales';
 		}
@@ -111,6 +122,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 				(!isWelsh(b.properties.lad16nm) && isWelsh(a.properties.lad16nm)) ||
 				(isWelsh(b.properties.lad16nm) && !isWelsh(a.properties.lad16nm))); }
 		)
+		*/
 
 
 		// projection
@@ -268,7 +280,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	this.draw = function() {
 		function addLads(ladsArea) {
 		    var newMapLads = ladsArea.selectAll(".vis__map__lads__lad")
-				.data(ladLands.features)
+				.data(ladLands)
 				.enter().append("path")
 					.classed('vis__map__lads__lad', true)
 					.classed('vis__map__lads__lad--welsh', function(d) { return d.isWelsh; })
@@ -364,7 +376,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 	this.redraw = drawConnections;
 
 	this.select = function(ladName) {
-		var lad = ladLands.features.find(function(d) { return d.name == ladName; });
+		var lad = ladLands.find(function(d) { return d.name == ladName; });
 		selectLad(lad);
 	}
 
@@ -429,7 +441,7 @@ function Geovis(svg, ladsMap, ladsAreas, data, p) {
 
 		selectedLad = d;
 
-		ladLands.features.forEach(function(d) {
+		ladLands.forEach(function(d) {
 			d.toHighlighted = false;
 			d.fromHighlighted = false;
 		})

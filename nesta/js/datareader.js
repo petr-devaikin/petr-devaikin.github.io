@@ -106,6 +106,18 @@ function Datareader(base) {
 		);
 	}
 
+	// Return LADs shape for UK
+	readers[Datareader.DATASETS.LadsMapUK] = function(callback) {
+		d3.queue()
+			.defer(d3.json, base + Datareader.DATASETS.LadsMapUK + 'lads_gb.json')
+			.defer(d3.json, base + Datareader.DATASETS.LadsMapUK + 'lads_ni.json')
+			.await(function(error) {
+				var gbData = arguments[1];
+				var niData = arguments[2];
+				callback(gbData, niData);
+			});
+	}
+
 	// Topic piopularity
 	readers[Datareader.DATASETS.TopicPopularity] = function(callback) {
 		var years = ['2013', '2014', '2015', '2016'];
@@ -837,7 +849,8 @@ function Datareader(base) {
 
 Datareader.DATASETS = {
 	Lads: 'lads.csv',
-	LadsMap: 'ladsmap.json',
+	LadsMap: 'geo/lads_gb.json',
+	LadsMapUK: 'geo/',
 	BigSectorYearWelsh: 'bc_big_sector_year_welsh.csv',
 	Bubblechart: 'bubble_chart_source_data.csv',
 	TopicPopularity: 'topic_popularity/topic_popularity_by_city_scaled_{0}.csv',
