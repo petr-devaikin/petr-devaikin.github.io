@@ -1,0 +1,76 @@
+.vis--bumpchart
+	.vis__axis
+		font-size 10px
+
+		.tick
+			cursor pointer
+			
+			&.blured
+				text
+					opacity .2
+					
+			&.selected
+				text
+					font-weight bold
+					font-size 12px
+
+	.vis__graph
+		&__line
+			cursor pointer
+			
+			&__line
+				fill none
+				stroke-width 2
+				
+			&__bg
+				fill none
+				stroke rgba(255, 255, 255, 0)
+				stroke-width 7
+
+			&.blured
+				opacity .2
+				
+			&.selected
+				.vis__graph__line__line
+					stroke-width 4
+
+	.vis__hints
+		&__hint
+			pointer-events none
+
+			&__bg
+				stroke #000
+				stroke-width 1
+				fill #fff
+
+			text
+				font-size 10px
+
+
+	.vis__overview
+		&__bg
+			fill #fff
+			stroke #ccc
+			
+		&__line
+			fill none
+			stroke-width 1
+			
+			&.blured
+				opacity .1
+				
+			&.selected
+				stroke-width 2
+			
+		&__viewport
+			fill rgba(255, 255, 255, 0)
+			stroke #000
+			stroke-width 2
+			cursor grab
+			cursor -moz-grab
+			cursor -webkit-grab
+			
+		&__title
+			font-size 12px
+			fill #000
+			text-anchor middle

@@ -1,4 +1,37 @@
 var ColorPalette = {
+	discrete: function(minValue, maxValue, stepNumber) {
+		var colors;
+
+		if (stepNumber == 0) {
+			colors = ['#2c7bb6', '#abd9e9', '#fdae61', '#d7191c'];
+		}
+		else {
+			var minColor = '#cccccc';
+			var maxColor = '#b30000';
+			colors = d3.range(stepNumber).map(function(d) {
+				return d3.interpolateRgb(minColor, maxColor)(d / stepNumber);
+			});
+		}
+
+		var step = Math.ceil((maxValue - minValue + 1) / stepNumber);
+		maxValue = minValue + step * stepNumber - 1;
+
+		var steps = d3.range(stepNumber).map(function(d, i) {
+			return {
+				min: minValue + d * step,
+				max: minValue + (d + 1) * step - 1,
+			};
+		});
+
+		var scale = d3.scaleQuantize()
+			.domain([minValue, maxValue])
+			.range(colors);
+
+		return {
+			steps: steps,
+			scale: scale
+		}
+	},
 	discreteDouble: function(maxValue, stepNumber) {
 		//console.log(maxValue, stepNumber);
 		var minColor = '#d73027',
@@ -20,8 +53,8 @@ var ColorPalette = {
 
 		var steps = d3.range(stepNumber).map(function(d, i) {
 			return {
-				min: -maxValue + Math.round(d * step),
-				max: -maxValue + Math.round((d + 1) * step) - 1,
+				min: -maxValue + d * step,
+				max: -maxValue + (d + 1) * step - 1,
 			};
 		});
 		//console.log(steps);

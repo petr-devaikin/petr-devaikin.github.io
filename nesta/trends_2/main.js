@@ -1,5 +1,5 @@
-var width = 1050,
-	height = 350;
+var width = window.innerWidth - 230,
+	height = window.innerHeight;
 
 var svg = d3.select("body").append("svg")
 	.attr("width", width)
@@ -8,13 +8,11 @@ var svg = d3.select("body").append("svg")
 var datareader = new Datareader();
 
 datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, data) {
-	var selectedVariable = 'attendants',
-		selectedLad = 'Cardiff',
+	var selectedLad = 'Cardiff',
 		selectedTopic = '';
 
 	var bumpchart;
 	var lines;
-	var maxChange = 0;
 
 	function calculateRank(data) {
 		for (var i = years.length - 1; i >= 0; i--) {
@@ -27,8 +25,8 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 			currentData.sort(function(a, b) {
 				var aValue, bValue;
-				aValue = a[selectedVariable];
-				bValue = b[selectedVariable];
+				aValue = a.comparative_adv;
+				bValue = b.comparative_adv;
 
 				if (aValue == bValue && i < years.length - 1) { // copy ranking from the next year
 					//if (y == 2013) console.log(a, b);
@@ -45,15 +43,8 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		}
 	}
 
-	function calculateMaxChange() {
-		maxChange = 0;
-		lines.forEach(function(l) {
-			var firstValueIndex = Object.keys(l.values)[0];
-			var lastValueIndex = l.values.length - 1;
-			l.change = l.values[firstValueIndex].position - l.values[lastValueIndex].position;
-			maxChange = Math.max(maxChange, Math.abs(l.change));
-		});
-		return maxChange;
+	function calculateMax(data) {
+		return d3.max(data, function(d) { return d.attendants; });
 	}
 
 	function filterData() {
@@ -62,6 +53,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		});
 	}
 
+	/*
 	function getTopics() {
 		var fData = filterData();
 		var topics = {
@@ -69,7 +61,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		};
 		fData.map(function(d) { topics[d.topic] = { id: d.topic, text: d.topic }; });
 		return Object.keys(topics).map(function(d) { return topics[d]; }).sort(function(a, b) { return a < b ? -1 : 1});
-	}
+	}*/
 
 	function groupLines(data) {
 		var lines = {};
@@ -83,7 +75,8 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 			lines[d.topic].values.push({
 				year: d.year,
 				position: d.position,
-				value: selectedVariable == 'comparative_adv' ? d[selectedVariable].abbrNum(2) : d[selectedVariable].separate(),
+				secondValue: d.attendants,
+				value: d.comparative_adv.abbrNum(2),
 			});
 		});
 		Object.keys(lines).forEach(function(d) { lines[d].values.sort(function(a, b) { return a.year - b.year; }) }); // sort values by year
@@ -92,25 +85,42 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 	function drawChart() {
 		var fData = filterData();
+		var maxSecondValue = calculateMax(fData);
+
 		calculateRank(fData);
 		lines = groupLines(fData);
-		calculateMaxChange();
-		scaleCallbacks.update(maxChange);
+
+		scaleCallbacks.update(0, maxSecondValue);
 		
 		bumpchart = new Bumpchart(svg, years, lines, {
 			leftMargin: 200,
 			rightMargin: 200,
-			bottomMargim: 150,
-			onItemSelect: onItemSelect,
-			legendSteps: 5,
+			topMargin: 50,
+			//onItemSelect: onItemSelect,
+			legendSteps: 4,
 			showOverview: false,
+			addHint: function(h, d) {
+				h.append('text').classed('vis__hints__hint__name', true).style('font-weight', 'bold');
+				h.append('text').classed('vis__hints__hint__position', true).attr('dy', 12);
+				h.append('text').classed('vis__hints__hint__lq', true).attr('dy', 24);
+				h.append('text').classed('vis__hints__hint__attendants', true).attr('dy', 36);
+			},
+			setHintContent: function(h, line, d, isFirst, isLast, isVisible) {
+				if ((isFirst || isLast) && !isVisible)
+					h.select('.vis__hints__hint__name').text(line.name);
+				else
+					h.select('.vis__hints__hint__name').text('');
+				h.select('.vis__hints__hint__position').text('Position: ' + d.position);
+				h.select('.vis__hints__hint__lq').text('LQ: ' + d.value);
+				h.select('.vis__hints__hint__attendants').text('Attendants: ' + d.secondValue);
+			}
 		});
 		bumpchart.draw();
 	}
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
-	filter.addRadioSection(
+	/*filter.addRadioSection(
 		'Rank by',
 		[
 			{ value: 'attendants', label: 'Number of attendants', checked: true },
@@ -121,7 +131,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 			selectedVariable = v;
 			drawChart();
 		}
-	);
+	);*/
 
 	filter.addSelectSearchSection(
 		'Local Authority District',
@@ -130,12 +140,13 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		function(v) {
 			selectedLad = v;
 			bumpchart.select();
-			topicCallbacks.update(getTopics());
+			//topicCallbacks.update(getTopics());
 			drawChart();
 		},
 		selectedLad
 	);
 	
+	/*
 	var topicCallbacks = filter.addSelectSearchSection(
 		'Topic',
 		getTopics(),
@@ -149,8 +160,9 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	function onItemSelect(item) {
 		topicCallbacks.setValue(item === undefined ? '' : item.name);
 	}
+	*/
 
-	var scaleCallbacks = filter.addDiscreteDoubleColorScale('Ranking change', maxChange, 5);
+	var scaleCallbacks = filter.addDiscreteColorScale('Number of attendants', 0, 10, 4);
 
 
 	drawChart();
