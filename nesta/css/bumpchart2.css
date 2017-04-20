@@ -2,7 +2,7 @@
   font-size: 10px;
 }
 .vis--bumpchart .vis__axis .tick {
-  cursor: pointer;
+  cursor: default;
 }
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
@@ -11,16 +11,13 @@
   font-weight: bold;
   font-size: 12px;
 }
-.vis--bumpchart .vis__graph__line {
-  cursor: pointer;
-}
 .vis--bumpchart .vis__graph__line__line {
-  stroke: none;
+  stroke: rgba(255,255,255,0.5);
 }
 .vis--bumpchart .vis__graph__line__bg {
   fill: none;
   stroke: rgba(255,255,255,0);
-  stroke-width: 7;
+  stroke-width: 3;
 }
 .vis--bumpchart .vis__graph__line.blured {
   opacity: 0.2;

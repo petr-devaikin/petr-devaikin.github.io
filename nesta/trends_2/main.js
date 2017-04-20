@@ -7,44 +7,28 @@ var svg = d3.select("body").append("svg")
 
 var datareader = new Datareader();
 
-datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, data) {
+datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, broadTopics, data) {
 	var selectedLad = 'Cardiff',
 		selectedTopic = '';
 
 	var bumpchart;
 	var lines;
 
-	function calculateRank(data) {
-		for (var i = years.length - 1; i >= 0; i--) {
-			y = years[i];
+	console.log(broadTopics.length);
 
-			var currentData = data.filter(function(d) { return d.year == y; });
-			var nextYearData;
-			if (i < years.length - 1)
-				nextYearData = data.filter(function(d) { return d.year == years[i + 1]; });
-
-			currentData.sort(function(a, b) {
-				var aValue, bValue;
-				aValue = a.comparative_adv;
-				bValue = b.comparative_adv;
-
-				if (aValue == bValue && i < years.length - 1) { // copy ranking from the next year
-					//if (y == 2013) console.log(a, b);
-					var aNextPosition = nextYearData.find(function(d) { return d.topic == a.topic; });
-					var bNextPosition = nextYearData.find(function(d) { return d.topic == b.topic; });
-					//if (y == 2013) console.log(aNextPosition, bNextPosition);
-					return aNextPosition.position - bNextPosition.position;
-				}
-				else
-					return bValue - aValue;
-			});
-
-			currentData.forEach(function(d, i) { d.position = i + 1; });
-		}
+	function processData(data) {
+		data.forEach(function(d) {
+			d.name = d.topic.name;
+			d.category = d.topic.broad;
+			d.value = d.comparative_adv;
+			d.secondValue = d.attendants; // ???
+			d.x = d.year;
+		});
 	}
+	processData(data);
 
 	function calculateMax(data) {
-		return d3.max(data, function(d) { return d.attendants; });
+		return d3.max(data, function(d) { return d.secondValue; });
 	}
 
 	function filterData() {
@@ -53,57 +37,24 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		});
 	}
 
-	/*
-	function getTopics() {
-		var fData = filterData();
-		var topics = {
-			'': '',
-		};
-		fData.map(function(d) { topics[d.topic] = { id: d.topic, text: d.topic }; });
-		return Object.keys(topics).map(function(d) { return topics[d]; }).sort(function(a, b) { return a < b ? -1 : 1});
-	}*/
-
-	function groupLines(data) {
-		var lines = {};
-		data.forEach(function(d) {
-			if (lines[d.topic] === undefined)
-				lines[d.topic] = {
-					name: d.topic,
-					values: []
-				}
-
-			lines[d.topic].values.push({
-				year: d.year,
-				position: d.position,
-				secondValue: d.attendants,
-				value: d.comparative_adv.abbrNum(2),
-			});
-		});
-		Object.keys(lines).forEach(function(d) { lines[d].values.sort(function(a, b) { return a.year - b.year; }) }); // sort values by year
-		return Object.keys(lines).map(function(d) { return lines[d]; });
-	}
-
 	function drawChart() {
 		var fData = filterData();
 		var maxSecondValue = calculateMax(fData);
-
-		calculateRank(fData);
-		lines = groupLines(fData);
-
-		scaleCallbacks.update(0, maxSecondValue);
 		
-		bumpchart = new Bumpchart(svg, years, lines, {
+		bumpchart = new Bumpchart(svg, years, fData, {
 			leftMargin: 200,
 			rightMargin: 200,
 			topMargin: 50,
 			//onItemSelect: onItemSelect,
 			legendSteps: 4,
 			showOverview: false,
+			categories: broadTopics,
 			addHint: function(h, d) {
 				h.append('text').classed('vis__hints__hint__name', true).style('font-weight', 'bold');
 				h.append('text').classed('vis__hints__hint__position', true).attr('dy', 12);
 				h.append('text').classed('vis__hints__hint__lq', true).attr('dy', 24);
 				h.append('text').classed('vis__hints__hint__attendants', true).attr('dy', 36);
+				h.append('text').classed('vis__hints__hint__events', true).attr('dy', 48);
 			},
 			setHintContent: function(h, line, d, isFirst, isLast, isVisible) {
 				if ((isFirst || isLast) && !isVisible)
@@ -113,6 +64,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 				h.select('.vis__hints__hint__position').text('Position: ' + d.position);
 				h.select('.vis__hints__hint__lq').text('LQ: ' + d.value);
 				h.select('.vis__hints__hint__attendants').text('Attendants: ' + d.secondValue);
+				h.select('.vis__hints__hint__events').text('Events: ' + d.events);
 			}
 		});
 		bumpchart.draw();
@@ -120,6 +72,10 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
+
+	filter.addText('', 'The ranking of topics is based on the comparative advantage (LQ) in the selected district [?].');
+	filter.addText('', 'Colour of line shows a topic group [?]');
+	filter.addText('', 'Thickness of line represents a number of attendants at the events covering the topic [?]');
 	/*filter.addRadioSection(
 		'Rank by',
 		[
@@ -162,7 +118,7 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 	}
 	*/
 
-	var scaleCallbacks = filter.addDiscreteColorScale('Number of attendants', 0, 10, 4);
+	//var scaleCallbacks = filter.addDiscreteColorScale('Number of attendants', 0, 10, 4);
 
 
 	drawChart();

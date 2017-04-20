@@ -12,13 +12,17 @@
 }
 .filter__group {
   font-size: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 .filter__group h1 {
   margin: 0 0 5px;
   font-size: 14px;
   text-transform: uppercase;
+}
+.filter__group__text {
+  margin: 0;
+  font-size: 12px;
 }
 .filter__group select {
   width: 200px;

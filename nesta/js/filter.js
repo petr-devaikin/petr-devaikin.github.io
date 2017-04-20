@@ -6,8 +6,14 @@ function Filter(container) {
 
 	function initGroup(title) {
 		var group = container.append('div').classed('filter__group', true);
-		group.append('h1').text(title);
+		if (title)
+			group.append('h1').text(title);
 		return group;
+	}
+
+	this.addText = function(title, text) {
+		var group = initGroup(title);
+		group.append('p').classed('filter__group__text', true).text(text);
 	}
 
 	this.addRadioSection = function(title, values, callback) {

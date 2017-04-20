@@ -608,20 +608,22 @@ function Datareader(base) {
 	// Hot trends
 	readers[Datareader.DATASETS.HotTrends] = function(callback) {
 		var lads = [];
-		var topics = [];
+		var topics = {};
+		var broadTopics = [];
 		var years = [];
 
 		d3.csv(
 			base + Datareader.DATASETS.HotTrends,
 			function(line, i) {
 				if (years.indexOf(parseInt(line.year)) == -1) years.push(parseInt(line.year));
-				if (topics.indexOf(line.Topics) == -1) topics.push(line.Topics);
+				if (topics[line.Topics] === undefined) topics[line.Topics] = { name: line.Topics, broad: line.broad_topic };
+				if (broadTopics.indexOf(line.broad_topic) == -1) broadTopics.push(line.broad_topic);
 				if (lads.indexOf(line.LAD) == -1) lads.push(line.LAD);
 
 				return {
 					year: parseInt(line.year),
 					lad: line.LAD,
-					topic: line.Topics,
+					topic: topics[line.Topics],
 					comparative_adv: parseFloat(line.comparative_adv),
 					attendants: parseInt(line.num_attendants),
 					events: parseInt(line.num_events),
@@ -629,10 +631,10 @@ function Datareader(base) {
 			},
 			function(rawData) {
 				years.sort();
-				topics.sort();
+				broadTopics.sort();
 				lads.sort();
 
-				callback(years, lads, topics, rawData);
+				callback(years, lads, topics, broadTopics, rawData);
 			}
 		);
 	};
@@ -866,7 +868,7 @@ Datareader.DATASETS = {
 	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
 	Opportunities: 'opportunity_network.csv',
 	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',
-	HotTrends: 'hot_trends.csv',
+	HotTrends: 'revised_hot_trends.csv',
 	MeetupAttendance: 'meetup_attendance',
 	MeetupNetwork: 'meetup_network',
 	Movement: 'movement',
