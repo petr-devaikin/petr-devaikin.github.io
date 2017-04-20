@@ -19,7 +19,8 @@
 			cursor pointer
 			
 			&__line
-				stroke none
+				fill none
+				stroke-width 2
 				
 			&__bg
 				fill none

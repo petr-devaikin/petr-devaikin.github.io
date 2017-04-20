@@ -6,6 +6,8 @@ function Bumpchart(svg, xValues, data, p) {
 		graphWidth: 500,
 		showPositions: 20,
 		positionHeight: 15,
+		lineMinHeight: 1,
+		lineMaxHeight: 10,
 		onItemSelect: undefined,
 		legendSteps: 5,
 		overviewWidth: 100,
@@ -30,7 +32,8 @@ function Bumpchart(svg, xValues, data, p) {
 		hintsArea,
 		xScale,
 		yScale,
-		colorScale;
+		colorScale,
+		thicknessScale;
 
 	var leftTicksMeta = {};
 	var rightTicksMeta = {};
@@ -63,7 +66,7 @@ function Bumpchart(svg, xValues, data, p) {
 				.attr('visibility', function(d) { return ticksMeta[d] !== undefined ? 'visible' : 'hidden'; })
 				.select('text')
 					.attr('fill', function(d) {
-						return ticksMeta[d] !== undefined ? colorScale(ticksMeta[d].value.secondValue) : null;
+						return ticksMeta[d] !== undefined ? colorScale(ticksMeta[d].line.name) : null;
 					});
 		}
 
@@ -248,9 +251,11 @@ function Bumpchart(svg, xValues, data, p) {
 			.domain([0.5, params.showPositions + 0.5])
 			.range([0, graphHeight]);
 
-		colorScale = ColorPalette.discrete(0, maxSecondValue, params.legendSteps).scale;
+		colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+		thicknessScale = d3.scaleLinear().domain([0, maxSecondValue]).range([params.lineMinHeight, params.lineMaxHeight]);
 
 		// gradients
+		/*
 		defs.selectAll('linearGradient').data(data).enter().append('linearGradient')
 			.attr('id', function(d, i) { return 'grad' + i; })
 			.attr('x1', '0%').attr('y1', '0%').attr('x2', '100%').attr('y2', '0%')
@@ -259,6 +264,7 @@ function Bumpchart(svg, xValues, data, p) {
 					.attr('offset', function(dd, ii) { return Math.round(100 * ii / (d.values.length - 1)) + '%'; })
 					.style('stop-color', function(dd) { return colorScale(dd.secondValue); });
 			})
+		*/
 
 		// Zoom behaviour
 		var maxYPosition =
@@ -291,14 +297,51 @@ function Bumpchart(svg, xValues, data, p) {
 	}
 	init();
 
+
+	var line = d3.line()
+		.curve(d3.curveMonotoneX);
+
+
 	function drawData() {
 		function positionLines(selection) {
-			var line = d3.line()
-				.x(function(d, i) { return xScale(i); })
-				.y(function(d, i) { return yScale(d.position) + 0.1 * (i % 2); })
-				.curve(d3.curveMonotoneX);
-
 			selection.selectAll('path').attr('d', line);
+		}
+
+		function getLinePointsFromValues(d) {
+			var points = [];
+
+			var i = d.values.length - 1;
+			points.unshift([
+				xScale(i) + 5,
+				yScale(d.values[i].position) - thicknessScale(d.values[i].secondValue) / 2
+			]);
+			points.push([
+				xScale(i) + 5,
+				yScale(d.values[i].position) + thicknessScale(d.values[i].secondValue) / 2
+			]);
+
+			for (var i = d.values.length - 1; i >= 0; i--) {
+				points.unshift([
+					xScale(i),
+					yScale(d.values[i].position) - thicknessScale(d.values[i].secondValue) / 2 + 0.1 * (i % 2)
+				]);
+				points.push([
+					xScale(i),
+					yScale(d.values[i].position) + thicknessScale(d.values[i].secondValue) / 2 + 0.1 * (i % 2)
+				]);
+			}
+
+			i = 0;
+			points.unshift([
+				xScale(i) - 5,
+				yScale(d.values[i].position) - thicknessScale(d.values[i].secondValue) / 2
+			]);
+			points.push([
+				xScale(i) - 5,
+				yScale(d.values[i].position) + thicknessScale(d.values[i].secondValue) / 2
+			]);
+
+			return points;
 		}
 
 		var lines = graphArea.selectAll('.vis__graph__line').data(data)
@@ -315,12 +358,12 @@ function Bumpchart(svg, xValues, data, p) {
 
 		newLines.append('path')
 			.classed('vis__graph__line__bg', true)
-			.datum(function(d) { return d.values; });
+			.datum(getLinePointsFromValues);
 		newLines.append('path')
 			.classed('vis__graph__line__line', true)
-			.attr('stroke', function(d, i) { return 'url(#grad{0})'.format(i); })
-			.datum(function(d) { return d.values; });
-		newLines.call(positionLines);
+			.attr('fill', function(d, i) { return colorScale(d.name); })
+			.datum(getLinePointsFromValues)
+			.call(positionLines);
 	}
 
 	// Overview

@@ -15,8 +15,7 @@
   cursor: pointer;
 }
 .vis--bumpchart .vis__graph__line__line {
-  fill: none;
-  stroke-width: 2;
+  stroke: none;
 }
 .vis--bumpchart .vis__graph__line__bg {
   fill: none;
