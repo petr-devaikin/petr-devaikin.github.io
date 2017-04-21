@@ -9,7 +9,7 @@ var datareader = new Datareader();
 
 console.log('Data loading');
 
-datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, dataWelshRCA) {
+datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, dataLq) {
 	console.log('Data loaded');
 	d3.select('.loading').remove();
 
@@ -42,14 +42,13 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		links.push({
 			source: nodes[d.source],
 			target: nodes[d.target],
-			value: 1
+			value: d.value
 		});
 	});
 	nodes = Object.keys(nodes).map(function(d) { return nodes[d]; });
 	nodes.sort(function(a, b) {
 		return b.value - a.value;
 	})
-
 
 	var graph = new Forcegraph(svg, nodes, links, broadTopics, {
 		addHint: function(hint) {
@@ -81,18 +80,12 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			graph.repaint(tagValues);
 		}
 		else if (selectedLad != 'all' || selectedBroadTopic != 'all') {
-			var topicValues = {};
-
-			dataWelshRCA.forEach(function(d) {
-				if (d.year == selectedYear && (d.lad == selectedLad || selectedLad == 'all')) {
-					topicValues[d.topic] = d.comparative_adv;
-				}
-			});
-
 			var tagValues = {};
-			Object.keys(tags).forEach(function(tagId) {
-				if ((tags[tagId].topic.broad == selectedBroadTopic || selectedBroadTopic == 'all') && topicValues[tags[tagId].topic.name] !== undefined)
-					tagValues[tagId] = topicValues[tags[tagId].topic.name];
+
+			dataLq.forEach(function(d) {
+				if (d.year == selectedYear && ((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad || selectedLad == 'all')) {
+					tagValues[d.tag] = d.comparative_adv;
+				}
 			});
 
 			graph.repaint(tagValues);
@@ -116,7 +109,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 	filter.addSelectSearchSection(
 		'Local Authority District',
-		[{ id: 'all', text: 'All' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
+		[{ id: 'all', text: 'All' }, { id: 'Wales', text: 'Wales' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
 		'',
 		function(v) {
 			selectedLad = v;
@@ -154,16 +147,16 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		})
 
 		if (selectedLad != 'all') {
-			var topicValues = {};
+			var tagValues = {};
 
-			dataWelshRCA.forEach(function(d) {
-				if (d.year == selectedYear && d.lad == selectedLad) {
-					topicValues[d.topic] = d.comparative_adv;
+			dataLq.forEach(function(d) {
+				if (d.year == selectedYear && (d.lad == selectedLad || (d.lad === undefined && selectedLad == 'Wales'))) {
+					tagValues[d.tag] = d.comparative_adv;
 				}
 			});
 
 			filteredNodes = filteredNodes.filter(function(d) {
-				return (topicValues[tags[d.id].topic.name] !== undefined && topicValues[tags[d.id].topic.name] > 0);
+				return (tagValues[d.id] > 1); // !!!
 			});
 		}
 

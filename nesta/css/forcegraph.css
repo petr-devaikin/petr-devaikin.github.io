@@ -4,18 +4,13 @@
   top: 0;
 }
 .vis--forcegraph .vis__graph__links__link {
-  stroke: #646464;
-  stroke-width: 0.02;
+  stroke: rgba(150,150,150,0.4);
 }
 .vis--forcegraph .vis__graph__links__link.blured {
-  stroke: #c8c8c8;
-}
-.vis--forcegraph .vis__graph__links__link.selected {
-  stroke-width: 0.1;
+  stroke: rgba(200,200,200,0.1);
 }
 .vis--forcegraph .vis__graph__links__link.muted {
-  stroke: #dcdcdc;
-  stroke-width: 0.01;
+  stroke: rgba(200,200,200,0.1);
 }
 .vis--forcegraph .vis__graph__nodes__node {
   cursor: pointer;

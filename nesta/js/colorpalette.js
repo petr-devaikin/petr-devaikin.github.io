@@ -85,7 +85,7 @@ var ColorPalette = {
 		}
 	},
 	ordinal: function(items) {
-		var scale = d3.scaleOrdinal(d3.schemeCategory10).domain(items);
+		var scale = d3.scaleOrdinal(items.length <= 10 ? d3.schemeCategory10 : d3.schemeCategory20).domain(items);
 		return {
 			scale: scale
 		}

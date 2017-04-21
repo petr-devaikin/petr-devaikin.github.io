@@ -713,10 +713,14 @@ function Datareader(base) {
 	// Meetup network
 	readers[Datareader.DATASETS.MeetupNetwork] = function(callback) {
 		var network = {};
+		var lads = [];
+		var years = [];
+		var tagCounts = {};
+
 		d3.queue()
 			.defer(
 				d3.csv,
-				base + 'new_network_with_reduced_edges2.csv',
+				base + 'network/reduced_network.csv',
 				function(line, i) {
 					if (line.Source == line.Target) return undefined;
 					if (network[line.Target] !== undefined && network[line.Target][line.Source] !== undefined) return undefined;
@@ -726,44 +730,76 @@ function Datareader(base) {
 
 					return {
 						source: line.Source,
-						target: line.Target
+						target: line.Target,
+						value: parseInt(line.Weight)
 					};
 				})
 			.defer(
 				d3.csv,
-				base + 'tags_count_topics_and_broad_topics.csv',
+				base + 'network/colourmap_tags_topics_broad_topics.csv',
 				function(line) {
 					return {
 						tag: line.tag_name,
 						topic: line.topic_name,
-						broad_topic: line.broad_topics,
-						tag_count: parseInt(line.tag_count),
+						broad_topic: line.broad_topic,
 					}
 				})
 			.defer(
 				d3.csv,
-				base + 'welsh_rca.csv',
+				base + 'network/LQ_tags_welsh_lads2.csv',
 				function(line, i) {
-					return {
-						year: parseInt(line.year),
-						lad: line.LAD,
-						comparative_adv: parseFloat(line.comparative_adv),
-						topic: line.Topics,
-					}
+					var propsToIgnore = ['tag_name', 'year'];
+
+					if (i == 0)
+						Object.keys(line).forEach(function(prop, j) {
+							if (propsToIgnore.indexOf(prop) == -1) lads.push(prop);
+						});
+
+					return lads.filter(function(l) { return line[l] != '0.0'; }).map(function(l) {
+						return {
+							year: parseInt(line.year),
+							tag: line.tag_name,
+							lad: l,
+							comparative_adv: parseFloat(line[l])
+						}
+					});
+				})
+			.defer(
+				d3.csv,
+				base + 'network/LQ_tags_overall_wales.csv',
+				function(line, i) {
+					if (years.indexOf(parseInt(line.year)) == -1) years.push(parseInt(line.year));
+					if (line.Wales != '0.0')
+						return {
+							year: parseInt(line.year),
+							tag: line.index,
+							lad: undefined,
+							comparative_adv: line.Wales
+						}
+					else
+						return undefined;
+				})
+			.defer(
+				d3.csv,
+				base + 'network/tag_count.csv',
+				function(line, i) {
+					tagCounts[line.tags] = line.count;
+					return undefined;
 				})
 			.await(function(error) {
+				if (error)
+					console.error(error);
+				
 				var args = arguments;
 
 				var dataNetwork = args[1];
 				var dataTagTopic = args[2];
-				var dataWelshRCA = args[3];
+				var dataLadLq = args[3];
+				var dataWalesLq = args[4];
 
 				var tagNames = {};
-					//tagIds = {};
 				var topics = {};
 				var broadTopics = [];
-				var years = [];
-				var lads = [];
 
 				dataTagTopic.forEach(function(d, i) {
 					if (broadTopics.indexOf(d.broad_topic) == -1) broadTopics.push(d.broad_topic);
@@ -777,20 +813,15 @@ function Datareader(base) {
 						id: d.tag,
 						name: d.tag,
 						topic: topics[d.topic],
-						count: d.tag_count
+						count: tagCounts[d.tag]
 					}
 
 					tagNames[d.tag] = tag;
 				});
 
-				dataWelshRCA.forEach(function(d) {
-					if (years.indexOf(d.year) == -1) years.push(d.year);
-					if (lads.indexOf(d.lad) == -1) lads.push(d.lad);
-				});
+				var dataLq = dataLadLq.reduce(function(a, b) { return a.concat(b); }, dataWalesLq);
 
-				dataWelshRCA = dataWelshRCA.filter(function(d) { return d.comparative_adv > 0; });
-
-				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataWelshRCA);
+				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataLq);
 			});
 	}
 

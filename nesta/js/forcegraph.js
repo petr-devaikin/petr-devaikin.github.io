@@ -2,12 +2,14 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var params = {
 		margin: 50,
 		forceMaxDistance: 100,
-		maxRadius: 7,
+		maxRadius: 4,
 		buttonSize: 40,
 		addHint: undefined,
 		showHint: undefined,
 		selectNodeCallback: undefined,
 		transitionDuration: 750,
+		maxThickness: 5,
+		minThickness: .5,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -29,7 +31,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	var simulation;
 
 	var rScale,
-		colorScale;
+		colorScale,
+		linkScale;
 		//opacityScale;
 
 	var nodes,
@@ -93,10 +96,13 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 		// scales
 		var maxRadius = d3.max(nodeData, function(d) { return d.value; });
+		var maxThickness = d3.max(linkData, function(d) { return d.value; });
 		rScale = d3.scaleSqrt().domain([0, maxRadius]).range([0, params.maxRadius]);
 		colorScale = d3.scaleOrdinal()
 			.domain(categories)
 			.range(categories.map(function(d, i) { return d3.interpolateRainbow(i / categories.length); }));
+		console.log(maxThickness);
+		linkScale = d3.scaleLinear().domain([0, maxThickness]).range([params.minThickness, params.maxThickness]);
 		//opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
 
 		// simulation
@@ -123,7 +129,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 	function updateLinks() {
 		links
-			.attr("stroke-width", function(d) { return d.value; })
+			.attr("stroke-width", function(d) { return linkScale(d.value); })
 			.classed('muted', function(d) { return d.source.muted || d.target.muted; });
 	}
 
@@ -155,7 +161,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			.links(linkData);
 
 		function tick() {
-			loader.text('Building network ' + Math.round(100 - simulation.alpha() * 100) + '%');
+			if (Math.round(100 - simulation.alpha() * 100) % 5 == 0)
+				loader.text('Building network ' + Math.round(100 - simulation.alpha() * 100) + '%');
 		}
 
 		function drawGraph() {
