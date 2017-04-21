@@ -16,6 +16,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	var selectedYear = years[years.length - 1];
 	var selectedLad = 'all',
 		selectedBroadTopic = 'all';
+	var lqThreshold = 1;
 
 	//console.log(years, lads, topics, tags, network);
 
@@ -62,7 +63,15 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			hint.select('.vis__hint__tag').text('#' + d.name);
 			hint.select('.vis__hint__group').text('Topic: ' + d.fullCategory);
 			hint.select('.vis__hint__count').text('Used {0} time{1}'.format(d.value, d.value != 1 ? 's' : ''));
-			hint.select('.vis__hint__lq').text(selectedLad != 'all' ? 'LQ [?] in ' + selectedLad + ': ' + d.opacity.abbrNum(2) : '');
+			if (selectedLad == 'all')
+				hint.select('.vis__hint__lq').text('');
+			else
+				hint.select('.vis__hint__lq').text('LQ [?] in {0}: {1}'.format(
+					selectedLad,
+					dataLq.find(function(d) {
+						return d.year == selectedYear && (d.lad == selectedLad || (d.lad === undefined && selectedLad == 'Wales'));
+					}).comparative_adv.abbrNum(3)
+				));
 		},
 		selectNodeCallback: function(nodeId) {
 			tagFieldCallbacks.setValue(nodeId);
@@ -80,15 +89,17 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			graph.repaint(tagValues);
 		}
 		else if (selectedLad != 'all' || selectedBroadTopic != 'all') {
-			var tagValues = {};
+			var filteredTags = [];
 
 			dataLq.forEach(function(d) {
-				if (d.year == selectedYear && ((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad || selectedLad == 'all')) {
-					tagValues[d.tag] = d.comparative_adv;
+				if (d.year == selectedYear &&
+					((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad || selectedLad == 'all') &&
+					d.comparative_adv > lqThreshold) {
+					filteredTags.push(d.tag);
 				}
 			});
 
-			graph.repaint(tagValues);
+			graph.repaint(filteredTags);
 		}
 		else
 			graph.repaint();
@@ -156,7 +167,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			});
 
 			filteredNodes = filteredNodes.filter(function(d) {
-				return (tagValues[d.id] > 1); // !!!
+				return (tagValues[d.id] > lqThreshold);
 			});
 		}
 

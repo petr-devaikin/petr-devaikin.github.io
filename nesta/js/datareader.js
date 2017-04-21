@@ -774,7 +774,7 @@ function Datareader(base) {
 							year: parseInt(line.year),
 							tag: line.index,
 							lad: undefined,
-							comparative_adv: line.Wales
+							comparative_adv: parseFloat(line.Wales)
 						}
 					else
 						return undefined;

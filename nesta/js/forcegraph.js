@@ -101,7 +101,6 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		colorScale = d3.scaleOrdinal()
 			.domain(categories)
 			.range(categories.map(function(d, i) { return d3.interpolateRainbow(i / categories.length); }));
-		console.log(maxThickness);
 		linkScale = d3.scaleLinear().domain([0, maxThickness]).range([params.minThickness, params.maxThickness]);
 		//opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
 
@@ -236,18 +235,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			var maxValue = d3.max(Object.keys(values).map(function(d) { return values[d]; }));
 
 		nodeData.forEach(function(d) {
-			if (values === undefined) {
-				d.opacity = 1;
-				d.muted = false;
-			}
-			else if (values[d.id] !== undefined) {
-				d.opacity = values[d.id] / maxValue;
-				d.muted = false;
-			}
-			else {
-				d.opacity = 0;
-				d.muted = true;
-			}
+			d.muted = values !== undefined && values.indexOf(d.id) == -1;
 		});
 
 		updateNodes();
@@ -268,6 +256,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 		if (selectedNode !== undefined) {
 			nodeData.forEach(function(dd) { dd.selected = false; });
+			d.selected = true;
+			
 			linkData.forEach(function(dd) {
 				if ((dd.target == d || dd.source == d) && !dd.target.muted && !dd.source.muted) {
 					dd.selected = true;

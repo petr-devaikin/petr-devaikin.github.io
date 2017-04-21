@@ -38,7 +38,7 @@
 .vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__circle {
   stroke: none;
   fill: #ccc;
-  opacity: 0.2;
+  opacity: 0.35;
 }
 .vis--forcegraph .vis__hint {
   pointer-events: none;
