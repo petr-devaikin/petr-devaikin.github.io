@@ -8,6 +8,7 @@ function Bumpchart(svg, xValues, data, p) {
 		positionHeight: 15,
 		lineMinHeight: 2,
 		lineMaxHeight: 10,
+		minSecondValue: 0,
 		onItemSelect: undefined,
 		legendSteps: 5,
 		overviewWidth: 100,
@@ -152,7 +153,9 @@ function Bumpchart(svg, xValues, data, p) {
 			.range([0, graphHeight]);
 
 		colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(params.categories);
-		thicknessScale = d3.scaleLinear().domain([0, maxSecondValue]).range([params.lineMinHeight, params.lineMaxHeight]);
+		thicknessScale = d3.scaleLinear()
+			.domain([params.minSecondValue, maxSecondValue])
+			.range([params.lineMinHeight, params.lineMaxHeight]);
 
 
 		// Zoom behaviour
@@ -278,8 +281,6 @@ function Bumpchart(svg, xValues, data, p) {
 			return points;
 		}
 
-		console.log(lineData);
-
 		var lines = graphArea.selectAll('.vis__graph__line').data(lineData)
 			.call(positionLines);
 
@@ -393,6 +394,11 @@ function Bumpchart(svg, xValues, data, p) {
 
 		//drawData();
 	}
+
+	this.getParams = function() { return params; };
+
+	this.getMinSecondValue = function() { return params.minSecondValue; };
+	this.getMaxSecondValue = function() { return maxSecondValue; };
 
 
 	// INTERACTION

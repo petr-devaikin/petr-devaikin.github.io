@@ -24,7 +24,7 @@ function Filter(container) {
 				.classed('filter__group__option', true);
 		labels.append('input')
 			.attr('type', 'radio')
-			.attr('name', title)
+			.attr('name', function(d) { return d.name !== undefined ? d.name : title; })
 			.attr('value', function(d) { return d.value; })
 			.attr('checked', function(d) { return d.checked ? 'checked' : null; });
 		labels.append('span')
@@ -242,6 +242,11 @@ function Filter(container) {
 
 				desc.text(s.desc);
 			}
+			else if (s.type == 'color') {
+				sample.append('div').classed('filter__group__samples__sample__color', true)
+					.style('background-color', s.color);
+				desc.text(s.text);
+			}
 			else if (s.type == 'desc') {
 				sample.remove();
 				desc.attr('colspan', 2);
@@ -249,5 +254,33 @@ function Filter(container) {
 				desc.text(s.text);
 			}
 		});
+	}
+
+	this.addThicknessKey = function(title, minValue, maxValue, minThickness, maxThickness, color) {
+		var group = initGroup(title);
+
+		var svg = group.append('svg').classed('filter__group__thickness-sample', true)
+			.attr('width', FILTER_WIDTH).attr('height', maxThickness + 12);
+
+		svg.append('path')
+			.attr('d', 'M 0 {0} L {1} 0 L {1} {2} L 0 {2}'.format(
+				maxThickness - minThickness,
+				FILTER_WIDTH,
+				maxThickness
+			))
+			.attr('stroke', 'none')
+			.attr('fill', color);
+
+		var minText = svg.append('text').classed('filter__group__thickness-sample__min', true)
+			.text(minValue).attr('dy', 22);
+		var maxText = svg.append('text').classed('filter__group__thickness-sample__max', true)
+			.text(maxValue).attr('dx', FILTER_WIDTH).attr('dy', 22);
+
+		return {
+			update: function(minValue, maxValue) {
+				minText.text(minValue);
+				maxText.text(maxValue);
+			}
+		}
 	}
 }

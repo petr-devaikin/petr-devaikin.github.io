@@ -56,6 +56,16 @@
 .filter__group__color-sample__tick--center {
   text-align: center;
 }
+.filter__group__thickness-sample__min {
+  font-size: 12px;
+  text-anchor: start;
+  fill: #000;
+}
+.filter__group__thickness-sample__max {
+  font-size: 12px;
+  text-anchor: end;
+  fill: #000;
+}
 .filter__group__samples {
   margin: 0;
   padding: 0;
@@ -63,7 +73,13 @@
 }
 .filter__group__samples__sample {
   vertical-align: middle;
+  text-align: center;
   width: 30px;
+}
+.filter__group__samples__sample__color {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
 }
 .filter__group__samples__desc {
   vertical-align: middle;

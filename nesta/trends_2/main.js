@@ -9,19 +9,17 @@ var datareader = new Datareader();
 
 datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, broadTopics, data) {
 	var selectedLad = 'Cardiff',
-		selectedTopic = '';
+		selectedTopic = '',
+		selectedVariable = 'attendants';
 
 	var bumpchart;
-	var lines;
-
-	console.log(broadTopics.length);
 
 	function processData(data) {
 		data.forEach(function(d) {
 			d.name = d.topic.name;
 			d.category = d.topic.broad;
 			d.value = d.comparative_adv;
-			d.secondValue = d.attendants; // ???
+			d.secondValue = d[selectedVariable];
 			d.x = d.year;
 		});
 	}
@@ -39,7 +37,6 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 
 	function drawChart() {
 		var fData = filterData();
-		var maxSecondValue = calculateMax(fData);
 		
 		bumpchart = new Bumpchart(svg, years, fData, {
 			leftMargin: 200,
@@ -62,32 +59,44 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 				else
 					h.select('.vis__hints__hint__name').text('');
 				h.select('.vis__hints__hint__position').text('Position: ' + d.position);
-				h.select('.vis__hints__hint__lq').text('LQ: ' + d.value);
+				h.select('.vis__hints__hint__lq').text('LQ: ' + d.value.abbrNum(2));
 				h.select('.vis__hints__hint__attendants').text('Attendants: ' + d.secondValue);
 				h.select('.vis__hints__hint__events').text('Events: ' + d.events);
 			}
 		});
 		bumpchart.draw();
 	}
+	drawChart();
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
 
-	filter.addText('', 'The ranking of topics is based on the comparative advantage (LQ) in the selected district [?].');
-	filter.addText('', 'Colour of line shows a topic group [?]');
-	filter.addText('', 'Thickness of line represents a number of attendants at the events covering the topic [?]');
-	/*filter.addRadioSection(
-		'Rank by',
+	filter.addText('Ranking', 'The ranking of topics is based on the comparative advantage (LQ) in the selected district [?].');
+	
+	filter.addText('Groups', 'Colour of a line represents the topic group [?]');
+	var groupPalette = ColorPalette.ordinal(broadTopics);
+	filter.addKeyTable('', broadTopics.map(function(d) {
+		return { type: 'color', color: groupPalette.scale(d), text: d };
+	}));
+
+	filter.addText('Level of Activity', 'Thickness of a line represents level of activity for the topic, i.e. number of events or number of attendants at the events covering the topic [?]');
+	
+	filter.addRadioSection(
+		'',
 		[
-			{ value: 'attendants', label: 'Number of attendants', checked: true },
-			{ value: 'events', label: 'Number of events' },
-			{ value: 'comparative_adv', label: 'Comparative advantage (LQ) [?]' }
+			{ value: 'attendants', name: 'val', label: 'Number of attendants', checked: true },
+			{ value: 'events', name: 'val', label: 'Number of events' }
 		],
 		function(v) {
 			selectedVariable = v;
+			processData(data);
 			drawChart();
+			thicknessCallback.update(bumpchart.getMinSecondValue(), bumpchart.getMaxSecondValue());
 		}
-	);*/
+	);
+
+	var thicknessCallback = filter.addThicknessKey('', bumpchart.getMinSecondValue(), bumpchart.getMaxSecondValue(),
+		bumpchart.getParams().lineMinHeight, bumpchart.getParams().lineMaxHeight, groupPalette.scale(broadTopics[0]));
 
 	filter.addSelectSearchSection(
 		'Local Authority District',
@@ -95,31 +104,10 @@ datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics,
 		'',
 		function(v) {
 			selectedLad = v;
-			bumpchart.select();
-			//topicCallbacks.update(getTopics());
+			processData(data);
 			drawChart();
+			thicknessCallback.update(bumpchart.getMinSecondValue(), bumpchart.getMaxSecondValue());
 		},
 		selectedLad
 	);
-	
-	/*
-	var topicCallbacks = filter.addSelectSearchSection(
-		'Topic',
-		getTopics(),
-		'Search for topic',
-		function(v) {
-			selectedTopic = v;
-			bumpchart.select(lines.find(function(l) { return l.name == v; })); // FIX search by id/name, not by object
-		}
-	);
-
-	function onItemSelect(item) {
-		topicCallbacks.setValue(item === undefined ? '' : item.name);
-	}
-	*/
-
-	//var scaleCallbacks = filter.addDiscreteColorScale('Number of attendants', 0, 10, 4);
-
-
-	drawChart();
 });
