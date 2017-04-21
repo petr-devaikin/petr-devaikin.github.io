@@ -27,6 +27,23 @@
 .filter__group select {
   width: 200px;
 }
+.filter__group__slider {
+  position: relative;
+}
+.filter__group__slider__control {
+  margin: 10px 15px 40px;
+}
+.filter__group__slider__tick {
+  position: absolute;
+  top: 20px;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.filter__group__slider__tick.selected {
+  font-weight: bold;
+}
 .filter__group__option {
   display: block;
   padding: 0;

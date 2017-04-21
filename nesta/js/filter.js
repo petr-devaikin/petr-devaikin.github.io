@@ -35,6 +35,39 @@ function Filter(container) {
 			});
 	}
 
+	this.addDiscreteSlider = function(title, values, selectedValue, callback) {
+		var SLIDER_MARGIN = 15;
+
+		var group = initGroup(title);
+
+		var slider = group.append('div').classed('filter__group__slider', true);
+		var control = slider.append('div').classed('filter__group__slider__control', true);
+
+		var _control = $(control.node()).slider({
+			value: values.indexOf(selectedValue),
+			min: 0,
+			max: values.length - 1,
+			step: 1,
+			change: function(event, ui) {
+				var v = values[ui.value];
+				callback(v);
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == values[ui.value]; });
+			}
+    	});
+
+    	slider.selectAll('.filter__group__slider__tick').data(values).enter().append('div')
+    		.classed('filter__group__slider__tick', true)
+    		.style('left', function(d, i) {
+    			return SLIDER_MARGIN + (FILTER_WIDTH - 2 * SLIDER_MARGIN) / (values.length - 1) * i + 'px';
+    		})
+    		.classed('selected', function(d) { return d == selectedValue; })
+    		.text(function(d) { return d; })
+    		.on('click', function(d, i) {
+    			_control.slider('value', i).trigger('change');
+    		});
+	}
+
 	this.addSelectSearchSection = function(title, values, placeholder, callback, selectedValue) {
 		var group = initGroup(title);
 		var select = group.append('select');
@@ -49,7 +82,7 @@ function Filter(container) {
 		});
 
 		if (selectedValue !== undefined)
-			select2.val(selectedValue).trigger('change', true);
+			select2.val(selectedValue);
 
 		return {
 			update: function(newValues) {

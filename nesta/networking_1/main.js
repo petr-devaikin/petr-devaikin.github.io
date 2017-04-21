@@ -108,9 +108,10 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
 	
-	filter.addRadioSection(
+	filter.addDiscreteSlider(
 		'Year',
-		years.map(function(d, i) { return { label: d, value: d, checked: d == selectedYear }; }),
+		years,
+		selectedYear,
 		function(v) {
 			selectedYear = v;
 			if (selectedLad != 'all')
