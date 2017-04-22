@@ -1,4 +1,4 @@
-var width = window.innerWidth - 200,
+var width = window.innerWidth - 230,
 	height = window.innerHeight;
 
 var svg = d3.select("body").append("svg")
@@ -9,7 +9,7 @@ var datareader = new Datareader();
 
 console.log('Data loading');
 
-datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, dataLq) {
+datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, layout, dataLq) {
 	console.log('Data loaded');
 	d3.select('.loading').remove();
 
@@ -27,22 +27,26 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 	function addNode(nodeId) {
 		if (nodes[nodeId] === undefined) {
+			var nodeLayoutInfo = layout.find(function(d) { return d.id == nodeId; });
 			nodes[nodeId] = {
 				id: nodeId,
 				name: tags[nodeId].name,
 				fullCategory: '{0}, {1}'.format(tags[nodeId].topic.broad, tags[nodeId].topic.name),
 				value: tags[nodeId] !== undefined ? tags[nodeId].count : 0,
 				category: tags[nodeId] !== undefined ? tags[nodeId].topic.broad : undefined,
+				x: nodeLayoutInfo.x,
+				y: nodeLayoutInfo.y,
 			};
 		}
+		return nodes[nodeId];
 	}
 
 	filteredNetwork.forEach(function(d) {
-		addNode(d.source);
-		addNode(d.target);
+		var source = addNode(d.source);
+		var target = addNode(d.target);
 		links.push({
-			source: nodes[d.source],
-			target: nodes[d.target],
+			source: source,
+			target: target,
 			value: d.value
 		});
 	});
@@ -81,10 +85,10 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 	function repaint() {
 		if (selectedLad == 'all' && selectedBroadTopic != 'all') {
-			var tagValues = {};
+			var tagValues = [];
 			Object.keys(tags).forEach(function(tagId) {
 				if (tags[tagId].topic.broad == selectedBroadTopic)
-					tagValues[tagId] = 1;
+					tagValues.push(tagId);
 			});
 			graph.repaint(tagValues);
 		}
@@ -93,7 +97,8 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 			dataLq.forEach(function(d) {
 				if (d.year == selectedYear &&
-					((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad || selectedLad == 'all') &&
+					((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad) &&
+					(selectedBroadTopic === undefined || tags[d.tag] === undefined || tags[d.tag].topic.broad == selectedBroadTopic) &&
 					d.comparative_adv > lqThreshold) {
 					filteredTags.push(d.tag);
 				}

@@ -8,7 +8,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		showHint: undefined,
 		selectNodeCallback: undefined,
 		transitionDuration: 750,
-		maxThickness: 5,
+		maxThickness: 10,
 		minThickness: .5,
 	}
 
@@ -105,10 +105,12 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		//opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1]);
 
 		// simulation
+		/*
 		simulation = d3.forceSimulation()
 			.force("link", d3.forceLink().id(function(d) { return d.id; }))
 			.force("charge", d3.forceManyBody().distanceMax(params.forceMaxDistance))
 			.force("center", d3.forceCenter(0, 0));
+			*/
 	}
 	init();
 
@@ -151,13 +153,16 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		nodes.append('circle').classed('vis__graph__nodes__node__circle', true);
 		updateNodes();
 
+		/*
       	simulation
 			.nodes(nodeData)
 			.on("tick", tick)
 			.on("end", drawGraph);
 
 		simulation.force("link")
-			.links(linkData);
+		 	.links(linkData);
+		 	*/
+		 drawGraph();
 
 		function tick() {
 			if (Math.round(100 - simulation.alpha() * 100) % 5 == 0)
@@ -185,22 +190,21 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 				bbox.width = Math.max(bbox.width, n.x);
 				bbox.height = Math.max(bbox.height, n.y);
 			});
+
 			bbox.width -= bbox.x;
 			bbox.height -= bbox.y;
 
 			var dx, dy, z;
 			if ((width - 2 * params.margin) / (height - 2 * params.margin) > bbox.width / bbox.height) {
 				console.log('Adjust by height');
-				dx = - bbox.width / 2 - bbox.x + width / 2;
-				dy = - bbox.height / 2 - bbox.y + height / 2;
 				z = (height - 2 * params.margin) / bbox.height;
 			}
 			else {
 				console.log('Adjust by width');
-				dx = - bbox.width / 2 - bbox.x + width / 2;
-				dy = - bbox.height / 2 - bbox.y + height / 2;
 				z = (width - 2 * params.margin) / bbox.width;
 			}
+			dx = width / 2 - z * (bbox.width / 2 + bbox.x);
+			dy = height / 2 - z * (bbox.height / 2 + bbox.y);
 
 			// set zoom
 			var scale0 = z;
@@ -209,7 +213,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			transform = d3.zoomIdentity.translate(dx, dy).scale(scale0);
 
 			zoom = d3.zoom()
-				.scaleExtent([0.5 * scale0, 3 * scale0])
+				.scaleExtent([0.5 * scale0, 10 * scale0])
 				.on("zoom", zoomed);
 
 			svg.call(zoom.transform, transform);
@@ -220,13 +224,21 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		function zoomed() {
 			transform = d3.event.transform;
 
-			linkArea.attr('transform', 'translate({0},{1}) scale({2})'.format(transform.x, transform.y, transform.k));
+			//linkArea.attr('transform', 'translate({0},{1}) scale({2})'.format(transform.x, transform.y, transform.k));
 
 			nodes
 				.attr('transform', function(d) {
 					var coords = transform.apply([d.x, d.y]);
 					return 'translate({0},{1})'.format(coords[0], coords[1]);
 				});
+
+			links.each(function(d) {
+				var coordsSource = transform.apply([d.source.x, d.source.y]);
+				var coordsTarget = transform.apply([d.target.x, d.target.y]);
+				d3.select(this)
+					.attr('x1', coordsSource[0]).attr('y1', coordsSource[1])
+					.attr('x2', coordsTarget[0]).attr('y2', coordsTarget[1]);
+			});
 		}
 	}
 
@@ -257,7 +269,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		if (selectedNode !== undefined) {
 			nodeData.forEach(function(dd) { dd.selected = false; });
 			d.selected = true;
-			
+
 			linkData.forEach(function(dd) {
 				if ((dd.target == d || dd.source == d) && !dd.target.muted && !dd.source.muted) {
 					dd.selected = true;

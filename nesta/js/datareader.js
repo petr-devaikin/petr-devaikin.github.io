@@ -786,6 +786,10 @@ function Datareader(base) {
 					tagCounts[line.tags] = line.count;
 					return undefined;
 				})
+			.defer(
+				d3.json,
+				base + 'network/data.json'
+			)
 			.await(function(error) {
 				if (error)
 					console.error(error);
@@ -796,6 +800,7 @@ function Datareader(base) {
 				var dataTagTopic = args[2];
 				var dataLadLq = args[3];
 				var dataWalesLq = args[4];
+				var dataLayout = args[6];
 
 				var tagNames = {};
 				var topics = {};
@@ -821,7 +826,7 @@ function Datareader(base) {
 
 				var dataLq = dataLadLq.reduce(function(a, b) { return a.concat(b); }, dataWalesLq);
 
-				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataLq);
+				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataLayout.nodes, dataLq);
 			});
 	}
 
