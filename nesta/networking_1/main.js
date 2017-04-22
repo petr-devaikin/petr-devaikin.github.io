@@ -9,7 +9,7 @@ var datareader = new Datareader();
 
 console.log('Data loading');
 
-datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, network, layout, dataLq) {
+datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tags, topics, broadTopics, edges, nodes, dataLq) {
 	console.log('Data loaded');
 	d3.select('.loading').remove();
 
@@ -21,41 +21,29 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	//console.log(years, lads, topics, tags, network);
 
 	// prepare network
-	var filteredNetwork = network;//[selectedYear];
-	var nodes = {};
-	var links = [];
+	var nodeHash = {};
 
-	function addNode(nodeId) {
-		if (nodes[nodeId] === undefined) {
-			var nodeLayoutInfo = layout.find(function(d) { return d.id == nodeId; });
-			nodes[nodeId] = {
-				id: nodeId,
-				name: tags[nodeId].name,
-				fullCategory: '{0}, {1}'.format(tags[nodeId].topic.broad, tags[nodeId].topic.name),
-				value: tags[nodeId] !== undefined ? tags[nodeId].count : 0,
-				category: tags[nodeId] !== undefined ? tags[nodeId].topic.broad : undefined,
-				x: nodeLayoutInfo.x,
-				y: nodeLayoutInfo.y,
-			};
-		}
-		return nodes[nodeId];
-	}
+	// process nodes
+	nodes.forEach(function(node) {
+		node.name = node.label;
+		node.fullCategory = '{0}, {1}'.format(tags[node.id].topic.broad, tags[node.id].topic.name);
+		node.value = tags[node.id] !== undefined ? tags[node.id].count : 0;
+		node.category = tags[node.id] !== undefined ? tags[node.id].topic.broad : undefined;
 
-	filteredNetwork.forEach(function(d) {
-		var source = addNode(d.source);
-		var target = addNode(d.target);
-		links.push({
-			source: source,
-			target: target,
-			value: d.value
-		});
+		nodeHash[node.id] = node;
 	});
-	nodes = Object.keys(nodes).map(function(d) { return nodes[d]; });
+
 	nodes.sort(function(a, b) {
 		return b.value - a.value;
-	})
+	});
 
-	var graph = new Forcegraph(svg, nodes, links, broadTopics, {
+	edges.forEach(function(edge) {
+		edge.source = nodeHash[edge.source];
+		edge.target = nodeHash[edge.target];
+		edge.value = parseFloat(edge.size);
+	});
+
+	var graph = new Forcegraph(svg, nodes, edges, broadTopics, {
 		addHint: function(hint) {
 			hint.append('rect').classed('vis__hint__bg', true);
 			hint.append('text').classed('vis__hint__tag', true);

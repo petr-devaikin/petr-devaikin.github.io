@@ -718,7 +718,7 @@ function Datareader(base) {
 		var tagCounts = {};
 
 		d3.queue()
-			.defer(
+			/*.defer(
 				d3.csv,
 				base + 'network/reduced_network.csv',
 				function(line, i) {
@@ -733,7 +733,7 @@ function Datareader(base) {
 						target: line.Target,
 						value: parseInt(line.Weight)
 					};
-				})
+				})*/
 			.defer(
 				d3.csv,
 				base + 'network/colourmap_tags_topics_broad_topics.csv',
@@ -796,11 +796,11 @@ function Datareader(base) {
 				
 				var args = arguments;
 
-				var dataNetwork = args[1];
-				var dataTagTopic = args[2];
-				var dataLadLq = args[3];
-				var dataWalesLq = args[4];
-				var dataLayout = args[6];
+				//var dataNetwork = args[1];
+				var dataTagTopic = args[1];
+				var dataLadLq = args[2];
+				var dataWalesLq = args[3];
+				var dataLayout = args[5];
 
 				var tagNames = {};
 				var topics = {};
@@ -826,7 +826,7 @@ function Datareader(base) {
 
 				var dataLq = dataLadLq.reduce(function(a, b) { return a.concat(b); }, dataWalesLq);
 
-				callback(years, lads, tagNames, topics, broadTopics, dataNetwork, dataLayout.nodes, dataLq);
+				callback(years, lads, tagNames, topics, broadTopics, dataLayout.edges, dataLayout.nodes, dataLq);
 			});
 	}
 
