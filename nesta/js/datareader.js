@@ -716,6 +716,8 @@ function Datareader(base) {
 		var lads = [];
 		var years = [];
 		var tagCounts = {};
+		var broadTopics = [];
+		var topics = {};
 
 		d3.queue()
 			/*.defer(
@@ -738,10 +740,18 @@ function Datareader(base) {
 				d3.csv,
 				base + 'network/colourmap_tags_topics_broad_topics.csv',
 				function(line) {
+					if (broadTopics.indexOf(line.broad_topic) == -1) broadTopics.push(line.broad_topic);
+
+					if (topics[line.topic_name] === undefined)
+						topics[line.topic_name] = {
+							name: line.topic_name,
+							broad: line.broad_topic
+						};
+
 					return {
-						tag: line.tag_name,
-						topic: line.topic_name,
-						broad_topic: line.broad_topic,
+						id: line.tag_name,
+						name: line.tag_name,
+						topic: topics[line.topic_name],
 					}
 				})
 			.defer(
@@ -803,25 +813,10 @@ function Datareader(base) {
 				var dataLayout = args[5];
 
 				var tagNames = {};
-				var topics = {};
-				var broadTopics = [];
 
 				dataTagTopic.forEach(function(d, i) {
-					if (broadTopics.indexOf(d.broad_topic) == -1) broadTopics.push(d.broad_topic);
-
-					if (topics[d.topic] === undefined) topics[d.topic] = {
-						name: d.topic,
-						broad: d.broad_topic
-					};
-
-					var tag = {
-						id: d.tag,
-						name: d.tag,
-						topic: topics[d.topic],
-						count: tagCounts[d.tag]
-					}
-
-					tagNames[d.tag] = tag;
+					tagNames[d.id] = d;
+					d.count = tagCounts[d.name];
 				});
 
 				var dataLq = dataLadLq.reduce(function(a, b) { return a.concat(b); }, dataWalesLq);

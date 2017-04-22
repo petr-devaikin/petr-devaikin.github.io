@@ -162,7 +162,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		simulation.force("link")
 		 	.links(linkData);
 		 	*/
-		 drawGraph();
+		drawGraph();
 
 		function tick() {
 			if (Math.round(100 - simulation.alpha() * 100) % 5 == 0)
