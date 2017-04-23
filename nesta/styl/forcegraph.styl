@@ -35,6 +35,9 @@
 						fill rgba(200, 200, 200, .5)
 						opacity .6
 						
+					.vis__graph__nodes__node__label
+						visibility hidden
+						
 				&.selected
 					.vis__graph__nodes__node__circle
 						stroke-width 1
@@ -42,10 +45,30 @@
 					
 				&.muted
 					pointer-events none
+						
+					.vis__graph__nodes__node__label
+						visibility hidden
 					
 					.vis__graph__nodes__node__circle
 						stroke none
 						fill rgba(200, 200, 200, .2)
+						
+		&__labels
+			&__label
+				pointer-events none
+				
+				&.overlapped
+					visibility hidden
+					
+				&__bg
+					stroke #999
+					fill #fff
+					opacity .8
+					
+				&__text
+					text-anchor middle
+					font-size 14px
+					fill #000
 					
 						
 	.vis__hint

@@ -26,6 +26,9 @@
   fill: rgba(200,200,200,0.5);
   opacity: 0.6;
 }
+.vis--forcegraph .vis__graph__nodes__node.blured .vis__graph__nodes__node__label {
+  visibility: hidden;
+}
 .vis--forcegraph .vis__graph__nodes__node.selected .vis__graph__nodes__node__circle {
   stroke-width: 1;
   stroke: #000;
@@ -33,9 +36,28 @@
 .vis--forcegraph .vis__graph__nodes__node.muted {
   pointer-events: none;
 }
+.vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__label {
+  visibility: hidden;
+}
 .vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__circle {
   stroke: none;
   fill: rgba(200,200,200,0.2);
+}
+.vis--forcegraph .vis__graph__labels__label {
+  pointer-events: none;
+}
+.vis--forcegraph .vis__graph__labels__label.overlapped {
+  visibility: hidden;
+}
+.vis--forcegraph .vis__graph__labels__label__bg {
+  stroke: #999;
+  fill: #fff;
+  opacity: 0.8;
+}
+.vis--forcegraph .vis__graph__labels__label__text {
+  text-anchor: middle;
+  font-size: 14px;
+  fill: #000;
 }
 .vis--forcegraph .vis__hint {
   pointer-events: none;

@@ -24,6 +24,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		linkArea,
 		nodeArea,
 		controlsArea,
+		labelArea,
 		hint;
 
 	var loader;
@@ -36,7 +37,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		//opacityScale;
 
 	var nodes,
-		links;
+		links,
+		labels;
 
 	var zoom,
 		initTransform;
@@ -64,6 +66,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 		linkArea = graph.append("g").attr("class", "vis__graph__links");
 		nodeArea = graph.append("g").attr("class", "vis__graph__nodes");
+		labelArea = graph.append("g").attr("class", "vis__graph__labels");
 
 		// controls
 
@@ -146,6 +149,23 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		nodes.append('circle').classed('vis__graph__nodes__node__circle', true);
 		updateNodes();
 
+		labels = labelArea.selectAll('.vis__graph__labels__label').data(nodeData.filter(function(d) { return d.labeled; })).enter()
+			.append('g').classed('vis__graph__labels__label', true);
+		labels.each(function(d) {
+			var _this = d3.select(this);
+			var bg = _this.append('path').classed('vis__graph__labels__label__bg', true);
+			var text = _this.append('text').classed('vis__graph__labels__label__text', true).text(d.name);
+			var bbox = text.node().getBBox();
+			bg.attr('d', 'M{0} {1} l-5 -5 l-{2} 0 l0 -{3} l{4} 0 l0 {3} l-{2} 0 Z'.format(
+					bbox.x + bbox.width / 2,
+					bbox.y + bbox.height + 5,
+					bbox.width / 2 - 5 + 2,
+					bbox.height,
+					bbox.width + 4
+				));
+		});
+
+
 		/*
       	simulation
 			.nodes(nodeData)
@@ -213,7 +233,32 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			svg.call(zoom).on('dblclick.zoom', null);
 		}
 
+		// check if labels are overlapping
+		function checkLabelVisibility() {
+			var bboxes = [];
+			labels.each(function(d) {
+				d3.select(this).classed('overlapped', false);
 
+				var bbox = this.getBBox();
+				var shift = transform.apply([d.x, d.y]);
+				bbox.x += shift[0];
+				bbox.y += shift[1];
+
+				var found = false;
+				for (var i = 0; i < bboxes.length; i++)
+					if (bboxes[i].x < bbox.x + bbox.width && bboxes[i].x + bboxes[i].width > bbox.x &&
+						bboxes[i].y < bbox.y + bbox.height && bboxes[i].y + bboxes[i].height > bbox.y) {
+						found = true;
+						d3.select(this).classed('overlapped', true);
+					}
+
+				if (!found) {
+					bboxes.push(bbox);
+				}
+			})
+		}
+
+		var lastScale;
 		function zoomed() {
 			transform = d3.event.transform;
 
@@ -232,6 +277,17 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 					.attr('x1', coordsSource[0]).attr('y1', coordsSource[1])
 					.attr('x2', coordsTarget[0]).attr('y2', coordsTarget[1]);
 			});
+
+			labels
+				.attr('transform', function(d) {
+					var coords = transform.apply([d.x, d.y]);
+					return 'translate({0},{1})'.format(coords[0], coords[1] - 8);
+				});
+
+			if (lastScale != transform.k) {
+				lastScale = transform.k;
+				checkLabelVisibility();
+			}
 		}
 	}
 
@@ -304,6 +360,9 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		if (params.showHint !== undefined)
 			params.showHint(hint, d);
 
+		if (d.labeled)
+			labels.filter(function(dd) { return d == dd; }).attr('visibility', 'hidden');
+
 		var hintBBox = hint.node().getBBox();
 
 		rect.attr('x', hintBBox.x - 2).attr('y', hintBBox.y - 2)
@@ -311,14 +370,17 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 		hint.attr('transform', 'translate({0},{1})'.format(
 			nodePosition[0] - hintBBox.width / 2,
-			nodePosition[1] - rScale(d.value) - hintBBox.height
+			nodePosition[1] - rScale(d.value) - hintBBox.height + 8
 		));
 
 		hint.attr('visibility', 'visible');
 	}
 
-	function nodeOut() {
+	function nodeOut(d) {
 		hint.attr('visibility', 'hidden');
+
+		if (d.labeled)
+			labels.filter(function(dd) { return d == dd; }).attr('visibility', null);
 	}
 
 	svg.on("click", function() {

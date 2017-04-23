@@ -39,6 +39,22 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		return b.value - a.value;
 	});
 
+	// find the most popular tags for each topic
+	/*broadTopics.forEach(function(t) {
+		var n = nodes.find(function(d) { return d.category == t; });
+		n.labeled = true;
+	})*/
+	nodes.slice(0,20).forEach(function(d) { d.labeled = true; });
+
+	nodes.forEach(function(node) {
+		node.name = node.label;
+		node.fullCategory = '{0}, {1}'.format(tags[node.id].topic.broad, tags[node.id].topic.name);
+		node.value = tags[node.id] !== undefined ? tags[node.id].count : 0;
+		node.category = tags[node.id] !== undefined ? tags[node.id].topic.broad : undefined;
+
+		nodeHash[node.id] = node;
+	});
+
 	edges.forEach(function(edge) {
 		edge.source = nodeHash[edge.source];
 		edge.target = nodeHash[edge.target];
