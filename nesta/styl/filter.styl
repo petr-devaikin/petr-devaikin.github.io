@@ -15,6 +15,9 @@
 		margin-bottom 10px
 		overflow hidden
 		
+		&.hidden
+			display none
+		
 		h1
 			margin 0 0 5px
 			font-size 14px
@@ -32,6 +35,16 @@
 			
 			&__control
 				margin 10px 15px 40px
+				
+				&__handle
+					font-size 10px
+					width 20px !important
+					margin-left -10px !important
+					height 1.6em !important
+					top 50% !important
+					margin-top -.8em
+					text-align center
+					line-height 1.6em
 			
 			&__tick
 				position absolute
@@ -47,6 +60,9 @@
 		&__option
 			display block
 			padding 0
+			
+			span
+				padding-left 3px
 			
 		&__bubble-sample
 			position relative

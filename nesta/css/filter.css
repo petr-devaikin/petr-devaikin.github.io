@@ -15,6 +15,9 @@
   margin-bottom: 10px;
   overflow: hidden;
 }
+.filter__group.hidden {
+  display: none;
+}
 .filter__group h1 {
   margin: 0 0 5px;
   font-size: 14px;
@@ -33,6 +36,16 @@
 .filter__group__slider__control {
   margin: 10px 15px 40px;
 }
+.filter__group__slider__control__handle {
+  font-size: 10px;
+  width: 20px !important;
+  margin-left: -10px !important;
+  height: 1.6em !important;
+  top: 50% !important;
+  margin-top: -0.8em;
+  text-align: center;
+  line-height: 1.6em;
+}
 .filter__group__slider__tick {
   position: absolute;
   top: 20px;
@@ -47,6 +60,9 @@
 .filter__group__option {
   display: block;
   padding: 0;
+}
+.filter__group__option span {
+  padding-left: 3px;
 }
 .filter__group__bubble-sample {
   position: relative;

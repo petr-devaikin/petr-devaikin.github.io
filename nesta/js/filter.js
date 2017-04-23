@@ -28,7 +28,8 @@ function Filter(container) {
 			.attr('value', function(d) { return d.value; })
 			.attr('checked', function(d) { return d.checked ? 'checked' : null; });
 		labels.append('span')
-			.text(function(d) { return d.label; });
+			.text(function(d) { return d.label; })
+			.style('border-left', function(d) { return d.color === undefined ? null : '15px solid ' + d.color});
 		labels
 			.on('click', function(d) {
 				callback(d.value);
@@ -52,8 +53,14 @@ function Filter(container) {
 				var v = values[ui.value];
 				callback(v);
 				slider.selectAll('.filter__group__slider__tick')
-					.classed('selected', function(d) { return d == values[ui.value]; });
-			}
+					.classed('selected', function(d) { return d == v; });
+			},
+			slide:  function(event, ui) {
+				var v = values[ui.value];
+				callback(v);
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == v; });
+			},
     	});
 
     	slider.selectAll('.filter__group__slider__tick').data(values).enter().append('div')
@@ -64,8 +71,84 @@ function Filter(container) {
     		.classed('selected', function(d) { return d == selectedValue; })
     		.text(function(d) { return d; })
     		.on('click', function(d, i) {
-    			_control.slider('value', i).trigger('change');
+    			_control.slider('value', i);
     		});
+
+    	return {
+    		show: function(visibility) {
+    			group.classed('hidden', !visibility);
+    		}
+    	}
+	}
+
+	this.addMinSlider = function(title, minValue, maxValue, currentValue, callback) {
+		var SLIDER_MARGIN = 15;
+		maxValue = Math.ceil(maxValue);
+		var steps = 100;
+
+		var group = initGroup(title);
+
+		var slider = group.append('div').classed('filter__group__slider', true);
+		var control = slider.append('div').classed('filter__group__slider__control', true);
+		var handle = control.append('div').attr('class', 'ui-slider-handle filter__group__slider__control__handle');
+
+		function fromValueToStep(v) {
+			return (v - minValue) / (maxValue - minValue) * steps;
+		}
+		function fromStepToValue(step) {
+			return minValue + (maxValue - minValue) / steps * step;
+		}
+
+		var _control = $(control.node()).slider({
+			value: fromValueToStep(currentValue),
+			min: 0,
+			max: steps,
+			range: 'max',
+			change: function(event, ui) {
+				var v = fromStepToValue(ui.value);
+				callback(v);
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == ui.value; });
+				handle.text(v.abbrNum(2));
+			},
+			create: function() {
+				var v = fromStepToValue($(this).slider("value"));
+        		handle.text(v.abbrNum(2));
+      		},
+      		slide: function(event, ui) {
+				var v = fromStepToValue(ui.value);
+				callback(v);
+        		handle.text(v.abbrNum(2));
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == ui.value; });
+      		}
+    	});
+
+    	slider.append('div')
+    		.classed('filter__group__slider__tick', true)
+    		.datum(minValue)
+    		.style('left', SLIDER_MARGIN + 'px')
+    		.classed('selected', minValue == currentValue)
+    		.text(minValue)
+    		.on('click', function(d, i) {
+    			_control.slider('value', fromValueToStep(minValue));
+    		});
+
+    	slider.append('div')
+    		.classed('filter__group__slider__tick', true)
+    		.datum(maxValue)
+    		.style('left', FILTER_WIDTH - SLIDER_MARGIN + 'px')
+    		.classed('selected', maxValue == currentValue)
+    		.text(maxValue.abbrNum(2))
+    		.on('click', function(d, i) {
+    			_control.slider('value', fromValueToStep(maxValue));
+    		});
+
+    	return {
+    		show: function(visibility) {
+    			group.classed('hidden', !visibility);
+    		}
+    	}
 	}
 
 	this.addSelectSearchSection = function(title, values, placeholder, callback, selectedValue) {

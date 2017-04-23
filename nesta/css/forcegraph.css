@@ -20,13 +20,11 @@
   stroke: none;
 }
 .vis--forcegraph .vis__graph__nodes__node__circle {
-  stroke: #777;
   stroke-width: 0.5;
 }
 .vis--forcegraph .vis__graph__nodes__node.blured .vis__graph__nodes__node__circle {
-  stroke: none;
-  opacity: 0.2;
-  fill: #ccc;
+  fill: rgba(200,200,200,0.5);
+  opacity: 0.6;
 }
 .vis--forcegraph .vis__graph__nodes__node.selected .vis__graph__nodes__node__circle {
   stroke-width: 1;
@@ -37,8 +35,7 @@
 }
 .vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__circle {
   stroke: none;
-  fill: #ccc;
-  opacity: 0.2;
+  fill: rgba(200,200,200,0.2);
 }
 .vis--forcegraph .vis__hint {
   pointer-events: none;

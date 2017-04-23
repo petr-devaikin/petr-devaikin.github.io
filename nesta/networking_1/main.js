@@ -14,9 +14,11 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	d3.select('.loading').remove();
 
 	var selectedYear = years[years.length - 1];
-	var selectedLad = 'all',
-		selectedBroadTopic = 'all';
+	var selectedLad = '',
+		selectedBroadTopic = '';
 	var lqThreshold = 1;
+
+	var maxLq = 4;//d3.max(dataLq, function(d) { return d.comparative_adv; });
 
 	//console.log(years, lads, topics, tags, network);
 
@@ -55,7 +57,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 			hint.select('.vis__hint__tag').text('#' + d.name);
 			hint.select('.vis__hint__group').text('Topic: ' + d.fullCategory);
 			hint.select('.vis__hint__count').text('Used {0} time{1}'.format(d.value, d.value != 1 ? 's' : ''));
-			if (selectedLad == 'all')
+			if (selectedLad == '')
 				hint.select('.vis__hint__lq').text('');
 			else
 				hint.select('.vis__hint__lq').text('LQ [?] in {0}: {1}'.format(
@@ -72,128 +74,128 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	graph.draw();
 
 	function repaint() {
-		if (selectedLad == 'all' && selectedBroadTopic != 'all') {
-			var tagValues = [];
-			Object.keys(tags).forEach(function(tagId) {
-				if (tags[tagId].topic.broad == selectedBroadTopic)
-					tagValues.push(tagId);
-			});
-			graph.repaint(tagValues);
-		}
-		else if (selectedLad != 'all' || selectedBroadTopic != 'all') {
-			var filteredTags = [];
-
-			dataLq.forEach(function(d) {
-				if (d.year == selectedYear &&
-					((d.lad === undefined && selectedLad == 'Wales') || d.lad == selectedLad) &&
-					(selectedBroadTopic === undefined || tags[d.tag] === undefined || tags[d.tag].topic.broad == selectedBroadTopic) &&
-					d.comparative_adv > lqThreshold) {
-					filteredTags.push(d.tag);
-				}
-			});
-
-			graph.repaint(filteredTags);
-		}
-		else
+		if (selectedLad == '' && selectedBroadTopic == '')
 			graph.repaint();
+		else
+			graph.repaint(getTagList());
 	}
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
-	
-	filter.addDiscreteSlider(
-		'Year',
-		years,
-		selectedYear,
-		function(v) {
-			selectedYear = v;
-			if (selectedLad != 'all')
-				repaint();
-		}
-	);
 
-	filter.addSelectSearchSection(
-		'Local Authority District',
-		[{ id: 'all', text: 'All' }, { id: 'Wales', text: 'Wales' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
+	filter.addText('Network', 'The network shows co-occurrence of tags in meetup groups in Wales and the UK [?]');
+			
+	filter.addKeyTable(
 		'',
-		function(v) {
-			selectedLad = v;
-			graph.select();
-			tagFieldCallbacks.update(getTagList());
-			repaint();
-		}
-	);
+		[
+			{ type: 'circle', fill: 'rgb(110, 64, 170)', stroke: '#777', r: 3, desc: 'Tag. Area – number of times the tag has been used.' },
+			{ type: 'line', color: '#ccc', desc: 'Co-occurrence of tags in meetup groups [?]. Thickness – number of times 2 tags have been used in the same meetup group [?]' },
+		]);
 
-	var colorScale = d3.scaleOrdinal()
-			.domain(broadTopics)
-			.range(broadTopics.map(function(d, i) { return d3.interpolateRainbow(i / broadTopics.length); }));
+	var colorScale = ColorPalette.ordinal(broadTopics).scale;
 
-	filter.addSelectSearchSampleSection(
-		'Topic',
-		[{ id: 'all', text: 'All' }].concat(broadTopics.map(function(l) {
+	filter.addRadioSection(
+		'Topics',
+		[{ value: '', name: 'topic', label: 'All topics', checked: true }].concat(broadTopics.map(function(l) {
 			return {
-				id: l,
-				text: l,
+				value: l,
+				label: l,
+				name: 'topic',
 				color: colorScale(l)
 			};
 		})),
-		'',
 		function(v) {
 			selectedBroadTopic = v;
 			graph.select();
-			tagFieldCallbacks.update(getTagList());
+			tagFieldCallbacks.update(getTagList(true));
 			repaint();
 		}
 	);
 
-	function getTagList() {
-		var filteredNodes = nodes.filter(function(d) {
-			return selectedBroadTopic == 'all' || d.category == selectedBroadTopic;
-		})
-
-		if (selectedLad != 'all') {
-			var tagValues = {};
-
-			dataLq.forEach(function(d) {
-				if (d.year == selectedYear && (d.lad == selectedLad || (d.lad === undefined && selectedLad == 'Wales'))) {
-					tagValues[d.tag] = d.comparative_adv;
-				}
-			});
-
-			filteredNodes = filteredNodes.filter(function(d) {
-				return (tagValues[d.id] > lqThreshold);
-			});
-		}
-
-		filteredNodes = filteredNodes.map(function(d) { return { id: d.id, text: d.name }; });
-
-		filteredNodes.sort(function(a, b) {
-			if (a.text == b.text) return 0;
-			else if (b.text < a.text) return 1;
-			else return -1;
-		});
-
-		return [{ id: '', text: '' }].concat(filteredNodes);
-	}
-
 	var tagFieldCallbacks = filter.addSelectSearchSection(
-		'Tag',
-		getTagList(),
+		'',
+		getTagList(true),
 		'Search for tag',
 		function(v) {
 			selectedTag = v;
 			graph.select(v);
 		}
 	);
-			
-	filter.addKeyTable(
-		'Network',
-		[
-			{ type: 'circle', fill: 'rgb(110, 64, 170)', stroke: '#777', r: 3, desc: 'Tag' },
-			{ type: 'line', color: '#ccc', desc: 'Co-occurrence of tags in meetup groups [?]' },
-			{ type: 'desc', text: 'Circle size shows a number of times the tag has been used, color – a tag topic, opacity – LQ in the selected LAD [?]' },
-			{ type: 'desc', text: 'Line thickness shows a number of times 2 tags have been used in the same meetup group [?]' }
-		]);
+
+	filter.addText('Comparative advantage', 'Choose a district to see it\'s comparative advantage in topics [?]');
+
+	filter.addSelectSearchSection(
+		'',
+		[{ id: '', text: '' }, { id: 'Wales', text: 'All Wales [?]' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
+		'Choose LAD',
+		function(v) {
+			selectedLad = v;
+			graph.select();
+			tagFieldCallbacks.update(getTagList(true));
+			repaint();
+			yearCallback.show(v != '');
+			lqCallback.show(v != '');
+		}
+	);
+	
+	var yearCallback = filter.addDiscreteSlider(
+		'Year',
+		years,
+		selectedYear,
+		function(v) {
+			selectedYear = v;
+			graph.select();
+			repaint();
+		}
+	);
+	yearCallback.show(false);
+	
+	var lqCallback = filter.addMinSlider(
+		'Minimum LQ [?]',
+		0,
+		maxLq,
+		lqThreshold,
+		function(v) {
+			lqThreshold = v;
+			graph.select();
+			repaint();
+		}
+	);
+	lqCallback.show(false);
+
+	// ---
+
+	function getTagList(formated) {
+		var tagList;
+
+		if (selectedLad == '' && selectedBroadTopic == '') {
+			tagList = nodes.map(function(d) { return d.name; });
+		}
+		else if (selectedLad != '') {
+			tagList = [];
+			dataLq.forEach(function(d) {
+				if (d.year == selectedYear &&
+					tags[d.tag] !== undefined &&
+					nodeHash[d.tag] !== undefined &&
+					(d.lad == selectedLad || (d.lad === undefined && selectedLad == 'Wales')) &&
+					(selectedBroadTopic == '' || tags[d.tag].topic.broad == selectedBroadTopic) &&
+					d.comparative_adv > lqThreshold) {
+
+					tagList.push(d.tag);
+				}
+			});
+		}
+		else {
+			tagList = nodes.filter(function(d) { return d.category == selectedBroadTopic; }).map(function(d) { return d.name; });
+		}
+
+		if (!formated)
+			return tagList;
+		else {
+			tagList.sort();
+			return [{ id: '', text: '' }].concat(tagList.map(function(d) { return { id: d, text: d }; }));
+		}
+	}
 
 	// filter by topics
 });
