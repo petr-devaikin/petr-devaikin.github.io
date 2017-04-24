@@ -13,11 +13,26 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 		selectedVariable = 'events',
 		sortBy = 'name';
 
+	// Process data
+	var groupHash = {}
+	var maxGroupValue = 0;
+	groups.forEach(function(d, i) {
+		d.id = i;
+		groupHash[d.name] = d;
+		maxGroupValue = Math.max(maxGroupValue, d3.max(years, function(year) {
+			return d.values[year] !== undefined ? d.values[year][selectedVariable] : 0;
+		}));
+	});
+
+	var maxLinkValue = 0;
+	links.forEach(function(d, i) {
+		d.id = [groupHash[d.source].id, groupHash[d.target].id].sort().join('_');
+		maxLinkValue = Math.max(maxLinkValue, d.value);
+	});
+
 	var arcchart = new Arcchart(svg, {
 		graphWidth: 1000
 	});
-
-	console.log(groups);
 
 	function draw() {
 		if (sortBy == 'name')
@@ -26,7 +41,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 					return -1;
 				if (a.name.toLowerCase() > b.name.toLowerCase())
 					return 1;
-				return 0;
+				return a.id - b.id;
 			});
 		else
 			groups.sort(function(a, b) {
@@ -35,7 +50,10 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 				aValue += a.values[year2] === undefined ? 0 : a.values[year2][sortBy];
 				bValue = b.values[year1] === undefined ? 0 : b.values[year1][sortBy];
 				bValue += b.values[year2] === undefined ? 0 : b.values[year2][sortBy];
-				return bValue - aValue;
+				if (aValue != bValue)
+					return bValue - aValue;
+				else
+					return a.id - b.id;
 			});
 
 		var allGroups = groups.map(function(d) { return { id: d.name, name: d.name }});
@@ -59,14 +77,14 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 				return d.year == year1 && d.value > 0;
 			})
 			.map(function(d) {
-				return { itemIds: [d.source, d.target], value: d.value };
+				return { itemIds: [d.source, d.target], value: d.value, id: d.id };
 			});
 		var rightLinks = links
 			.filter(function(d) {
 				return d.year == year2 && d.value > 0;
 			})
 			.map(function(d) {
-				return { itemIds: [d.source, d.target], value: d.value };
+				return { itemIds: [d.source, d.target], value: d.value, id: d.id };
 			});
 
 		arcchart.draw(
@@ -76,7 +94,9 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			leftLinks,
 			rightLinks,
 			year1,
-			year2
+			year2,
+			maxGroupValue,
+			maxLinkValue
 		);
 	}
 	draw();
@@ -85,21 +105,16 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
 
-	filter.addRadioSection(
-		'Year 1 (left) [!]',
-		years.map(function(d, i) { return { label: d, value: d, checked: d == year1 }; }),
+	filter.addDiscreteRangeSlider(
+		'Time Period',
+		years,
+		year1, year2,
 		function(v) {
-			year1 = v;
-			draw();
-		}
-	);
-
-	filter.addRadioSection(
-		'Year 2 (right) [!]',
-		years.map(function(d, i) { return { label: d, value: d, checked: d == year2 }; }),
-		function(v) {
-			year2 = v;
-			draw();
+			if (year1 != v[0] || year2 != v[1]) {
+				year1 = v[0];
+				year2 = v[1];
+				draw();
+			}
 		}
 	);
 
@@ -124,6 +139,16 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 		],
 		function(v) {
 			selectedVariable = v;
+
+			maxGroupValue = 0;
+			groups.forEach(function(d, i) {
+				d.id = i;
+				groupHash[d.name] = d;
+				maxGroupValue = Math.max(maxGroupValue, d3.max(years, function(year) {
+					return d.values[year] !== undefined ? d.values[year][selectedVariable] : 0;
+				}));
+			});
+
 			draw();
 		}
 	);

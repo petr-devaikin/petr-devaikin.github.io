@@ -648,7 +648,7 @@ function Datareader(base) {
 		d3.queue()
 			.defer(
 				d3.csv,
-				base + 'groups_attendants_events.csv',
+				base + 'meetupAttendance/groups_attendants_events.csv',
 				function(line, i) {
 					return {
 						name: line.group_name,
@@ -659,7 +659,7 @@ function Datareader(base) {
 				})
 			.defer(
 				d3.csv,
-				base + 'attendant_cooccurrence_in_groups.csv',
+				base + 'meetupAttendance/attendant_cooccurrence_in_groups.csv',
 				function(line, i) {
 					return {
 						group1: line.group1,
@@ -668,20 +668,36 @@ function Datareader(base) {
 						value: parseFloat(line.normalised_attendant_cooccurrence),
 					}
 				})
+			.defer(
+				d3.csv,
+				base + 'meetupAttendance/metadata.csv',
+				function(line, i) {
+					return {
+						link: line.link,
+						lad: line.LAD13NM_LGDName,
+						group: line.group_name,
+						topic: line.main_topic,
+						description: line.clean_description,
+					}
+				})
 			.await(function(error) {
 				var args = arguments;
 
 				var dataAttendance = args[1];
 				var dataCooccurrence = args[2];
+				var dataMeta = args[3];
 
 				dataAttendance.forEach(function(d) {
 					if (years.indexOf(d.year) == -1) years.push(d.year);
 
-					if (groups[d.name] === undefined)
+					if (groups[d.name] === undefined) {
+						var meta = dataMeta.find(function(dd) { return dd.group == d.name; });
 						groups[d.name] = {
 							name: d.name,
-							values: {}
+							values: {},
+							meta: meta
 						}
+					}
 
 					groups[d.name].values[d.year] = {
 						events: d.events,

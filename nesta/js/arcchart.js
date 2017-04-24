@@ -6,7 +6,7 @@ function Arcchart(svg, p) {
 		itemHeight: 20,
 		pointMaxRadius: 20,
 		arcMaxThickness: 5,
-		transitionDuration: 500,
+		transitionDuration: 300,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -24,7 +24,11 @@ function Arcchart(svg, p) {
 		rScale,
 		arcScale;
 
-	var transition;
+	function getTransition() {
+		return d3.transition()
+			.duration(params.transitionDuration)
+			.ease(d3.easeLinear);
+	};
 
 	function init() {
 		svg.html('');
@@ -69,15 +73,10 @@ function Arcchart(svg, p) {
 		yScale = d3.scaleOrdinal();
 		rScale = d3.scaleSqrt().range([0, params.pointMaxRadius]);
 		arcScale = d3.scaleLinear().range([0, params.arcMaxThickness]);
-
-		// Transition
-		transition = d3.transition()
-		    .duration(params.transitionDuration)
-		    .ease(d3.easeLinear);
 	}
 	init();
 
-	this.draw = function(items, leftValues, rightValues, leftConnections, rightConnections, leftLabel, rightLabel) {
+	this.draw = function(items, leftValues, rightValues, leftConnections, rightConnections, leftLabel, rightLabel, maxValue, maxArcThickness) {
 		// prepare data
 		leftConnections.forEach(function(d) { d.isLeft = true; });
 		rightConnections.forEach(function(d) { d.isLeft = false; });
@@ -92,16 +91,7 @@ function Arcchart(svg, p) {
 			.domain(items.map(function(d) { return d.id; }))
 			.range(items.map(function(d, i) { return i * params.itemHeight; }));
 
-		var maxValue = Math.max(
-			d3.max(leftValues, function(d) { return d.value; }),
-			d3.max(rightValues, function(d) { return d.value; })
-		);
 		rScale.domain([0, maxValue]);
-
-		var maxArcThickness = Math.max(
-			leftConnections.length ? d3.max(leftConnections, function(d) { return d.value; }) : 0,
-			rightConnections.length ? d3.max(rightConnections, function(d) { return d.value; }) : 0
-		);
 
 		arcScale.domain([0, maxArcThickness]);
 
@@ -111,7 +101,6 @@ function Arcchart(svg, p) {
 
 		// draw items
 		function positionItems(selection) {
-			// do animated transition!
 			selection.attr('transform', function(d, i) {
 				return 'translate({0},{1})'.format(0, yScale(i));
 			});
@@ -126,7 +115,7 @@ function Arcchart(svg, p) {
 			.on('click', function(d) { d3.event.stopPropagation(); selectItem(d.id); });
 		items.exit().remove();
 
-		items.transition(transition).call(positionItems);
+		items.transition(getTransition()).call(positionItems);
 		newItems.call(positionItems);
 
 		// move left and right parts
@@ -138,6 +127,7 @@ function Arcchart(svg, p) {
 		// draw points
 		function updatePoints(selection) {
 			selection
+				.attr('opacity', 1)
 				.attr('transform', function(d) {
 					return 'translate({0},{1})'.format(0, yScale(d.id));
 				})
@@ -151,7 +141,15 @@ function Arcchart(svg, p) {
 		}
 
 		function bindPoints(area, data) {
+			var t = getTransition();
+
 			var points = area.selectAll('.vis__graph__values__points__point').data(data, function(d) { return d.id; });
+
+			points.exit()
+				.transition(t)
+				.attr('opacity', 0)
+				.remove();
+
 			var newPoints = points.enter().append('g')
 				.classed('vis__graph__values__points__point', true)
 				.on('mouseover', hoverItem)
@@ -159,39 +157,40 @@ function Arcchart(svg, p) {
 				.on('click', function(d) { d3.event.stopPropagation(); selectItem(d.id); });
 			newPoints.append('circle');
 			newPoints.append('text');
-			points.exit()
-				.transition(transition)
-				.style('opacity', 0)
-				.remove();
 
-			points.transition(transition).call(updatePoints);
 			newPoints.call(updatePoints)
-				.style('opacity', 0)
-				.transition(transition)
-				.style('opacity', 1);
+				.attr('opacity', 0)
+				.transition(t)
+				.attr('opacity', 1);
+
+			points.transition(t).call(updatePoints);
 		}
 		bindPoints(leftPointsArea, leftValues);
 		bindPoints(rightPointsArea, rightValues);
 
 		// draw arcs
 		function updateArcs(selection) {
-			// animate transition
-			selection.selectAll('path')
-				.attr('stroke-width', function(d) { return arcScale(d.value); })
-				.attr('d', function(d) {
-					if (d.isLeft && yScale(d.itemIds[1]) > yScale(d.itemIds[0]))
-						d.itemIds.reverse();
-					else if (!d.isLeft && yScale(d.itemIds[1]) < yScale(d.itemIds[0]))
-						d.itemIds.reverse();
+			selection.attr('opacity', 1);
 
-					var radius = Math.abs(yScale(d.itemIds[1]) - yScale(d.itemIds[0])) / 2;
-					var res = 'M{0} {1} '.format(0, yScale(d.itemIds[0]));
-					res += 'A {0} {0} 0 1 1 {1} {2}'.format(radius, 0, yScale(d.itemIds[1]));
-					return res;
-				});
+			function arcPath(d) {
+				if (d.isLeft && yScale(d.itemIds[1]) > yScale(d.itemIds[0]))
+					d.itemIds.reverse();
+				else if (!d.isLeft && yScale(d.itemIds[1]) < yScale(d.itemIds[0]))
+					d.itemIds.reverse();
+
+				var radius = Math.abs(yScale(d.itemIds[1]) - yScale(d.itemIds[0])) / 2;
+				var res = 'M{0} {1} '.format(0, yScale(d.itemIds[0]));
+				res += 'A {0} {0} 0 1 1 {1} {2}'.format(radius, 0, yScale(d.itemIds[1]));
+				return res;
+			}
+
+			selection.select('.vis__graph__values__arcs__arc__line')
+				.attr('stroke-width', function(d) { return arcScale(d.value); })
+				.attr('d', arcPath);
 
 			selection.select('.vis__graph__values__arcs__arc__bg')
-				.attr('stroke-width', 8);
+				.attr('stroke-width', 8)
+				.attr('d', arcPath);
 
 			selection.select('text')
 				.attr('transform', function(d) {
@@ -204,7 +203,15 @@ function Arcchart(svg, p) {
 		}
 
 		function bindArcs(area, data) {
-			var arcs = area.selectAll('.vis__graph__values__arcs__arc').data(data, function(d) { return d.itemIds[0] + '_' + d.itemIds[1]; });
+			var transition = getTransition();
+
+			var arcs = area.selectAll('.vis__graph__values__arcs__arc').data(data, function(d) { return d.id; });
+			
+			arcs.exit()
+				.transition(transition)
+				.attr('opacity', 0)
+				.remove();
+
 			var newArcs = arcs.enter().append('g')
 				.classed('vis__graph__values__arcs__arc', true)
 				.on('mouseover', hoverArc)
@@ -213,16 +220,13 @@ function Arcchart(svg, p) {
 			newArcs.append('path').classed('vis__graph__values__arcs__arc__bg', true);
 			newArcs.append('path').classed('vis__graph__values__arcs__arc__line', true);
 			newArcs.append('text');
-			arcs.exit()
+
+			newArcs.call(updateArcs)
+				.attr('opacity', 0)
 				.transition(transition)
-				.style('opacity', 0)
-				.remove();
+				.attr('opacity', 1);
 
 			arcs.transition(transition).call(updateArcs);
-			newArcs.call(updateArcs)
-				.style('opacity', 0)
-				.transition(transition)
-				.style('opacity', 1);
 		}
 
 		bindArcs(leftArcsArea, leftConnections);

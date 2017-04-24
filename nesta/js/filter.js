@@ -81,6 +81,59 @@ function Filter(container) {
     	}
 	}
 
+
+	this.addDiscreteRangeSlider = function(title, values, selectedMinValue, selectedMaxValue, callback) {
+		var SLIDER_MARGIN = 15;
+
+		var group = initGroup(title);
+
+		var slider = group.append('div').classed('filter__group__slider', true);
+		var control = slider.append('div').classed('filter__group__slider__control', true);
+
+		var _control = $(control.node()).slider({
+			range: true,
+			values: [values.indexOf(selectedMinValue), values.indexOf(selectedMaxValue)],
+			min: 0,
+			max: values.length - 1,
+			step: 1,
+			change: function(event, ui) {
+				var v = [values[ui.values[0]], values[ui.values[1]]];
+				callback(v);
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == v[0] || d == v[1]; });
+			},
+			slide:  function(event, ui) {
+				if (ui.values[0] == ui.values[1])
+					return false;
+				var v = [values[ui.values[0]], values[ui.values[1]]];
+				callback(v);
+				slider.selectAll('.filter__group__slider__tick')
+					.classed('selected', function(d) { return d == v[0] || d == v[1]; });
+			},
+    	});
+
+    	slider.selectAll('.filter__group__slider__tick').data(values).enter().append('div')
+    		.classed('filter__group__slider__tick', true)
+    		.style('left', function(d, i) {
+    			return SLIDER_MARGIN + (FILTER_WIDTH - 2 * SLIDER_MARGIN) / (values.length - 1) * i + 'px';
+    		})
+    		.classed('selected', function(d) { return d == selectedMinValue || d == selectedMaxValue; })
+    		.text(function(d) { return d; })
+    		.on('click', function(d, i) {
+    			var v = _control.slider('values');
+    			if (i < (v[0] + v[1]) / 2)
+    				_control.slider('values', [i, v[1]]);
+    			else
+    				_control.slider('values', [v[0], i]);
+    		});
+
+    	return {
+    		show: function(visibility) {
+    			group.classed('hidden', !visibility);
+    		}
+    	}
+	}
+
 	this.addMinSlider = function(title, minValue, maxValue, currentValue, callback) {
 		var SLIDER_MARGIN = 15;
 		maxValue = Math.ceil(maxValue);
