@@ -17,15 +17,16 @@
 		&--left
 			.vis__map__lads__lad
 				&.highlighted
-					fill #a5a8ff		
+					fill #666		
 		&--right
 			.vis__map__lads__lad
 				&.highlighted
-					fill #7fc97e
+					fill #666
 
 		&__lads__lad
 			stroke-width 1
 			stroke #fff
+			cursor pointer
 			//fill #eee
 			
 			&--welsh
@@ -36,10 +37,14 @@
 				fill #eee
 				
 			&.hovered, &.highlighted.hovered
-				fill #fecc5c
+				fill #888
 				
 			&.selected
-				fill #fd8d3c
+				fill #333
+				
+			&.inactive
+				fill #f3f3f3
+				cursor default
 			
 		&__border
 			stroke #000
@@ -62,7 +67,6 @@
 					
 				&.highlighted
 					.vis__map__connections__line__line, .vis__map__connections__line__point
-						stroke red
 						opacity 1
 					
 				&.blured

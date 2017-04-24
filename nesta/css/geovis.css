@@ -14,24 +14,29 @@
   fill: #000;
 }
 .vis--geovis .vis__map--left .vis__map__lads__lad.highlighted {
-  fill: #a5a8ff;
+  fill: #666;
 }
 .vis--geovis .vis__map--right .vis__map__lads__lad.highlighted {
-  fill: #7fc97e;
+  fill: #666;
 }
 .vis--geovis .vis__map__lads__lad {
   stroke-width: 1;
   stroke: #fff;
+  cursor: pointer;
 }
 .vis--geovis .vis__map__lads__lad.no-data {
   fill: #eee;
 }
 .vis--geovis .vis__map__lads__lad.hovered,
 .vis--geovis .vis__map__lads__lad.highlighted.hovered {
-  fill: #fecc5c;
+  fill: #888;
 }
 .vis--geovis .vis__map__lads__lad.selected {
-  fill: #fd8d3c;
+  fill: #333;
+}
+.vis--geovis .vis__map__lads__lad.inactive {
+  fill: #f3f3f3;
+  cursor: default;
 }
 .vis--geovis .vis__map__border {
   stroke: #000;
@@ -52,7 +57,6 @@
 }
 .vis--geovis .vis__map__connections__line.highlighted .vis__map__connections__line__line,
 .vis--geovis .vis__map__connections__line.highlighted .vis__map__connections__line__point {
-  stroke: #f00;
   opacity: 1;
 }
 .vis--geovis .vis__map__connections__line.blured {

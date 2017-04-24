@@ -273,13 +273,16 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 					.attr("d", path)
 					.attr('fill', function(d) {
 						return d.isWelsh ? '#ddd' : '#eee';
-					})
-					.style('cursor', 'pointer');
+					});
 
 			newMapLads
 				.on('mousemove', overLad)
 				.on('mouseout', outLad)
-				.on('click', function(d) { d3.event.stopPropagation(); selectLad(d); });
+				.on('click', function(d) {
+					d3.event.stopPropagation();
+					if (!d.inactive)
+						selectLad(d);
+				});
 		}
 		addLads(ladsAreaLeft);
 		addLads(ladsAreaRight);
@@ -298,8 +301,12 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	function drawConnections(newData) {
 		data = newData;
 
+		// detect inactive lads
+		ladLands.forEach(function(d) {
+			d.inactive = true;
+		})
+
 		// process data
-		console.log(1);
 
 		data.forEach(function(d, i) {
 			var landFrom = landHash[d.from];
@@ -311,6 +318,9 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			if (landFrom !== undefined && landTo !== undefined) {
 				d.landFrom = landHash[d.from];
 				d.landTo = landHash[d.to];
+
+				d.landFrom.inactive = false;
+				d.landTo.inactive = false;
 			}
 		});
 
@@ -343,6 +353,13 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			}
 			*/
 		});
+
+		// update map
+
+		ladsAreaLeft.selectAll('.vis__map__lads__lad')
+			.classed('inactive', function(d) { return d.inactive; });
+		ladsAreaRight.selectAll('.vis__map__lads__lad')
+			.classed('inactive', function(d) { return d.inactive; });
 
 		//
 
@@ -384,7 +401,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.type == 'outward'; }));
 		addConnections(connectionsAreaRight, data.filter(function(d) { return d.type == 'inward'; }));
 
-		if (selectedLad !== undefined)
+		if (selectedLad !== undefined && !selectedLad.inactive)
 			selectLad(selectedLad);
 	}
 
