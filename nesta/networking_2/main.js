@@ -116,44 +116,6 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			{ type: 'line', color: '#ccc', thickness: 3, desc: 'Connections [?]. Thickness – [?]' },
 		]);
 
-	filter.addDiscreteRangeSlider(
-		'Time Period',
-		years,
-		year1, year2,
-		function(v) {
-			if (year1 != v[0] || year2 != v[1]) {
-				year1 = v[0];
-				year2 = v[1];
-				draw();
-			}
-		}
-	);
-
-	filter.addRadioSection(
-		'Order by',
-		[
-			{ label: 'Number of events', value: 'events', checked: true },
-			{ label: 'Number of attendants', value: 'attendants' },
-		],
-		function(v) {
-			sortBy = v;
-			draw();
-		}
-	);
-
-	filter.addRadioSection(
-		'Group by',
-		[
-			{ label: 'Location', value: 'lad', checked: true },
-			{ label: 'Topic', value: 'topic' },
-			{ label: 'None [?]', value: '' },
-		],
-		function(v) {
-			groupBy = v;
-			draw();
-		}
-	);
-
 	filter.addRadioSection(
 		'Show activity as',
 		[
@@ -172,6 +134,44 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 				}));
 			});
 
+			draw();
+		}
+	);
+
+	filter.addDiscreteRangeSlider(
+		'Time Period',
+		years,
+		year1, year2,
+		function(v) {
+			if (year1 != v[0] || year2 != v[1]) {
+				year1 = v[0];
+				year2 = v[1];
+				draw();
+			}
+		}
+	);
+
+	filter.addRadioSection(
+		'Group by',
+		[
+			{ label: 'Location', value: 'lad', checked: true },
+			{ label: 'Topic', value: 'topic' },
+			{ label: 'None [?]', value: '' },
+		],
+		function(v) {
+			groupBy = v;
+			draw();
+		}
+	);
+
+	filter.addRadioSection(
+		'Order by',
+		[
+			{ label: 'Number of events', value: 'events', checked: true },
+			{ label: 'Number of attendants', value: 'attendants' },
+		],
+		function(v) {
+			sortBy = v;
 			draw();
 		}
 	);
