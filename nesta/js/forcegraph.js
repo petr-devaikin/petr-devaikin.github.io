@@ -122,12 +122,46 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 				.attr("r", function(d) { return rScale(d.value); })
 				.attr('fill', function(d) { return colorScale(d.category); })
 				.attr('stroke', function(d) { return d3.color(colorScale(d.category)).darker(.8); });
+
+		labels
+			.classed('muted', function(d) { return d.muted; });
+
+		checkLabelVisibility();
 	}
 
 	function updateLinks() {
 		links
 			.attr("stroke-width", function(d) { return linkScale(d.value); })
 			.classed('muted', function(d) { return d.source.muted || d.target.muted; });
+	}
+
+
+	// check if labels are overlapping
+	function checkLabelVisibility() {
+		var bboxes = [];
+		labels.each(function(d) {
+			if (d.muted || (selectedNode !== undefined && !d.selected))
+				return;
+
+			d3.select(this).classed('overlapped', false);
+
+			var bbox = this.getBBox();
+			var shift = transform.apply([d.x, d.y]);
+			bbox.x += shift[0];
+			bbox.y += shift[1];
+
+			var found = false;
+			for (var i = 0; i < bboxes.length; i++)
+				if (bboxes[i].x < bbox.x + bbox.width && bboxes[i].x + bboxes[i].width > bbox.x &&
+					bboxes[i].y < bbox.y + bbox.height && bboxes[i].y + bboxes[i].height > bbox.y) {
+					found = true;
+					d3.select(this).classed('overlapped', true);
+				}
+
+			if (!found) {
+				bboxes.push(bbox);
+			}
+		})
 	}
 
 	this.draw = function() {
@@ -147,7 +181,6 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		nodes.append('circle').classed('vis__graph__nodes__node__bg', true)
 			.attr('r', 4);
 		nodes.append('circle').classed('vis__graph__nodes__node__circle', true);
-		updateNodes();
 
 		labels = labelArea.selectAll('.vis__graph__labels__label').data(nodeData.filter(function(d) { return d.labeled; })).enter()
 			.append('g').classed('vis__graph__labels__label', true);
@@ -164,7 +197,6 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 					bbox.width + 4
 				));
 		});
-
 
 		/*
       	simulation
@@ -231,31 +263,9 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 			svg.call(zoom.transform, transform);
 			svg.call(zoom).on('dblclick.zoom', null);
-		}
 
-		// check if labels are overlapping
-		function checkLabelVisibility() {
-			var bboxes = [];
-			labels.each(function(d) {
-				d3.select(this).classed('overlapped', false);
-
-				var bbox = this.getBBox();
-				var shift = transform.apply([d.x, d.y]);
-				bbox.x += shift[0];
-				bbox.y += shift[1];
-
-				var found = false;
-				for (var i = 0; i < bboxes.length; i++)
-					if (bboxes[i].x < bbox.x + bbox.width && bboxes[i].x + bboxes[i].width > bbox.x &&
-						bboxes[i].y < bbox.y + bbox.height && bboxes[i].y + bboxes[i].height > bbox.y) {
-						found = true;
-						d3.select(this).classed('overlapped', true);
-					}
-
-				if (!found) {
-					bboxes.push(bbox);
-				}
-			})
+			// update nodes
+			updateNodes();
 		}
 
 		var lastScale;
@@ -333,6 +343,9 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			nodes
 				.classed('blured', function(dd) { return !dd.selected; })
 				.classed('selected', function(dd) { return dd == d; });
+
+			labels
+				.classed('blured', function(dd) { return !dd.selected; });
 		}
 		else {
 			links
@@ -342,10 +355,15 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			nodes
 				.classed('blured', false)
 				.classed('selected', false);
+
+			labels
+				.classed('blured', false);
 		}
 
 		if (params.selectNodeCallback !== undefined)
 			params.selectNodeCallback(d !== undefined ? d.id : '');
+
+		checkLabelVisibility();
 	}
 
 	function nodeHover(d) {
@@ -387,8 +405,6 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		console.log('reset selection');
 
 		selectNode();
-
-		nodeOut();
 	});
 
 	// buttons
