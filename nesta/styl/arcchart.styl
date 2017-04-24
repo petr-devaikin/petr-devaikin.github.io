@@ -3,11 +3,18 @@
 		&__items
 			&__item
 				cursor pointer
-				font-size 12px
-				fill #333
-				opacity 1
-				text-anchor middle
-				alignment-baseline central
+				
+				&__name
+					font-size 12px
+					fill #333
+					text-anchor middle
+					alignment-baseline central
+				
+				&__desc
+					font-size 10px
+					fill #bbb
+					text-anchor middle
+					alignment-baseline central
 					
 				&.blured
 					opacity .3
@@ -15,6 +22,9 @@
 				&.hovered
 					opacity 1
 					fill red
+					
+					.vis__graph__items__item__desc
+						fill #888
 			
 		&__values
 			&__label

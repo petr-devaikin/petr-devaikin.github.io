@@ -3,10 +3,12 @@ function Arcchart(svg, p) {
 		topMargin: 50,
 		graphWidth: 600,
 		itemWidth: 'auto',
-		itemHeight: 20,
+		itemHeight: 26,
 		pointMaxRadius: 20,
-		arcMaxThickness: 5,
+		arcMinThickness: .2,
+		arcMaxThickness: 6,
 		transitionDuration: 300,
+		selectCallback: undefined,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -72,7 +74,7 @@ function Arcchart(svg, p) {
 
 		yScale = d3.scaleOrdinal();
 		rScale = d3.scaleSqrt().range([0, params.pointMaxRadius]);
-		arcScale = d3.scaleLinear().range([0, params.arcMaxThickness]);
+		arcScale = d3.scaleLinear().range([params.arcMinThickness, params.arcMaxThickness]);
 	}
 	init();
 
@@ -102,17 +104,24 @@ function Arcchart(svg, p) {
 		// draw items
 		function positionItems(selection) {
 			selection.attr('transform', function(d, i) {
-				return 'translate({0},{1})'.format(0, yScale(i));
+				return 'translate({0},{1})'.format(0, yScale(d.id));
 			});
 		}
 
 		var items = itemsArea.selectAll('.vis__graph__items__item').data(items, function(d) { return d.id; });
-		var newItems = items.enter().append('text')
+		var newItems = items.enter().append('g')
 			.classed('vis__graph__items__item', true)
-			.text(function(d) { return d.name; })
 			.on('mouseover', hoverItem)
 			.on('mouseout', outItem)
 			.on('click', function(d) { d3.event.stopPropagation(); selectItem(d.id); });
+		newItems.append('text')
+			.classed('vis__graph__items__item__name', true)
+			.text(function(d) { return d.name; });
+		newItems.append('text')
+			.classed('vis__graph__items__item__desc', true)
+			.attr('dy', 10)
+			.text(function(d) { return d.desc; });
+
 		items.exit().remove();
 
 		items.transition(getTransition()).call(positionItems);
@@ -236,6 +245,12 @@ function Arcchart(svg, p) {
 		selectItem(selectedItemId);
 	}
 
+	// API
+
+	this.select = function(item) {
+		selectItem(item);
+	}
+
 	// Interaction
 	var selectedItemId = undefined;
 
@@ -279,6 +294,9 @@ function Arcchart(svg, p) {
 			.classed('blured', function(dd) {
 				return selectedItemId !== undefined && dd.itemIds[0] != selectedItemId && dd.itemIds[1] != selectedItemId;
 			});
+
+		if (params.selectCallback !== undefined)
+			params.selectCallback(itemId);
 	}
 
 	function hoverArc(d) {

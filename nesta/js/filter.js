@@ -13,7 +13,16 @@ function Filter(container) {
 
 	this.addText = function(title, text) {
 		var group = initGroup(title);
-		group.append('p').classed('filter__group__text', true).text(text);
+		var textBlock = group.append('p').classed('filter__group__text', true).html(text);
+
+		return {
+			update: function(text) {
+				textBlock.html(text)
+			},
+    		show: function(visibility) {
+    			group.classed('hidden', !visibility);
+    		}
+		}
 	}
 
 	this.addRadioSection = function(title, values, callback) {
@@ -396,7 +405,7 @@ function Filter(container) {
 				svg.append('line')
 					.attr('x1', 1).attr('y1', cy)
 					.attr('x2', SAMPLE_WIDTH - 1).attr('y2', cy)
-					.attr('stroke-width', 1).attr('stroke', s.color);
+					.attr('stroke-width', s.thickness || 1).attr('stroke', s.color);
 
 				desc.text(s.desc);
 			}

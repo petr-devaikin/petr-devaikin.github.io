@@ -1,5 +1,5 @@
-var width = 1000,
-	height = 600;
+var width = window.innerWidth - 230,
+	height = 750;
 
 var svg = d3.select("body").append("svg")
 	.attr("width", width)
@@ -8,10 +8,11 @@ var svg = d3.select("body").append("svg")
 var datareader = new Datareader();
 
 datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups, links) {
-	var year1 = 2013,
+	var year1 = 2014,
 		year2 = 2016
 		selectedVariable = 'events',
-		sortBy = 'name';
+		sortBy = 'events',
+		groupBy = 'lad';
 
 	// Process data
 	var groupHash = {}
@@ -31,60 +32,62 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	});
 
 	var arcchart = new Arcchart(svg, {
-		graphWidth: 1000
+		graphWidth: 1000,
+		selectCallback: function(groupId) {
+			groupFieldCallbacks.setValue(groupId);
+			showMeta(groupId);
+		}
 	});
 
 	function draw() {
-		if (sortBy == 'name')
-			groups.sort(function(a, b) {
-				if (b.name.toLowerCase() > a.name.toLowerCase())
-					return -1;
-				if (a.name.toLowerCase() > b.name.toLowerCase())
-					return 1;
-				return a.id - b.id;
-			});
-		else
-			groups.sort(function(a, b) {
-				var aValue, bValue;
-				aValue = a.values[year1] === undefined ? 0 : a.values[year1][sortBy];
-				aValue += a.values[year2] === undefined ? 0 : a.values[year2][sortBy];
-				bValue = b.values[year1] === undefined ? 0 : b.values[year1][sortBy];
-				bValue += b.values[year2] === undefined ? 0 : b.values[year2][sortBy];
-				if (aValue != bValue)
-					return bValue - aValue;
-				else
-					return a.id - b.id;
-			});
+		groups.sort(function(a, b) {
+			var aValue, bValue;
 
-		var allGroups = groups.map(function(d) { return { id: d.name, name: d.name }});
+			if (groupBy == 'lad' && a.meta.lad != b.meta.lad)
+				return a.meta.lad > b.meta.lad ? 1 : -1;
+			else if (groupBy == 'topic' && a.meta.topic != b.meta.topic)
+				return a.meta.topic > b.meta.topic ? 1 : -1;
+			
+			aValue = a.values[year1] === undefined ? 0 : a.values[year1][sortBy];
+			aValue += a.values[year2] === undefined ? 0 : a.values[year2][sortBy];
+			bValue = b.values[year1] === undefined ? 0 : b.values[year1][sortBy];
+			bValue += b.values[year2] === undefined ? 0 : b.values[year2][sortBy];
+
+			if (aValue != bValue)
+				return bValue - aValue;
+			else
+				return a.id - b.id;
+		});
+
+		var allGroups = groups.map(function(d) { return { id: d.id, name: d.name, desc: d.meta.lad + ' | ' + d.meta.topic }});
 
 		var leftValues = groups
 			.filter(function(d) {
 				return d.values[year1] !== undefined && d.values[year1][selectedVariable] > 0;
 			})
 			.map(function(d) {
-				return { id: d.name, value: d.values[year1][selectedVariable] };
+				return { id: d.id, value: d.values[year1][selectedVariable] };
 			});
 		var rightValues = groups
 			.filter(function(d) {
 				return d.values[year2] !== undefined && d.values[year2][selectedVariable] > 0;
 			})
 			.map(function(d) {
-				return { id: d.name, value: d.values[year2][selectedVariable] };
+				return { id: d.id, value: d.values[year2][selectedVariable] };
 			});
 		var leftLinks = links
 			.filter(function(d) {
 				return d.year == year1 && d.value > 0;
 			})
 			.map(function(d) {
-				return { itemIds: [d.source, d.target], value: d.value, id: d.id };
+				return { itemIds: [groupHash[d.source].id, groupHash[d.target].id], value: d.value, id: d.id };
 			});
 		var rightLinks = links
 			.filter(function(d) {
 				return d.year == year2 && d.value > 0;
 			})
 			.map(function(d) {
-				return { itemIds: [d.source, d.target], value: d.value, id: d.id };
+				return { itemIds: [groupHash[d.source].id, groupHash[d.target].id], value: d.value, id: d.id };
 			});
 
 		arcchart.draw(
@@ -99,11 +102,19 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			maxLinkValue
 		);
 	}
-	draw();
 
 
 	// Filter
 	var filter = new Filter(d3.select('.filter'));
+
+	filter.addText('Network', 'The graph shows connections between tech meetup groups in Wales [?].');
+
+	filter.addKeyTable(
+		'',
+		[
+			{ type: 'circle', fill: 'rgba(31, 119, 180, .6)', stroke: 'none', r: 8, desc: 'Activity of a meetup group. Area – number of events or attendants [?].' },
+			{ type: 'line', color: '#ccc', thickness: 3, desc: 'Connections [?]. Thickness – [?]' },
+		]);
 
 	filter.addDiscreteRangeSlider(
 		'Time Period',
@@ -119,10 +130,9 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	);
 
 	filter.addRadioSection(
-		'Sort by',
+		'Order by',
 		[
-			{ label: 'Name', value: 'name', checked: true },
-			{ label: 'Number of events', value: 'events' },
+			{ label: 'Number of events', value: 'events', checked: true },
 			{ label: 'Number of attendants', value: 'attendants' },
 		],
 		function(v) {
@@ -132,7 +142,20 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	);
 
 	filter.addRadioSection(
-		'Bubble area [!]',
+		'Group by',
+		[
+			{ label: 'Location', value: 'lad', checked: true },
+			{ label: 'Topic', value: 'topic' },
+			{ label: 'None [?]', value: '' },
+		],
+		function(v) {
+			groupBy = v;
+			draw();
+		}
+	);
+
+	filter.addRadioSection(
+		'Show activity as',
 		[
 			{ label: 'Number of events', value: 'events', checked: true },
 			{ label: 'Number of attendants', value: 'attendants' },
@@ -153,6 +176,32 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 		}
 	);
 
-	d3.select('.filter').append('h4').text('Key [!]');
-	d3.select('.filter').append('div').text('[line] - normalised number of attendants');
+	var groupFieldCallbacks = filter.addSelectSearchSection(
+		'Meetup Group Info',
+		[{ id: '', text: '' }].concat(groups.map(function(d) { return { id: d.id, text: d.name }; })),
+		'Select group',
+		function(v) {
+			if (v == '') v = undefined;
+			showMeta(v);
+			arcchart.select(v);
+		}
+	);
+
+	function showMeta(groupId) {
+		var selectedGroup = groups.find(function(d) { return d.id == groupId; });
+		if (selectedGroup) {
+			metaCallback.update('{0}<br/><a href="{1}" target="_blank">More</a>'.format(
+				selectedGroup.meta.description,
+				selectedGroup.meta.link
+			));
+			metaCallback.show(true);
+		}
+		else
+			metaCallback.show(false);
+	}
+
+	var metaCallback = filter.addText('', '');
+	metaCallback.show(false);
+
+	draw();
 });

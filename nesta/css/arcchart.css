@@ -1,8 +1,15 @@
 .vis--arc .vis__graph__items__item {
   cursor: pointer;
+}
+.vis--arc .vis__graph__items__item__name {
   font-size: 12px;
   fill: #333;
-  opacity: 1;
+  text-anchor: middle;
+  alignment-baseline: central;
+}
+.vis--arc .vis__graph__items__item__desc {
+  font-size: 10px;
+  fill: #bbb;
   text-anchor: middle;
   alignment-baseline: central;
 }
@@ -12,6 +19,9 @@
 .vis--arc .vis__graph__items__item.hovered {
   opacity: 1;
   fill: #f00;
+}
+.vis--arc .vis__graph__items__item.hovered .vis__graph__items__item__desc {
+  fill: #888;
 }
 .vis--arc .vis__graph__values__label {
   fill: #000;

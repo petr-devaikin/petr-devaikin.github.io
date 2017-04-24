@@ -100,7 +100,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	var filter = new Filter(d3.select('.filter'));
 
 	filter.addText('Network', 'The network shows co-occurrence of tags in meetup groups in Wales and the UK [?]');
-			
+
 	filter.addKeyTable(
 		'',
 		[
