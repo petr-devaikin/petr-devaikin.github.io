@@ -12,23 +12,25 @@ var datareader = new Datareader();
 datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 	datareader.readData(Datareader.DATASETS.Lads, function(ladAreas) {
 		datareader.readData(Datareader.DATASETS.Movement, function(topics, inwardData, outwardData) {
-			var selectedTopic = topics[0];
+			var selectedTopic = '';
 			topics.sort();
 
-			inwardData.forEach(function(d) { return d.category = 'inward'; });
-			outwardData.forEach(function(d) { return d.category = 'outward'; });
+			inwardData.forEach(function(d) {
+				d.category = d.topic;
+				d.type = 'inward';
+			});
+			outwardData.forEach(function(d) { 
+				d.category = d.topic;
+				d.type = 'outward';
+			});
 			var data = inwardData.concat(outwardData);
-			var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
+			var filteredData = data.filter(function(d) { return selectedTopic == '' || d.topic == selectedTopic; });
 
 			var ladNamesFromMap = Object.keys(ladAreas);
 			ladNamesFromMap.sort();
 			ladNamesFromMap = ladNamesFromMap.map(function(d) { return { id: d, text: d }; });
 
-			var geovis = new Geovis(svg, ladsGB, ladsNI, ladAreas, filteredData, {
-				categoryColors: {
-					'inward': 'green',
-					'outward': 'blue',
-				},
+			var geovis = new Geovis(svg, ladsGB, ladsNI, ladAreas, filteredData, topics, {
 				labelLeft: 'People registred in Wales attending an event in other areas [?]',
 				labelRight: 'People registred out of Wales attending an event in Wales [?]',
 				buttonSize: 30,
@@ -40,7 +42,7 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			geovis.draw();
 
 			function redraw() {
-				var filteredData = data.filter(function(d) { return d.topic == selectedTopic; });
+				var filteredData = data.filter(function(d) { return selectedTopic == '' || d.topic == selectedTopic; });
 				geovis.redraw(filteredData);
 			}
 
@@ -51,15 +53,22 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			// Filter
 			var filter = new Filter(d3.select('.filter'));
 
-			filter.addSelectSearchSection(
+			var colorScale = ColorPalette.ordinal(topics).scale;
+
+			filter.addRadioSection(
 				'Topics',
-				topics.map(function(s) { return { id: s, text: s }; }),
-				'',
+				[{ value: '', name: 'topic', label: 'All topics', checked: true }].concat(topics.map(function(l) {
+					return {
+						value: l,
+						label: l,
+						name: 'topic',
+						color: colorScale(l)
+					};
+				})),
 				function(v) {
 					selectedTopic = v;
 					redraw();
-				},
-				selectedTopic
+				}
 			);
 
 			var ladCallbacks = filter.addSelectSearchSection(

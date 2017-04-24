@@ -1,8 +1,8 @@
-function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
+function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
-		minOpacity: .1,
-		maxOpacity: .8,
+		minOpacity: .05,
+		maxOpacity: .5,
 		buttonSize: 40,
 		selectLadCallback: undefined,
 		margin: 50,
@@ -45,6 +45,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 
 	var selectedLad = undefined;
 
+	var colorScale;
+
 	function calculateAutoZoom(data) {
 		function isLadInAreaToZoom(name) {
 			if (selectedLad === undefined)
@@ -83,6 +85,9 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 		width = svg.node().getBoundingClientRect().width;
 		height = svg.node().getBoundingClientRect().height;
 
+		// scale
+		colorScale = ColorPalette.ordinal(categories).scale;
+
 		// clipping area
 		
 		svg.append('defs').append('clipPath').attr('id', 'map-clip')
@@ -95,6 +100,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 		ladLands.forEach(function(f) {
 			f.name = f.properties.lad16nm;
 			f.area = ladsAreas[f.name];
+			f.centroid = d3.geoCentroid(f);
 			f.isWelsh = f.area == 'Wales';
 			landHash[f.name] = f;
 		});
@@ -103,6 +109,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 		ladLandsNI.forEach(function(f) {
 			f.name = f.properties.LGDNAME;
 			f.area = 'Northern Ireland';
+			f.centroid = d3.geoCentroid(f);
 			f.isWelsh = false;
 			landHash[f.name] = f;
 		});
@@ -239,43 +246,21 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 
 
 	function updateConnections(connectionSelection) {
-		function setPath(d) {
-			var distance = Math.sqrt(
-				(d.fromCentroid[0] - d.toCentroid[0]) * (d.fromCentroid[0] - d.toCentroid[0]) +
-				(d.fromCentroid[1] - d.toCentroid[1]) * (d.fromCentroid[1] - d.toCentroid[1])
-			);
-			var dirFlag = d.fromCentroid[0] < d.toCentroid[0] ? 1 : 0;
-			res = '';
-			res += 'M{0} {1} '.format(d.fromCentroid[0], d.fromCentroid[1]);
-			//res += 'A {0} {0} 0 0 {1} {2} {3}'.format(distance, dirFlag, d.toCentroid[0], d.toCentroid[1]);
-			res += 'C {0} {1} {2} {3} {4} {5}'.format(
-				d.fromCentroid[0], d.fromCentroid[1] - distance / 2 - 15 * d.value / 100,
-				d.toCentroid[0], d.toCentroid[1] - distance / 2 - 15 * d.value / 100 - 5,
-				d.toCentroid[0], d.toCentroid[1] - 5
-			);
-			return res;
-		}
+		var d3line = d3.line().curve(d3.curveNatural);
 
-		connectionSelection.each(function(d) {
-			d.fromCentroid = path.centroid(d.landFrom);
-			d.toCentroid = path.centroid(d.landTo);
-		});
+		function setPath(d) {
+			//var convertedPath = d.path.map(function(p) { return projection([p.x, p.y]); });
+			//return d3line(convertedPath);
+			var start = projection(d.landFrom.centroid);
+			var finish = projection(d.landTo.centroid);
+			return 'M{0} {1} L{2} {3}'.format(start[0], start[1], finish[0], finish[1]);
+		}
 
 		connectionSelection.select('.vis__map__connections__line__bg').attr('d', setPath);
 		connectionSelection.select('.vis__map__connections__line__line')
 			.attr('d', setPath)
-			.attr('opacity', function(d) { return vScale(d.value); });
-
-		connectionSelection.select('.vis__map__connections__line__point--start')
-			.attr('transform', function(d) {
-				return 'translate({0},{1})'.format(d.fromCentroid[0], d.fromCentroid[1]);
-			})
-			.attr('opacity', function(d) { return vScale(d.value); });
-		connectionSelection.select('.vis__map__connections__line__point--end')
-			.attr('transform', function(d) {
-				return 'translate({0},{1})'.format(d.toCentroid[0], d.toCentroid[1]);
-			})
-			.attr('opacity', function(d) { return vScale(d.value); });
+			.attr('opacity', function(d) { return vScale(d.value); })
+			.attr('stroke', function(d) { return colorScale(d.category); });
 	}
 
 	this.draw = function() {
@@ -314,7 +299,9 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 		data = newData;
 
 		// process data
-		data.forEach(function(d) {
+		console.log(1);
+
+		data.forEach(function(d, i) {
 			var landFrom = landHash[d.from];
 			var landTo = landHash[d.to];
 
@@ -326,6 +313,38 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 				d.landTo = landHash[d.to];
 			}
 		});
+
+
+		categories.forEach(function(category) {
+			var nodes = {};
+			var edges = [];
+
+			var subdata = data.filter(function(d) { return d.category == category; });
+
+			/*
+			if (subdata.length) {
+				console.log(2);
+				subdata.forEach(function(d, i) {
+					nodes[d.from] = { x: d.landFrom.centroid[0], y: d.landFrom.centroid[1] };
+					nodes[d.to] = { x: d.landTo.centroid[0], y: d.landTo.centroid[1] };
+					edges[i] = { source: d.from, target: d.to };
+				});
+
+				var fbundling = d3.ForceEdgeBundling()
+					//.compatbility_threshold(.9)
+					.step_size(0.001)
+					.nodes(nodes)
+					.edges(edges);
+				var bundingResults = fbundling();
+				bundingResults.forEach(function(d, i) {
+					subdata[i].path = d;
+				});
+				console.log(3);
+			}
+			*/
+		});
+
+		//
 
 		data = data.filter(function(d) { return d.landFrom != undefined; });
 
@@ -348,28 +367,22 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, p) {
 				.on('click', function() { d3.event.stopPropagation(); });
 
 			newConnections.append('ellipse').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--start')
-				.attr('rx', 1).attr('ry', .5)
-				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
+				.attr('rx', 1).attr('ry', .5);
 			newConnections.append('path').attr('class', 'vis__map__connections__line__point vis__map__connections__line__point--end')
-				.attr('d', function(d) {
-					return 'M -2 -5 L 0 0 L 2 -5';
-				})
-				.attr('stroke', function(d) { return params.categoryColors[d.category]; })
-				.attr('fill', function(d) { return params.categoryColors[d.category]; });
+				.attr('d', function(d) { return 'M -2 -5 L 0 0 L 2 -5'; });
 
 			newConnections.append('path')
 				.classed('vis__map__connections__line__bg', true);
 
 			newConnections.append('path')
-				.classed('vis__map__connections__line__line', true)
-				.attr('stroke', function(d) { return params.categoryColors[d.category]; });
+				.classed('vis__map__connections__line__line', true);
 
 			connections.call(updateConnections);
 			newConnections.call(updateConnections);
 		}
 
-		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.category == 'outward'; }));
-		addConnections(connectionsAreaRight, data.filter(function(d) { return d.category == 'inward'; }));
+		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.type == 'outward'; }));
+		addConnections(connectionsAreaRight, data.filter(function(d) { return d.type == 'inward'; }));
 
 		if (selectedLad !== undefined)
 			selectLad(selectedLad);

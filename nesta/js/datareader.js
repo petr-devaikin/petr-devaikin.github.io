@@ -848,11 +848,11 @@ function Datareader(base) {
 		d3.queue()
 			.defer(
 				d3.csv,
-				base + 'outward_movement_people_probs.csv'
+				base + 'movements/outward_broad_topics_probs.csv'
 			)
 			.defer(
 				d3.csv,
-				base + 'inward_movement_people_probs.csv'
+				base + 'movements/inward_broad_topics_probs.csv'
 			)
 			.await(function(error) {
 				var args = arguments;
