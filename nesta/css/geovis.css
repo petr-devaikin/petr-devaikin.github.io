@@ -13,12 +13,12 @@
   font-size: 12px;
   fill: #000;
 }
-.vis--geovis .vis__map__lads__land {
+.vis--geovis .vis__map__lands__land {
   fill: #fcfcfc;
   stroke: #eee;
   stroke-width: 2;
 }
-.vis--geovis .vis__map__lads__land--featured {
+.vis--geovis .vis__map__lands__land--featured {
   stroke: #dedede;
 }
 .vis--geovis .vis__map__lads__lad {

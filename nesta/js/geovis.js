@@ -31,6 +31,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 	var mapLeft,
 		mapRight,
+		landAreaLeft,
+		landAreaRight,
 		ladsAreaLeft,
 		ladsAreaRight,
 		connectionsAreaLeft,
@@ -178,6 +180,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			.attr('x1', width / 2).attr('y1', 0)
 			.attr('x2', width / 2).attr('y2', height);
 
+		landAreaLeft = mapLeft.append('g').classed('vis__map__lands', true);
+		landAreaRight = mapRight.append('g').classed('vis__map__lands', true);
 		ladsAreaLeft = mapLeft.append('g').classed('vis__map__lads', true);
 		ladsAreaRight = mapRight.append('g').classed('vis__map__lads', true);
 		connectionsAreaLeft = mapLeft.append('g').classed('vis__map__connections', true);
@@ -235,7 +239,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 				.translate([transform.x, transform.y])
 				.scale(transform.k);
 
-			d3.select(this).selectAll('.vis__map__lads__land').attr("d", path);
+			d3.select(this).selectAll('.vis__map__lands__land').attr("d", path);
 
 			d3.select(this).selectAll('.vis__map__lads__lad')
 				.attr('transform', function(d) {
@@ -291,14 +295,19 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	}
 
 	this.draw = function() {
-		function addLads(ladsArea) {
-			ladsArea.selectAll('.vis__map__lads__land').data(ukMap).enter()
-				.append("path").classed('vis__map__lads__land', true)
+		function drawLand(area) {
+			area.selectAll('.vis__map__lands__land').data(ukMap).enter()
+				.append("path").classed('vis__map__lands__land', true)
 				.attr('d', path);
 
-			ladsArea.append("path").attr('class', 'vis__map__lads__land vis__map__lads__land--featured')
+			area.append("path").attr('class', 'vis__map__lands__land vis__map__lands__land--featured')
 				.datum(walesMap)
 				.attr('d', path);
+		}
+		drawLand(landAreaLeft);
+		drawLand(landAreaRight);
+
+		function addLads(ladsArea) {
 
 		    var newMapLads = ladsArea.selectAll(".vis__map__lads__lad").data(ladLands).enter()
 		    	.append('g').classed('vis__map__lads__lad', true)
@@ -323,6 +332,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		addLads(ladsAreaRight);
 
 
+		drawConnections(data);
+
 		// Welsh border
 		/*
 		ladsAreaLeft.append('path')
@@ -334,9 +345,6 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			.datum(welshBorder)
 			.attr('d', path);
 		*/
-		
-
-		drawConnections(data);
 	}
 
 	function drawConnections(newData) {
