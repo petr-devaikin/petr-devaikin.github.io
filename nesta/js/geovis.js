@@ -484,7 +484,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 	function overConnection(d) {
 		var pos = [d3.event.clientX, d3.event.clientY - 15];
-		var text = 'From {0} to {1}: {2}%'.format(d.landFrom.name, d.landTo.name, d.value.abbrNum(2));
+		var text = '{3}. {0} → {1}, {2}%'.format(d.landFrom.name, d.landTo.name, d.value.abbrNum(2), d.category);
 			
 		updateHint(globalHintArea.select('.vis__hints__connection'), pos, text);
 	}

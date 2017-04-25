@@ -56,6 +56,15 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			// Filter
 			var filter = new Filter(d3.select('.filter'));
 
+			filter.addText('Flows [?]', 'Maps show owtward and inward movement of people in tech comunities [?].');
+
+			filter.addKeyTable(
+				'',
+				[
+					{ type: 'circle', fill: 'rgba(200, 200, 200, .6)', stroke: 'none', r: 5, desc: 'Location' },
+					{ type: 'line', color: 'rgba(214, 39, 40, .5)', desc: 'Connection [?]. Opacity – probability of a user who registred in one LAD to attend an event in another area [?]' }
+				]);
+
 			var colorScale = ColorPalette.ordinal(topics).scale;
 
 			filter.addRadioSection(
@@ -76,21 +85,12 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			);
 
 			var ladCallbacks = filter.addSelectSearchSection(
-				'Local Authority District',
+				'',
 				getLadNames(),
 				'Search for LAD',
 				function(v) {
 					selectLad(v);
 				});
-
-			filter.addKeyTable(
-				'Connections',
-				[
-					{ type: 'arrow', color: 'blue', desc: 'Owtward movement [?]' },
-					{ type: 'arrow', color: 'green', desc: 'Inward movement [?]' },
-					{ type: 'desc', text: 'Line opacity shows the probability of a user who registred in one LAD to attend an event in another area [?]' },
-				]);
-			
 
 			geovis.draw();
 		});
