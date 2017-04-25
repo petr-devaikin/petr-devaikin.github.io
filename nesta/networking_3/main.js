@@ -73,7 +73,7 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 
 			var ladCallbacks = filter.addSelectSearchSection(
 				'Local Authority District',
-				[{ id: '', text: '' }].concat(ladNamesFromMap),
+				[{ id: '', text: '' }].concat(ladNamesFromMap), // <!
 				'Search for LAD',
 				function(v) {
 					selectLad(v);

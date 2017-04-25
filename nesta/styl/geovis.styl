@@ -12,42 +12,48 @@
 			pointer-events none
 			text-anchor middle
 			font-size 12px
-			fill #00
-						
-		&--left
-			.vis__map__lads__lad
-				&.highlighted
-					fill #666		
-		&--right
-			.vis__map__lads__lad
-				&.highlighted
-					fill #666
+			fill #000
 
-		&__lads__lad
-			stroke-width 1
-			stroke #fff
-			cursor pointer
-			//fill #eee
-			
-			&--welsh
-				//stroke #000
-				//fill red
+		&__lads
+			&__land
+				fill #fcfcfc
+				stroke #eee
+				stroke-width 2
+				
+				&--featured
+					stroke #dedede
+
+			&__lad
+				cursor pointer
+				
+				circle
+					stroke none
+					fill rgba(200, 200, 200, .6)
 					
-			&.no-data
-				fill #eee
-				
-			&.hovered, &.highlighted.hovered
-				fill #888
-				
-			&.selected
-				fill #333
-				
-			&.inactive
-				fill #f3f3f3
-				cursor default
+				&:hover
+					circle
+						stroke-width 2
+						stroke rgba(150, 150, 150, .3)
+					
+				&.selected
+					circle
+						stroke-width 2
+						stroke rgba(100, 100, 100, .5)
+					
+				&.highlighted
+					circle
+						stroke-width 1
+						stroke rgba(150, 150, 150, .3)
+					
+				&.blured
+					circle
+						fill rgba(220, 220, 220, .3)
+					
+				&.inactive
+					visibility hidden
 			
 		&__border
-			stroke #000
+			stroke #fff
 			stroke-width 2
 			fill none
 			
@@ -65,44 +71,15 @@
 					stroke-width 1
 					fill none
 					
-				&.highlighted
-					.vis__map__connections__line__line, .vis__map__connections__line__point
+				&:hover
+					.vis__map__connections__line__line
 						opacity 1
 					
 				&.blured
 					visibility hidden
-					
-					.vis__map__connections__line__line
-						stroke #444
 						
 	.vis__divider
 		stroke #999
-			
-	.vis__hint
-		pointer-events none
-		
-		rect
-			fill #fff
-			stroke #999
-			opacity .8
-		
-		text
-			text-anchor start
-			alignment-baseline before-edge
-			
-		&__city
-				font-weight bold
-				font-size 14px
-				
-		&__employment, &__business
-				font-size 12px
-				
-		&__topic
-			font-size 12px
-			
-			&.selected
-				font-weight bold
-				fill rgb(200, 0, 0)
 
 	.vis__controls
 		&__button
@@ -117,7 +94,7 @@
 				font-size 12px
 				fill #000
 				
-	.vis__map__hints
+	.vis__hints
 		pointer-events none
 		
 		text
@@ -128,50 +105,11 @@
 		rect
 			stroke #999
 			fill rgba(255, 255, 255, .7)
-
-	.vis__legend
-		&__bg
-			stroke #444
-			stroke-width 1
-			fill #fff
-
-		text
-			font-size 10px
 			
 .title
-	position absolute
-	z-index 100
-	left 10px
-	top 10px
-	margin 0
-	font-size 18px
-
-.legend
 	position fixed
-	right 5px
+	left 5px
 	top 5px
-	bottom 5px
-	width 200px
-	border 1px solid #999
-	background rgba(255, 255, 255, .8)
-	padding 5px
-	
-	font-size 12px
-	
-	overflow auto
-	
-	h1
-		margin 20px 0 10px
-		font-size 14px
-		text-transform uppercase
-		
-	label
-		display block
-		margin 0 0 5px
-		overflow hidden
-		
-		input
-			position relative
-			float left
-			top -2px
-			
+	margin 0
+	font-size 16px
+	z-index 10

@@ -1,0 +1,179 @@
+.vis--geovis
+	position absolute
+	left 0
+	top 0
+	
+	.vis__map
+		&__bg
+			stroke none
+			fill #fff
+			
+		&__label
+			pointer-events none
+			text-anchor middle
+			font-size 12px
+			fill #00
+						
+		&--left
+			.vis__map__lads__lad
+				&.highlighted
+					fill #666		
+		&--right
+			.vis__map__lads__lad
+				&.highlighted
+					fill #666
+
+		&__lads__lad
+			stroke-width 1
+			stroke #ccc
+			stroke-location inside
+			cursor pointer
+			fill #eee
+			
+			&--welsh
+				//stroke #000
+				fill #ddd
+					
+			&.no-data
+				fill #eee
+				
+			&:hover
+				stroke #888
+				
+			&.selected
+				fill #333
+				
+			&.inactive
+				pointer-events none
+				cursor default
+				stroke none
+			
+		&__border
+			stroke #fff
+			stroke-width 2
+			fill none
+			
+		&__connections
+			&__line
+				&__point
+					pointer-events none
+				
+				&__bg
+					stroke rgba(255, 255, 255, 0);
+					stroke-width 5
+					fill none
+					
+				&__line
+					stroke-width 1.5
+					fill none
+					
+				&.highlighted
+					.vis__map__connections__line__line, .vis__map__connections__line__point
+						opacity 1
+					
+				&.blured
+					visibility hidden
+					
+					.vis__map__connections__line__line
+						stroke #444
+						
+	.vis__divider
+		stroke #999
+			
+	.vis__hint
+		pointer-events none
+		
+		rect
+			fill #fff
+			stroke #999
+			opacity .8
+		
+		text
+			text-anchor start
+			alignment-baseline before-edge
+			
+		&__city
+				font-weight bold
+				font-size 14px
+				
+		&__employment, &__business
+				font-size 12px
+				
+		&__topic
+			font-size 12px
+			
+			&.selected
+				font-weight bold
+				fill rgb(200, 0, 0)
+
+	.vis__controls
+		&__button
+			cursor pointer
+			&__bg
+				stroke #ddd
+				fill #eee
+				
+			text
+				text-anchor middle
+				alignment-baseline central
+				font-size 12px
+				fill #000
+				
+	.vis__map__hints
+		pointer-events none
+		
+		text
+			text-anchor middle
+			alignment-baseline central
+			font-size 12px
+			
+		rect
+			stroke #999
+			fill rgba(255, 255, 255, .7)
+
+	.vis__legend
+		&__bg
+			stroke #444
+			stroke-width 1
+			fill #fff
+
+		text
+			font-size 10px
+			
+.title
+	position absolute
+	z-index 100
+	left 10px
+	top 10px
+	margin 0
+	font-size 18px
+
+.legend
+	position fixed
+	right 5px
+	top 5px
+	bottom 5px
+	width 200px
+	border 1px solid #999
+	background rgba(255, 255, 255, .8)
+	padding 5px
+	
+	font-size 12px
+	
+	overflow auto
+	
+	h1
+		margin 20px 0 10px
+		font-size 14px
+		text-transform uppercase
+		
+	label
+		display block
+		margin 0 0 5px
+		overflow hidden
+		
+		input
+			position relative
+			float left
+			top -2px
+			
