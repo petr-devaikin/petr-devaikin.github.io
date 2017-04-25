@@ -2,7 +2,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
 		minOpacity: .15,
-		maxOpacity: .5,
+		maxOpacity: .2,
 		buttonSize: 40,
 		selectLadCallback: undefined,
 		margin: 50,
@@ -443,8 +443,10 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.type == 'outward'; }));
 		addConnections(connectionsAreaRight, data.filter(function(d) { return d.type == 'inward'; }));
 
-		if (selectedLad !== undefined && !selectedLad.inactive)
+		if (selectedLad !== undefined && (!selectedLad.inactiveInward || !selectedLad.inactiveOutward))
 			selectLad(selectedLad);
+		else
+			selectLad();
 	}
 
 	this.redraw = drawConnections;

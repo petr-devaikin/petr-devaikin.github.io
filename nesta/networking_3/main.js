@@ -26,9 +26,14 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			var data = inwardData.concat(outwardData);
 			var filteredData = data.filter(function(d) { return selectedTopic == '' || d.topic == selectedTopic; });
 
-			var ladNamesFromMap = Object.keys(ladAreas);
-			ladNamesFromMap.sort();
-			ladNamesFromMap = ladNamesFromMap.map(function(d) { return { id: d, text: d }; });
+			function getLadNames() {
+				var filtered = [];
+				data.filter(function(d) { return selectedTopic == '' || d.topic == selectedTopic; }).forEach(function(d) {
+					if (filtered.indexOf(d.from) == -1) filtered.push(d.from);
+					if (filtered.indexOf(d.to) == -1) filtered.push(d.to);
+				});
+				return [{ id: '', text: '' }].concat(filtered.map(function(d) { return { id: d, text: d }; }));
+			}
 
 			var geovis = new Geovis(svg, ladsGB, ladsNI, ladAreas, filteredData, topics, {
 				labelLeft: 'People registred in Wales attending an event in other areas [?]',
@@ -38,8 +43,6 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 					ladCallbacks.setValue(ladName);
 				}
 			});
-
-			geovis.draw();
 
 			function redraw() {
 				var filteredData = data.filter(function(d) { return selectedTopic == '' || d.topic == selectedTopic; });
@@ -67,13 +70,14 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 				})),
 				function(v) {
 					selectedTopic = v;
+					ladCallbacks.update(getLadNames());
 					redraw();
 				}
 			);
 
 			var ladCallbacks = filter.addSelectSearchSection(
 				'Local Authority District',
-				[{ id: '', text: '' }].concat(ladNamesFromMap), // <!
+				getLadNames(),
 				'Search for LAD',
 				function(v) {
 					selectLad(v);
@@ -86,6 +90,9 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 					{ type: 'arrow', color: 'green', desc: 'Inward movement [?]' },
 					{ type: 'desc', text: 'Line opacity shows the probability of a user who registred in one LAD to attend an event in another area [?]' },
 				]);
+			
+
+			geovis.draw();
 		});
 	});
 });
