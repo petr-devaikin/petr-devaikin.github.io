@@ -1,3 +1,4 @@
+/*
 d3.select('.vislayout').style('height', window.innerHeight - 70 + 'px');
 
 // Explanation
@@ -47,6 +48,15 @@ vislayout.addStep({
 //
 
 var svg = d3.select(".vis");
+*/
+
+var width = window.innerWidth - 230,
+	height = window.innerHeight;
+
+var svg = d3.select("body").append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
 
 var datareader = new Datareader();
 
