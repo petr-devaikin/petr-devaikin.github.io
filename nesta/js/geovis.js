@@ -1,7 +1,7 @@
 function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
-		minOpacity: .1,
+		minOpacity: .15,
 		maxOpacity: .5,
 		buttonSize: 40,
 		selectLadCallback: undefined,
@@ -236,7 +236,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 				.scale(transform.k);
 
 			d3.select(this).selectAll('.vis__map__lads__land').attr("d", path);
-			
+
 			d3.select(this).selectAll('.vis__map__lads__lad')
 				.attr('transform', function(d) {
 					var coords = projection(d.centroid);
