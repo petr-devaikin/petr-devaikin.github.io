@@ -1,14 +1,8 @@
 .filter {
-  position: fixed;
-  right: 5px;
-  top: 5px;
-  bottom: 5px;
+  position: relative;
   overflow: auto;
-  width: 200px;
   padding: 10px;
   background: #fff;
-  border: 1px solid #eee;
-  z-index: 100;
 }
 .filter__group {
   font-size: 12px;

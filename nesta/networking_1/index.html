@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="../css/vislayout.css">
 		<link rel="stylesheet" type="text/css" href="../css/forcegraph.css">
-		<link rel="stylesheet" type="text/css" href="main.css">
 		<link rel="stylesheet" type="text/css" href="../css/filter.css">
 
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -16,10 +16,18 @@
 		<title>What is the structure of tech community networking in Wales?</title>
 	</head>
 	<body>
-		<h1 class="title">What is the structure of tech community networking in Wales?</h1>
-		<div class="loading">Loading data</div>
-		<div class="filter"></div>
+		<h3>What is the structure of tech community networking in Wales?</h3>
+		<div class="vislayout">
+			<div class="vislayout__main">
+				<svg class="vis"></svg>
+				<div class="vislayout__loading"></div>
+			</div>
+			<div class="vislayout__panel">
+				<div class="filter"></div>
+			</div>
+		</div>
 
+		<script src="../js/vislayout.js" charset="utf-8"></script>
 		<script src="../js/d3.js" charset="utf-8"></script>
 		<script src="../js/helpers.js"></script>
 		<script src="../js/colorpalette.js"></script>
