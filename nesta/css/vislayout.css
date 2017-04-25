@@ -44,6 +44,8 @@
   border-radius: 2px;
   border: 1px solid #ccc;
   box-shadow: 0 0 0px 3px rgba(50,50,50,0.1);
+  -webkit-transition: left 0.5s, top 0.5s;
+  transition: left 0.5s, top 0.5s;
 }
 .vislayout__tooltip p {
   margin: 0 0 10px;

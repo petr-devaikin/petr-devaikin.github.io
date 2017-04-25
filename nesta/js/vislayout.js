@@ -2,7 +2,8 @@ function Vislayout() {
 	var steps = [];
 	var currentStep = 0;
 
-	var tooltip,
+	var layout = $('.vislayout'),
+		tooltip,
 		startButton,
 		nextButton,
 		closeButton;
@@ -13,26 +14,34 @@ function Vislayout() {
 		currentStep++;
 
 		var step = steps[currentStep];
-		console.log(step);
-		$('p', tooltip).text(step.text);
 
-		if (currentStep == 0) {
-			tooltip.show();
-			nextButton.text('Explain')
-				.click(nextStep);
-		}
-		else if (currentStep == steps.length - 1) {
-			nextButton.text('Start exploration')
-				.off('click')
-				.click(stopExplanation);
-		}
-		else {
-			nextButton.text('Next');
-		}
+		if (step.action !== undefined)
+			step.action(updateTooltip);
+		else
+			updateTooltip();
 
-		if (step.action !== undefined) step.action();
-		var coords = step.position();
-		tooltip.css('left', coords[0]).css('top', coords[1]);
+		function updateTooltip() {
+			$('p', tooltip).text(step.text);
+
+			if (currentStep == 0) {
+				tooltip.show();
+				nextButton.text('Explain')
+					.click(nextStep);
+			}
+			else if (currentStep == steps.length - 1) {
+				nextButton.text('Start exploration')
+					.off('click')
+					.click(stopExplanation);
+			}
+			else {
+				nextButton.text('Next');
+			}
+
+			var coords = step.position();
+			if (coords[1] + tooltip.height() > layout.height() - 10)
+				coords[1] = layout.height() - tooltip.height() - 10;
+			tooltip.css('left', coords[0]).css('top', coords[1]);
+		}
 	}
 
 	function stopExplanation() {

@@ -5,33 +5,42 @@ d3.select('.vislayout').style('height', window.innerHeight - 70 + 'px');
 var vislayout = new Vislayout();
 vislayout.addStep({
 	text: 'We have mapped the tags used by UK tech communities to describe their interests',
-	position: function() { return [100, 100]; },
-	action: function() { console.log('Action!'); }
+	position: function() { return [100, 100]; }
 });
 vislayout.addStep({
 	text: 'This network reveals interrelated topics such as X [e.g. data], Y [e..g immersive tech] etc.',
-	position: function() { return [200, 100]; },
-	action: function() { console.log('Action!'); }
+	position: function() {
+		var x = $('.vislayout').width() - $('.vislayout__panel').width() - 290;
+		var y = $('.vislayout__panel input[name="topic"]').first().offset().top - $('.vislayout').offset().top;
+		return [x, y];
+	}
 });
 vislayout.addStep({
 	text: 'The network reveals the connections between topics. Some tech tags such as XX are highly connected with tags in other topics.',
-	position: function() { return [300, 300]; },
-	action: function() { console.log('Action!'); }
+	position: function() { return [300, 300]; }
 });
 vislayout.addStep({
 	text: 'Welsh local authorities have strong capabilities in the areas of X, Y, Z.',
-	position: function() { return [400, 300]; },
-	action: function() { console.log('Action!'); }
+	position: function() {
+		var x = $('.vislayout').width() - $('.vislayout__panel').width() - 290;
+		var y = $('.filter__group:eq(5)').offset().top - $('.vislayout').offset().top;
+		return [x, y];
+	},
+	action: function(callback) {
+		var container = $('.vislayout__panel');
+		var scrollTo = $('.filter__group:eq(5)');
+		container.animate({ scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop() },
+			500,
+			callback);
+	}
 });
 vislayout.addStep({
 	text: 'Over time, Wales has evolved its capabilities from tech topic X to tech topic Y to tech topic Z',
-	position: function() { return [400, 350]; },
-	action: function() { console.log('Action!'); }
+	position: function() { return [400, 350]; }
 });
 vislayout.addStep({
 	text: 'Use filters and ... to explore the network',
-	position: function() { return [400, 300]; },
-	action: function() { console.log('Action!'); }
+	position: function() { return [400, 300]; }
 });
 
 
@@ -248,5 +257,5 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		}
 	}
 
-	vislayout.startExplanation();
+	//vislayout.startExplanation();
 });
