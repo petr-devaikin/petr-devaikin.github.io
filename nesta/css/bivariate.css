@@ -24,10 +24,6 @@
   stroke: #ccc;
   stroke-location: inside;
   cursor: pointer;
-  fill: #eee;
-}
-.vis--geovis .vis__map__lads__lad--welsh {
-  fill: #ddd;
 }
 .vis--geovis .vis__map__lads__lad.no-data {
   fill: #eee;
