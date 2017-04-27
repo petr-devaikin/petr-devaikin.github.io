@@ -8,7 +8,7 @@ var svg = d3.select("body").append("svg")
 var datareader = new Datareader();
 
 datareader.readData(Datareader.DATASETS.HotTrends, function(years, lads, topics, broadTopics, data) {
-	var selectedLad = 'Cardiff',
+	var selectedLad = 'Wales',
 		selectedTopic = '',
 		selectedVariable = 'attendants';
 

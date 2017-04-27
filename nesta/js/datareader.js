@@ -634,6 +634,9 @@ function Datareader(base) {
 				broadTopics.sort();
 				lads.sort();
 
+				lads.slice(lads.indexOf('Wales'), 1);
+				lads.unshift('Wales');
+
 				callback(years, lads, topics, broadTopics, rawData);
 			}
 		);
@@ -915,7 +918,7 @@ Datareader.DATASETS = {
 	Contextual: '19_3_2017_lad_all_metadata_2011_15.csv',
 	Opportunities: 'opportunity_network.csv',
 	TopicActivity: '6_4_2017_wales_lads_stacked_bars.csv',
-	HotTrends: 'revised_hot_trends.csv',
+	HotTrends: 'wales_overall_trends.csv',
 	MeetupAttendance: 'meetup_attendance',
 	MeetupNetwork: 'meetup_network',
 	Movement: 'movement',
