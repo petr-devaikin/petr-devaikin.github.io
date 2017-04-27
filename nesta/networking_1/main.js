@@ -95,6 +95,10 @@ tooltip.loadSteps([
 	},
 	{
 		text: 'Click on the nodes and use the filters to explore the network',
+		before: function(callback) {
+			ladFieldCallback.setValue('', true);
+			callback();
+		}
 	}
 ]);
 
@@ -153,9 +157,14 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		var n = nodes.find(function(d) { return d.category == t; });
 		n.labeled = true;
 	})*/
-	nodes.slice(0,20).forEach(function(d) { d.labeled = true; });
+	nodes.slice(0, 200).forEach(function(d) { d.labeled = true; });
 
 	nodes.forEach(function(node) {
+		// rotate the graph
+		var tmp = node.x;
+		node.x = node.y;
+		node.y = tmp;
+
 		node.name = node.label;
 		node.fullCategory = '{0}, {1}'.format(tags[node.id].topic.broad, tags[node.id].topic.name);
 		node.value = tags[node.id] !== undefined ? tags[node.id].count : 0;

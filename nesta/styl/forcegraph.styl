@@ -35,20 +35,13 @@
 						fill rgba(200, 200, 200, .5)
 						opacity .6
 						
-					.vis__graph__nodes__node__label
-						visibility hidden
-						
 				&.selected
 					.vis__graph__nodes__node__circle
 						stroke-width 1
 						stroke #000
 					
 				&.muted
-					pointer-events none
-						
-					.vis__graph__nodes__node__label
-						visibility hidden
-					
+					cursor default
 					.vis__graph__nodes__node__circle
 						stroke none
 						fill rgba(200, 200, 200, .2)

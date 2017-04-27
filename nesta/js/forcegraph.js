@@ -10,6 +10,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		transitionDuration: 750,
 		maxThickness: 10,
 		minThickness: .5,
+		labelOverlapMargin: 10,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -152,8 +153,8 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 
 			var found = false;
 			for (var i = 0; i < bboxes.length; i++)
-				if (bboxes[i].x < bbox.x + bbox.width && bboxes[i].x + bboxes[i].width > bbox.x &&
-					bboxes[i].y < bbox.y + bbox.height && bboxes[i].y + bboxes[i].height > bbox.y) {
+				if (bboxes[i].x < bbox.x + bbox.width + params.labelOverlapMargin && bboxes[i].x + bboxes[i].width + params.labelOverlapMargin > bbox.x &&
+					bboxes[i].y < bbox.y + bbox.height + params.labelOverlapMargin && bboxes[i].y + bboxes[i].height + params.labelOverlapMargin > bbox.y) {
 					found = true;
 					d3.select(this).classed('overlapped', true);
 				}
@@ -176,7 +177,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			.attr('visibility', 'hidden')
 			.on('mouseover', nodeHover)
 			.on('mouseout', nodeOut)
-			.on('click', function(d) { d3.event.stopPropagation(); selectNode(d); });
+			.on('click', function(d) { d3.event.stopPropagation(); if (!d.muted) selectNode(d); });
 
 		nodes.append('circle').classed('vis__graph__nodes__node__bg', true)
 			.attr('r', 4);
@@ -382,8 +383,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 		if (params.showHint !== undefined)
 			params.showHint(hint, d);
 
-		if (d.labeled)
-			labels.filter(function(dd) { return d == dd; }).attr('visibility', 'hidden');
+		labels.attr('visibility', 'hidden');
 
 		var hintBBox = hint.node().getBBox();
 
@@ -401,8 +401,7 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 	function nodeOut(d) {
 		hint.attr('visibility', 'hidden');
 
-		if (d.labeled)
-			labels.filter(function(dd) { return d == dd; }).attr('visibility', null);
+		labels.attr('visibility', null);
 	}
 
 	svg.on("click", function() {

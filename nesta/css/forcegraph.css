@@ -26,18 +26,12 @@
   fill: rgba(200,200,200,0.5);
   opacity: 0.6;
 }
-.vis--forcegraph .vis__graph__nodes__node.blured .vis__graph__nodes__node__label {
-  visibility: hidden;
-}
 .vis--forcegraph .vis__graph__nodes__node.selected .vis__graph__nodes__node__circle {
   stroke-width: 1;
   stroke: #000;
 }
 .vis--forcegraph .vis__graph__nodes__node.muted {
-  pointer-events: none;
-}
-.vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__label {
-  visibility: hidden;
+  cursor: default;
 }
 .vis--forcegraph .vis__graph__nodes__node.muted .vis__graph__nodes__node__circle {
   stroke: none;
