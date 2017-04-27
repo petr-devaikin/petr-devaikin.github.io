@@ -317,6 +317,10 @@ function Forcegraph(svg, nodeData, linkData, categories, p) {
 			selectNode(nodeData.find(function(d) { return d.id == nodeId; }));
 	}
 
+	this.getNode = function(nodeId) {
+		return nodeArea.selectAll(".vis__graph__nodes__node").filter(function(d) { return d.id == nodeId; }).node();
+	}
+
 	// Interaction
 
 	function selectNode(d) {

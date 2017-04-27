@@ -138,7 +138,7 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 
 				var selectedData = data[selectedYear];
 				
-				map.selectAll(".vis__map__lad").each(function(d) {
+				map.selectAll(".vis__map__lads__lad").each(function(d) {
 					var ladName = d.properties.lad16nm;
 					if (showOnlyWales && gbLads[ladName] != 'Wales') return;
 					var city = lad2city[ladName] !== undefined ? lad2city[ladName] : ladName;
@@ -147,16 +147,16 @@ datareader.readData(Datareader.DATASETS.LadsMap, function(lads) {
 				});
 				colorScale.domain([0, maxValue]);
 
-
-				map.selectAll(".vis__map__lad")
+				map.selectAll(".vis__map__lads__lad")
 					.attr('fill', function(d) {
 						var ladName = d.properties.lad16nm;
 
 						if (showOnlyWales && gbLads[ladName] != 'Wales') return null;
 
 						var city = lad2city[ladName] !== undefined ? lad2city[ladName] : ladName;
-						if (selectedData[city] !== undefined)
+						if (selectedData[city] !== undefined) {
 							return colorScale(selectedData[city][selectedTopic]);
+						}
 						else
 							return null;
 					})

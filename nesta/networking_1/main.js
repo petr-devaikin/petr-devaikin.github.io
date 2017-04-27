@@ -1,54 +1,105 @@
-/*
-d3.select('.vislayout').style('height', window.innerHeight - 70 + 'px');
-
 // Explanation
 
-var vislayout = new Vislayout();
-vislayout.addStep({
-	text: 'We have mapped the tags used by UK tech communities to describe their interests',
-	position: function() { return [100, 100]; }
-});
-vislayout.addStep({
-	text: 'This network reveals interrelated topics such as X [e.g. data], Y [e..g immersive tech] etc.',
-	position: function() {
-		var x = $('.vislayout').width() - $('.vislayout__panel').width() - 290;
-		var y = $('.vislayout__panel input[name="topic"]').first().offset().top - $('.vislayout').offset().top;
-		return [x, y];
-	}
-});
-vislayout.addStep({
-	text: 'The network reveals the connections between topics. Some tech tags such as XX are highly connected with tags in other topics.',
-	position: function() { return [300, 300]; }
-});
-vislayout.addStep({
-	text: 'Welsh local authorities have strong capabilities in the areas of X, Y, Z.',
-	position: function() {
-		var x = $('.vislayout').width() - $('.vislayout__panel').width() - 290;
-		var y = $('.filter__group:eq(5)').offset().top - $('.vislayout').offset().top;
-		return [x, y];
+var tooltip = new Tooltip();
+tooltip.loadSteps([
+	{
+		text: 'We have mapped the tags used by UK tech communities to describe their interests',
+		before: function(callback) {
+			$('.filter').scrollTop(0);
+			callback();
+		},
+		position: function() {
+			return {
+				target: '.filter__group:eq(0)',
+				position: 'left-top'
+			};
+		}
 	},
-	action: function(callback) {
-		var container = $('.vislayout__panel');
-		var scrollTo = $('.filter__group:eq(5)');
-		container.animate({ scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop() },
-			500,
-			callback);
+	{
+		text: 'This network reveals interrelated topics such as Information Technology, Programming etc.',
+		position: function() {
+			return {
+				target: '.filter input[name="topic"]',
+				position: 'left-top',
+			};
+		}
+	},
+	{
+		text: 'The network reveals the connections between topics. Some tech tags such as #web_design are highly connected with tags in other topics.',
+		after: function(callback) {
+			graph.select('web_design');
+			callback();
+		},
+		position: function() {
+			var tag = graph.getNode('web_design');
+			return {
+				target: tag,
+				position: 'right',
+				shift: 50
+			};
+		}
+	},
+	{
+		text: 'Welsh local authorities have strong capabilities in the areas of Programming, Information Technology and Business.',
+		position: function() {
+			return {
+				target: '.filter__group:eq(5)',
+				position: 'left-bottom',
+			};
+		},
+		before: function(callback) {
+			graph.select();
+			var container = $('.filter');
+			var scrollTo = $('.filter__group:eq(5)');
+			container.animate(
+				{ scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop() },
+				500,
+				callback
+			);
+		},
+		after: function(callback) {
+			ladFieldCallback.setValue('Wales', true);
+			callback();
+		}
+	},
+	{
+		text: 'Over time, Wales has evolved its capabilities from tech topic Programming to tech topic Information Technology to tech topic Business',
+		position: function() {
+			return {
+				target: '.filter__group:eq(6)',
+				position: 'left',
+			};
+		},
+		before: function(callback) {
+			graph.select();
+			var container = $('.filter');
+			var scrollTo = $('.filter__group:eq(7)');
+			container.animate(
+				{ scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop() },
+				500,
+				callback
+			);
+		},
+		after: function(callback) {
+			var values = yearCallback.getValues();
+			var i = 0;
+			function nextYear() {
+				yearCallback.setValue(values[i++]);
+				if (i < values.length)
+					setTimeout(nextYear, 1000);
+				else
+					callback();
+			}
+			setTimeout(nextYear, 500);
+		}
+	},
+	{
+		text: 'Click on the nodes and use the filters to explore the network',
 	}
-});
-vislayout.addStep({
-	text: 'Over time, Wales has evolved its capabilities from tech topic X to tech topic Y to tech topic Z',
-	position: function() { return [400, 350]; }
-});
-vislayout.addStep({
-	text: 'Use filters and ... to explore the network',
-	position: function() { return [400, 300]; }
-});
+]);
 
 
 //
-
-var svg = d3.select(".vis");
-*/
 
 var width = window.innerWidth - 230,
 	height = window.innerHeight;
@@ -57,6 +108,10 @@ var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
+var graph,
+	tagFieldCallback,
+	ladFieldCallback,
+	yearCallback;
 
 var datareader = new Datareader();
 
@@ -70,7 +125,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 	var selectedYear = years[years.length - 1];
 	var selectedLad = '',
 		selectedBroadTopic = '';
-	var lqThreshold = 1;
+	var lqThreshold = 0;
 
 	var maxLq = 4;//d3.max(dataLq, function(d) { return d.comparative_adv; });
 
@@ -115,7 +170,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		edge.value = parseFloat(edge.size);
 	});
 
-	var graph = new Forcegraph(svg, nodes, edges, broadTopics, {
+	graph = new Forcegraph(svg, nodes, edges, broadTopics, {
 		addHint: function(hint) {
 			hint.append('rect').classed('vis__hint__bg', true);
 			hint.append('text').classed('vis__hint__tag', true);
@@ -138,7 +193,7 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 				));
 		},
 		selectNodeCallback: function(nodeId) {
-			tagFieldCallbacks.setValue(nodeId);
+			tagFieldCallback.setValue(nodeId);
 		}
 	});
 	graph.draw();
@@ -177,12 +232,12 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		function(v) {
 			selectedBroadTopic = v;
 			graph.select();
-			tagFieldCallbacks.update(getTagList(true));
+			tagFieldCallback.update(getTagList(true));
 			repaint();
 		}
 	);
 
-	var tagFieldCallbacks = filter.addSelectSearchSection(
+	tagFieldCallback = filter.addSelectSearchSection(
 		'',
 		getTagList(true),
 		'Search for tag',
@@ -194,21 +249,21 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 
 	filter.addText('Comparative advantage', 'Choose a district to see it\'s comparative advantage in topics [?]');
 
-	filter.addSelectSearchSection(
+	ladFieldCallback = filter.addSelectSearchSection(
 		'',
 		[{ id: '', text: '' }, { id: 'Wales', text: 'All Wales [?]' }].concat(lads.map(function(l) { return { id: l, text: l }; })),
 		'Choose LAD',
 		function(v) {
 			selectedLad = v;
 			graph.select();
-			tagFieldCallbacks.update(getTagList(true));
+			tagFieldCallback.update(getTagList(true));
 			repaint();
 			yearCallback.show(v != '');
 			lqCallback.show(v != '');
 		}
 	);
 	
-	var yearCallback = filter.addDiscreteSlider(
+	yearCallback = filter.addDiscreteSlider(
 		'Year',
 		years,
 		selectedYear,
@@ -267,5 +322,5 @@ datareader.readData(Datareader.DATASETS.MeetupNetwork, function(years, lads, tag
 		}
 	}
 
-	//vislayout.startExplanation();
+	tooltip.startTour();
 });

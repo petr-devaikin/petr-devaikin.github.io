@@ -86,6 +86,12 @@ function Filter(container) {
     	return {
     		show: function(visibility) {
     			group.classed('hidden', !visibility);
+    		},
+    		getValues: function() {
+    			return values;
+    		},
+    		setValue: function(value) {
+    			_control.slider('value', values.indexOf(value));
     		}
     	}
 	}
@@ -213,7 +219,7 @@ function Filter(container) {
     	}
 	}
 
-	this.addSelectSearchSection = function(title, values, placeholder, callback, selectedValue) {
+	this.addSelectSearchSection = function(title, values, placeholder, callback, selectedValue, id) {
 		var group = initGroup(title);
 		var select = group.append('select');
 		var select2 = $(select.node()).select2({
@@ -237,9 +243,9 @@ function Filter(container) {
 					placeholder: placeholder
 				});
 			},
-			setValue: function(value) {
-				$(select.node()).val(value).trigger('change', true);
-			}
+			setValue: function(value, imitateUser) {
+				$(select.node()).val(value).trigger('change', !imitateUser);
+			},
 		}
 	}
 
