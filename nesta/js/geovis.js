@@ -1,15 +1,16 @@
 function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
-		minOpacity: .15,
-		maxOpacity: .2,
+		minOpacity: .3,
+		maxOpacity: .3,
 		buttonSize: 40,
 		selectLadCallback: undefined,
 		margin: 50,
 		labelLeft: '',
 		labelRight: '',
 		transitionDuration: 750,
-		bundleBeta: .6
+		bundleBeta: .6,
+		labelOverlapMargin: 10,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -31,14 +32,11 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 	var mapLeft,
 		mapRight,
-		landAreaLeft,
-		landAreaRight,
-		ladsAreaLeft,
-		ladsAreaRight,
-		connectionsAreaLeft,
-		connectionsAreaRight,
 		hintArea,
 		controlsArea;
+
+	var leftMapComponents,
+		rightMapComponents;
 
 	var zoom,
 		initTransform;
@@ -165,39 +163,44 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 		// areas
 
-		mapLeft = svg.append('g').classed('vis__map', true).classed('vis__map--left', true)
-			.attr('clip-path', 'url(#map-clip)');
+		mapLeft = svg.append('g').classed('vis__map', true).classed('vis__map--left', true);
 		mapRight = svg.append('g').classed('vis__map', true).classed('vis__map--right', true)
-			.attr('clip-path', 'url(#map-clip)')
 			.attr('transform', 'translate({0},{1})'.format(width / 2, 0));
-
-		mapLeft.append('rect').classed('vis__map__bg', true)
-			.attr('width', width / 2).attr('height', height);
-		mapRight.append('rect').classed('vis__map__bg', true)
-			.attr('width', width / 2).attr('height', height);
 
 		svg.append('line').classed('vis__divider', true)
 			.attr('x1', width / 2).attr('y1', 0)
 			.attr('x2', width / 2).attr('y2', height);
 
-		landAreaLeft = mapLeft.append('g').classed('vis__map__lands', true);
-		landAreaRight = mapRight.append('g').classed('vis__map__lands', true);
-		ladsAreaLeft = mapLeft.append('g').classed('vis__map__lads', true);
-		ladsAreaRight = mapRight.append('g').classed('vis__map__lads', true);
-		connectionsAreaLeft = mapLeft.append('g').classed('vis__map__connections', true);
-		connectionsAreaRight = mapRight.append('g').classed('vis__map__connections', true);
+		function initMap(map) {
+			map.attr('clip-path', 'url(#map-clip)');
+			map.append('rect').classed('vis__map__bg', true)
+				.attr('width', width / 2).attr('height', height);
 
-		mapLeft.append('text').classed('vis__map__label', true)
-			.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10))
-			.text(params.labelLeft);
-		mapRight.append('text').classed('vis__map__label', true)
-			.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10))
-			.text(params.labelRight);
+			var landArea = map.append('g').classed('vis__map__lands', true);
+			var ladArea = map.append('g').classed('vis__map__lads', true);
+			var connectionArea = map.append('g').classed('vis__map__connections', true);
+			var labelArea = map.append('g').classed('vis__map__labels', true);
+			var mapLabel = map.append('text').classed('vis__map__label', true)
+				.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10));
+
+			return {
+				landArea: landArea,
+				ladArea: ladArea,
+				connectionArea: connectionArea,
+				labelArea: labelArea,
+				mapLabel: mapLabel,
+			}
+		}
+
+		leftMapComponents = initMap(mapLeft);
+		rightMapComponents = initMap(mapRight);
+
+		leftMapComponents.mapLabel.text(params.labelLeft);
+		rightMapComponents.mapLabel.text(params.labelRight);
 
 		globalHintArea = svg.append('g').classed('vis__hints', true);
 
 		// controls
-
 		controlsArea = svg.append('g').attr('class', 'vis__controls')
 			.attr('transform', 'translate({0},{1})'.format(10, height - params.buttonSize - 10));
 			
@@ -229,9 +232,8 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		addHint(globalHintArea, 'vis__hints__lad');
 		addHint(globalHintArea, 'vis__hints__connection');
 
-
 		// zoom behaviour
-
+		var lastScale;
 		function zoomed() {
 			var transform = d3.event.transform;
 
@@ -246,7 +248,19 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 					var coords = projection(d.centroid);
 					return 'translate({0},{1})'.format(coords[0], coords[1]);
 				});
+
+			d3.select(this).selectAll('.vis__map__labels__label')
+				.attr('transform', function(d) {
+					var coords = projection(d.centroid);
+					return 'translate({0},{1})'.format(coords[0], coords[1]);
+				});
 			//d3.select(this).selectAll('.vis__map__border').attr("d", path);
+
+			if (lastScale === undefined || lastScale != transform.k) {
+				lastScale = transform.k;
+				checkLabelVisibility(leftMapComponents.labelArea);
+				checkLabelVisibility(rightMapComponents.labelArea);
+			}
 
 			d3.select(this).selectAll('.vis__map__connections__line').call(updateConnections);
 
@@ -265,6 +279,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 		mapLeft.call(zoom.transform, initTransform);
 		mapLeft.call(zoom).on('dblclick.zoom', null);
+
 		mapRight.call(zoom.transform, initTransform);
 		mapRight.call(zoom).on('dblclick.zoom', null);
 
@@ -275,6 +290,34 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	}
 	init();
 
+	// check labels
+	function checkLabelVisibility(area) {
+		var bboxes = [];
+
+		area.selectAll('.vis__map__labels__label').each(function(d) {
+			if (d.blured || d3.select(this).classed('inactive'))
+				return;
+
+			d3.select(this).classed('overlapped', false);
+
+			var bbox = this.getBBox();
+			var shift = projection(d.centroid);
+			bbox.x += shift[0];
+			bbox.y += shift[1];
+
+			var found = false;
+			for (var i = 0; i < bboxes.length; i++)
+				if (bboxes[i].x < bbox.x + bbox.width + params.labelOverlapMargin && bboxes[i].x + bboxes[i].width + params.labelOverlapMargin > bbox.x &&
+					bboxes[i].y < bbox.y + bbox.height + params.labelOverlapMargin && bboxes[i].y + bboxes[i].height + params.labelOverlapMargin > bbox.y) {
+					found = true;
+					d3.select(this).classed('overlapped', true);
+				}
+
+			if (!found) {
+				bboxes.push(bbox);
+			}
+		})
+	}
 
 	function updateConnections(connectionSelection) {
 		var d3line = d3.line().curve(d3.curveBundle.beta(params.bundleBeta));
@@ -295,52 +338,68 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	}
 
 	this.draw = function() {
-		function drawLand(area) {
-			area.selectAll('.vis__map__lands__land').data(ukMap).enter()
-				.append("path").classed('vis__map__lands__land', true)
-				.attr('d', path);
+		function drawMap(map) {
+			function drawLand(area) {
+				area.selectAll('.vis__map__lands__land').data(ukMap).enter()
+					.append("path").classed('vis__map__lands__land', true)
+					.attr('d', path);
 
-			area.append("path").attr('class', 'vis__map__lands__land vis__map__lands__land--featured')
-				.datum(walesMap)
-				.attr('d', path);
-		}
-		drawLand(landAreaLeft);
-		drawLand(landAreaRight);
+				area.append("path").attr('class', 'vis__map__lands__land vis__map__lands__land--featured')
+					.datum(walesMap)
+					.attr('d', path);
+			}
+			drawLand(map.select('.vis__map__lands'));
 
-		function addLads(ladsArea) {
+			function addLads(ladsArea) {
+			    var newMapLads = ladsArea.selectAll(".vis__map__lads__lad").data(ladLands).enter()
+			    	.append('g').classed('vis__map__lads__lad', true)
+					.attr('transform', function(d) {
+						var coords = projection(d.centroid);
+						return 'translate({0},{1})'.format(coords[0], coords[1]);
+					});
 
-		    var newMapLads = ladsArea.selectAll(".vis__map__lads__lad").data(ladLands).enter()
-		    	.append('g').classed('vis__map__lads__lad', true)
-				.attr('transform', function(d) {
-					var coords = projection(d.centroid);
-					return 'translate({0},{1})'.format(coords[0], coords[1]);
+				newMapLads.append("circle")
+					//.classed('vis__map__lads__lad--welsh', function(d) { return d.isWelsh; })
+					.attr("r", 5);
+
+				newMapLads
+					.on('mousemove', overLad)
+					.on('mouseout', outLad)
+					.on('click', function(d) {
+						d3.event.stopPropagation();
+						selectLad(d);
+					});
+			}
+			addLads(map.select('.vis__map__lads'));
+
+			function addLabels(labelArea) {
+				var newLabels = labelArea.selectAll('.vis__map__labels__label').data(ladLands).enter()
+					.append('g').classed('vis__map__labels__label', true)
+					.attr('transform', function(d) {
+						var coords = projection(d.centroid);
+						return 'translate({0},{1})'.format(coords[0], coords[1]);
+					});
+
+				newLabels.each(function(d) {
+					var rect = d3.select(this).append('rect');
+					var text = d3.select(this).append('text')
+						.text(function(d) { return d.name; })
+						.attr('dy', -10);
+					var bbox = text.node().getBBox();
+					rect.attr('x', bbox.x).attr('y', bbox.y)
+						.attr('width', bbox.width).attr('height', bbox.height);
 				});
-
-			newMapLads.append("circle")
-				//.classed('vis__map__lads__lad--welsh', function(d) { return d.isWelsh; })
-				.attr("r", 5);
-
-			newMapLads
-				.on('mousemove', overLad)
-				.on('mouseout', outLad)
-				.on('click', function(d) {
-					d3.event.stopPropagation();
-					selectLad(d);
-				});
+			}
+			addLabels(map.select('.vis__map__labels'));
 		}
-		addLads(ladsAreaLeft);
-		addLads(ladsAreaRight);
-
+		drawMap(mapLeft);
+		drawMap(mapRight);
 
 		drawConnections(data);
 
 		// Welsh border
 		/*
 		ladsAreaLeft.append('path')
-			.classed('vis__map__border', true)
-			.datum(welshBorder)
-			.attr('d', path);
-		ladsAreaRight.append('path')
 			.classed('vis__map__border', true)
 			.datum(welshBorder)
 			.attr('d', path);
@@ -406,9 +465,14 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 
 		// update map
 
-		ladsAreaLeft.selectAll('.vis__map__lads__lad')
+		leftMapComponents.ladArea.selectAll('.vis__map__lads__lad')
 			.classed('inactive', function(d) { return d.inactiveOutward; });
-		ladsAreaRight.selectAll('.vis__map__lads__lad')
+		rightMapComponents.ladArea.selectAll('.vis__map__lads__lad')
+			.classed('inactive', function(d) { return d.inactiveInward; });
+
+		leftMapComponents.labelArea.selectAll('.vis__map__labels__label')
+			.classed('inactive', function(d) { return d.inactiveOutward; });
+		rightMapComponents.labelArea.selectAll('.vis__map__labels__label')
 			.classed('inactive', function(d) { return d.inactiveInward; });
 
 		//
@@ -448,13 +512,18 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			newConnections.call(updateConnections);
 		}
 
-		addConnections(connectionsAreaLeft, data.filter(function(d) { return d.type == 'outward'; }));
-		addConnections(connectionsAreaRight, data.filter(function(d) { return d.type == 'inward'; }));
+		addConnections(leftMapComponents.connectionArea, data.filter(function(d) { return d.type == 'outward'; }));
+		addConnections(rightMapComponents.connectionArea, data.filter(function(d) { return d.type == 'inward'; }));
 
 		if (selectedLad !== undefined && (!selectedLad.inactiveInward || !selectedLad.inactiveOutward))
 			selectLad(selectedLad);
 		else
 			selectLad();
+
+		// labels
+
+		checkLabelVisibility(leftMapComponents.labelArea);
+		checkLabelVisibility(rightMapComponents.labelArea);
 	}
 
 	this.redraw = drawConnections;
@@ -480,14 +549,18 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	}
 
 	function overLad(d) {
-		// show lad hint
-		var pos = [d3.event.clientX, d3.event.clientY - 15];
-
-		updateHint(globalHintArea.select('.vis__hints__lad'), pos, d.name);
+		// fix this
+		var container = d3.select(this.parentNode.parentNode).classed('vis__map--left') ? leftMapComponents : rightMapComponents;
+		container.labelArea.selectAll('.vis__map__labels__label')
+			.style('visibility', function(dd) {
+				return dd == d ? 'visible' : 'hidden';
+			});
 	}
 
 	function outLad(d) {
-		globalHintArea.select('.vis__hints__lad').attr('visibility', 'hidden');
+		// fix this
+		var container = d3.select(this.parentNode.parentNode).classed('vis__map--left') ? leftMapComponents : rightMapComponents;
+		container.labelArea.selectAll('.vis__map__labels__label').style('visibility', null);
 	}
 
 	function overConnection(d) {
@@ -519,53 +592,44 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			d.fromHighlighted = false;
 		})
 
-		connectionsAreaLeft.selectAll('.vis__map__connections__line')
-			.classed('blured', function(dd) {
-				if (selectedLad === undefined) {
-					return false;
-				}
-				else {
-					if (dd.landFrom == d) {
-						dd.landTo.toHighlighted = true;
+		function setConnectionClass(area) {
+			area.selectAll('.vis__map__connections__line')
+				.classed('blured', function(dd) {
+					if (selectedLad === undefined) {
 						return false;
 					}
-					else if (dd.landTo == d) {
-						dd.landFrom.toHighlighted = true;
-						return false;
+					else {
+						if (dd.landFrom == d) {
+							dd.landTo.toHighlighted = true;
+							return false;
+						}
+						else if (dd.landTo == d) {
+							dd.landFrom.toHighlighted = true;
+							return false;
+						}
+						else
+							return true;
 					}
-					else
-						return true;
-				}
-			});
-		connectionsAreaRight.selectAll('.vis__map__connections__line')
-			.classed('blured', function(dd) {
-				if (selectedLad === undefined) {
-					dd.landTo.fromHighlighted = false;
-					dd.landFrom.fromHighlighted = false;
-					return false;
-				}
-				else {
-					if (dd.landTo == d) {
-						dd.landFrom.fromHighlighted = true;
-						return false;
-					}
-					else if (dd.landFrom == d) {
-						dd.landTo.fromHighlighted = true;
-						return false;
-					}
-					else
-						return true;
-				}
-			});
+				});
+		}
+		setConnectionClass(leftMapComponents.connectionArea);
+		setConnectionClass(rightMapComponents.connectionArea);
 
-		ladsAreaLeft.selectAll('.vis__map__lads__lad')
-			.classed('selected', function(d) { return d.selected; })
-			.classed('blured', function(d) { return selectedLad !== undefined && d != selectedLad && !d.toHighlighted; })
-			.classed('highlighted', function(d) { return d.toHighlighted; });
-		ladsAreaRight.selectAll('.vis__map__lads__lad')
-			.classed('selected', function(d) { return d.selected; })
-			.classed('blured', function(d) { return selectedLad !== undefined && d != selectedLad && !d.fromHighlighted; })
-			.classed('highlighted', function(d) { return d.fromHighlighted; });;
+		function setLadClass(area) {
+			area.selectAll('.vis__map__lads__lad')
+				.classed('selected', function(d) { return d.selected; })
+				.classed('blured', function(d) { return selectedLad !== undefined && d != selectedLad && !d.toHighlighted; })
+				.classed('highlighted', function(d) { return d.toHighlighted; });
+		}
+		setConnectionClass(leftMapComponents.ladArea);
+		setConnectionClass(rightMapComponents.ladArea);
+
+		function setLabelClass(area) {
+			area.selectAll('.vis__map__labels__label')
+				.classed('blured', function(d) { return selectedLad !== undefined && d != selectedLad && !d.toHighlighted; });
+		}
+		setLabelClass(leftMapComponents.labelArea);
+		setLabelClass(rightMapComponents.labelArea);
 
 		if (params.selectLadCallback !== undefined)
 			params.selectLadCallback(selectedLad !== undefined ? selectedLad.name : '');

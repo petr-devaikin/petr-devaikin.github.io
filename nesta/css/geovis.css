@@ -69,6 +69,26 @@
 .vis--geovis .vis__map__connections__line.blured {
   visibility: hidden;
 }
+.vis--geovis .vis__map__labels__label {
+  pointer-events: none;
+}
+.vis--geovis .vis__map__labels__label rect {
+  fill: rgba(255,255,255,0.5);
+}
+.vis--geovis .vis__map__labels__label text {
+  font-size: 10px;
+  fill: #000;
+  text-anchor: middle;
+}
+.vis--geovis .vis__map__labels__label.blured {
+  visibility: hidden;
+}
+.vis--geovis .vis__map__labels__label.inactive {
+  visibility: hidden;
+}
+.vis--geovis .vis__map__labels__label.overlapped {
+  visibility: hidden;
+}
 .vis--geovis .vis__divider {
   stroke: #999;
 }
