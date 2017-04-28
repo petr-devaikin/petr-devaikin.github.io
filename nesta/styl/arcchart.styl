@@ -6,7 +6,7 @@
 				
 				&__name
 					font-size 12px
-					fill #333
+					opacity .8
 					text-anchor middle
 					alignment-baseline central
 				
@@ -21,8 +21,10 @@
 				
 				&.hovered
 					opacity 1
-					fill red
 					
+					.vis__graph__items__item__name
+						opacity 1
+						
 					.vis__graph__items__item__desc
 						fill #888
 			
@@ -36,7 +38,6 @@
 					cursor pointer
 					circle
 						stroke none
-						fill rgb(31, 119, 180)
 						opacity .6
 					text
 						font-size 12px
@@ -51,7 +52,8 @@
 					&.hovered
 						circle
 							opacity .8
-							fill red
+							stroke rgba(150, 150, 150, .2)
+							stroke-width 10
 						text
 							visibility visible
 							

@@ -646,6 +646,8 @@ function Datareader(base) {
 	readers[Datareader.DATASETS.MeetupAttendance] = function(callback) {
 		var groups = {},
 			years = [],
+			topics = [],
+			lads = [],
 			links = [];
 
 		d3.queue()
@@ -675,6 +677,9 @@ function Datareader(base) {
 				d3.csv,
 				base + 'meetupAttendance/metadata.csv',
 				function(line, i) {
+					if (topics.indexOf(line.main_topic) == -1) topics.push(line.main_topic);
+					if (lads.indexOf(line.lad) == -1) lads.push(line.lad);
+
 					return {
 						link: line.link,
 						lad: line.LAD13NM_LGDName,
@@ -724,8 +729,10 @@ function Datareader(base) {
 				});
 
 				years.sort();
+				topics.sort();
+				lads.sort();
 				groups = Object.keys(groups).map(function(d) { return groups[d]; });
-				callback(years, groups, links);
+				callback(years, groups, links, topics, lads);
 			});
 	}
 

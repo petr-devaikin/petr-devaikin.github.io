@@ -3,7 +3,7 @@
 }
 .vis--arc .vis__graph__items__item__name {
   font-size: 12px;
-  fill: #333;
+  opacity: 0.8;
   text-anchor: middle;
   alignment-baseline: central;
 }
@@ -18,7 +18,9 @@
 }
 .vis--arc .vis__graph__items__item.hovered {
   opacity: 1;
-  fill: #f00;
+}
+.vis--arc .vis__graph__items__item.hovered .vis__graph__items__item__name {
+  opacity: 1;
 }
 .vis--arc .vis__graph__items__item.hovered .vis__graph__items__item__desc {
   fill: #888;
@@ -32,7 +34,6 @@
 }
 .vis--arc .vis__graph__values__points__point circle {
   stroke: none;
-  fill: #1f77b4;
   opacity: 0.6;
 }
 .vis--arc .vis__graph__values__points__point text {
@@ -46,7 +47,8 @@
 }
 .vis--arc .vis__graph__values__points__point.hovered circle {
   opacity: 0.8;
-  fill: #f00;
+  stroke: rgba(150,150,150,0.2);
+  stroke-width: 10;
 }
 .vis--arc .vis__graph__values__points__point.hovered text {
   visibility: visible;

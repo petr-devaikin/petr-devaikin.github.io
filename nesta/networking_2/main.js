@@ -7,12 +7,11 @@ var svg = d3.select("body").append("svg")
 
 var datareader = new Datareader();
 
-datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups, links) {
+datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups, links, topics, lads) {
 	var year1 = 2014,
 		year2 = 2016
 		selectedVariable = 'events',
-		sortBy = 'events',
-		groupBy = 'lad';
+		groupBy = 'topic';
 
 	// Process data
 	var groupHash = {}
@@ -20,6 +19,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	groups.forEach(function(d, i) {
 		d.id = i;
 		groupHash[d.name] = d;
+
 		maxGroupValue = Math.max(maxGroupValue, d3.max(years, function(year) {
 			return d.values[year] !== undefined ? d.values[year][selectedVariable] : 0;
 		}));
@@ -48,10 +48,10 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 			else if (groupBy == 'topic' && a.meta.topic != b.meta.topic)
 				return a.meta.topic > b.meta.topic ? 1 : -1;
 			
-			aValue = a.values[year1] === undefined ? 0 : a.values[year1][sortBy];
-			aValue += a.values[year2] === undefined ? 0 : a.values[year2][sortBy];
-			bValue = b.values[year1] === undefined ? 0 : b.values[year1][sortBy];
-			bValue += b.values[year2] === undefined ? 0 : b.values[year2][sortBy];
+			aValue = a.values[year1] === undefined ? 0 : a.values[year1][selectedVariable];
+			aValue += a.values[year2] === undefined ? 0 : a.values[year2][selectedVariable];
+			bValue = b.values[year1] === undefined ? 0 : b.values[year1][selectedVariable];
+			bValue += b.values[year2] === undefined ? 0 : b.values[year2][selectedVariable];
 
 			if (aValue != bValue)
 				return bValue - aValue;
@@ -59,7 +59,12 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 				return a.id - b.id;
 		});
 
-		var allGroups = groups.map(function(d) { return { id: d.id, name: d.name, desc: d.meta.lad + ' | ' + d.meta.topic }});
+		var allGroups = groups.map(function(d) { return {
+			id: d.id,
+			name: d.name,
+			desc: d.meta.lad,
+			category: d.meta.topic,
+		}});
 
 		var leftValues = groups
 			.filter(function(d) {
@@ -92,6 +97,7 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 
 		arcchart.draw(
 			allGroups,
+			topics,
 			leftValues,
 			rightValues,
 			leftLinks,
@@ -112,9 +118,16 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	filter.addKeyTable(
 		'',
 		[
-			{ type: 'circle', fill: 'rgba(31, 119, 180, .6)', stroke: 'none', r: 8, desc: 'Activity of a meetup group. Area – number of events or attendants [?].' },
+			{ type: 'circle', fill: 'rgba(31, 119, 180, .7)', stroke: 'none', r: 8, desc: 'Activity of a meetup group. Area – number of events or attendants [?].' },
 			{ type: 'line', color: '#ccc', thickness: 3, desc: 'Connections [?]. Thickness – [?]' },
 		]);
+
+
+	var groupPalette = ColorPalette.ordinal(topics);
+	filter.addKeyTable('Topics', topics.map(function(d) {
+		return { type: 'color', color: groupPalette.scale(d), text: d };
+	}));
+
 
 	filter.addRadioSection(
 		'Show activity as',
@@ -127,8 +140,6 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 
 			maxGroupValue = 0;
 			groups.forEach(function(d, i) {
-				d.id = i;
-				groupHash[d.name] = d;
 				maxGroupValue = Math.max(maxGroupValue, d3.max(years, function(year) {
 					return d.values[year] !== undefined ? d.values[year][selectedVariable] : 0;
 				}));
@@ -154,24 +165,12 @@ datareader.readData(Datareader.DATASETS.MeetupAttendance, function(years, groups
 	filter.addRadioSection(
 		'Group by',
 		[
-			{ label: 'Location', value: 'lad', checked: true },
-			{ label: 'Topic', value: 'topic' },
+			{ label: 'Topic', value: 'topic', checked: true },
+			{ label: 'Location', value: 'lad' },
 			{ label: 'None [?]', value: '' },
 		],
 		function(v) {
 			groupBy = v;
-			draw();
-		}
-	);
-
-	filter.addRadioSection(
-		'Order by',
-		[
-			{ label: 'Number of events', value: 'events', checked: true },
-			{ label: 'Number of attendants', value: 'attendants' },
-		],
-		function(v) {
-			sortBy = v;
 			draw();
 		}
 	);

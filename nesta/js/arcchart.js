@@ -24,7 +24,8 @@ function Arcchart(svg, p) {
 
 	var yScale,
 		rScale,
-		arcScale;
+		arcScale,
+		colorScale;
 
 	function getTransition() {
 		return d3.transition()
@@ -78,7 +79,7 @@ function Arcchart(svg, p) {
 	}
 	init();
 
-	this.draw = function(items, leftValues, rightValues, leftConnections, rightConnections, leftLabel, rightLabel, maxValue, maxArcThickness) {
+	this.draw = function(items, categories, leftValues, rightValues, leftConnections, rightConnections, leftLabel, rightLabel, maxValue, maxArcThickness) {
 		// prepare data
 		leftConnections.forEach(function(d) { d.isLeft = true; });
 		rightConnections.forEach(function(d) { d.isLeft = false; });
@@ -87,6 +88,9 @@ function Arcchart(svg, p) {
 
 		leftValues.sort(function(a, b) { return b.value - a.value; });
 		rightValues.sort(function(a, b) { return b.value - a.value; });
+
+		var itemHash = {}
+		items.forEach(function(d) { itemHash[d.id] = d; });
 
 		// Update scales
 		yScale
@@ -97,15 +101,22 @@ function Arcchart(svg, p) {
 
 		arcScale.domain([0, maxArcThickness]);
 
+		colorScale = ColorPalette.ordinal(categories).scale;
+
 		// update labels
 		leftPartArea.select('.vis__graph__values__label').text(leftLabel);
 		rightPartArea.select('.vis__graph__values__label').text(rightLabel);
 
 		// draw items
-		function positionItems(selection) {
-			selection.attr('transform', function(d, i) {
-				return 'translate({0},{1})'.format(0, yScale(d.id));
-			});
+		function updateItems(selection) {
+			selection
+				.attr('transform', function(d, i) {
+					return 'translate({0},{1})'.format(0, yScale(d.id));
+				})
+				.select('.vis__graph__items__item__name')
+					.attr('fill', function(d) {
+						return colorScale(d.category);
+					});
 		}
 
 		var items = itemsArea.selectAll('.vis__graph__items__item').data(items, function(d) { return d.id; });
@@ -124,8 +135,8 @@ function Arcchart(svg, p) {
 
 		items.exit().remove();
 
-		items.transition(getTransition()).call(positionItems);
-		newItems.call(positionItems);
+		items.transition(getTransition()).call(updateItems);
+		newItems.call(updateItems);
 
 		// move left and right parts
 		var itemBBox = itemsArea.node().getBBox();
@@ -141,7 +152,8 @@ function Arcchart(svg, p) {
 					return 'translate({0},{1})'.format(0, yScale(d.id));
 				})
 				.select('circle')
-					.attr('r', function(d) { return rScale(d.value); });
+					.attr('r', function(d) { return rScale(d.value); })
+					.attr('fill', function(d) { return colorScale(itemHash[d.id].category); });
 			selection.select('text')
 				.attr('transform', function(d) {
 					return 'translate({0},{1})'.format(d.isLeft ? rScale(d.value) + 2 : -rScale(d.value) - 2, 0);
