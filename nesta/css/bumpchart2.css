@@ -8,9 +8,6 @@
 .vis--bumpchart .vis__axis .tick {
   cursor: default;
 }
-.vis--bumpchart .vis__axis .tick line {
-  visibility: hidden;
-}
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
 }

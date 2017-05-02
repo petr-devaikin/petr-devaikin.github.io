@@ -1,10 +1,8 @@
 function Bumpchart(svg, xValues, data, p) {
 	var params = {
-		leftMargin: 100,
 		rightMargin: 100,
-		topMargin: 20,
 		graphWidth: 500,
-		showPositions: 20,
+		maxLineCount: 20,
 		positionHeight: 15,
 		lineMinHeight: 2,
 		lineMaxHeight: 10,
@@ -24,12 +22,14 @@ function Bumpchart(svg, xValues, data, p) {
 
 	var width, height;
 
-	var graphHeight = params.showPositions * params.positionHeight;
-	var overviewHeight = graphHeight;
+	var graphHeight;
+	var overviewHeight;
 
 	var lines;
+	var visibleLineCount;
 
-	var leftAxis,
+	var container,
+		leftAxis,
 		rightAxis,
 		bottomAxis,
 		graphArea,
@@ -52,44 +52,6 @@ function Bumpchart(svg, xValues, data, p) {
 	function init() {
 		width = svg.node().getBoundingClientRect().width;
 		height = svg.node().getBoundingClientRect().height;
-
-		// Clean canvas
-		svg.html('').attr('class', 'vis vis--bumpchart');
-
-		// Add clipping rect
-		var defs = svg.append('defs');
-		defs.append('clipPath').attr('id', 'graph-clip')
-			.append('rect')
-				.attr('width', params.graphWidth).attr('height', graphHeight);
-
-		// Add graph, overview
-		graphArea = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
-			.classed('vis__graph', true)
-			.attr('clip-path', 'url(#graph-clip)');
-
-		overviewArea = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin + params.rightMargin + params.graphWidth + 20, params.topMargin))
-			.classed('vis__overview', true);
-
-		// Add axes
-		leftAxis = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
-			.classed('vis__axis vis__axis--left', true);
-
-		rightAxis = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin + params.graphWidth, params.topMargin))
-			.classed('vis__axis vis__axis--right', true);
-
-		bottomAxis = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + graphHeight))
-			.classed('vis__axis vis__axis--bottom', true);
-
-		// hints ares
-
-		hintsArea = svg.append('g')
-			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin))
-			.classed('vis__hints', true);
 
 		// Process data
 		maxSecondValue = 0;
@@ -143,6 +105,49 @@ function Bumpchart(svg, xValues, data, p) {
 		}
 		processData();
 
+		visibleLineCount = Math.min(params.maxLineCount, lineData.length);
+		graphHeight = visibleLineCount * params.positionHeight;
+		overviewHeight = graphHeight;
+
+		// Clean canvas
+		svg.html('').attr('class', 'vis vis--bumpchart');
+
+		// Add clipping rect
+		var defs = svg.append('defs');
+		defs.append('clipPath').attr('id', 'graph-clip')
+			.append('rect')
+				.attr('width', params.graphWidth).attr('height', graphHeight);
+
+		// Add graph, overview
+		container = svg.append('g');
+
+		graphArea = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(0, 0))
+			.classed('vis__graph', true)
+			.attr('clip-path', 'url(#graph-clip)');
+
+		overviewArea = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(params.rightMargin + params.graphWidth + 20, 0))
+			.classed('vis__overview', true);
+
+		// Add axes
+		leftAxis = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(0, 0))
+			.classed('vis__axis vis__axis--left', true);
+
+		rightAxis = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(params.graphWidth, 0))
+			.classed('vis__axis vis__axis--right', true);
+
+		bottomAxis = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(0, graphHeight))
+			.classed('vis__axis vis__axis--bottom', true);
+
+		// hints ares
+
+		hintsArea = container.append('g')
+			.attr('transform', 'translate({0},{1})'.format(0, 0))
+			.classed('vis__hints', true);
 	
 		// Init scales
 		xScale = d3.scaleLinear()
@@ -150,7 +155,6 @@ function Bumpchart(svg, xValues, data, p) {
 			.range([0, params.graphWidth]);
 
 		yScale = d3.scaleLinear()
-			.domain([0.5, params.showPositions + 0.5])
 			.range([0, graphHeight]);
 
 		colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(params.categories);
@@ -161,19 +165,19 @@ function Bumpchart(svg, xValues, data, p) {
 
 		// Zoom behaviour
 		var maxYPosition =
-			data.length > params.showPositions ? 
-			(data.length - params.showPositions) * params.positionHeight + svg.node().clientHeight :
-			svg.node().clientHeight;
+			lineData.length > params.maxLineCount ? 
+			(lineData.length - params.maxLineCount) * params.positionHeight + height :
+			height;
 		zoom = d3.zoom()
 			.scaleExtent([1, 1])
-			.translateExtent([[0, 0], [svg.node().clientWidth, maxYPosition]])
+			.translateExtent([[0, 0], [width, maxYPosition]])
 			.on('zoom', zoomed);
 
 		function zoomed() {
 			var transform = d3.zoomTransform(this);
 			
 			var shift = -transform.y / params.positionHeight;
-			yScale.domain([0.5 + shift, 0.5 + params.showPositions + shift]);
+			yScale.domain([0.5 + shift, 0.5 + visibleLineCount + shift]);
 
 			if (params.showOverview)
 				updateOverviewViewport(transform);
@@ -181,6 +185,15 @@ function Bumpchart(svg, xValues, data, p) {
 			drawAxes();
 			drawData();
 		}
+
+		function centerGraph() {
+			// check if need to show overview
+			container.attr('transform', 'translate({0},{1})'.format(
+				(width - params.graphWidth) / 2,
+				(height - graphHeight - 20) / 2
+			));
+		}
+		centerGraph();
 	}
 	init();
 
@@ -210,12 +223,14 @@ function Bumpchart(svg, xValues, data, p) {
 
 	function drawAxes() {
 		bottomAxis.call(d3.axisBottom(xScale).ticks(xValues.length).tickFormat(function(d, i) { return xValues[d]; }));
-		leftAxis.call(d3.axisLeft(yScale).ticks(params.showPositions)
+		
+		leftAxis.call(d3.axisLeft(yScale).ticks(visibleLineCount)
 			.tickFormat(function(d, i) {
 				return leftTicksMeta[d] !== undefined ? leftTicksMeta[d].line.name : '';
 			})
 			.tickSize(0));
-		rightAxis.call(d3.axisRight(yScale).ticks(params.showPositions)
+
+		rightAxis.call(d3.axisRight(yScale).ticks(visibleLineCount)
 			.tickFormat(function(d, i) {
 				return rightTicksMeta[d] !== undefined ? rightTicksMeta[d].line.name : '';
 			})
@@ -341,7 +356,7 @@ function Bumpchart(svg, xValues, data, p) {
 		overviewViewport = overviewArea.append('rect')
 			.classed('vis__overview__viewport', true)
 			.attr('width', params.overviewWidth)
-			.attr('height', overviewHeight * params.showPositions / linesNumber);
+			.attr('height', overviewHeight * params.visibleLineCount / lineData.length);
 
 		var dragStartY = 0;
 		var dragStartTransformY = 0;
@@ -368,8 +383,7 @@ function Bumpchart(svg, xValues, data, p) {
 
 	function updateOverviewViewport(transform) {
 		var t = d3.zoomTransform(svg.node()); // FIX ?
-		var linesNumber = Math.max(data.length, params.showPositions);
-		var shift = - transform.y * overviewHeight / (linesNumber * params.positionHeight);
+		var shift = - transform.y * overviewHeight / (lineData.length * params.positionHeight);
 		overviewViewport.attr('transform', 'translate({0},{1})'.format(0, shift));
 	}
 
@@ -509,12 +523,12 @@ function Bumpchart(svg, xValues, data, p) {
 			var lastValue = item.values[item.values.length - 1];
 			var t = d3.zoomTransform(svg.node());
 
-			if (data.length > params.showPositions) {
+			if (lineData.length > params.visibleLineCount) {
 				var shift;
-				if (lastValue.position <= params.showPositions / 2)
+				if (lastValue.position <= params.visibleLineCount / 2)
 					shift = - t.y;
-				else if (lastValue.position >= data.length - params.showPositions / 2) {
-					shift = - params.positionHeight * data.length + graphHeight - t.y;
+				else if (lastValue.position >= lineData.length - params.visibleLineCount / 2) {
+					shift = - params.positionHeight * lineData.length + graphHeight - t.y;
 				}
 				else
 					shift = graphHeight / 2 - yScale(lastValue.position);

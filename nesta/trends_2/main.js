@@ -1,5 +1,5 @@
-var width = window.innerWidth - 230,
-	height = window.innerHeight;
+var width = window.innerWidth - 240,
+	height = window.innerHeight - 70;
 
 var svg = d3.select("body").append("svg")
 	.attr("width", width)
