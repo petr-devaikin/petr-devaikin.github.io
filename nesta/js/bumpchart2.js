@@ -33,6 +33,7 @@ function Bumpchart(svg, xValues, data, p) {
 		rightAxis,
 		bottomAxis,
 		graphArea,
+		gridArea,
 		overviewArea,
 		hintsArea,
 		xScale,
@@ -122,9 +123,11 @@ function Bumpchart(svg, xValues, data, p) {
 		container = svg.append('g');
 
 		graphArea = container.append('g')
-			.attr('transform', 'translate({0},{1})'.format(0, 0))
 			.classed('vis__graph', true)
 			.attr('clip-path', 'url(#graph-clip)');
+
+		gridArea = graphArea.append('g')
+			.classed('vis__graph__grid', true);
 
 		overviewArea = container.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.rightMargin + params.graphWidth + 20, 0))
@@ -132,7 +135,6 @@ function Bumpchart(svg, xValues, data, p) {
 
 		// Add axes
 		leftAxis = container.append('g')
-			.attr('transform', 'translate({0},{1})'.format(0, 0))
 			.classed('vis__axis vis__axis--left', true);
 
 		rightAxis = container.append('g')
@@ -146,7 +148,6 @@ function Bumpchart(svg, xValues, data, p) {
 		// hints ares
 
 		hintsArea = container.append('g')
-			.attr('transform', 'translate({0},{1})'.format(0, 0))
 			.classed('vis__hints', true);
 	
 		// Init scales
@@ -185,6 +186,8 @@ function Bumpchart(svg, xValues, data, p) {
 			drawAxes();
 			drawData();
 		}
+
+		// center graph
 
 		function centerGraph() {
 			// check if need to show overview
@@ -256,6 +259,14 @@ function Bumpchart(svg, xValues, data, p) {
 
 		blurTicks(leftAxis, leftTicksMeta);
 		blurTicks(rightAxis, rightTicksMeta);
+	}
+
+	function drawGrid() {
+		gridArea.selectAll('.vis__graph__grid__line').data(xValues).enter()
+			.append('line')
+				.classed('vis__graph__grid__line', true)
+				.attr('x1', function(d, i) { return xScale(i) + 0.5; }).attr('y1', 0)
+				.attr('x2', function(d, i) { return xScale(i) + 0.5; }).attr('y2', graphHeight);
 	}
 
 	function drawData() {
@@ -404,11 +415,12 @@ function Bumpchart(svg, xValues, data, p) {
 		if (params.showOverview)
 			drawOverview();
 
+		drawGrid();
+
 		// FIX! wrong place
 		var t = d3.zoomIdentity.translate(0, 0);
 		svg.call(zoom.transform, t);
 		svg.call(zoom);
-
 		//drawData();
 	}
 

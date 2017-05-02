@@ -634,7 +634,7 @@ function Datareader(base) {
 				broadTopics.sort();
 				lads.sort();
 
-				lads.slice(lads.indexOf('Wales'), 1);
+				lads.splice(lads.indexOf('Wales'), 1);
 				lads.unshift('Wales');
 
 				callback(years, lads, topics, broadTopics, rawData);

@@ -1,12 +1,14 @@
 .vis--bumpchart .vis__axis {
   font-size: 10px;
 }
-.vis--bumpchart .vis__axis--left .domain,
-.vis--bumpchart .vis__axis--right .domain {
-  stroke: #ddd;
+.vis--bumpchart .vis__axis .domain {
+  stroke: #ccc;
 }
 .vis--bumpchart .vis__axis .tick {
   cursor: default;
+}
+.vis--bumpchart .vis__axis .tick line {
+  stroke: #ccc;
 }
 .vis--bumpchart .vis__axis .tick.blured text {
   opacity: 0.2;
@@ -16,7 +18,7 @@
   font-size: 12px;
 }
 .vis--bumpchart .vis__graph__grid__line {
-  stroke: #eee;
+  stroke: #ccc;
 }
 .vis--bumpchart .vis__graph__line__line {
   stroke: rgba(255,255,255,0.5);
