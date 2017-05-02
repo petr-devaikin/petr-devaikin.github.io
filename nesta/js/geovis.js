@@ -1,7 +1,7 @@
 function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
-		thickness: [.5, 1, 1.5, 2],
+		thickness: [.5, 1, 1.5],
 		buttonSize: 40,
 		selectLadCallback: undefined,
 		margin: 50,
