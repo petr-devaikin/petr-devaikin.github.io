@@ -62,7 +62,7 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 				'',
 				[
 					{ type: 'circle', fill: 'rgba(200, 200, 200, .6)', stroke: 'none', r: 5, desc: 'Location' },
-					{ type: 'line', color: 'rgba(214, 39, 40, .5)', desc: 'Connection [?]' }
+					{ type: 'line', color: 'rgba(214, 39, 40, .5)', desc: 'Connection [?]. Thickness – probability of a user who registered in one LAD to attend an event in another area [?]' }
 				]);
 
 			var colorScale = ColorPalette.ordinal(topics).scale;

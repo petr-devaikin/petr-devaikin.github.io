@@ -61,7 +61,7 @@
   fill: none;
 }
 .vis--geovis .vis__map__connections__line__line {
-  stroke-width: 1;
+  opacity: 0.3;
   fill: none;
 }
 .vis--geovis .vis__map__connections__line:hover .vis__map__connections__line__line {

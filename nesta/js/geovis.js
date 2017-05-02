@@ -1,8 +1,7 @@
 function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 	var params = {
 		areasToZoom: ['Wales', 'England', 'Scotland'],
-		minOpacity: .3,
-		maxOpacity: .3,
+		thickness: [.5, 1, 1.5, 2],
 		buttonSize: 40,
 		selectLadCallback: undefined,
 		margin: 50,
@@ -333,7 +332,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		connectionSelection.select('.vis__map__connections__line__bg').attr('d', setPath);
 		connectionSelection.select('.vis__map__connections__line__line')
 			.attr('d', setPath)
-			.attr('opacity', function(d) { return vScale(d.value); })
+			.attr('stroke-width', function(d) { return vScale(d.value); })
 			.attr('stroke', function(d) { return colorScale(d.category); });
 	}
 
@@ -480,7 +479,7 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 		data = data.filter(function(d) { return d.landFrom != undefined; });
 
 		var maxValue = 100;//d3.max(data, function(d) { return d.value; });
-		vScale = d3.scaleLinear().domain([0, maxValue]).range([params.minOpacity, params.maxOpacity]);
+		vScale = d3.scaleQuantize().domain([0, maxValue]).range(params.thickness);
 
 		// update auto zoom
 		calculateAutoZoom(data);
