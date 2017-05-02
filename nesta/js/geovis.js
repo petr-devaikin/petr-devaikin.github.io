@@ -180,23 +180,23 @@ function Geovis(svg, ladsMapGB, ladsMapNI, ladsAreas, data, categories, p) {
 			var ladArea = map.append('g').classed('vis__map__lads', true);
 			var connectionArea = map.append('g').classed('vis__map__connections', true);
 			var labelArea = map.append('g').classed('vis__map__labels', true);
-			var mapLabel = map.append('text').classed('vis__map__label', true)
-				.attr('transform', 'translate({0},{1})'.format(width / 4, height - 10));
+			var mapTitle = map.append('text').classed('vis__map__title', true)
+				.attr('transform', 'translate({0},{1})'.format(width / 4, 15));
 
 			return {
 				landArea: landArea,
 				ladArea: ladArea,
 				connectionArea: connectionArea,
 				labelArea: labelArea,
-				mapLabel: mapLabel,
+				mapTitle: mapTitle,
 			}
 		}
 
 		leftMapComponents = initMap(mapLeft);
 		rightMapComponents = initMap(mapRight);
 
-		leftMapComponents.mapLabel.text(params.labelLeft);
-		rightMapComponents.mapLabel.text(params.labelRight);
+		leftMapComponents.mapTitle.text(params.labelLeft);
+		rightMapComponents.mapTitle.text(params.labelRight);
 
 		globalHintArea = svg.append('g').classed('vis__hints', true);
 

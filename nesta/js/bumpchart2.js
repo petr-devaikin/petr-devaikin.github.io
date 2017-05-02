@@ -17,6 +17,7 @@ function Bumpchart(svg, xValues, data, p) {
 		addHint: undefined,
 		setHintContent: undefined,
 		categories: [],
+		showGrid: true,
 	}
 
 	Object.keys(p).forEach(function(key) { params[key] = p[key]; });
@@ -78,7 +79,7 @@ function Bumpchart(svg, xValues, data, p) {
 
 		rightAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin + params.graphWidth, params.topMargin))
-			.classed('vis__axis vis__axis--left', true);
+			.classed('vis__axis vis__axis--right', true);
 
 		bottomAxis = svg.append('g')
 			.attr('transform', 'translate({0},{1})'.format(params.leftMargin, params.topMargin + graphHeight))
@@ -212,11 +213,13 @@ function Bumpchart(svg, xValues, data, p) {
 		leftAxis.call(d3.axisLeft(yScale).ticks(params.showPositions)
 			.tickFormat(function(d, i) {
 				return leftTicksMeta[d] !== undefined ? leftTicksMeta[d].line.name : '';
-			}));
+			})
+			.tickSize(0));
 		rightAxis.call(d3.axisRight(yScale).ticks(params.showPositions)
 			.tickFormat(function(d, i) {
 				return rightTicksMeta[d] !== undefined ? rightTicksMeta[d].line.name : '';
-			}));
+			})
+			.tickSize(0));
 		
 		function setTickColorAndHover(axis, ticksMeta) {
 			axis.selectAll('.tick')

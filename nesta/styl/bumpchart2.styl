@@ -1,9 +1,17 @@
 .vis--bumpchart
 	.vis__axis
 		font-size 10px
+		
+		&--left, &--right
+			.domain
+				//visibility hidden
+				stroke #ddd
 
 		.tick
 			cursor default
+			
+			line
+				visibility hidden
 			
 			&.blured
 				text
@@ -15,6 +23,10 @@
 					font-size 12px
 
 	.vis__graph
+		&__grid
+			&__line
+				stroke #eee
+
 		&__line
 			//cursor pointer
 			

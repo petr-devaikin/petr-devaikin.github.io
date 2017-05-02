@@ -36,8 +36,8 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			}
 
 			var geovis = new Geovis(svg, ladsGB, ladsNI, ladAreas, filteredData, topics, {
-				labelLeft: 'People registred in Wales attending an event in other areas [?]',
-				labelRight: 'People registred out of Wales attending an event in Wales [?]',
+				labelLeft: 'People registered in Wales attending an event in other areas [?]',
+				labelRight: 'People registered out of Wales attending an event in Wales [?]',
 				buttonSize: 30,
 				selectLadCallback: function(ladName) {
 					ladCallbacks.setValue(ladName);
@@ -56,13 +56,13 @@ datareader.readData(Datareader.DATASETS.LadsMapUK, function(ladsGB, ladsNI) {
 			// Filter
 			var filter = new Filter(d3.select('.filter'));
 
-			filter.addText('Flows [?]', 'Maps show owtward and inward movement of people in tech comunities [?].');
+			filter.addText('Flows [?]', 'Maps show outward and inward movement of people in tech communities [?].');
 
 			filter.addKeyTable(
 				'',
 				[
 					{ type: 'circle', fill: 'rgba(200, 200, 200, .6)', stroke: 'none', r: 5, desc: 'Location' },
-					{ type: 'line', color: 'rgba(214, 39, 40, .5)', desc: 'Connection [?]. Opacity – probability of a user who registred in one LAD to attend an event in another area [?]' }
+					{ type: 'line', color: 'rgba(214, 39, 40, .5)', desc: 'Connection [?]. Opacity – probability of a user who registered in one LAD to attend an event in another area [?]' }
 				]);
 
 			var colorScale = ColorPalette.ordinal(topics).scale;

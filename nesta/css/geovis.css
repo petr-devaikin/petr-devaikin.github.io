@@ -7,10 +7,11 @@
   stroke: none;
   fill: #fff;
 }
-.vis--geovis .vis__map__label {
+.vis--geovis .vis__map__title {
   pointer-events: none;
   text-anchor: middle;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: bold;
   fill: #000;
 }
 .vis--geovis .vis__map__lands__land {
