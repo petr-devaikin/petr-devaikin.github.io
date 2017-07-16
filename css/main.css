@@ -25,7 +25,7 @@ a:before {
   bottom: 1px;
   height: 10px;
   background: #4d4d4d;
-  opacity: 0.125;
+  opacity: 0.1;
 }
 a:hover:before {
   opacity: 0.15;
@@ -81,12 +81,14 @@ a:hover:before {
 }
 .project__pics {
   margin-top: 10px;
-  height: 200px;
   position: relative;
   overflow: hidden;
 }
 .project__pics a {
   color: #000;
+}
+.project__pics a:before {
+  display: none;
 }
 .project__pics a img {
   position: relative;
