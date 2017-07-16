@@ -4,7 +4,7 @@ $(function() {
 
 function setYear() {
 	var currentYear;
-	$(".project").each(function() {
+	$(".project:visible").each(function() {
 		if ($(this).attr('data-year') == currentYear) {
 			$(".project__year", this).hide();
 		}
