@@ -99,7 +99,7 @@ function Bivariate(svg, ladsMap, ladsAreas, data, p) {
 				.enter().append("path")
 			    	.classed('vis__map__lads__lad', true)
 					.classed('vis__map__lads__lad--welsh', function(d) { return d.isWelsh; })
-					.attr("d", path)
+					.attr("d", function(d) { console.log(d); return path(d); })
 					.attr('fill', '#f8f8f8');
 
 			redraw(data); // add colors
