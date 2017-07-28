@@ -43,8 +43,33 @@ a:hover:before {
   margin: 50px 0;
   font-size: 26px;
 }
-.menu__main * {
-  margin-bottom: 3px;
+.menu__main li {
+  margin-bottom: 6px;
+}
+.menu__main li a .cross {
+  display: none;
+  position: absolute;
+  right: -20px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  background: url("../img/cross.jpg");
+  background-size: cover;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.menu__main li a .cross:hover {
+  opacity: 1;
+}
+.menu__main li a.selected {
+  cursor: default;
+  font-weight: bold;
+}
+.menu__main li a.selected:before {
+  display: none;
+}
+.menu__main li a.selected .cross {
+  display: block;
 }
 .menu__footer {
   width: 100%;
@@ -69,6 +94,7 @@ a:hover:before {
   position: relative;
   padding-right: 50px;
   max-width: 800px;
+  margin-bottom: 75px;
 }
 .project__title {
   font-size: 20px;
@@ -101,7 +127,4 @@ a:hover:before {
   left: 100%;
   top: 0;
   color: #bebebe;
-}
-.project + .project {
-  margin-top: 75px;
 }

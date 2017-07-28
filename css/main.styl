@@ -78,8 +78,36 @@ a
         font-size 26px
         
     &__main
-        *
-            margin-bottom 3px
+        li
+            margin-bottom 6px
+                    
+            a
+                .cross
+                    display none
+                    position absolute
+                    right -20px
+                    top 5px
+                    width 12px
+                    height 12px
+                    background url('../img/cross.jpg')
+                    background-size cover
+                    cursor pointer
+                    opacity .8
+                    
+                    &:hover
+                        opacity 1
+            
+            a.selected
+                cursor default
+                font-weight bold
+                    
+                &:before
+                    display none
+                    
+                .cross
+                    display block
+                    
+                    
 
     &__footer
         width 100%
@@ -104,6 +132,7 @@ a
     position relative
     padding-right 50px
     max-width 800px
+    margin-bottom 75px
     
     &__title
         font-size 20px
@@ -137,7 +166,4 @@ a
         left 100%
         top 0
         color #bebebe
-    
-    & + &
-        margin-top 75px
         
