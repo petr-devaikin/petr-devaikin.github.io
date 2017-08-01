@@ -28,8 +28,8 @@ a:before {
   opacity: 0.1;
 }
 a:hover:before {
-  opacity: 0.15;
-  background: #4c72de;
+  opacity: 0.2;
+  background: #0030ff;
 }
 .menu {
   position: fixed;
@@ -42,6 +42,20 @@ a:hover:before {
 .menu__header {
   margin: 50px 0;
   font-size: 26px;
+}
+.menu__header:before {
+  display: none;
+}
+.menu__header--back:after {
+  content: "←";
+  opacity: 0.2;
+  position: absolute;
+  left: -37px;
+  top: 2px;
+  font-weight: normal;
+}
+.menu__header--back:hover:after {
+  opacity: 1;
 }
 .menu__main li {
   margin-bottom: 6px;
@@ -92,7 +106,7 @@ a:hover:before {
 }
 .project {
   position: relative;
-  padding-right: 50px;
+  padding-right: 75px;
   max-width: 800px;
   margin-bottom: 75px;
 }
@@ -101,6 +115,10 @@ a:hover:before {
 }
 .project__title a:before {
   bottom: 3px;
+}
+.project__subtitle {
+  font-size: 18px;
+  margin-top: 25px;
 }
 .project__desc {
   margin-top: 10px;
@@ -112,6 +130,7 @@ a:hover:before {
 }
 .project__pics a {
   color: #000;
+  display: block;
 }
 .project__pics a:before {
   display: none;
@@ -122,9 +141,50 @@ a:hover:before {
   display: block;
   height: 200px;
 }
-.project__year {
+.project__meta {
   position: absolute;
   left: 100%;
+  width: 120px;
   top: 0;
   color: #bebebe;
+}
+.project__meta__supp {
+  margin-top: 19px;
+}
+.project__gallerie {
+  margin-top: 10px;
+  overflow: hidden;
+}
+.project__gallerie__item {
+  box-sizing: border-box;
+  position: relative;
+  float: left;
+  width: 25%;
+  border-right: 1px solid #fff;
+  margin-bottom: 15px;
+}
+.project__gallerie__item img {
+  width: 100%;
+  display: block;
+}
+.project__gallerie__item p {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: #000;
+  color: #fff;
+  line-height: 1.2;
+  padding: 7px 7px 7px 24px;
+  -moz-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+.project__gallerie__item p span {
+  position: absolute;
+  left: 7px;
+}
+.project__gallerie__item:hover p {
+  opacity: 0;
 }

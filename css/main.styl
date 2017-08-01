@@ -61,8 +61,8 @@ a
         
     &:hover
         &:before
-            opacity .15
-            background #4c72de
+            opacity .2
+            background #0030ff
     
     
 .menu
@@ -76,6 +76,22 @@ a
     &__header
         margin 50px 0
         font-size 26px
+        
+        &:before
+            display none
+            
+        &--back
+            &:after
+                content "←"
+                opacity .2
+                position absolute
+                left -37px
+                top 2px
+                font-weight normal
+                
+            &:hover
+                &:after
+                    opacity 1
         
     &__main
         li
@@ -130,7 +146,7 @@ a
 
 .project
     position relative
-    padding-right 50px
+    padding-right 75px
     max-width 800px
     margin-bottom 75px
     
@@ -140,6 +156,10 @@ a
         a  
             &:before
                 bottom 3px
+                
+    &__subtitle
+        font-size 18px
+        margin-top 25px
         
     &__desc
         margin-top 10px
@@ -151,6 +171,7 @@ a
         
         a
             color black
+            display block
             
             &:before
                 display none
@@ -161,9 +182,48 @@ a
                 display block
                 height 200px
                 
-    &__year
+    &__meta
         position absolute
         left 100%
+        width rightMargin
         top 0
         color #bebebe
+        
+        &__supp
+            margin-top 19px
+            
+    &__gallerie
+        margin-top 10px
+        overflow hidden
+        
+        &__item
+            box-sizing: border-box;
+            position relative
+            float left
+            width 25%
+            border-right 1px solid #fff
+            margin-bottom 15px
+            
+            img
+                width 100%
+                display block
+                
+            p
+                position absolute
+                bottom 0px
+                left 0px
+                right 0px
+                background #000
+                color #fff
+                line-height 1.2
+                padding 7px 7px 7px 24px
+                transition opacity .3s
+                
+                span
+                    position absolute
+                    left 7px
+                
+            &:hover
+                p
+                    opacity 0
         
