@@ -2,33 +2,40 @@
 <html>
     <head>
         <title>Lobster Redesign | Petr Devaikin</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="Design,Interaction,UX,Visualization,Coding,Development">
+        <meta name="author" content="John Doe">
+
         <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/reset.css">
         <link rel="stylesheet" type="text/css" href="../css/main.css">
-        <link rel="stylesheet" type="text/css" href="../css/project.css">
-
-        <script
-            src="http://code.jquery.com/jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-            crossorigin="anonymous"></script>
-
-        <script src="../js/project.js"></script>
+        <script src="../js/jquery-3.2.1.slim.min.js"></script>
+        <script src="../js/scrolling.js"></script>
     </head>
     <body>
         <div class="menu">
-            <a class="menu__name" href="/">Petr Devaikin</a>
+            <a class="menu__header menu__header--back" href="/">Petr Devaikin</a>
+            <div class="menu__footer">
+                &copy; 2017
+            </div>
         </div>
 
-        <div class="project-container">
-            <div class="project-container__foreground">
-                <div class="header">
-                    <h1 class="header__name">Lobster Redesign</h1>
-                    <p class="header__description">
-                        Redesign of the biggest user-generated content marketplace <a href="https://lobster.media">lobster.media</a>.
+        <div class="content">
+            <div class="project">
+                <h2 class="project__title">Lobster Redesign</h2>
+                <div class="project__meta">
+                    September 2015
+                    <p class="project__meta__supp">
+                        Technology:<br/>
+                        Sketch<br/>
+                        Pattern Lab
                     </p>
                 </div>
+                <p class="project__desc">
+                    Redesign of the biggest user-generated content marketplace <a href="https://lobster.media">lobster.media</a>.
+                </p>
+
 
                 <div class="screens">
                     <div class="screens__menu">
@@ -48,6 +55,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!--div class="project-container">
+            <div class="project-container__foreground">
+                <div class="header">
+                    <h1 class="header__name">Lobster Redesign</h1>
+                    <p class="header__description">
+                        
+                    </p>
+                </div>
+
+                
+            </div>
             <div class="project-container__curtain">
             </div>
 
@@ -63,6 +83,6 @@
                 <img class="project-container__content__img" src="login_iphone.jpg" device="iphone" page="2" />
             </div>
 
-        </div>
+        </div-->
     </body>
 </html>

@@ -123,6 +123,9 @@ a:hover:before {
 .project__desc {
   margin-top: 10px;
 }
+.project__desc img {
+  width: 100%;
+}
 .project__pics {
   margin-top: 10px;
   position: relative;
