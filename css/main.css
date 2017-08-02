@@ -192,6 +192,15 @@ a:hover:before {
 .project__gallerie__item:hover p {
   opacity: 0;
 }
+.project__gallerie--big .project__gallerie__item {
+  width: 50%;
+}
+.project__gallerie--big .project__gallerie__item:before {
+  display: none;
+}
+.project__gallerie--big .project__gallerie__item p {
+  padding-left: 7px;
+}
 .project__screens__menu {
   text-align: center;
   padding: 20px 0;
@@ -247,6 +256,7 @@ a:hover:before {
   left: 50%;
   z-index: 2;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 .page-expander {
   position: absolute;
