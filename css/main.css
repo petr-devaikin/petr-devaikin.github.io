@@ -20,15 +20,15 @@ a {
 a:before {
   content: '';
   position: absolute;
-  left: -2px;
-  right: -2px;
+  left: -1px;
+  right: -1px;
   bottom: 1px;
-  height: 10px;
+  height: 2px;
   background: #4d4d4d;
-  opacity: 0.1;
+  opacity: 0.2;
 }
 a:hover:before {
-  opacity: 0.2;
+  opacity: 1;
   background: #0030ff;
 }
 .menu {
@@ -190,4 +190,60 @@ a:hover:before {
 }
 .project__gallerie__item:hover p {
   opacity: 0;
+}
+.project__screens__menu {
+  text-align: center;
+  padding: 20px 0;
+}
+.project__screens__menu--top {
+  padding-top: 20px;
+}
+.project__screens__menu--bottom {
+  padding-bottom: 20px;
+}
+.project__screens__menu__item {
+  border: 1px solid #dbdbdb;
+  padding: 0 5px;
+}
+.project__screens__menu__item:before {
+  display: none;
+}
+.project__screens__menu__item + .project__screens__menu__item {
+  margin-left: 5px;
+}
+.project__screens__menu__item:hover {
+  border: 1px solid #0030ff;
+}
+.project__screens__menu__item--active {
+  border: 1px solid #000 !important;
+  cursor: default;
+}
+.project__screens__frame {
+  position: relative;
+  width: 100%;
+}
+.project__screens__frame__device {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: 2;
+  display: none;
+}
+.project__screens__frame__device--mac {
+  background-image: url("../img/macbook.png");
+}
+.project__screens__frame__device--ipad {
+  background-image: url("../img/ipad.png");
+}
+.project__screens__frame__device--iphone {
+  background-image: url("../img/iphone.png");
+}
+.project__screens__frame__content {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  background-size: cover;
 }
