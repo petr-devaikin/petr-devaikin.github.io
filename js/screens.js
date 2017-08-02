@@ -12,16 +12,22 @@ var RATIOS = {
 var MAX_FRAME_WIDTH = 800;
 
 $(function() {
+    $('.content').css('position', 'fixed')
+        .css('left', 0)
+        .css('right', 0);
+    var expander = $('<div></div>').addClass('page-expander');
+    $('.content').before(expander);
+
     setActiveDevice();
     setActivePage();
 
     $(window).resize(function() {
         setScreenSize();
-        screenFloat();
+        setContentPosition();
     });
 
     $(window).scroll(function() {
-        screenFloat();
+        setContentPosition();
     })
 
     $('.project__screens__menu--bottom .project__screens__menu__item').click(function() {
@@ -41,20 +47,14 @@ $(function() {
     ];
     for (var i = 0; i < pics.length; i++) {
         var pic = new Image();
-        pic.onload = function() {
-            console.log(this.src);
-        }
         pic.src = pics[i];
     }
 });
 
 
 function setScreenSize() {
-    $('.content').css('position', 'fixed')
-        .css('left', 0)
-        .css('right', 0);
-
-    $('.project-container__foreground').attr('style', '');
+    var expander = $('.page-expander');
+    expander.css('height', 0);
 
     var screenTop = $('.project__screens').offset().top;
     var windowHeight = $(window).innerHeight();
@@ -69,42 +69,39 @@ function setScreenSize() {
     var frameWidth = (availableWidth > MAX_FRAME_WIDTH) ? MAX_FRAME_WIDTH : availableWidth;
     var frameHeight = frameWidth / 2048 * 1136;
 
-    var topShift = 0;
+    //var topShift = 0;
     if (frameHeight > availableHeight) {
+        //topShift = (frameHeight - availableHeight) / 2;
         frameHeight = availableHeight;
-        topShift = (availableHeight - frameHeight) / 2;
+        frameWidth = frameHeight * 2048 / 1136;
     }
 
     $('.project__screens__frame').css('height', frameHeight);
 
+    var imageWidth = frameWidth * RATIOS[activeDevice].width;
+    var imageHeight = frameHeight - frameWidth * (RATIOS[activeDevice].bottom + RATIOS[activeDevice].top);
+
     var image = $('.project__screens__frame__content');
-    image.css('background-image', "url('" + activePage + "_" + activeDevice + ".jpg')");
+
+    var imgSrc = activePage + "_" + activeDevice + ".jpg";
+    var img = new Image();
+    img.onload = function() {
+        var height = windowHeight + this.height * imageWidth / this.width - imageHeight;
+        expander.css('height', height);
+    }
+    img.src= imgSrc;
+
+    image.css('background-image', "url('" + imgSrc + "')");
     image.css('margin-left', -frameWidth * RATIOS[activeDevice].width / 2);
-    image.css('width', frameWidth * RATIOS[activeDevice].width);
-    image.css('top', frameWidth * RATIOS[activeDevice].top + topShift);
-    image.css('height', frameHeight - frameWidth * (RATIOS[activeDevice].bottom + RATIOS[activeDevice].top));
+    image.css('width', imageWidth);
+    image.css('top', frameWidth * RATIOS[activeDevice].top);
+    image.css('height', imageHeight);
 }
 
 
-function screenFloat() {
-    /*
-    if (isFullScreen)
-        return;
-
+function setContentPosition() {
     var windowPosition = $(window).scrollTop();
-    var windowHeight = $(window).innerHeight();
-
-    var foregroundheight = $('.project-container__foreground').height();
-
-    if (foregroundheight < windowPosition + windowHeight)
-        $('.project-container__foreground')
-            .css('position', 'fixed')
-            .css('bottom', 0);
-    else
-        $('.project-container__foreground')
-            .css('position', 'absolute')
-            .css('bottom', '');
-    */
+    $('.project__screens__frame__content').css('background-position', 'center -' + windowPosition + 'px');
 }
 
 

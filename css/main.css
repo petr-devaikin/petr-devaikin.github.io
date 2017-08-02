@@ -20,8 +20,8 @@ a {
 a:before {
   content: '';
   position: absolute;
-  left: -1px;
-  right: -1px;
+  left: 0px;
+  right: 0px;
   bottom: 1px;
   height: 2px;
   background: #4d4d4d;
@@ -103,6 +103,7 @@ a:hover:before {
   margin-bottom: 30px;
   margin-left: 320px;
   margin-right: 120px;
+  z-index: 1;
 }
 .project {
   position: relative;
@@ -229,7 +230,7 @@ a:hover:before {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  z-index: 2;
+  z-index: 3;
   display: none;
 }
 .project__screens__frame__device--mac {
@@ -244,6 +245,12 @@ a:hover:before {
 .project__screens__frame__content {
   position: absolute;
   left: 50%;
-  z-index: 1;
+  z-index: 2;
   background-size: cover;
+}
+.page-expander {
+  position: absolute;
+  top: 0px;
+  width: 1px;
+  z-index: 0;
 }
