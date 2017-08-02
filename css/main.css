@@ -195,11 +195,26 @@ a:hover:before {
 .project__gallerie--big .project__gallerie__item {
   width: 50%;
 }
-.project__gallerie--big .project__gallerie__item:before {
-  display: none;
-}
 .project__gallerie--big .project__gallerie__item p {
   padding-left: 7px;
+  padding-right: 25px;
+}
+.project__gallerie--big .project__gallerie__item p:before {
+  content: '';
+  position: absolute;
+  background-color: transparent;
+  right: 3px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background-image: url("../img/external.png");
+  background-size: cover;
+}
+.project__gallerie--big a:before {
+  display: none;
+}
+.project__gallerie--big a:hover p {
+  opacity: 0.8;
 }
 .project__screens__menu {
   text-align: center;

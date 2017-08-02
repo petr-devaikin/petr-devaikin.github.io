@@ -235,12 +235,29 @@ a
         &--big
             .project__gallerie__item
                 width 50%
-                
-                &:before
-                    display none
                     
                 p
                     padding-left 7px
+                    padding-right 25px
+                    
+                    &:before
+                        content ''
+                        position absolute
+                        background-color transparent
+                        right 3px
+                        top 3px
+                        width 20px
+                        height 20px
+                        background-image url('../img/external.png')
+                        background-size cover
+                    
+            a
+                &:before
+                    display none
+                    
+                &:hover
+                    p
+                        opacity .8
                     
     &__screens
         &__menu
