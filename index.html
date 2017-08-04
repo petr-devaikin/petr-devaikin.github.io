@@ -1,251 +1,208 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Creative Coding, Interaction Design | Petr Devaikin</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Petr Devaikin</title>
+        <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
         <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="Design,Interaction,UX,Visualization,Coding,Development">
+        <meta name="author" content="John Doe">
+
         <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+        <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="js/jquery-3.2.1.slim.min.js"></script>
+
+        <script src="js/signals.min.js"></script>
+        <script src="js/hasher.min.js"></script>
+        <script src="js/main.js"></script>
     </head>
     <body>
-        <div class="content">
-            <div class="content__inner">
-                <div class="card card--empty">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main">
-                            <h1>
-                                Petr Devaikin
-                            </h1>
-                        </div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Creative Coding, Interaction Design</h3>
-                            <ul class="card__inner__desc__text">
-                                <li>
-                                    <a href="mailto:p.devaikin@gmail.com">p.devaikin@gmail.com</a>
-                                </li>
-                                <li>
-                                    <a href="http://ru.linkedin.com/pub/petr-devaikin/81/827/45">LinkedIn</a>
-                                </li>
-                                <li>
-                                    <a href="cv_devaikin.pdf">CV</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        <div class="menu">
+            <a class="menu__header" href="/">Petr Devaikin</a>
+            <ul class="menu__main">
+                <li>
+                    <a href="#interaction">Interaction design</a>
+                </li>
+                <li>
+                    <a href="#creative">Creative coding</a>
+                </li>
+                <li>
+                    <a href="#infovis">Information visualisation</a>
+                </li>
+                <li>
+                    <a href="#vr">Virtual and augmented</a>
+                </li>
+                <!--li>
+                    <a href="#affective">Affective computing</a>
+                </li-->
+                <li>
+                    <a href="#ux">UX and UI</a>
+                </li>
+            </ul>
+            <div class="menu__footer">
+                <div class="menu__footer__social">
+                    <p>
+                        <a href="mailto:p.devaikin@gmail.com">p.devaikin@gmail.com</a>
+                    </p>
+                    <p>
+                        <a href="http://ru.linkedin.com/pub/petr-devaikin/81/827/45">LinkedIn</a>,
+                        <a href="cv_devaikin.pdf">CV</a>
+                    </p>
                 </div>
-
-                <a href="movement/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/movement.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Æ-movement</h3>
-                            <p class="card__inner__desc__text">
-                                Real-time visualization of body performance created to emphasize uniqueness and temporality of the movement by immersing users in full body aesthetic experience.
-                            </p>
-                            <div class="card__inner__desc__tag">Interaction Design</div>
-                            <div class="card__inner__desc__date">Feb. 2016</div>
-                            <div class="card__inner__desc__supp">
-                                Processing
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="duma/en/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/duma.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Russian State Duma</h3>
-                            <p class="card__inner__desc__text">
-                                Interactive visualization of the&nbsp;lower house of&nbsp;the&nbsp;Federal Assembly of&nbsp;Russia (parliament) structure.
-                            </p>
-                            <div class="card__inner__desc__tag">Information Visualization</div>
-                            <div class="card__inner__desc__date">Sept. 2016</div>
-                            <div class="card__inner__desc__supp">
-                                HTML, HTML5, SVG, D3.js, JavaScript, CSS
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="ar/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/ar.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">AR Furniture Catalogue</h3>
-                            <p class="card__inner__desc__text">
-                                Prototype of an augmented reality furniture catalogue.
-                            </p>
-                            <div class="card__inner__desc__tag">AR, Interaction Design</div>
-                            <div class="card__inner__desc__date">Jan. 2016</div>
-                            <div class="card__inner__desc__supp">
-                                Unity3d
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="lobster/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/lobster.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Lobster Redesign</h3>
-                            <p class="card__inner__desc__text">
-                                Redesign of the biggest user-generated content marketplace.
-                            </p>
-                            <div class="card__inner__desc__tag">UX/UI Design</div>
-                            <div class="card__inner__desc__date">Sept. 2015</div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="hashtagmap/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/hashtagmap.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Hashtag Map</h3>
-                            <p class="card__inner__desc__text">
-                                Visual representation of one day in a big city: Moscow, Berlin, Saint&nbsp;Petersburg and London.
-                            </p>
-                            <div class="card__inner__desc__tag">Information Visualization</div>
-                            <div class="card__inner__desc__date">Sept. 2014</div>
-                            <div class="card__inner__desc__supp">
-                                Instagram, Python, Flask, HTML, HTML5, Canvas, JavaScript, CSS, MySql
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="https://www.youtube.com/watch?v=RNfj8bh07TU" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/destruction.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Beauty of Destruction</h3>
-                            <p class="card__inner__desc__text">
-                                VR Game for Artificial Rome open studio event.
-                            </p>
-                            <div class="card__inner__desc__tag">VR</div>
-                            <div class="card__inner__desc__date">June 2016</div>
-                            <div class="card__inner__desc__supp">
-                                Unity3d
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="http://iseehue.herokuapp.com" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/iseehue.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">I See Hue</h3>
-                            <p class="card__inner__desc__text">
-                                Color perception diagram. Test and visualization.
-                            </p>
-                            <div class="card__inner__desc__tag">Information Visualization</div>
-                            <div class="card__inner__desc__date">Oct. 2014</div>
-                            <div class="card__inner__desc__supp">
-                                Python, Flask, HTML, HTML5, SVG, JavaScript, RequireJS, CSS, SCSS, PostgreSQL
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="katz/eng/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/katz1.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Max Katz Crowdfunding People</h3>
-                            <p class="card__inner__desc__text">
-                                Visualization of the Maxim Katz crowdfunding campaign in&nbsp;2014: age, gender and transaction amount of&nbsp;contributors.
-                            </p>
-                            <div class="card__inner__desc__tag">Information Visualization</div>
-                            <div class="card__inner__desc__date">Sept. 2014</div>
-                            <div class="card__inner__desc__supp">
-                                HTML, HTML5, SVG, JavaScript, D3, CSS
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="katz/eng/timeline/" class="card">
-                    <div class="card__inner">
-                        <div class="card__inner__expander"></div>
-                        <div class="card__inner__main" style="background-image: url('img/katz2.jpg')"></div>
-                        <div class="card__inner__desc">
-                            <h3 class="card__inner__desc__header">Max Katz Crowdfunding Timeline</h3>
-                            <p class="card__inner__desc__text">
-                                Timeline of the Maxim Katz crowdfunding campaign in&nbsp;2014.
-                            </p>
-                            <div class="card__inner__desc__tag">Information Visualization</div>
-                            <div class="card__inner__desc__date">Sept. 2014</div>
-                            <div class="card__inner__desc__supp">
-                                HTML, HTML5, SVG, JavaScript, D3, CSS
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                    <!--div class="project">
-                        <div class="screenshot">
-                            <a href="http://pazzla.qoollo.com"><img src="img/pazzla.jpg" alt="Pazzla" /></a>
-                        </div>
-                        <div class="title">
-                            <a href="http://pazzla.qoollo.com">
-                                Pazzla
-                            </a>
-                        </div>
-                        <div class="description">
-                            Service to make a photo mosaic of Instagram pictures.
-                        </div>
-                        <div class="technologies">
-                            Instagram, Python, Flask, HTML, HTML5, JavaScript, D3, CSS, SASS, SQLite
-                        </div>
-                    </div-->
-                    <!--div class="project">
-                        <div class="screenshot">
-                            <a href="http://petr-devaikin.github.io/metro/"><img src="img/metro.jpg" alt="Moscow Metro Growth Map" /></a>
-                        </div>
-                        <div class="title">
-                            <a href="http://petr-devaikin.github.io/metro/">
-                                Moscow Metro Growth Map
-                            </a>
-                        </div>
-                        <div class="description">
-                            The map shows how Moscow metro was developed from 1937 to&nbsp;2014. To&nbsp;show the age of&nbsp;stations the heatmap color coding is&nbsp;used. Circles with different brightness around stations show the time to&nbsp;achieve a&nbsp;station by&nbsp;walking.
-                        </div>
-                        <div class="technologies">
-                            Data&nbsp;visualization, HTML, HTML5, SVG, JavaScript, D3, CSS
-                        </div>
-                    </div-->
-                    <!--div class="project">
-                        <div class="screenshot">
-                            <a href="http://поигратьсясошрифтиками.рф"><img src="img/font.jpg" alt="поигратьсясошрифтиками.рф" /></a>
-                        </div>
-                        <div class="title">
-                            <a href="http://поигратьсясошрифтиками.рф/">
-                                поигратьсясошрифтиками.рф
-                            </a>
-                        </div>
-                        <div class="description">
-                            The tool is&nbsp;developed for designers who are tired of&nbsp;customers&rsquo; requests to&nbsp;change the font.
-                        </div>
-                        <div class="technologies">
-                            Python, Flask, HTML, CSS
-                        </div>
-                    </div-->
-
-                <div class="content__inner__copy">&copy; 2017</div>
+                &copy; 2017
             </div>
         </div>
+
+        <div class="content">
+            <div class="project" data-type="infovis" data-year="2017">
+                <h2 class="project__title"><a href="arloesiadur/">Visualizations for Arloesiadur</a></h2>
+                <p class="project__desc">
+                    Interactive visualizations for <a href="https://arloesiadur.org/">Arloesiadur</a>.<br/>
+                    Curated by <a href="http://www.nesta.org.uk/">Nesta</a>, produced by <a href="http://infogr8.com/">Infogr8</a>.
+                </p>
+                <div class="project__pics">
+                    <a href="arloesiadur/">
+                        <img src="img/arloesiadur1.jpg" />
+                        <img src="img/arloesiadur2.jpg" />
+                        <img src="img/arloesiadur3.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2017</p>
+            </div>
+
+            <!--div class="project" data-type="interaction,affective" data-year="2017">
+                <h2 class="project__title"><a href="https://arloesiadur.org/">Dating App and Emotions</a></h2>
+                <p class="project__desc">
+                    ... Study ... . Student project.
+                </p>
+                <div class="project__pics">
+                    <a href="uzzla/">
+                        <img src="img/ar.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2017</p>
+            </div-->
+
+            <div class="project" data-type="infovis" data-year="2016">
+                <h2 class="project__title"><a href="duma/en/">The Russian State Duma</a></h2>
+                <p class="project__desc">
+                    Interactive visualisation depicting the structure of the lower house of the Federal Assembly [parliament] of Russia, bringing to light the intricate positioning and repositioning of parliament members.
+                </p>
+                <div class="project__pics">
+                    <a href="duma/en/">
+                        <img src="img/duma3.jpg" />
+                        <img src="img/duma.jpg" />
+                        <img src="img/duma2.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2016</p>
+            </div>
+
+            <div class="project" data-type="vr" data-year="2016">
+                <h2 class="project__title"><a href="https://www.youtube.com/watch?v=RNfj8bh07TU">Beauty of Destruction</a></h2>
+                <p class="project__desc">
+                    VR Game for <a href="http://www.artificialrome.com/" target="_blank" >Artificial Rome</a> open studio event.
+                </p>
+                <div class="project__pics">
+                    <a href="https://www.youtube.com/watch?v=RNfj8bh07TU">
+                        <img src="img/destruction.jpg" />
+                        <img src="img/destruction2.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2016</p>
+            </div>
+
+            <div class="project" data-type="interaction,creative" data-year="2016">
+                <h2 class="project__title"><a href="movement/">Æ-movement</a></h2>
+                <p class="project__desc">
+                    Real-time visualization of the body in motion.
+                </p>
+                <div class="project__pics">
+                    <a href="movement/">
+                        <img src="img/movement2.jpg" />
+                        <img src="img/movement3.jpg" />
+                        <img src="img/movement.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2016</p>
+            </div>
+
+            <div class="project" data-type="interaction,vr" data-year="2016">
+                <h2 class="project__title"><a href="ar/">AR Furniture Catalogue</a></h2>
+                <p class="project__desc">
+                    Prototype of an augmented reality furniture catalogue. Student project.
+                </p>
+                <div class="project__pics">
+                    <a href="ar/">
+                        <img src="img/ar.jpg" />
+                        <!--img src="img/ar2.jpg" /-->
+                    </a>
+                </div>
+                <p class="project__meta">2016</p>
+            </div>
+
+            <div class="project" data-type="ux" data-year="2015">
+                <h2 class="project__title"><a href="lobster/">Lobster UI Redesign</a></h2>
+                <p class="project__desc">
+                    Redesign of the biggest user-generated content marketplace.
+                </p>
+                <div class="project__pics">
+                    <a href="lobster/">
+                        <img src="img/lobster.jpg" />
+                        <img src="img/lobster2.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2015</p>
+            </div>
+
+            <div class="project" data-type="creative" data-year="2014">
+                <h2 class="project__title"><a href="puzzla/">Puzzla</a></h2>
+                <p class="project__desc">
+                    Photo mosaic generator fueled by Instagram #pix.
+                </p>
+                <div class="project__pics">
+                    <a href="puzzla/">
+                        <img src="img/puzzla4.jpg" />
+                        <img src="img/puzzla1.jpg" />
+                        <img src="img/puzzla2.jpg" />
+                        <img src="img/puzzla3.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2014</p>
+            </div>
+
+            <div class="project" data-type="infovis" data-year="2014">
+                <h2 class="project__title"><a href="hashtagmap/">Hashtag Map</a></h2>
+                <p class="project__desc">
+                    Day in a big city &mdash; a visual representation. Featuring Moscow, Berlin and London's popular hashtags.
+                </p>
+                <div class="project__pics">
+                    <a href="hashtagmap/">
+                        <img src="img/hashtagmap.jpg" />
+                        <img src="img/hashtagmap2.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2014</p>
+            </div>
+
+            <div class="project" data-type="infovis" data-year="2014">
+                <h2 class="project__title">Max Katz Crowdfunding Campaign. <a href="katz/eng/">People</a> and <a href="katz/eng/timeline/">Timeline</a></h2>
+                <p class="project__desc">
+                    Visualization of <a href="http://maxkatz.livejournal.com/" target="_blank">Maxim Katz</a> crowdfunding campaign in&nbsp;2014; age, gender and transaction amount of&nbsp;contributors.
+                </p>
+                <div class="project__pics">
+                    <a href="katz/eng/">
+                        <img src="img/katz1.jpg" />
+                    </a>
+                    <a href="katz/eng/timeline/">
+                        <img src="img/katz2.jpg" />
+                    </a>
+                </div>
+                <p class="project__meta">2014</p>
+            </div>
+        </div>
+
 
 
         <script>
