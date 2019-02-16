@@ -27,6 +27,12 @@ rightMargin = 120px
 
 bgColor = #ffffff
 fontColor = #000000
+linkColor = #4d4d4d
+linkHoveredColor = #0030ff
+
+bgColorInversed = #000000
+fontColorInversed = #aaaaaa
+linkColorInversed = #888888
 
 @font-face
     font-family 'PT Sans'
@@ -44,7 +50,7 @@ body
     line-height 1.5
     
 a
-    color #192034
+    color fontColor
     text-decoration none
     display inline-block
     position relative
@@ -56,13 +62,13 @@ a
         right 0px
         bottom 1px
         height 2px
-        background #4d4d4d
+        background linkColor
         opacity .2
         
     &:hover
         &:before
             opacity 1
-            background #0030ff
+            background linkHoveredColor
     
     
 .menu
@@ -85,6 +91,7 @@ a
                 content "←"
                 opacity .2
                 position absolute
+                color linkColor
                 left -37px
                 top 2px
                 font-weight normal
@@ -92,6 +99,7 @@ a
             &:hover
                 &:after
                     opacity 1
+                    color linkHoveredColor
         
     &__main
         li
@@ -167,6 +175,9 @@ a
         
         img
             width 100%
+            
+        &--big-prefix
+            margin-top: 20px
         
     &__pics
         margin-top 10px

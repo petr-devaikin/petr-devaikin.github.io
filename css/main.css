@@ -12,7 +12,7 @@ body {
   line-height: 1.5;
 }
 a {
-  color: #192034;
+  color: #000;
   text-decoration: none;
   display: inline-block;
   position: relative;
@@ -50,12 +50,14 @@ a:hover:before {
   content: "←";
   opacity: 0.2;
   position: absolute;
+  color: #4d4d4d;
   left: -37px;
   top: 2px;
   font-weight: normal;
 }
 .menu__header--back:hover:after {
   opacity: 1;
+  color: #0030ff;
 }
 .menu__main li {
   margin-bottom: 6px;
@@ -126,6 +128,9 @@ a:hover:before {
 }
 .project__desc img {
   width: 100%;
+}
+.project__desc--big-prefix {
+  margin-top: 20px;
 }
 .project__pics {
   margin-top: 10px;
